@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+package foxglove.viz;
+
+// https://foxglove.dev/docs/datatypes/LocationFix
+message LocationFix {
+    double latitude = 1;
+    double longitude = 2;
+    optional double altitude = 3;
+    optional repeated double covariance = 4;
+}

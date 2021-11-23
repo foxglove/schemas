@@ -6,6 +6,5 @@ package foxglove.viz;
 message LocationFix {
     double latitude = 1;
     double longitude = 2;
-    optional double altitude = 3;
-    optional repeated double covariance = 4;
+    optional repeated double position_covariance = 3;
 }

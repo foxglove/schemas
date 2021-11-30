@@ -13,7 +13,7 @@ message NavSatFix {
   double latitude = 3;
   double longitude = 4;
   double altitude = 5;
-  repeated double position_covariance = 6;
+  repeated double position_covariance = 6; // [9]
   // uint8 COVARIANCE_TYPE_UNKNOWN = 0
   // uint8 COVARIANCE_TYPE_APPROXIMATED = 1
   // uint8 COVARIANCE_TYPE_DIAGONAL_KNOWN = 2

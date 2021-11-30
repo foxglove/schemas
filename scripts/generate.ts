@@ -74,7 +74,14 @@ export default async function writeProtobuf(
           qualifiers.push(field.type);
         }
       }
-      fields.push(`${qualifiers.join(" ")} ${field.name} = ${fieldNumber++};`);
+      let fieldLine = `${qualifiers.join(" ")} ${
+        field.name
+      } = ${fieldNumber++};`;
+
+      if (field.arrayLength != undefined) {
+        fieldLine += ` // [${field.arrayLength}]`;
+      }
+      fields.push(fieldLine);
     }
 
     const outputSections = [

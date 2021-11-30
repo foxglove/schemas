@@ -5,5 +5,5 @@ syntax = "proto3";
 package ros.shape_msgs;
 
 message MeshTriangle {
-  repeated uint32 vertex_indices = 1;
+  repeated uint32 vertex_indices = 1; // [3]
 }

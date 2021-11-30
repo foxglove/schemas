@@ -13,9 +13,9 @@ message CameraInfo {
   uint32 width = 3;
   string distortion_model = 4;
   repeated double D = 5;
-  repeated double K = 6;
-  repeated double R = 7;
-  repeated double P = 8;
+  repeated double K = 6; // [9]
+  repeated double R = 7; // [9]
+  repeated double P = 8; // [12]
   uint32 binning_x = 9;
   uint32 binning_y = 10;
   ros.sensor_msgs.RegionOfInterest roi = 11;

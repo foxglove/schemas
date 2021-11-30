@@ -8,5 +8,5 @@ package ros.geometry_msgs;
 
 message TwistWithCovariance {
   ros.geometry_msgs.Twist twist = 1;
-  repeated double covariance = 2;
+  repeated double covariance = 2; // [36]
 }

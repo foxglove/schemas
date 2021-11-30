@@ -1,0 +1,8 @@
+{
+  "extends": "@foxglove/tsconfig/base",
+  "include": ["./scripts/**/*"],
+  "compilerOptions": {
+    "module": "commonjs",
+    "lib": ["es2020", "dom"]
+  }
+}

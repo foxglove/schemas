@@ -1,0 +1,22 @@
+// Generated from rcl_interfaces/Log.msg
+
+syntax = "proto3";
+
+import "ros/builtins.proto";
+
+package ros.rcl_interfaces;
+
+message Log {
+  // int8 DEBUG = 10
+  // int8 INFO = 20
+  // int8 WARN = 30
+  // int8 ERROR = 40
+  // int8 FATAL = 50
+  ros.Time stamp = 1;
+  int32 level = 2;
+  string name = 3;
+  string msg = 4;
+  string file = 5;
+  string function = 6;
+  uint32 line = 7;
+}

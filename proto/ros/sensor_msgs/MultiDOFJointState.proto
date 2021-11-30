@@ -1,0 +1,18 @@
+// Generated from sensor_msgs/MultiDOFJointState.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Transform.proto";
+import "ros/geometry_msgs/Twist.proto";
+import "ros/geometry_msgs/Wrench.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.sensor_msgs;
+
+message MultiDOFJointState {
+  ros.std_msgs.Header header = 1;
+  repeated string joint_names = 2;
+  repeated ros.geometry_msgs.Transform transforms = 3;
+  repeated ros.geometry_msgs.Twist twist = 4;
+  repeated ros.geometry_msgs.Wrench wrench = 5;
+}

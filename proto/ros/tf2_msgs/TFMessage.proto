@@ -1,0 +1,11 @@
+// Generated from tf2_msgs/TFMessage.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/TransformStamped.proto";
+
+package ros.tf2_msgs;
+
+message TFMessage {
+  repeated ros.geometry_msgs.TransformStamped transforms = 1;
+}

@@ -1,0 +1,16 @@
+// Generated from visualization_msgs/MenuEntry.msg
+
+syntax = "proto3";
+
+package ros.visualization_msgs;
+
+message MenuEntry {
+  uint32 id = 1;
+  uint32 parent_id = 2;
+  string title = 3;
+  string command = 4;
+  // uint8 FEEDBACK = 0
+  // uint8 ROSRUN = 1
+  // uint8 ROSLAUNCH = 2
+  int32 command_type = 5;
+}

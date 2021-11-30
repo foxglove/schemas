@@ -1,0 +1,14 @@
+// Generated from nav_msgs/OccupancyGrid.msg
+
+syntax = "proto3";
+
+import "ros/nav_msgs/MapMetaData.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.nav_msgs;
+
+message OccupancyGrid {
+  ros.std_msgs.Header header = 1;
+  ros.nav_msgs.MapMetaData info = 2;
+  repeated sint32 data = 3;
+}

@@ -1,0 +1,11 @@
+// Generated from std_msgs/Time.msg
+
+syntax = "proto3";
+
+import "ros/builtins.proto";
+
+package ros.std_msgs;
+
+message Time {
+  ros.Time data = 1;
+}

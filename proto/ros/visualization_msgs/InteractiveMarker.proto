@@ -1,0 +1,20 @@
+// Generated from visualization_msgs/InteractiveMarker.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Pose.proto";
+import "ros/std_msgs/Header.proto";
+import "ros/visualization_msgs/InteractiveMarkerControl.proto";
+import "ros/visualization_msgs/MenuEntry.proto";
+
+package ros.visualization_msgs;
+
+message InteractiveMarker {
+  ros.std_msgs.Header header = 1;
+  ros.geometry_msgs.Pose pose = 2;
+  string name = 3;
+  string description = 4;
+  float scale = 5;
+  repeated ros.visualization_msgs.MenuEntry menu_entries = 6;
+  repeated ros.visualization_msgs.InteractiveMarkerControl controls = 7;
+}

@@ -1,0 +1,13 @@
+// Generated from geometry_msgs/AccelStamped.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Accel.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.geometry_msgs;
+
+message AccelStamped {
+  ros.std_msgs.Header header = 1;
+  ros.geometry_msgs.Accel accel = 2;
+}

@@ -1,0 +1,14 @@
+// Generated from sensor_msgs/MagneticField.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Vector3.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.sensor_msgs;
+
+message MagneticField {
+  ros.std_msgs.Header header = 1;
+  ros.geometry_msgs.Vector3 magnetic_field = 2;
+  repeated double magnetic_field_covariance = 3;
+}

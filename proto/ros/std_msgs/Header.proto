@@ -1,0 +1,13 @@
+// Generated from std_msgs/Header.msg
+
+syntax = "proto3";
+
+import "ros/builtins.proto";
+
+package ros.std_msgs;
+
+message Header {
+  uint32 seq = 1;
+  ros.Time stamp = 2;
+  string frame_id = 3;
+}

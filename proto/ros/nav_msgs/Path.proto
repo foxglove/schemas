@@ -1,0 +1,13 @@
+// Generated from nav_msgs/Path.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/PoseStamped.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.nav_msgs;
+
+message Path {
+  ros.std_msgs.Header header = 1;
+  repeated ros.geometry_msgs.PoseStamped poses = 2;
+}

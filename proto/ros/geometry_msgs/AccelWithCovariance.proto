@@ -1,0 +1,12 @@
+// Generated from geometry_msgs/AccelWithCovariance.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Accel.proto";
+
+package ros.geometry_msgs;
+
+message AccelWithCovariance {
+  ros.geometry_msgs.Accel accel = 1;
+  repeated double covariance = 2;
+}

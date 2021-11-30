@@ -1,0 +1,13 @@
+// Generated from geometry_msgs/Pose.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Point.proto";
+import "ros/geometry_msgs/Quaternion.proto";
+
+package ros.geometry_msgs;
+
+message Pose {
+  ros.geometry_msgs.Point position = 1;
+  ros.geometry_msgs.Quaternion orientation = 2;
+}

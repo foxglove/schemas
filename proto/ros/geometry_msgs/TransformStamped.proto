@@ -1,0 +1,14 @@
+// Generated from geometry_msgs/TransformStamped.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Transform.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.geometry_msgs;
+
+message TransformStamped {
+  ros.std_msgs.Header header = 1;
+  string child_frame_id = 2;
+  ros.geometry_msgs.Transform transform = 3;
+}

@@ -1,0 +1,12 @@
+// Generated from std_msgs/MultiArrayLayout.msg
+
+syntax = "proto3";
+
+import "ros/std_msgs/MultiArrayDimension.proto";
+
+package ros.std_msgs;
+
+message MultiArrayLayout {
+  repeated ros.std_msgs.MultiArrayDimension dim = 1;
+  uint32 data_offset = 2;
+}

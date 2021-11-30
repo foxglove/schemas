@@ -1,0 +1,13 @@
+// Generated from geometry_msgs/Vector3Stamped.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Vector3.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.geometry_msgs;
+
+message Vector3Stamped {
+  ros.std_msgs.Header header = 1;
+  ros.geometry_msgs.Vector3 vector = 2;
+}

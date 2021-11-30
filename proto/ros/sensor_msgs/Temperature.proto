@@ -1,0 +1,13 @@
+// Generated from sensor_msgs/Temperature.msg
+
+syntax = "proto3";
+
+import "ros/std_msgs/Header.proto";
+
+package ros.sensor_msgs;
+
+message Temperature {
+  ros.std_msgs.Header header = 1;
+  double temperature = 2;
+  double variance = 3;
+}

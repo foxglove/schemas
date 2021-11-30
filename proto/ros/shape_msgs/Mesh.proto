@@ -1,0 +1,13 @@
+// Generated from shape_msgs/Mesh.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Point.proto";
+import "ros/shape_msgs/MeshTriangle.proto";
+
+package ros.shape_msgs;
+
+message Mesh {
+  repeated ros.shape_msgs.MeshTriangle triangles = 1;
+  repeated ros.geometry_msgs.Point vertices = 2;
+}

@@ -1,0 +1,17 @@
+{
+  "name": "proto-datatypes",
+  "private": "true",
+  "license": "MIT",
+  "scripts": {
+    "generate": "ts-node scripts/generate.ts proto"
+  },
+  "devDependencies": {
+    "@foxglove/rosmsg-msgs-common": "^1.0.4",
+    "@foxglove/tsconfig": "^1.1.0",
+    "@types/node": "^16.11.11",
+    "prettier": "^2.5.0",
+    "ts-node": "^10.4.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.2"
+  }
+}

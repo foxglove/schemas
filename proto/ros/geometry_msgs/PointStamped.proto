@@ -1,0 +1,13 @@
+// Generated from geometry_msgs/PointStamped.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Point.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.geometry_msgs;
+
+message PointStamped {
+  ros.std_msgs.Header header = 1;
+  ros.geometry_msgs.Point point = 2;
+}

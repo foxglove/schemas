@@ -1,0 +1,13 @@
+// Generated from geometry_msgs/PoseArray.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Pose.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.geometry_msgs;
+
+message PoseArray {
+  ros.std_msgs.Header header = 1;
+  repeated ros.geometry_msgs.Pose poses = 2;
+}

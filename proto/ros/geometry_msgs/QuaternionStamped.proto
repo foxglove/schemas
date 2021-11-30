@@ -1,0 +1,13 @@
+// Generated from geometry_msgs/QuaternionStamped.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Quaternion.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.geometry_msgs;
+
+message QuaternionStamped {
+  ros.std_msgs.Header header = 1;
+  ros.geometry_msgs.Quaternion quaternion = 2;
+}

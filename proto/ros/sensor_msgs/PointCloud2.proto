@@ -1,0 +1,20 @@
+// Generated from sensor_msgs/PointCloud2.msg
+
+syntax = "proto3";
+
+import "ros/sensor_msgs/PointField.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.sensor_msgs;
+
+message PointCloud2 {
+  ros.std_msgs.Header header = 1;
+  uint32 height = 2;
+  uint32 width = 3;
+  repeated ros.sensor_msgs.PointField fields = 4;
+  bool is_bigendian = 5;
+  uint32 point_step = 6;
+  uint32 row_step = 7;
+  bytes data = 8;
+  bool is_dense = 9;
+}

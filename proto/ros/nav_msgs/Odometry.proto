@@ -1,0 +1,16 @@
+// Generated from nav_msgs/Odometry.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/PoseWithCovariance.proto";
+import "ros/geometry_msgs/TwistWithCovariance.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.nav_msgs;
+
+message Odometry {
+  ros.std_msgs.Header header = 1;
+  string child_frame_id = 2;
+  ros.geometry_msgs.PoseWithCovariance pose = 3;
+  ros.geometry_msgs.TwistWithCovariance twist = 4;
+}

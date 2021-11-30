@@ -1,0 +1,12 @@
+// Generated from actionlib_msgs/GoalID.msg
+
+syntax = "proto3";
+
+import "ros/builtins.proto";
+
+package ros.actionlib_msgs;
+
+message GoalID {
+  ros.Time stamp = 1;
+  string id = 2;
+}

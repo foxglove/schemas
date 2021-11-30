@@ -1,0 +1,16 @@
+// Generated from trajectory_msgs/MultiDOFJointTrajectoryPoint.msg
+
+syntax = "proto3";
+
+import "ros/builtins.proto";
+import "ros/geometry_msgs/Transform.proto";
+import "ros/geometry_msgs/Twist.proto";
+
+package ros.trajectory_msgs;
+
+message MultiDOFJointTrajectoryPoint {
+  repeated ros.geometry_msgs.Transform transforms = 1;
+  repeated ros.geometry_msgs.Twist velocities = 2;
+  repeated ros.geometry_msgs.Twist accelerations = 3;
+  ros.Duration time_from_start = 4;
+}

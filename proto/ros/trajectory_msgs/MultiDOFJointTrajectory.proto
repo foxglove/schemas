@@ -1,0 +1,14 @@
+// Generated from trajectory_msgs/MultiDOFJointTrajectory.msg
+
+syntax = "proto3";
+
+import "ros/std_msgs/Header.proto";
+import "ros/trajectory_msgs/MultiDOFJointTrajectoryPoint.proto";
+
+package ros.trajectory_msgs;
+
+message MultiDOFJointTrajectory {
+  ros.std_msgs.Header header = 1;
+  repeated string joint_names = 2;
+  repeated ros.trajectory_msgs.MultiDOFJointTrajectoryPoint points = 3;
+}

@@ -1,0 +1,13 @@
+// Generated from diagnostic_msgs/DiagnosticArray.msg
+
+syntax = "proto3";
+
+import "ros/diagnostic_msgs/DiagnosticStatus.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.diagnostic_msgs;
+
+message DiagnosticArray {
+  ros.std_msgs.Header header = 1;
+  repeated ros.diagnostic_msgs.DiagnosticStatus status = 2;
+}

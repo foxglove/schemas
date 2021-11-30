@@ -96,7 +96,7 @@ export default async function writeProtobuf(
     await fs.mkdir(packageDir, { recursive: true });
     await fs.writeFile(
       path.join(packageDir, `${msgName}.proto`),
-      outputSections.filter(Boolean).join("\n\n")
+      outputSections.filter(Boolean).join("\n\n") + "\n"
     );
   }
 

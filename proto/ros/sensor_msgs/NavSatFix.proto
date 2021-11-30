@@ -1,0 +1,22 @@
+// Generated from sensor_msgs/NavSatFix.msg
+
+syntax = "proto3";
+
+import "ros/sensor_msgs/NavSatStatus.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.sensor_msgs;
+
+message NavSatFix {
+  ros.std_msgs.Header header = 1;
+  ros.sensor_msgs.NavSatStatus status = 2;
+  double latitude = 3;
+  double longitude = 4;
+  double altitude = 5;
+  repeated double position_covariance = 6; // length 9
+  // uint8 COVARIANCE_TYPE_UNKNOWN = 0
+  // uint8 COVARIANCE_TYPE_APPROXIMATED = 1
+  // uint8 COVARIANCE_TYPE_DIAGONAL_KNOWN = 2
+  // uint8 COVARIANCE_TYPE_KNOWN = 3
+  int32 position_covariance_type = 7; // originally uint8
+}

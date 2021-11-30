@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package ros;
+
+message Time {
+  fixed32 sec = 1;
+  fixed32 nsec = 2;
+}
+
+message Duration {
+  fixed32 sec = 1;
+  fixed32 nsec = 2;
+}

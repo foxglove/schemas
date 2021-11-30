@@ -1,0 +1,16 @@
+// Generated from nav_msgs/MapMetaData.msg
+
+syntax = "proto3";
+
+import "ros/builtins.proto";
+import "ros/geometry_msgs/Pose.proto";
+
+package ros.nav_msgs;
+
+message MapMetaData {
+  ros.Time map_load_time = 1;
+  float resolution = 2;
+  uint32 width = 3;
+  uint32 height = 4;
+  ros.geometry_msgs.Pose origin = 5;
+}

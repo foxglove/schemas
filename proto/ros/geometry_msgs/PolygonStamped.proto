@@ -1,0 +1,13 @@
+// Generated from geometry_msgs/PolygonStamped.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Polygon.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.geometry_msgs;
+
+message PolygonStamped {
+  ros.std_msgs.Header header = 1;
+  ros.geometry_msgs.Polygon polygon = 2;
+}

@@ -1,0 +1,11 @@
+// Generated from std_msgs/MultiArrayDimension.msg
+
+syntax = "proto3";
+
+package ros.std_msgs;
+
+message MultiArrayDimension {
+  string label = 1;
+  uint32 size = 2;
+  uint32 stride = 3;
+}

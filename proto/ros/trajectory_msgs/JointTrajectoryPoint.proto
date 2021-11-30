@@ -1,0 +1,15 @@
+// Generated from trajectory_msgs/JointTrajectoryPoint.msg
+
+syntax = "proto3";
+
+import "ros/builtins.proto";
+
+package ros.trajectory_msgs;
+
+message JointTrajectoryPoint {
+  repeated double positions = 1;
+  repeated double velocities = 2;
+  repeated double accelerations = 3;
+  repeated double effort = 4;
+  ros.Duration time_from_start = 5;
+}

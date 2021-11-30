@@ -1,0 +1,46 @@
+// Generated from visualization_msgs/Marker.msg
+
+syntax = "proto3";
+
+import "ros/builtins.proto";
+import "ros/geometry_msgs/Point.proto";
+import "ros/geometry_msgs/Pose.proto";
+import "ros/geometry_msgs/Vector3.proto";
+import "ros/std_msgs/ColorRGBA.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.visualization_msgs;
+
+message Marker {
+  // uint8 ARROW = 0
+  // uint8 CUBE = 1
+  // uint8 SPHERE = 2
+  // uint8 CYLINDER = 3
+  // uint8 LINE_STRIP = 4
+  // uint8 LINE_LIST = 5
+  // uint8 CUBE_LIST = 6
+  // uint8 SPHERE_LIST = 7
+  // uint8 POINTS = 8
+  // uint8 TEXT_VIEW_FACING = 9
+  // uint8 MESH_RESOURCE = 10
+  // uint8 TRIANGLE_LIST = 11
+  // uint8 ADD = 0
+  // uint8 MODIFY = 0
+  // uint8 DELETE = 2
+  // uint8 DELETEALL = 3
+  ros.std_msgs.Header header = 1;
+  string ns = 2;
+  int32 id = 3;
+  int32 type = 4;
+  int32 action = 5;
+  ros.geometry_msgs.Pose pose = 6;
+  ros.geometry_msgs.Vector3 scale = 7;
+  ros.std_msgs.ColorRGBA color = 8;
+  ros.Duration lifetime = 9;
+  bool frame_locked = 10;
+  repeated ros.geometry_msgs.Point points = 11;
+  repeated ros.std_msgs.ColorRGBA colors = 12;
+  string text = 13;
+  string mesh_resource = 14;
+  bool mesh_use_embedded_materials = 15;
+}

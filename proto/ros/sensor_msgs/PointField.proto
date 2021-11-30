@@ -1,0 +1,20 @@
+// Generated from sensor_msgs/PointField.msg
+
+syntax = "proto3";
+
+package ros.sensor_msgs;
+
+message PointField {
+  // uint8 INT8 = 1
+  // uint8 UINT8 = 2
+  // uint8 INT16 = 3
+  // uint8 UINT16 = 4
+  // uint8 INT32 = 5
+  // uint8 UINT32 = 6
+  // uint8 FLOAT32 = 7
+  // uint8 FLOAT64 = 8
+  string name = 1;
+  uint32 offset = 2;
+  int32 datatype = 3; // originally uint8
+  uint32 count = 4;
+}

@@ -1,0 +1,12 @@
+// Generated from geometry_msgs/PoseWithCovariance.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Pose.proto";
+
+package ros.geometry_msgs;
+
+message PoseWithCovariance {
+  ros.geometry_msgs.Pose pose = 1;
+  repeated double covariance = 2; // length 36
+}

@@ -1,0 +1,11 @@
+// Generated from geometry_msgs/Point.msg
+
+syntax = "proto3";
+
+package ros.geometry_msgs;
+
+message Point {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+}

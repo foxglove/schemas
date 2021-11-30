@@ -1,0 +1,17 @@
+// Generated from sensor_msgs/Image.msg
+
+syntax = "proto3";
+
+import "ros/std_msgs/Header.proto";
+
+package ros.sensor_msgs;
+
+message Image {
+  ros.std_msgs.Header header = 1;
+  uint32 height = 2;
+  uint32 width = 3;
+  string encoding = 4;
+  int32 is_bigendian = 5; // originally uint8
+  uint32 step = 6;
+  bytes data = 7;
+}

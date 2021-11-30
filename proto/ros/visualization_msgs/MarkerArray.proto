@@ -1,0 +1,11 @@
+// Generated from visualization_msgs/MarkerArray.msg
+
+syntax = "proto3";
+
+import "ros/visualization_msgs/Marker.proto";
+
+package ros.visualization_msgs;
+
+message MarkerArray {
+  repeated ros.visualization_msgs.Marker markers = 1;
+}

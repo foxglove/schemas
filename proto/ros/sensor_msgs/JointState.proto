@@ -1,0 +1,15 @@
+// Generated from sensor_msgs/JointState.msg
+
+syntax = "proto3";
+
+import "ros/std_msgs/Header.proto";
+
+package ros.sensor_msgs;
+
+message JointState {
+  ros.std_msgs.Header header = 1;
+  repeated string name = 2;
+  repeated double position = 3;
+  repeated double velocity = 4;
+  repeated double effort = 5;
+}

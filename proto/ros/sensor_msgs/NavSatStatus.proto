@@ -1,0 +1,18 @@
+// Generated from sensor_msgs/NavSatStatus.msg
+
+syntax = "proto3";
+
+package ros.sensor_msgs;
+
+message NavSatStatus {
+  // int8 STATUS_NO_FIX = -1
+  // int8 STATUS_FIX = 0
+  // int8 STATUS_SBAS_FIX = 1
+  // int8 STATUS_GBAS_FIX = 2
+  sint32 status = 1; // originally int8
+  // uint16 SERVICE_GPS = 1
+  // uint16 SERVICE_GLONASS = 2
+  // uint16 SERVICE_COMPASS = 4
+  // uint16 SERVICE_GALILEO = 8
+  int32 service = 2; // originally uint16
+}

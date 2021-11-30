@@ -1,0 +1,12 @@
+// Generated from std_msgs/Int16MultiArray.msg
+
+syntax = "proto3";
+
+import "ros/std_msgs/MultiArrayLayout.proto";
+
+package ros.std_msgs;
+
+message Int16MultiArray {
+  ros.std_msgs.MultiArrayLayout layout = 1;
+  repeated sint32 data = 2; // originally int16
+}

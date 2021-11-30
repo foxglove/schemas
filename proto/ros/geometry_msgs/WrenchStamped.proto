@@ -1,0 +1,13 @@
+// Generated from geometry_msgs/WrenchStamped.msg
+
+syntax = "proto3";
+
+import "ros/geometry_msgs/Wrench.proto";
+import "ros/std_msgs/Header.proto";
+
+package ros.geometry_msgs;
+
+message WrenchStamped {
+  ros.std_msgs.Header header = 1;
+  ros.geometry_msgs.Wrench wrench = 2;
+}

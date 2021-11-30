@@ -1,0 +1,9 @@
+// Generated from shape_msgs/MeshTriangle.msg
+
+syntax = "proto3";
+
+package ros.shape_msgs;
+
+message MeshTriangle {
+  repeated uint32 vertex_indices = 1; // length 3
+}

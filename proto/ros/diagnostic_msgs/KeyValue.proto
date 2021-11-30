@@ -1,0 +1,10 @@
+// Generated from diagnostic_msgs/KeyValue.msg
+
+syntax = "proto3";
+
+package ros.diagnostic_msgs;
+
+message KeyValue {
+  string key = 1;
+  string value = 2;
+}

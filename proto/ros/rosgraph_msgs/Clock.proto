@@ -1,0 +1,11 @@
+// Generated from rosgraph_msgs/Clock.msg
+
+syntax = "proto3";
+
+import "ros/builtins.proto";
+
+package ros.rosgraph_msgs;
+
+message Clock {
+  ros.Time clock = 1;
+}

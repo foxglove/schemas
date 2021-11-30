@@ -11,9 +11,9 @@ package ros.sensor_msgs;
 message Imu {
   ros.std_msgs.Header header = 1;
   ros.geometry_msgs.Quaternion orientation = 2;
-  repeated double orientation_covariance = 3; // [9]
+  repeated double orientation_covariance = 3; // length 9
   ros.geometry_msgs.Vector3 angular_velocity = 4;
-  repeated double angular_velocity_covariance = 5; // [9]
+  repeated double angular_velocity_covariance = 5; // length 9
   ros.geometry_msgs.Vector3 linear_acceleration = 6;
-  repeated double linear_acceleration_covariance = 7; // [9]
+  repeated double linear_acceleration_covariance = 7; // length 9
 }

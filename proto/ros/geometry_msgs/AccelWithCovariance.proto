@@ -8,5 +8,5 @@ package ros.geometry_msgs;
 
 message AccelWithCovariance {
   ros.geometry_msgs.Accel accel = 1;
-  repeated double covariance = 2; // [36]
+  repeated double covariance = 2; // length 36
 }

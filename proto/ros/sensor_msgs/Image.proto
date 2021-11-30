@@ -11,7 +11,7 @@ message Image {
   uint32 height = 2;
   uint32 width = 3;
   string encoding = 4;
-  int32 is_bigendian = 5;
+  int32 is_bigendian = 5; // originally uint8
   uint32 step = 6;
   bytes data = 7;
 }

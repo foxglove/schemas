@@ -8,5 +8,5 @@ package ros.std_msgs;
 
 message ByteMultiArray {
   ros.std_msgs.MultiArrayLayout layout = 1;
-  repeated sint32 data = 2;
+  repeated sint32 data = 2; // originally int8
 }

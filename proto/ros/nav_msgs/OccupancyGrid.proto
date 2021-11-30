@@ -10,5 +10,5 @@ package ros.nav_msgs;
 message OccupancyGrid {
   ros.std_msgs.Header header = 1;
   ros.nav_msgs.MapMetaData info = 2;
-  repeated sint32 data = 3;
+  repeated sint32 data = 3; // originally int8
 }

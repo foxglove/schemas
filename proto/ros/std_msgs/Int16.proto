@@ -5,5 +5,5 @@ syntax = "proto3";
 package ros.std_msgs;
 
 message Int16 {
-  sint32 data = 1;
+  sint32 data = 1; // originally int16
 }

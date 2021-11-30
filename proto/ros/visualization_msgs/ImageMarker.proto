@@ -25,7 +25,7 @@ message ImageMarker {
   ros.geometry_msgs.Point position = 6;
   float scale = 7;
   ros.std_msgs.ColorRGBA outline_color = 8;
-  int32 filled = 9;
+  int32 filled = 9; // originally uint8
   ros.std_msgs.ColorRGBA fill_color = 10;
   ros.Duration lifetime = 11;
   repeated ros.geometry_msgs.Point points = 12;

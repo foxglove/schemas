@@ -36,9 +36,9 @@ message BatteryState {
   float capacity = 6;
   float design_capacity = 7;
   float percentage = 8;
-  int32 power_supply_status = 9;
-  int32 power_supply_health = 10;
-  int32 power_supply_technology = 11;
+  int32 power_supply_status = 9; // originally uint8
+  int32 power_supply_health = 10; // originally uint8
+  int32 power_supply_technology = 11; // originally uint8
   bool present = 12;
   repeated float cell_voltage = 13;
   repeated float cell_temperature = 14;

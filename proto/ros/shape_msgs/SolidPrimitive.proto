@@ -9,7 +9,7 @@ message SolidPrimitive {
   // uint8 SPHERE = 2
   // uint8 CYLINDER = 3
   // uint8 CONE = 4
-  int32 type = 1;
+  int32 type = 1; // originally uint8
   repeated double dimensions = 2;
   // uint8 BOX_X = 0
   // uint8 BOX_Y = 1

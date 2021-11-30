@@ -8,5 +8,5 @@ package ros.std_msgs;
 
 message UInt16MultiArray {
   ros.std_msgs.MultiArrayLayout layout = 1;
-  repeated int32 data = 2;
+  repeated int32 data = 2; // originally uint16
 }

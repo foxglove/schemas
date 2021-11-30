@@ -13,7 +13,7 @@ message Log {
   // int8 ERROR = 8
   // int8 FATAL = 16
   ros.std_msgs.Header header = 1;
-  sint32 level = 2;
+  sint32 level = 2; // originally int8
   string name = 3;
   string msg = 4;
   string file = 5;

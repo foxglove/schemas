@@ -55,6 +55,7 @@ export default async function writeProtobuf(
         );
         continue;
       }
+      const lineComments: string[] = [];
       const qualifiers = [];
       if (field.type === "uint8" && field.isArray === true) {
         qualifiers.push("bytes");
@@ -69,19 +70,23 @@ export default async function writeProtobuf(
           if (field.type === "time" || field.type === "duration") {
             imports.add("builtins");
           }
+          const protoType = BUILTIN_TYPE_MAP.get(field.type)!;
+          if (protoType.includes("int")) {
+            lineComments.push(`originally ${field.type}`);
+          }
           qualifiers.push(BUILTIN_TYPE_MAP.get(field.type)!);
         } else {
           qualifiers.push(field.type);
         }
       }
-      let fieldLine = `${qualifiers.join(" ")} ${
-        field.name
-      } = ${fieldNumber++};`;
-
       if (field.arrayLength != undefined) {
-        fieldLine += ` // [${field.arrayLength}]`;
+        lineComments.push(`length ${field.arrayLength}`);
       }
-      fields.push(fieldLine);
+      fields.push(
+        `${qualifiers.join(" ")} ${field.name} = ${fieldNumber++};${
+          lineComments.length > 0 ? " // " + lineComments.join(", ") : ""
+        }`
+      );
     }
 
     const outputSections = [

@@ -12,5 +12,5 @@ message MenuEntry {
   // uint8 FEEDBACK = 0
   // uint8 ROSRUN = 1
   // uint8 ROSLAUNCH = 2
-  int32 command_type = 5;
+  int32 command_type = 5; // originally uint8
 }

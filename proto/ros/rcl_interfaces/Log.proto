@@ -13,7 +13,7 @@ message Log {
   // int8 ERROR = 40
   // int8 FATAL = 50
   ros.Time stamp = 1;
-  int32 level = 2;
+  int32 level = 2; // originally uint8
   string name = 3;
   string msg = 4;
   string file = 5;

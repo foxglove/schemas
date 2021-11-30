@@ -10,7 +10,7 @@ message Range {
   ros.std_msgs.Header header = 1;
   // uint8 ULTRASOUND = 0
   // uint8 INFRARED = 1
-  int32 radiation_type = 2;
+  int32 radiation_type = 2; // originally uint8
   float field_of_view = 3;
   float min_range = 4;
   float max_range = 5;

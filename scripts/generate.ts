@@ -211,10 +211,6 @@ async function writeJsonSchema({ outDir }: { outDir: string }): Promise<void> {
   }
 
   await fs.mkdir(path.join(outDir, "ros"), { recursive: true });
-  await fs.writeFile(
-    path.join(outDir, "ros", "builtins.proto"),
-    BUILTINS_PROTO
-  );
 }
 
 program

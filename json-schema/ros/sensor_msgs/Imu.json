@@ -1,0 +1,110 @@
+{
+  "$comment": "Generated from sensor_msgs/Imu.msg",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "orientation": {
+      "$comment": "Generated from geometry_msgs/Quaternion.msg",
+      "type": "object",
+      "properties": {
+        "x": {
+          "$comment": "originally float64",
+          "type": "number"
+        },
+        "y": {
+          "$comment": "originally float64",
+          "type": "number"
+        },
+        "z": {
+          "$comment": "originally float64",
+          "type": "number"
+        },
+        "w": {
+          "$comment": "originally float64",
+          "type": "number"
+        }
+      }
+    },
+    "orientation_covariance": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      },
+      "$comment": "length 9"
+    },
+    "angular_velocity": {
+      "$comment": "Generated from geometry_msgs/Vector3.msg",
+      "type": "object",
+      "properties": {
+        "x": {
+          "$comment": "originally float64",
+          "type": "number"
+        },
+        "y": {
+          "$comment": "originally float64",
+          "type": "number"
+        },
+        "z": {
+          "$comment": "originally float64",
+          "type": "number"
+        }
+      }
+    },
+    "angular_velocity_covariance": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      },
+      "$comment": "length 9"
+    },
+    "linear_acceleration": {
+      "$comment": "Generated from geometry_msgs/Vector3.msg",
+      "type": "object",
+      "properties": {
+        "x": {
+          "$comment": "originally float64",
+          "type": "number"
+        },
+        "y": {
+          "$comment": "originally float64",
+          "type": "number"
+        },
+        "z": {
+          "$comment": "originally float64",
+          "type": "number"
+        }
+      }
+    },
+    "linear_acceleration_covariance": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      },
+      "$comment": "length 9"
+    }
+  }
+}

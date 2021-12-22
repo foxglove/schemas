@@ -1,0 +1,15 @@
+{
+  "$comment": "Generated from std_msgs/Duration.msg",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$comment": "originally duration",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "$comment": "Generated from std_msgs/Bool.msg",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "boolean"
+    }
+  }
+}

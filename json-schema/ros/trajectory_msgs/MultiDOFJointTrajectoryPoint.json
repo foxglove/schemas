@@ -1,0 +1,154 @@
+{
+  "$comment": "Generated from trajectory_msgs/MultiDOFJointTrajectoryPoint.msg",
+  "type": "object",
+  "properties": {
+    "transforms": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from geometry_msgs/Transform.msg",
+        "type": "object",
+        "properties": {
+          "translation": {
+            "$comment": "Generated from geometry_msgs/Vector3.msg",
+            "type": "object",
+            "properties": {
+              "x": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "y": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "z": {
+                "$comment": "originally float64",
+                "type": "number"
+              }
+            }
+          },
+          "rotation": {
+            "$comment": "Generated from geometry_msgs/Quaternion.msg",
+            "type": "object",
+            "properties": {
+              "x": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "y": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "z": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "w": {
+                "$comment": "originally float64",
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "velocities": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from geometry_msgs/Twist.msg",
+        "type": "object",
+        "properties": {
+          "linear": {
+            "$comment": "Generated from geometry_msgs/Vector3.msg",
+            "type": "object",
+            "properties": {
+              "x": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "y": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "z": {
+                "$comment": "originally float64",
+                "type": "number"
+              }
+            }
+          },
+          "angular": {
+            "$comment": "Generated from geometry_msgs/Vector3.msg",
+            "type": "object",
+            "properties": {
+              "x": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "y": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "z": {
+                "$comment": "originally float64",
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "accelerations": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from geometry_msgs/Twist.msg",
+        "type": "object",
+        "properties": {
+          "linear": {
+            "$comment": "Generated from geometry_msgs/Vector3.msg",
+            "type": "object",
+            "properties": {
+              "x": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "y": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "z": {
+                "$comment": "originally float64",
+                "type": "number"
+              }
+            }
+          },
+          "angular": {
+            "$comment": "Generated from geometry_msgs/Vector3.msg",
+            "type": "object",
+            "properties": {
+              "x": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "y": {
+                "$comment": "originally float64",
+                "type": "number"
+              },
+              "z": {
+                "$comment": "originally float64",
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "time_from_start": {
+      "$comment": "originally duration",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    }
+  }
+}

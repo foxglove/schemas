@@ -1,0 +1,42 @@
+{
+  "$comment": "Generated from sensor_msgs/Joy.msg",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "axes": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float32",
+        "type": "number"
+      }
+    },
+    "buttons": {
+      "type": "array",
+      "items": {
+        "$comment": "originally int32",
+        "type": "integer"
+      }
+    }
+  }
+}

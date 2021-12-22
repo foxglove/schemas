@@ -1,0 +1,103 @@
+{
+  "$comment": "Generated from sensor_msgs/CameraInfo.msg",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "height": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "width": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "distortion_model": {
+      "type": "string"
+    },
+    "D": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      }
+    },
+    "K": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      },
+      "$comment": "length 9"
+    },
+    "R": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      },
+      "$comment": "length 9"
+    },
+    "P": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      },
+      "$comment": "length 12"
+    },
+    "binning_x": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "binning_y": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "roi": {
+      "$comment": "Generated from sensor_msgs/RegionOfInterest.msg",
+      "type": "object",
+      "properties": {
+        "x_offset": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "y_offset": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "height": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "width": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "do_rectify": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

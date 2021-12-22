@@ -1,0 +1,13 @@
+{
+  "$comment": "Generated from sensor_msgs/LaserEcho.msg",
+  "type": "object",
+  "properties": {
+    "echoes": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float32",
+        "type": "number"
+      }
+    }
+  }
+}

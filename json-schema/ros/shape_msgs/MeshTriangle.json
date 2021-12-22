@@ -1,0 +1,14 @@
+{
+  "$comment": "Generated from shape_msgs/MeshTriangle.msg",
+  "type": "object",
+  "properties": {
+    "vertex_indices": {
+      "type": "array",
+      "items": {
+        "$comment": "originally uint32",
+        "type": "integer"
+      },
+      "$comment": "length 3"
+    }
+  }
+}

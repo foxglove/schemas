@@ -1,0 +1,22 @@
+{
+  "$comment": "Generated from std_msgs/ColorRGBA.msg",
+  "type": "object",
+  "properties": {
+    "r": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "g": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "b": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "a": {
+      "$comment": "originally float32",
+      "type": "number"
+    }
+  }
+}

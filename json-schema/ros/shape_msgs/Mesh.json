@@ -1,0 +1,44 @@
+{
+  "$comment": "Generated from shape_msgs/Mesh.msg",
+  "type": "object",
+  "properties": {
+    "triangles": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from shape_msgs/MeshTriangle.msg",
+        "type": "object",
+        "properties": {
+          "vertex_indices": {
+            "type": "array",
+            "items": {
+              "$comment": "originally uint32",
+              "type": "integer"
+            },
+            "$comment": "length 3"
+          }
+        }
+      }
+    },
+    "vertices": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from geometry_msgs/Point.msg",
+        "type": "object",
+        "properties": {
+          "x": {
+            "$comment": "originally float64",
+            "type": "number"
+          },
+          "y": {
+            "$comment": "originally float64",
+            "type": "number"
+          },
+          "z": {
+            "$comment": "originally float64",
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

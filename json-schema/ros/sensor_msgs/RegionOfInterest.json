@@ -1,0 +1,25 @@
+{
+  "$comment": "Generated from sensor_msgs/RegionOfInterest.msg",
+  "type": "object",
+  "properties": {
+    "x_offset": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "y_offset": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "height": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "width": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "do_rectify": {
+      "type": "boolean"
+    }
+  }
+}

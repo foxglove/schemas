@@ -1,0 +1,62 @@
+{
+  "$comment": "Generated from actionlib_msgs/GoalStatusArray.msg",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "status_list": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from actionlib_msgs/GoalStatus.msg",
+        "type": "object",
+        "properties": {
+          "goal_id": {
+            "$comment": "Generated from actionlib_msgs/GoalID.msg",
+            "type": "object",
+            "properties": {
+              "stamp": {
+                "$comment": "originally time",
+                "sec": {
+                  "type": "integer"
+                },
+                "nsec": {
+                  "type": "integer"
+                }
+              },
+              "id": {
+                "type": "string"
+              }
+            }
+          },
+          "status": {
+            "$comment": "originally uint8",
+            "type": "integer"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

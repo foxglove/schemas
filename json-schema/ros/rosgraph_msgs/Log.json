@@ -1,0 +1,54 @@
+{
+  "$comment": "Generated from rosgraph_msgs/Log.msg",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "level": {
+      "$comment": "originally int8",
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "msg": {
+      "type": "string"
+    },
+    "file": {
+      "type": "string"
+    },
+    "function": {
+      "type": "string"
+    },
+    "line": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

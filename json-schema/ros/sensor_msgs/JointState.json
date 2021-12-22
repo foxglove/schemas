@@ -1,0 +1,55 @@
+{
+  "$comment": "Generated from sensor_msgs/JointState.msg",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "name": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "position": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      }
+    },
+    "velocity": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      }
+    },
+    "effort": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "$comment": "Generated from std_msgs/Int64MultiArray.msg",
+  "type": "object",
+  "properties": {
+    "layout": {
+      "$comment": "Generated from std_msgs/MultiArrayLayout.msg",
+      "type": "object",
+      "properties": {
+        "dim": {
+          "type": "array",
+          "items": {
+            "$comment": "Generated from std_msgs/MultiArrayDimension.msg",
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "size": {
+                "$comment": "originally uint32",
+                "type": "integer"
+              },
+              "stride": {
+                "$comment": "originally uint32",
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "data_offset": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        }
+      }
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$comment": "originally int64",
+        "type": "integer"
+      }
+    }
+  }
+}

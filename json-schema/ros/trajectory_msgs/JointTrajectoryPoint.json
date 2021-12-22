@@ -1,0 +1,43 @@
+{
+  "$comment": "Generated from trajectory_msgs/JointTrajectoryPoint.msg",
+  "type": "object",
+  "properties": {
+    "positions": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      }
+    },
+    "velocities": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      }
+    },
+    "accelerations": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      }
+    },
+    "effort": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      }
+    },
+    "time_from_start": {
+      "$comment": "originally duration",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    }
+  }
+}

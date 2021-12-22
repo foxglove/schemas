@@ -1,0 +1,80 @@
+{
+  "$comment": "Generated from trajectory_msgs/JointTrajectory.msg",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "joint_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "points": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from trajectory_msgs/JointTrajectoryPoint.msg",
+        "type": "object",
+        "properties": {
+          "positions": {
+            "type": "array",
+            "items": {
+              "$comment": "originally float64",
+              "type": "number"
+            }
+          },
+          "velocities": {
+            "type": "array",
+            "items": {
+              "$comment": "originally float64",
+              "type": "number"
+            }
+          },
+          "accelerations": {
+            "type": "array",
+            "items": {
+              "$comment": "originally float64",
+              "type": "number"
+            }
+          },
+          "effort": {
+            "type": "array",
+            "items": {
+              "$comment": "originally float64",
+              "type": "number"
+            }
+          },
+          "time_from_start": {
+            "$comment": "originally duration",
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  }
+}

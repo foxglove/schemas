@@ -1,0 +1,18 @@
+{
+  "$comment": "Generated from sensor_msgs/JoyFeedback.msg",
+  "type": "object",
+  "properties": {
+    "type": {
+      "$comment": "originally uint8",
+      "type": "integer"
+    },
+    "id": {
+      "$comment": "originally uint8",
+      "type": "integer"
+    },
+    "intensity": {
+      "$comment": "originally float32",
+      "type": "number"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$comment": "Generated from std_msgs/UInt16.msg",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$comment": "originally uint16",
+      "type": "integer"
+    }
+  }
+}

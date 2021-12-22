@@ -1,0 +1,12 @@
+{
+  "$comment": "Generated from diagnostic_msgs/KeyValue.msg",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
+  }
+}

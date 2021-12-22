@@ -1,0 +1,36 @@
+{
+  "$comment": "Generated from sensor_msgs/Illuminance.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "illuminance": {
+      "$comment": "originally float64",
+      "type": "number"
+    },
+    "variance": {
+      "$comment": "originally float64",
+      "type": "number"
+    }
+  }
+}

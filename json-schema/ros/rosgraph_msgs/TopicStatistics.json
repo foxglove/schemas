@@ -1,0 +1,99 @@
+{
+  "$comment": "Generated from rosgraph_msgs/TopicStatistics.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "topic": {
+      "type": "string"
+    },
+    "node_pub": {
+      "type": "string"
+    },
+    "node_sub": {
+      "type": "string"
+    },
+    "window_start": {
+      "$comment": "originally time",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    },
+    "window_stop": {
+      "$comment": "originally time",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    },
+    "delivered_msgs": {
+      "$comment": "originally int32",
+      "type": "integer"
+    },
+    "dropped_msgs": {
+      "$comment": "originally int32",
+      "type": "integer"
+    },
+    "traffic": {
+      "$comment": "originally int32",
+      "type": "integer"
+    },
+    "period_mean": {
+      "$comment": "originally duration",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    },
+    "period_stddev": {
+      "$comment": "originally duration",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    },
+    "period_max": {
+      "$comment": "originally duration",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    },
+    "stamp_age_mean": {
+      "$comment": "originally duration",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    },
+    "stamp_age_stddev": {
+      "$comment": "originally duration",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    },
+    "stamp_age_max": {
+      "$comment": "originally duration",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    }
+  }
+}

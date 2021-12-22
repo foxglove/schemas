@@ -1,0 +1,66 @@
+{
+  "$comment": "Generated from sensor_msgs/NavSatFix.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "$comment": "Generated from sensor_msgs/NavSatStatus.msg using foxglove/ros-message-schemas",
+      "type": "object",
+      "properties": {
+        "status": {
+          "$comment": "originally int8",
+          "type": "integer"
+        },
+        "service": {
+          "$comment": "originally uint16",
+          "type": "integer"
+        }
+      }
+    },
+    "latitude": {
+      "$comment": "originally float64",
+      "type": "number"
+    },
+    "longitude": {
+      "$comment": "originally float64",
+      "type": "number"
+    },
+    "altitude": {
+      "$comment": "originally float64",
+      "type": "number"
+    },
+    "position_covariance": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      },
+      "$comment": "length 9"
+    },
+    "position_covariance_type": {
+      "$comment": "originally uint8",
+      "type": "integer"
+    }
+  }
+}

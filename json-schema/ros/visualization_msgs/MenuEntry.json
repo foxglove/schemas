@@ -1,0 +1,24 @@
+{
+  "$comment": "Generated from visualization_msgs/MenuEntry.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "parent_id": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "title": {
+      "type": "string"
+    },
+    "command": {
+      "type": "string"
+    },
+    "command_type": {
+      "$comment": "originally uint8",
+      "type": "integer"
+    }
+  }
+}

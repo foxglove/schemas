@@ -1,0 +1,17 @@
+{
+  "$comment": "Generated from std_msgs/MultiArrayDimension.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "label": {
+      "type": "string"
+    },
+    "size": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    },
+    "stride": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    }
+  }
+}

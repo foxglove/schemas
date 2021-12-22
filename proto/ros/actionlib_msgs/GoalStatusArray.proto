@@ -1,4 +1,4 @@
-// Generated from actionlib_msgs/GoalStatusArray.msg
+// Generated from actionlib_msgs/GoalStatusArray.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

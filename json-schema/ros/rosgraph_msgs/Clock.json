@@ -1,0 +1,15 @@
+{
+  "$comment": "Generated from rosgraph_msgs/Clock.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "clock": {
+      "$comment": "originally time",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    }
+  }
+}

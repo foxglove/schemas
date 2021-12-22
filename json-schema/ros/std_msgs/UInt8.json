@@ -1,0 +1,10 @@
+{
+  "$comment": "Generated from std_msgs/UInt8.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$comment": "originally uint8",
+      "type": "integer"
+    }
+  }
+}

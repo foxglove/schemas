@@ -1,0 +1,34 @@
+{
+  "$comment": "Generated from diagnostic_msgs/DiagnosticStatus.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "level": {
+      "$comment": "originally int8",
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "hardware_id": {
+      "type": "string"
+    },
+    "values": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from diagnostic_msgs/KeyValue.msg using foxglove/ros-message-schemas",
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

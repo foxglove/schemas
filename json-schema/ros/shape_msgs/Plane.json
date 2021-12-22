@@ -1,0 +1,14 @@
+{
+  "$comment": "Generated from shape_msgs/Plane.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "coef": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      },
+      "$comment": "length 4"
+    }
+  }
+}

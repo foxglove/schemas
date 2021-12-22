@@ -1,4 +1,4 @@
-// Generated from geometry_msgs/Vector3.msg
+// Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

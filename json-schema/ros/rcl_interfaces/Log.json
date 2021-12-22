@@ -1,0 +1,35 @@
+{
+  "$comment": "Generated from rcl_interfaces/Log.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "stamp": {
+      "$comment": "originally time",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    },
+    "level": {
+      "$comment": "originally uint8",
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "msg": {
+      "type": "string"
+    },
+    "file": {
+      "type": "string"
+    },
+    "function": {
+      "type": "string"
+    },
+    "line": {
+      "$comment": "originally uint32",
+      "type": "integer"
+    }
+  }
+}

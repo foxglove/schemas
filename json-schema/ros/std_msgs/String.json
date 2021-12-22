@@ -1,0 +1,9 @@
+{
+  "$comment": "Generated from std_msgs/String.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$comment": "Generated from actionlib_msgs/GoalStatus.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "goal_id": {
+      "$comment": "Generated from actionlib_msgs/GoalID.msg using foxglove/ros-message-schemas",
+      "type": "object",
+      "properties": {
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "$comment": "originally uint8",
+      "type": "integer"
+    },
+    "text": {
+      "type": "string"
+    }
+  }
+}

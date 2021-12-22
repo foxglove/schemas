@@ -1,4 +1,4 @@
-// Generated from std_msgs/Bool.msg
+// Generated from std_msgs/Bool.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

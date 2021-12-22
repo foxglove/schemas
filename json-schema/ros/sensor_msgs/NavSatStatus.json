@@ -1,0 +1,14 @@
+{
+  "$comment": "Generated from sensor_msgs/NavSatStatus.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "status": {
+      "$comment": "originally int8",
+      "type": "integer"
+    },
+    "service": {
+      "$comment": "originally uint16",
+      "type": "integer"
+    }
+  }
+}

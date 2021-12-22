@@ -1,0 +1,43 @@
+{
+  "$comment": "Generated from std_msgs/ByteMultiArray.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "layout": {
+      "$comment": "Generated from std_msgs/MultiArrayLayout.msg using foxglove/ros-message-schemas",
+      "type": "object",
+      "properties": {
+        "dim": {
+          "type": "array",
+          "items": {
+            "$comment": "Generated from std_msgs/MultiArrayDimension.msg using foxglove/ros-message-schemas",
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "size": {
+                "$comment": "originally uint32",
+                "type": "integer"
+              },
+              "stride": {
+                "$comment": "originally uint32",
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "data_offset": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        }
+      }
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$comment": "originally int8",
+        "type": "integer"
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-// Generated from std_msgs/Int64MultiArray.msg
+// Generated from std_msgs/Int64MultiArray.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

@@ -1,0 +1,105 @@
+{
+  "$comment": "Generated from nav_msgs/Path.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "poses": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from geometry_msgs/PoseStamped.msg using foxglove/ros-message-schemas",
+        "type": "object",
+        "properties": {
+          "header": {
+            "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+            "type": "object",
+            "properties": {
+              "seq": {
+                "$comment": "originally uint32",
+                "type": "integer"
+              },
+              "stamp": {
+                "$comment": "originally time",
+                "sec": {
+                  "type": "integer"
+                },
+                "nsec": {
+                  "type": "integer"
+                }
+              },
+              "frame_id": {
+                "type": "string"
+              }
+            }
+          },
+          "pose": {
+            "$comment": "Generated from geometry_msgs/Pose.msg using foxglove/ros-message-schemas",
+            "type": "object",
+            "properties": {
+              "position": {
+                "$comment": "Generated from geometry_msgs/Point.msg using foxglove/ros-message-schemas",
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "$comment": "originally float64",
+                    "type": "number"
+                  },
+                  "y": {
+                    "$comment": "originally float64",
+                    "type": "number"
+                  },
+                  "z": {
+                    "$comment": "originally float64",
+                    "type": "number"
+                  }
+                }
+              },
+              "orientation": {
+                "$comment": "Generated from geometry_msgs/Quaternion.msg using foxglove/ros-message-schemas",
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "$comment": "originally float64",
+                    "type": "number"
+                  },
+                  "y": {
+                    "$comment": "originally float64",
+                    "type": "number"
+                  },
+                  "z": {
+                    "$comment": "originally float64",
+                    "type": "number"
+                  },
+                  "w": {
+                    "$comment": "originally float64",
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

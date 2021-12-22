@@ -1,4 +1,4 @@
-// Generated from geometry_msgs/AccelStamped.msg
+// Generated from geometry_msgs/AccelStamped.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

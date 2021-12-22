@@ -1,4 +1,4 @@
-// Generated from actionlib_msgs/GoalID.msg
+// Generated from actionlib_msgs/GoalID.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

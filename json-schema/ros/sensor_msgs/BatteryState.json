@@ -1,0 +1,91 @@
+{
+  "$comment": "Generated from sensor_msgs/BatteryState.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "voltage": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "temperature": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "current": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "charge": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "capacity": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "design_capacity": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "percentage": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "power_supply_status": {
+      "$comment": "originally uint8",
+      "type": "integer"
+    },
+    "power_supply_health": {
+      "$comment": "originally uint8",
+      "type": "integer"
+    },
+    "power_supply_technology": {
+      "$comment": "originally uint8",
+      "type": "integer"
+    },
+    "present": {
+      "type": "boolean"
+    },
+    "cell_voltage": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float32",
+        "type": "number"
+      }
+    },
+    "cell_temperature": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float32",
+        "type": "number"
+      }
+    },
+    "location": {
+      "type": "string"
+    },
+    "serial_number": {
+      "type": "string"
+    }
+  }
+}

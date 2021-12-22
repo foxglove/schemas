@@ -1,0 +1,70 @@
+{
+  "$comment": "Generated from sensor_msgs/LaserScan.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "angle_min": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "angle_max": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "angle_increment": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "time_increment": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "scan_time": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "range_min": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "range_max": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "ranges": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float32",
+        "type": "number"
+      }
+    },
+    "intensities": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float32",
+        "type": "number"
+      }
+    }
+  }
+}

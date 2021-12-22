@@ -1,4 +1,4 @@
-// Generated from sensor_msgs/FluidPressure.msg
+// Generated from sensor_msgs/FluidPressure.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

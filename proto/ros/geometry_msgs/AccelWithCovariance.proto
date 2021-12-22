@@ -1,4 +1,4 @@
-// Generated from geometry_msgs/AccelWithCovariance.msg
+// Generated from geometry_msgs/AccelWithCovariance.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

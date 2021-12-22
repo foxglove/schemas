@@ -1,0 +1,124 @@
+{
+  "$comment": "Generated from stereo_msgs/DisparityImage.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "header": {
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "type": "object",
+      "properties": {
+        "seq": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "stamp": {
+          "$comment": "originally time",
+          "sec": {
+            "type": "integer"
+          },
+          "nsec": {
+            "type": "integer"
+          }
+        },
+        "frame_id": {
+          "type": "string"
+        }
+      }
+    },
+    "image": {
+      "$comment": "Generated from sensor_msgs/Image.msg using foxglove/ros-message-schemas",
+      "type": "object",
+      "properties": {
+        "header": {
+          "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+          "type": "object",
+          "properties": {
+            "seq": {
+              "$comment": "originally uint32",
+              "type": "integer"
+            },
+            "stamp": {
+              "$comment": "originally time",
+              "sec": {
+                "type": "integer"
+              },
+              "nsec": {
+                "type": "integer"
+              }
+            },
+            "frame_id": {
+              "type": "string"
+            }
+          }
+        },
+        "height": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "width": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "encoding": {
+          "type": "string"
+        },
+        "is_bigendian": {
+          "$comment": "originally uint8",
+          "type": "integer"
+        },
+        "step": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "data": {
+          "type": "string",
+          "contentEncoding": "base64"
+        }
+      }
+    },
+    "f": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "T": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "valid_window": {
+      "$comment": "Generated from sensor_msgs/RegionOfInterest.msg using foxglove/ros-message-schemas",
+      "type": "object",
+      "properties": {
+        "x_offset": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "y_offset": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "height": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "width": {
+          "$comment": "originally uint32",
+          "type": "integer"
+        },
+        "do_rectify": {
+          "type": "boolean"
+        }
+      }
+    },
+    "min_disparity": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "max_disparity": {
+      "$comment": "originally float32",
+      "type": "number"
+    },
+    "delta_d": {
+      "$comment": "originally float32",
+      "type": "number"
+    }
+  }
+}

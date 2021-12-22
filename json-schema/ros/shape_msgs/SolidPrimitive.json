@@ -1,0 +1,17 @@
+{
+  "$comment": "Generated from shape_msgs/SolidPrimitive.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "type": {
+      "$comment": "originally uint8",
+      "type": "integer"
+    },
+    "dimensions": {
+      "type": "array",
+      "items": {
+        "$comment": "originally float64",
+        "type": "number"
+      }
+    }
+  }
+}

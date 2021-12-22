@@ -1,0 +1,15 @@
+{
+  "$comment": "Generated from std_msgs/Duration.msg using foxglove/ros-message-schemas",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$comment": "originally duration",
+      "sec": {
+        "type": "integer"
+      },
+      "nsec": {
+        "type": "integer"
+      }
+    }
+  }
+}

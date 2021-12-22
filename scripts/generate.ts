@@ -206,7 +206,7 @@ async function writeJsonSchema({ outDir }: { outDir: string }): Promise<void> {
     await fs.mkdir(packageDir, { recursive: true });
     await fs.writeFile(
       path.join(packageDir, `${msgName}.json`),
-      JSON.stringify(jsonSchema, undefined, 2)
+      JSON.stringify(jsonSchema, undefined, 2) + "\n"
     );
   }
 

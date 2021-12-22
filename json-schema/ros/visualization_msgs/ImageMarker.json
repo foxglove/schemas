@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from visualization_msgs/ImageMarker.msg",
+  "$comment": "Generated from visualization_msgs/ImageMarker.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg",
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -40,7 +40,7 @@
       "type": "integer"
     },
     "position": {
-      "$comment": "Generated from geometry_msgs/Point.msg",
+      "$comment": "Generated from geometry_msgs/Point.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "x": {
@@ -62,7 +62,7 @@
       "type": "number"
     },
     "outline_color": {
-      "$comment": "Generated from std_msgs/ColorRGBA.msg",
+      "$comment": "Generated from std_msgs/ColorRGBA.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "r": {
@@ -88,7 +88,7 @@
       "type": "integer"
     },
     "fill_color": {
-      "$comment": "Generated from std_msgs/ColorRGBA.msg",
+      "$comment": "Generated from std_msgs/ColorRGBA.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "r": {
@@ -121,7 +121,7 @@
     "points": {
       "type": "array",
       "items": {
-        "$comment": "Generated from geometry_msgs/Point.msg",
+        "$comment": "Generated from geometry_msgs/Point.msg using foxglove/ros-message-schemas",
         "type": "object",
         "properties": {
           "x": {
@@ -142,7 +142,7 @@
     "outline_colors": {
       "type": "array",
       "items": {
-        "$comment": "Generated from std_msgs/ColorRGBA.msg",
+        "$comment": "Generated from std_msgs/ColorRGBA.msg using foxglove/ros-message-schemas",
         "type": "object",
         "properties": {
           "r": {

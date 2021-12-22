@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from nav_msgs/Odometry.msg",
+  "$comment": "Generated from nav_msgs/Odometry.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg",
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -28,15 +28,15 @@
       "type": "string"
     },
     "pose": {
-      "$comment": "Generated from geometry_msgs/PoseWithCovariance.msg",
+      "$comment": "Generated from geometry_msgs/PoseWithCovariance.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "pose": {
-          "$comment": "Generated from geometry_msgs/Pose.msg",
+          "$comment": "Generated from geometry_msgs/Pose.msg using foxglove/ros-message-schemas",
           "type": "object",
           "properties": {
             "position": {
-              "$comment": "Generated from geometry_msgs/Point.msg",
+              "$comment": "Generated from geometry_msgs/Point.msg using foxglove/ros-message-schemas",
               "type": "object",
               "properties": {
                 "x": {
@@ -54,7 +54,7 @@
               }
             },
             "orientation": {
-              "$comment": "Generated from geometry_msgs/Quaternion.msg",
+              "$comment": "Generated from geometry_msgs/Quaternion.msg using foxglove/ros-message-schemas",
               "type": "object",
               "properties": {
                 "x": {
@@ -88,15 +88,15 @@
       }
     },
     "twist": {
-      "$comment": "Generated from geometry_msgs/TwistWithCovariance.msg",
+      "$comment": "Generated from geometry_msgs/TwistWithCovariance.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "twist": {
-          "$comment": "Generated from geometry_msgs/Twist.msg",
+          "$comment": "Generated from geometry_msgs/Twist.msg using foxglove/ros-message-schemas",
           "type": "object",
           "properties": {
             "linear": {
-              "$comment": "Generated from geometry_msgs/Vector3.msg",
+              "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
               "type": "object",
               "properties": {
                 "x": {
@@ -114,7 +114,7 @@
               }
             },
             "angular": {
-              "$comment": "Generated from geometry_msgs/Vector3.msg",
+              "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
               "type": "object",
               "properties": {
                 "x": {

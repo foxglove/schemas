@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from sensor_msgs/NavSatFix.msg",
+  "$comment": "Generated from sensor_msgs/NavSatFix.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg",
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -25,7 +25,7 @@
       }
     },
     "status": {
-      "$comment": "Generated from sensor_msgs/NavSatStatus.msg",
+      "$comment": "Generated from sensor_msgs/NavSatStatus.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "status": {

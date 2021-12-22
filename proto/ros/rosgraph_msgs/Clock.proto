@@ -1,4 +1,4 @@
-// Generated from rosgraph_msgs/Clock.msg
+// Generated from rosgraph_msgs/Clock.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

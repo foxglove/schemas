@@ -1,4 +1,4 @@
-// Generated from trajectory_msgs/MultiDOFJointTrajectoryPoint.msg
+// Generated from trajectory_msgs/MultiDOFJointTrajectoryPoint.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

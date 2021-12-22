@@ -1,11 +1,11 @@
 {
-  "$comment": "Generated from shape_msgs/Mesh.msg",
+  "$comment": "Generated from shape_msgs/Mesh.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "triangles": {
       "type": "array",
       "items": {
-        "$comment": "Generated from shape_msgs/MeshTriangle.msg",
+        "$comment": "Generated from shape_msgs/MeshTriangle.msg using foxglove/ros-message-schemas",
         "type": "object",
         "properties": {
           "vertex_indices": {
@@ -22,7 +22,7 @@
     "vertices": {
       "type": "array",
       "items": {
-        "$comment": "Generated from geometry_msgs/Point.msg",
+        "$comment": "Generated from geometry_msgs/Point.msg using foxglove/ros-message-schemas",
         "type": "object",
         "properties": {
           "x": {

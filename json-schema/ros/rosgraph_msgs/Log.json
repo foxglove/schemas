@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from rosgraph_msgs/Log.msg",
+  "$comment": "Generated from rosgraph_msgs/Log.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg",
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "seq": {

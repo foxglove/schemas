@@ -1,11 +1,11 @@
 {
-  "$comment": "Generated from sensor_msgs/JoyFeedbackArray.msg",
+  "$comment": "Generated from sensor_msgs/JoyFeedbackArray.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "array": {
       "type": "array",
       "items": {
-        "$comment": "Generated from sensor_msgs/JoyFeedback.msg",
+        "$comment": "Generated from sensor_msgs/JoyFeedback.msg using foxglove/ros-message-schemas",
         "type": "object",
         "properties": {
           "type": {

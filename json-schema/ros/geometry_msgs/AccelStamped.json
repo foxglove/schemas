@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from geometry_msgs/AccelStamped.msg",
+  "$comment": "Generated from geometry_msgs/AccelStamped.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg",
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -25,11 +25,11 @@
       }
     },
     "accel": {
-      "$comment": "Generated from geometry_msgs/Accel.msg",
+      "$comment": "Generated from geometry_msgs/Accel.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "linear": {
-          "$comment": "Generated from geometry_msgs/Vector3.msg",
+          "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
           "type": "object",
           "properties": {
             "x": {
@@ -47,7 +47,7 @@
           }
         },
         "angular": {
-          "$comment": "Generated from geometry_msgs/Vector3.msg",
+          "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
           "type": "object",
           "properties": {
             "x": {

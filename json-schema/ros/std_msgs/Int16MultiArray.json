@@ -1,15 +1,15 @@
 {
-  "$comment": "Generated from std_msgs/Int16MultiArray.msg",
+  "$comment": "Generated from std_msgs/Int16MultiArray.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "layout": {
-      "$comment": "Generated from std_msgs/MultiArrayLayout.msg",
+      "$comment": "Generated from std_msgs/MultiArrayLayout.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "dim": {
           "type": "array",
           "items": {
-            "$comment": "Generated from std_msgs/MultiArrayDimension.msg",
+            "$comment": "Generated from std_msgs/MultiArrayDimension.msg using foxglove/ros-message-schemas",
             "type": "object",
             "properties": {
               "label": {

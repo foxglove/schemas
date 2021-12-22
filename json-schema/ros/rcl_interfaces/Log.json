@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from rcl_interfaces/Log.msg",
+  "$comment": "Generated from rcl_interfaces/Log.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "stamp": {

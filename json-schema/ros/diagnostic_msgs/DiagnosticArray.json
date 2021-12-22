@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from diagnostic_msgs/DiagnosticArray.msg",
+  "$comment": "Generated from diagnostic_msgs/DiagnosticArray.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg",
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -27,7 +27,7 @@
     "status": {
       "type": "array",
       "items": {
-        "$comment": "Generated from diagnostic_msgs/DiagnosticStatus.msg",
+        "$comment": "Generated from diagnostic_msgs/DiagnosticStatus.msg using foxglove/ros-message-schemas",
         "type": "object",
         "properties": {
           "level": {
@@ -46,7 +46,7 @@
           "values": {
             "type": "array",
             "items": {
-              "$comment": "Generated from diagnostic_msgs/KeyValue.msg",
+              "$comment": "Generated from diagnostic_msgs/KeyValue.msg using foxglove/ros-message-schemas",
               "type": "object",
               "properties": {
                 "key": {

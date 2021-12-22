@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from sensor_msgs/CameraInfo.msg",
+  "$comment": "Generated from sensor_msgs/CameraInfo.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg",
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -75,7 +75,7 @@
       "type": "integer"
     },
     "roi": {
-      "$comment": "Generated from sensor_msgs/RegionOfInterest.msg",
+      "$comment": "Generated from sensor_msgs/RegionOfInterest.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "x_offset": {

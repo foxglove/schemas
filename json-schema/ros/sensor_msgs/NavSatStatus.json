@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from sensor_msgs/NavSatStatus.msg",
+  "$comment": "Generated from sensor_msgs/NavSatStatus.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "status": {

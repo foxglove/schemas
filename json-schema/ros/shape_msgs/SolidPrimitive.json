@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from shape_msgs/SolidPrimitive.msg",
+  "$comment": "Generated from shape_msgs/SolidPrimitive.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "type": {

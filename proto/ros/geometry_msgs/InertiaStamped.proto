@@ -1,4 +1,4 @@
-// Generated from geometry_msgs/InertiaStamped.msg
+// Generated from geometry_msgs/InertiaStamped.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

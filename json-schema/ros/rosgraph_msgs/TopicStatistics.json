@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from rosgraph_msgs/TopicStatistics.msg",
+  "$comment": "Generated from rosgraph_msgs/TopicStatistics.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "topic": {

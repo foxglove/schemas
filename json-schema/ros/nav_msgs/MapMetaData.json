@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from nav_msgs/MapMetaData.msg",
+  "$comment": "Generated from nav_msgs/MapMetaData.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "map_load_time": {
@@ -24,11 +24,11 @@
       "type": "integer"
     },
     "origin": {
-      "$comment": "Generated from geometry_msgs/Pose.msg",
+      "$comment": "Generated from geometry_msgs/Pose.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "position": {
-          "$comment": "Generated from geometry_msgs/Point.msg",
+          "$comment": "Generated from geometry_msgs/Point.msg using foxglove/ros-message-schemas",
           "type": "object",
           "properties": {
             "x": {
@@ -46,7 +46,7 @@
           }
         },
         "orientation": {
-          "$comment": "Generated from geometry_msgs/Quaternion.msg",
+          "$comment": "Generated from geometry_msgs/Quaternion.msg using foxglove/ros-message-schemas",
           "type": "object",
           "properties": {
             "x": {

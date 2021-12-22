@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from geometry_msgs/Inertia.msg",
+  "$comment": "Generated from geometry_msgs/Inertia.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "m": {
@@ -7,7 +7,7 @@
       "type": "number"
     },
     "com": {
-      "$comment": "Generated from geometry_msgs/Vector3.msg",
+      "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "x": {

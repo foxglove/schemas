@@ -1,4 +1,4 @@
-// Generated from geometry_msgs/Polygon.msg
+// Generated from geometry_msgs/Polygon.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

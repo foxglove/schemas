@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from trajectory_msgs/JointTrajectoryPoint.msg",
+  "$comment": "Generated from trajectory_msgs/JointTrajectoryPoint.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "positions": {

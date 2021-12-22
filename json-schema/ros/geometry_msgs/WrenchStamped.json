@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from geometry_msgs/WrenchStamped.msg",
+  "$comment": "Generated from geometry_msgs/WrenchStamped.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg",
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -25,11 +25,11 @@
       }
     },
     "wrench": {
-      "$comment": "Generated from geometry_msgs/Wrench.msg",
+      "$comment": "Generated from geometry_msgs/Wrench.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "force": {
-          "$comment": "Generated from geometry_msgs/Vector3.msg",
+          "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
           "type": "object",
           "properties": {
             "x": {
@@ -47,7 +47,7 @@
           }
         },
         "torque": {
-          "$comment": "Generated from geometry_msgs/Vector3.msg",
+          "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
           "type": "object",
           "properties": {
             "x": {

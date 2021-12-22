@@ -1,11 +1,11 @@
 {
-  "$comment": "Generated from geometry_msgs/Polygon.msg",
+  "$comment": "Generated from geometry_msgs/Polygon.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "points": {
       "type": "array",
       "items": {
-        "$comment": "Generated from geometry_msgs/Point32.msg",
+        "$comment": "Generated from geometry_msgs/Point32.msg using foxglove/ros-message-schemas",
         "type": "object",
         "properties": {
           "x": {

@@ -1,4 +1,4 @@
-// Generated from visualization_msgs/InteractiveMarker.msg
+// Generated from visualization_msgs/InteractiveMarker.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

@@ -118,7 +118,7 @@ async function writeProtobuf({ outDir }: { outDir: string }): Promise<void> {
     }
 
     const outputSections = [
-      `// Generated from ${typeName}.msg`,
+      `// Generated from ${typeName}.msg using foxglove/ros-message-schemas`,
 
       'syntax = "proto3";',
 
@@ -186,7 +186,7 @@ async function writeJsonSchema({ outDir }: { outDir: string }): Promise<void> {
     }
 
     return {
-      $comment: `Generated from ${typeName}.msg`,
+      $comment: `Generated from ${typeName}.msg using foxglove/ros-message-schemas`,
       type: "object",
       properties,
     };

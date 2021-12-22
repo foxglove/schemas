@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from actionlib_msgs/GoalID.msg",
+  "$comment": "Generated from actionlib_msgs/GoalID.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "stamp": {

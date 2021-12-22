@@ -1,4 +1,4 @@
-// Generated from std_msgs/Int64.msg
+// Generated from std_msgs/Int64.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

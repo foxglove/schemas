@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from sensor_msgs/MultiDOFJointState.msg",
+  "$comment": "Generated from sensor_msgs/MultiDOFJointState.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg",
+      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -33,11 +33,11 @@
     "transforms": {
       "type": "array",
       "items": {
-        "$comment": "Generated from geometry_msgs/Transform.msg",
+        "$comment": "Generated from geometry_msgs/Transform.msg using foxglove/ros-message-schemas",
         "type": "object",
         "properties": {
           "translation": {
-            "$comment": "Generated from geometry_msgs/Vector3.msg",
+            "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
             "type": "object",
             "properties": {
               "x": {
@@ -55,7 +55,7 @@
             }
           },
           "rotation": {
-            "$comment": "Generated from geometry_msgs/Quaternion.msg",
+            "$comment": "Generated from geometry_msgs/Quaternion.msg using foxglove/ros-message-schemas",
             "type": "object",
             "properties": {
               "x": {
@@ -82,11 +82,11 @@
     "twist": {
       "type": "array",
       "items": {
-        "$comment": "Generated from geometry_msgs/Twist.msg",
+        "$comment": "Generated from geometry_msgs/Twist.msg using foxglove/ros-message-schemas",
         "type": "object",
         "properties": {
           "linear": {
-            "$comment": "Generated from geometry_msgs/Vector3.msg",
+            "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
             "type": "object",
             "properties": {
               "x": {
@@ -104,7 +104,7 @@
             }
           },
           "angular": {
-            "$comment": "Generated from geometry_msgs/Vector3.msg",
+            "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
             "type": "object",
             "properties": {
               "x": {
@@ -127,11 +127,11 @@
     "wrench": {
       "type": "array",
       "items": {
-        "$comment": "Generated from geometry_msgs/Wrench.msg",
+        "$comment": "Generated from geometry_msgs/Wrench.msg using foxglove/ros-message-schemas",
         "type": "object",
         "properties": {
           "force": {
-            "$comment": "Generated from geometry_msgs/Vector3.msg",
+            "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
             "type": "object",
             "properties": {
               "x": {
@@ -149,7 +149,7 @@
             }
           },
           "torque": {
-            "$comment": "Generated from geometry_msgs/Vector3.msg",
+            "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
             "type": "object",
             "properties": {
               "x": {

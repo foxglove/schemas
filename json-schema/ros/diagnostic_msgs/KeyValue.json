@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from diagnostic_msgs/KeyValue.msg",
+  "$comment": "Generated from diagnostic_msgs/KeyValue.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "key": {

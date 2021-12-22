@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from geometry_msgs/Point.msg",
+  "$comment": "Generated from geometry_msgs/Point.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "x": {

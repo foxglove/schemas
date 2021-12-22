@@ -1,4 +1,4 @@
-// Generated from geometry_msgs/PoseWithCovarianceStamped.msg
+// Generated from geometry_msgs/PoseWithCovarianceStamped.msg using foxglove/ros-message-schemas
 
 syntax = "proto3";
 

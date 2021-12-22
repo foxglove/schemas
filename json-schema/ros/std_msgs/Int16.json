@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from std_msgs/Int16.msg",
+  "$comment": "Generated from std_msgs/Int16.msg using foxglove/ros-message-schemas",
   "type": "object",
   "properties": {
     "data": {

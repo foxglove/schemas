@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: yarn
+
+      - run: yarn install --immutable
+      - run: yarn generate:proto
+      - run: yarn generate:json
+      - name: Ensure generated files are up to date
+        run: |
+          changes=$(git status --porcelain)
+          if [ -n "$changes" ]; then
+            echo "::error::The following generated files need to be updated:"
+            echo "$changes"
+            exit 1
+          else
+            echo "Generated schemas are up to date!"
+          fi

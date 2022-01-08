@@ -7,7 +7,7 @@ import "ros/std_msgs/Header.proto";
 package ros.rosgraph_msgs;
 
 message Log {
-  // int8 DEBUG = test
+  // int8 DEBUG = 1
   // int8 INFO = 2
   // int8 WARN = 4
   // int8 ERROR = 8

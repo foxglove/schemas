@@ -1,8 +1,11 @@
 import fs from "fs/promises";
 import path from "path";
-import { definitions as allMsgDefinitions } from "@foxglove/rosmsg-msgs-common";
+import { definitions as rosDefinitions } from "@foxglove/rosmsg-msgs-common";
+import { definitions as foxgloveDefinitions } from "@foxglove/rosmsg-msgs-foxglove";
 import { program } from "commander";
 import { RosMsgDefinition } from "@foxglove/rosmsg";
+
+const allMsgDefinitions = { ...rosDefinitions, ...foxgloveDefinitions };
 
 const BUILTINS_PROTO = `syntax = "proto3";
 

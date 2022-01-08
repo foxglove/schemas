@@ -1,0 +1,11 @@
+// Generated from foxglove_msgs/ImageMarkerArray.msg using foxglove/ros-message-schemas
+
+syntax = "proto3";
+
+import "ros/visualization_msgs/ImageMarker.proto";
+
+package ros.foxglove_msgs;
+
+message ImageMarkerArray {
+  repeated ros.visualization_msgs.ImageMarker markers = 1;
+}

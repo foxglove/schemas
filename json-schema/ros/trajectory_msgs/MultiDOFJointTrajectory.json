@@ -12,11 +12,14 @@
         },
         "stamp": {
           "$comment": "originally time",
-          "sec": {
-            "type": "integer"
-          },
-          "nsec": {
-            "type": "integer"
+          "type": "object",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
+            }
           }
         },
         "frame_id": {
@@ -177,11 +180,14 @@
           },
           "time_from_start": {
             "$comment": "originally duration",
-            "sec": {
-              "type": "integer"
-            },
-            "nsec": {
-              "type": "integer"
+            "type": "object",
+            "properties": {
+              "sec": {
+                "type": "integer"
+              },
+              "nsec": {
+                "type": "integer"
+              }
             }
           }
         }

@@ -12,11 +12,14 @@
         },
         "stamp": {
           "$comment": "originally time",
-          "sec": {
-            "type": "integer"
-          },
-          "nsec": {
-            "type": "integer"
+          "type": "object",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
+            }
           }
         },
         "frame_id": {
@@ -30,11 +33,14 @@
       "properties": {
         "map_load_time": {
           "$comment": "originally time",
-          "sec": {
-            "type": "integer"
-          },
-          "nsec": {
-            "type": "integer"
+          "type": "object",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
+            }
           }
         },
         "resolution": {

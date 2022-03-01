@@ -26,16 +26,22 @@ const BUILTIN_JSON_TYPE_MAP = new Map<string, Record<string, unknown>>([
     "time",
     {
       $comment: "originally time",
-      sec: { type: "integer" },
-      nsec: { type: "integer" },
+      type: "object",
+      properties: {
+        sec: { type: "integer" },
+        nsec: { type: "integer" },
+      },
     },
   ],
   [
     "duration",
     {
       $comment: "originally duration",
-      sec: { type: "integer" },
-      nsec: { type: "integer" },
+      type: "object",
+      properties: {
+        sec: { type: "integer" },
+        nsec: { type: "integer" },
+      },
     },
   ],
   ["uint8", { $comment: "originally uint8", type: "integer" }],

@@ -13,20 +13,26 @@
     },
     "window_start": {
       "$comment": "originally time",
-      "sec": {
-        "type": "integer"
-      },
-      "nsec": {
-        "type": "integer"
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
       }
     },
     "window_stop": {
       "$comment": "originally time",
-      "sec": {
-        "type": "integer"
-      },
-      "nsec": {
-        "type": "integer"
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
       }
     },
     "delivered_msgs": {
@@ -43,56 +49,74 @@
     },
     "period_mean": {
       "$comment": "originally duration",
-      "sec": {
-        "type": "integer"
-      },
-      "nsec": {
-        "type": "integer"
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
       }
     },
     "period_stddev": {
       "$comment": "originally duration",
-      "sec": {
-        "type": "integer"
-      },
-      "nsec": {
-        "type": "integer"
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
       }
     },
     "period_max": {
       "$comment": "originally duration",
-      "sec": {
-        "type": "integer"
-      },
-      "nsec": {
-        "type": "integer"
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
       }
     },
     "stamp_age_mean": {
       "$comment": "originally duration",
-      "sec": {
-        "type": "integer"
-      },
-      "nsec": {
-        "type": "integer"
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
       }
     },
     "stamp_age_stddev": {
       "$comment": "originally duration",
-      "sec": {
-        "type": "integer"
-      },
-      "nsec": {
-        "type": "integer"
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
       }
     },
     "stamp_age_max": {
       "$comment": "originally duration",
-      "sec": {
-        "type": "integer"
-      },
-      "nsec": {
-        "type": "integer"
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
       }
     }
   }

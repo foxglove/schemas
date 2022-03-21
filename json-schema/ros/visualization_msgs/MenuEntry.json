@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from visualization_msgs/MenuEntry.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from visualization_msgs/MenuEntry.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "id": {

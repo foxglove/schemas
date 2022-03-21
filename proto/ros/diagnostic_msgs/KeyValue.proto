@@ -1,4 +1,4 @@
-// Generated from diagnostic_msgs/KeyValue.msg using foxglove/ros-message-schemas
+// Generated from diagnostic_msgs/KeyValue.msg using https://github.com/foxglove/message-schemas
 
 syntax = "proto3";
 

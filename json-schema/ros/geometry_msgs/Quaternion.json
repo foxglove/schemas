@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from geometry_msgs/Quaternion.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from geometry_msgs/Quaternion.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "x": {

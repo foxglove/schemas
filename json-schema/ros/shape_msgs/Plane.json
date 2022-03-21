@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from shape_msgs/Plane.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from shape_msgs/Plane.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "coef": {

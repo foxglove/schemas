@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from stereo_msgs/DisparityImage.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from stereo_msgs/DisparityImage.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from std_msgs/Header.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -28,11 +28,11 @@
       }
     },
     "image": {
-      "$comment": "Generated from sensor_msgs/Image.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from sensor_msgs/Image.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "header": {
-          "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+          "$comment": "Generated from std_msgs/Header.msg using https://github.com/foxglove/message-schemas",
           "type": "object",
           "properties": {
             "seq": {
@@ -90,7 +90,7 @@
       "type": "number"
     },
     "valid_window": {
-      "$comment": "Generated from sensor_msgs/RegionOfInterest.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from sensor_msgs/RegionOfInterest.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "x_offset": {

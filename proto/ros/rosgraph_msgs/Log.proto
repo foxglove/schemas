@@ -1,4 +1,4 @@
-// Generated from rosgraph_msgs/Log.msg using foxglove/ros-message-schemas
+// Generated from rosgraph_msgs/Log.msg using https://github.com/foxglove/message-schemas
 
 syntax = "proto3";
 

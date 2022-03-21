@@ -1,4 +1,4 @@
-// Generated from geometry_msgs/PoseStamped.msg using foxglove/ros-message-schemas
+// Generated from geometry_msgs/PoseStamped.msg using https://github.com/foxglove/message-schemas
 
 syntax = "proto3";
 

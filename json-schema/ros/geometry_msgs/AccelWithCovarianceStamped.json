@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from geometry_msgs/AccelWithCovarianceStamped.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from geometry_msgs/AccelWithCovarianceStamped.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from std_msgs/Header.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -28,15 +28,15 @@
       }
     },
     "accel": {
-      "$comment": "Generated from geometry_msgs/AccelWithCovariance.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from geometry_msgs/AccelWithCovariance.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "accel": {
-          "$comment": "Generated from geometry_msgs/Accel.msg using foxglove/ros-message-schemas",
+          "$comment": "Generated from geometry_msgs/Accel.msg using https://github.com/foxglove/message-schemas",
           "type": "object",
           "properties": {
             "linear": {
-              "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
+              "$comment": "Generated from geometry_msgs/Vector3.msg using https://github.com/foxglove/message-schemas",
               "type": "object",
               "properties": {
                 "x": {
@@ -54,7 +54,7 @@
               }
             },
             "angular": {
-              "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
+              "$comment": "Generated from geometry_msgs/Vector3.msg using https://github.com/foxglove/message-schemas",
               "type": "object",
               "properties": {
                 "x": {

@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from sensor_msgs/MultiEchoLaserScan.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from sensor_msgs/MultiEchoLaserScan.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from std_msgs/Header.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -58,7 +58,7 @@
     "ranges": {
       "type": "array",
       "items": {
-        "$comment": "Generated from sensor_msgs/LaserEcho.msg using foxglove/ros-message-schemas",
+        "$comment": "Generated from sensor_msgs/LaserEcho.msg using https://github.com/foxglove/message-schemas",
         "type": "object",
         "properties": {
           "echoes": {
@@ -74,7 +74,7 @@
     "intensities": {
       "type": "array",
       "items": {
-        "$comment": "Generated from sensor_msgs/LaserEcho.msg using foxglove/ros-message-schemas",
+        "$comment": "Generated from sensor_msgs/LaserEcho.msg using https://github.com/foxglove/message-schemas",
         "type": "object",
         "properties": {
           "echoes": {

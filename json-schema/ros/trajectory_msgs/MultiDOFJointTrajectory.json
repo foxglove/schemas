@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from trajectory_msgs/MultiDOFJointTrajectory.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from trajectory_msgs/MultiDOFJointTrajectory.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from std_msgs/Header.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -36,17 +36,17 @@
     "points": {
       "type": "array",
       "items": {
-        "$comment": "Generated from trajectory_msgs/MultiDOFJointTrajectoryPoint.msg using foxglove/ros-message-schemas",
+        "$comment": "Generated from trajectory_msgs/MultiDOFJointTrajectoryPoint.msg using https://github.com/foxglove/message-schemas",
         "type": "object",
         "properties": {
           "transforms": {
             "type": "array",
             "items": {
-              "$comment": "Generated from geometry_msgs/Transform.msg using foxglove/ros-message-schemas",
+              "$comment": "Generated from geometry_msgs/Transform.msg using https://github.com/foxglove/message-schemas",
               "type": "object",
               "properties": {
                 "translation": {
-                  "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
+                  "$comment": "Generated from geometry_msgs/Vector3.msg using https://github.com/foxglove/message-schemas",
                   "type": "object",
                   "properties": {
                     "x": {
@@ -64,7 +64,7 @@
                   }
                 },
                 "rotation": {
-                  "$comment": "Generated from geometry_msgs/Quaternion.msg using foxglove/ros-message-schemas",
+                  "$comment": "Generated from geometry_msgs/Quaternion.msg using https://github.com/foxglove/message-schemas",
                   "type": "object",
                   "properties": {
                     "x": {
@@ -91,11 +91,11 @@
           "velocities": {
             "type": "array",
             "items": {
-              "$comment": "Generated from geometry_msgs/Twist.msg using foxglove/ros-message-schemas",
+              "$comment": "Generated from geometry_msgs/Twist.msg using https://github.com/foxglove/message-schemas",
               "type": "object",
               "properties": {
                 "linear": {
-                  "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
+                  "$comment": "Generated from geometry_msgs/Vector3.msg using https://github.com/foxglove/message-schemas",
                   "type": "object",
                   "properties": {
                     "x": {
@@ -113,7 +113,7 @@
                   }
                 },
                 "angular": {
-                  "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
+                  "$comment": "Generated from geometry_msgs/Vector3.msg using https://github.com/foxglove/message-schemas",
                   "type": "object",
                   "properties": {
                     "x": {
@@ -136,11 +136,11 @@
           "accelerations": {
             "type": "array",
             "items": {
-              "$comment": "Generated from geometry_msgs/Twist.msg using foxglove/ros-message-schemas",
+              "$comment": "Generated from geometry_msgs/Twist.msg using https://github.com/foxglove/message-schemas",
               "type": "object",
               "properties": {
                 "linear": {
-                  "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
+                  "$comment": "Generated from geometry_msgs/Vector3.msg using https://github.com/foxglove/message-schemas",
                   "type": "object",
                   "properties": {
                     "x": {
@@ -158,7 +158,7 @@
                   }
                 },
                 "angular": {
-                  "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
+                  "$comment": "Generated from geometry_msgs/Vector3.msg using https://github.com/foxglove/message-schemas",
                   "type": "object",
                   "properties": {
                     "x": {

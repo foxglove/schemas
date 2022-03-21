@@ -1,13 +1,13 @@
 {
-  "$comment": "Generated from geometry_msgs/TwistWithCovariance.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from geometry_msgs/TwistWithCovariance.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "twist": {
-      "$comment": "Generated from geometry_msgs/Twist.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from geometry_msgs/Twist.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "linear": {
-          "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
+          "$comment": "Generated from geometry_msgs/Vector3.msg using https://github.com/foxglove/message-schemas",
           "type": "object",
           "properties": {
             "x": {
@@ -25,7 +25,7 @@
           }
         },
         "angular": {
-          "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
+          "$comment": "Generated from geometry_msgs/Vector3.msg using https://github.com/foxglove/message-schemas",
           "type": "object",
           "properties": {
             "x": {

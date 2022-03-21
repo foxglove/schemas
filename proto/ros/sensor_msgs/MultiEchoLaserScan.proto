@@ -1,4 +1,4 @@
-// Generated from sensor_msgs/MultiEchoLaserScan.msg using foxglove/ros-message-schemas
+// Generated from sensor_msgs/MultiEchoLaserScan.msg using https://github.com/foxglove/message-schemas
 
 syntax = "proto3";
 

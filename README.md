@@ -1,4 +1,14 @@
-This repo contains Protobuf and JSON schemas generated from the common ROS message types at [@foxglove/rosmsg-msgs-common](https://github.com/foxglove/rosmsg-msgs-common) and [@foxglove/rosmsg-msgs-foxglove](https://github.com/foxglove/rosmsg-msgs-foxglove). These schemas can be used to create custom [Foxglove WebSocket protocol](https://github.com/foxglove/ws-protocol) servers that take advantage of Foxglove Studio's support for ROS data visualization without using ROS.
+This repo contains Protobuf and JSON schemas for [foxglove](https://foxglove.dev/docs/studio/messages/introduction) and ROS messages.
+
+These schemas can be used in [MCAP](https://github.com/foxglove/mcap) files or [Foxglove WebSocket](https://github.com/foxglove/ws-protocol) servers to take advantage of Foxglove Studio's visualizations.
+
+The ROS schemas are generated from the common ROS message types at [@foxglove/rosmsg-msgs-common](https://github.com/foxglove/rosmsg-msgs-common) and [@foxglove/rosmsg-msgs-foxglove](https://github.com/foxglove/rosmsg-msgs-foxglove).
+
+## Proto
+
+The .proto schemas are located in the `proto` folder.
+
+## Generate
 
 ### Generate .proto files and JSON Schemas for common ROS datatypes
 

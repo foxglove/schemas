@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from diagnostic_msgs/DiagnosticStatus.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from diagnostic_msgs/DiagnosticStatus.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "level": {
@@ -18,7 +18,7 @@
     "values": {
       "type": "array",
       "items": {
-        "$comment": "Generated from diagnostic_msgs/KeyValue.msg using foxglove/ros-message-schemas",
+        "$comment": "Generated from diagnostic_msgs/KeyValue.msg using https://github.com/foxglove/message-schemas",
         "type": "object",
         "properties": {
           "key": {

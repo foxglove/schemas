@@ -1,4 +1,4 @@
-// Generated from actionlib_msgs/GoalStatus.msg using foxglove/ros-message-schemas
+// Generated from actionlib_msgs/GoalStatus.msg using https://github.com/foxglove/message-schemas
 
 syntax = "proto3";
 

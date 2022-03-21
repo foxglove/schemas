@@ -1,13 +1,13 @@
 {
-  "$comment": "Generated from geometry_msgs/PoseWithCovariance.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from geometry_msgs/PoseWithCovariance.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "pose": {
-      "$comment": "Generated from geometry_msgs/Pose.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from geometry_msgs/Pose.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "position": {
-          "$comment": "Generated from geometry_msgs/Point.msg using foxglove/ros-message-schemas",
+          "$comment": "Generated from geometry_msgs/Point.msg using https://github.com/foxglove/message-schemas",
           "type": "object",
           "properties": {
             "x": {
@@ -25,7 +25,7 @@
           }
         },
         "orientation": {
-          "$comment": "Generated from geometry_msgs/Quaternion.msg using foxglove/ros-message-schemas",
+          "$comment": "Generated from geometry_msgs/Quaternion.msg using https://github.com/foxglove/message-schemas",
           "type": "object",
           "properties": {
             "x": {

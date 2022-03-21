@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from actionlib_msgs/GoalStatus.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from actionlib_msgs/GoalStatus.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "goal_id": {
-      "$comment": "Generated from actionlib_msgs/GoalID.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from actionlib_msgs/GoalID.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "stamp": {

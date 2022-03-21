@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from trajectory_msgs/JointTrajectory.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from trajectory_msgs/JointTrajectory.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from std_msgs/Header.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -36,7 +36,7 @@
     "points": {
       "type": "array",
       "items": {
-        "$comment": "Generated from trajectory_msgs/JointTrajectoryPoint.msg using foxglove/ros-message-schemas",
+        "$comment": "Generated from trajectory_msgs/JointTrajectoryPoint.msg using https://github.com/foxglove/message-schemas",
         "type": "object",
         "properties": {
           "positions": {

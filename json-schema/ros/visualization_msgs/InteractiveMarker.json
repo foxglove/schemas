@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from visualization_msgs/InteractiveMarker.msg using foxglove/ros-message-schemas",
+  "$comment": "Generated from visualization_msgs/InteractiveMarker.msg using https://github.com/foxglove/message-schemas",
   "type": "object",
   "properties": {
     "header": {
-      "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from std_msgs/Header.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "seq": {
@@ -28,11 +28,11 @@
       }
     },
     "pose": {
-      "$comment": "Generated from geometry_msgs/Pose.msg using foxglove/ros-message-schemas",
+      "$comment": "Generated from geometry_msgs/Pose.msg using https://github.com/foxglove/message-schemas",
       "type": "object",
       "properties": {
         "position": {
-          "$comment": "Generated from geometry_msgs/Point.msg using foxglove/ros-message-schemas",
+          "$comment": "Generated from geometry_msgs/Point.msg using https://github.com/foxglove/message-schemas",
           "type": "object",
           "properties": {
             "x": {
@@ -50,7 +50,7 @@
           }
         },
         "orientation": {
-          "$comment": "Generated from geometry_msgs/Quaternion.msg using foxglove/ros-message-schemas",
+          "$comment": "Generated from geometry_msgs/Quaternion.msg using https://github.com/foxglove/message-schemas",
           "type": "object",
           "properties": {
             "x": {
@@ -86,7 +86,7 @@
     "menu_entries": {
       "type": "array",
       "items": {
-        "$comment": "Generated from visualization_msgs/MenuEntry.msg using foxglove/ros-message-schemas",
+        "$comment": "Generated from visualization_msgs/MenuEntry.msg using https://github.com/foxglove/message-schemas",
         "type": "object",
         "properties": {
           "id": {
@@ -113,14 +113,14 @@
     "controls": {
       "type": "array",
       "items": {
-        "$comment": "Generated from visualization_msgs/InteractiveMarkerControl.msg using foxglove/ros-message-schemas",
+        "$comment": "Generated from visualization_msgs/InteractiveMarkerControl.msg using https://github.com/foxglove/message-schemas",
         "type": "object",
         "properties": {
           "name": {
             "type": "string"
           },
           "orientation": {
-            "$comment": "Generated from geometry_msgs/Quaternion.msg using foxglove/ros-message-schemas",
+            "$comment": "Generated from geometry_msgs/Quaternion.msg using https://github.com/foxglove/message-schemas",
             "type": "object",
             "properties": {
               "x": {
@@ -155,11 +155,11 @@
           "markers": {
             "type": "array",
             "items": {
-              "$comment": "Generated from visualization_msgs/Marker.msg using foxglove/ros-message-schemas",
+              "$comment": "Generated from visualization_msgs/Marker.msg using https://github.com/foxglove/message-schemas",
               "type": "object",
               "properties": {
                 "header": {
-                  "$comment": "Generated from std_msgs/Header.msg using foxglove/ros-message-schemas",
+                  "$comment": "Generated from std_msgs/Header.msg using https://github.com/foxglove/message-schemas",
                   "type": "object",
                   "properties": {
                     "seq": {
@@ -199,11 +199,11 @@
                   "type": "integer"
                 },
                 "pose": {
-                  "$comment": "Generated from geometry_msgs/Pose.msg using foxglove/ros-message-schemas",
+                  "$comment": "Generated from geometry_msgs/Pose.msg using https://github.com/foxglove/message-schemas",
                   "type": "object",
                   "properties": {
                     "position": {
-                      "$comment": "Generated from geometry_msgs/Point.msg using foxglove/ros-message-schemas",
+                      "$comment": "Generated from geometry_msgs/Point.msg using https://github.com/foxglove/message-schemas",
                       "type": "object",
                       "properties": {
                         "x": {
@@ -221,7 +221,7 @@
                       }
                     },
                     "orientation": {
-                      "$comment": "Generated from geometry_msgs/Quaternion.msg using foxglove/ros-message-schemas",
+                      "$comment": "Generated from geometry_msgs/Quaternion.msg using https://github.com/foxglove/message-schemas",
                       "type": "object",
                       "properties": {
                         "x": {
@@ -245,7 +245,7 @@
                   }
                 },
                 "scale": {
-                  "$comment": "Generated from geometry_msgs/Vector3.msg using foxglove/ros-message-schemas",
+                  "$comment": "Generated from geometry_msgs/Vector3.msg using https://github.com/foxglove/message-schemas",
                   "type": "object",
                   "properties": {
                     "x": {
@@ -263,7 +263,7 @@
                   }
                 },
                 "color": {
-                  "$comment": "Generated from std_msgs/ColorRGBA.msg using foxglove/ros-message-schemas",
+                  "$comment": "Generated from std_msgs/ColorRGBA.msg using https://github.com/foxglove/message-schemas",
                   "type": "object",
                   "properties": {
                     "r": {
@@ -302,7 +302,7 @@
                 "points": {
                   "type": "array",
                   "items": {
-                    "$comment": "Generated from geometry_msgs/Point.msg using foxglove/ros-message-schemas",
+                    "$comment": "Generated from geometry_msgs/Point.msg using https://github.com/foxglove/message-schemas",
                     "type": "object",
                     "properties": {
                       "x": {
@@ -323,7 +323,7 @@
                 "colors": {
                   "type": "array",
                   "items": {
-                    "$comment": "Generated from std_msgs/ColorRGBA.msg using foxglove/ros-message-schemas",
+                    "$comment": "Generated from std_msgs/ColorRGBA.msg using https://github.com/foxglove/message-schemas",
                     "type": "object",
                     "properties": {
                       "r": {

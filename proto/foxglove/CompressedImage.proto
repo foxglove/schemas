@@ -1,0 +1,11 @@
+// https://foxglove.dev/docs/studio/messages/compressed-image
+
+syntax = "proto3";
+
+package foxglove;
+
+message CompressedImage {
+  uint64 timestamp = 1;
+  string format = 2;
+  bytes data = 3;
+}

@@ -1,0 +1,24 @@
+// https://foxglove.dev/docs/studio/messages/log
+
+syntax = "proto3";
+
+package foxglove;
+
+message Log {
+  uint64 timestamp = 1;
+
+  enum LogLevel {
+    DEBUG = 1;
+    INFO = 2;
+    WARN = 3;
+    ERROR = 4;
+    FATAL = 5;
+  }
+  LogLevel level = 2;
+
+  sint32 level = 2; // originally int8
+  string message = 3;
+  string name = 4;
+  string file = 5;
+  uint32 line = 6;
+}

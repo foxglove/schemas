@@ -14,9 +14,8 @@ message Log {
     ERROR = 4;
     FATAL = 5;
   }
-  LogLevel level = 2;
 
-  sint32 level = 2; // originally int8
+  LogLevel level = 2;
   string message = 3;
   string name = 4;
   string file = 5;

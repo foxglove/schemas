@@ -1,0 +1,12 @@
+// https://foxglove.dev/docs/studio/messages/compressed-image
+
+syntax = "proto3";
+
+package foxglove;
+
+message JointState {
+  repeated string name = 1;
+  repeated double position = 2;
+  repeated double velocity = 3;
+  repeated double effort = 4;
+}

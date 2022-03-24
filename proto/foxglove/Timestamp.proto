@@ -1,0 +1,10 @@
+// https://foxglove.dev/docs/studio/messages/built-in-types
+
+syntax = "proto3";
+
+package foxglove;
+
+message Timestamp {
+  fixed32 sec = 1;
+  fixed32 nsec = 2;
+}

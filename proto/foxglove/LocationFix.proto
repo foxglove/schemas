@@ -2,10 +2,11 @@
 
 syntax = "proto3";
 
+import "foxglove/Timestamp.proto";
 package foxglove;
 
 message LocationFix {
-  uint64 timestamp = 1;
+  Timestamp timestamp = 1;
 
   double latitude = 2;
   double longitude = 3;

@@ -2,12 +2,14 @@
 
 syntax = "proto3";
 
+import "foxglove/Timestamp.proto";
 package foxglove;
 
 message Log {
-  uint64 timestamp = 1;
+  Timestamp timestamp = 1;
 
   enum LogLevel {
+    UNKNOWN = 0;
     DEBUG = 1;
     INFO = 2;
     WARN = 3;
@@ -19,5 +21,5 @@ message Log {
   string message = 3;
   string name = 4;
   string file = 5;
-  uint32 line = 6;
+  fixed32 line = 6;
 }

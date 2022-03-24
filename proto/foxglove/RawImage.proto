@@ -2,13 +2,14 @@
 
 syntax = "proto3";
 
+import "foxglove/Timestamp.proto";
 package foxglove;
 
 message RawImage {
-  uint64 timestamp = 1;
-  uint32 width = 2;
-  uint32 height = 3;
+  Timestamp timestamp = 1;
+  fixed32 width = 2;
+  fixed32 height = 3;
   string encoding = 4;
-  uint32 step = 5;
+  fixed32 step = 5;
   bytes data = 6;
 }

@@ -1,4 +1,4 @@
-// https://foxglove.dev/docs/studio/messages/compressed-image
+// https://foxglove.dev/docs/studio/messages/joint-state
 
 syntax = "proto3";
 

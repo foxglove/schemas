@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: arduino/setup-protoc@v1
       - uses: actions/setup-node@v2
         with:
           node-version: 16.x
@@ -26,3 +27,6 @@ jobs:
           else
             echo "Generated schemas are up to date!"
           fi
+
+      - name: Validate protobuf definitions
+        run: protoc --proto_path=proto proto/**/*.proto --descriptor_set_out=/dev/null

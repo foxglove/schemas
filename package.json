@@ -1,7 +1,11 @@
 {
-  "name": "proto-schemas",
   "private": "true",
   "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "message-schemas"
+    ]
+  },
   "scripts": {
     "generate:proto": "ts-node scripts/generate.ts proto -o proto",
     "generate:json": "ts-node scripts/generate.ts json -o json-schema"

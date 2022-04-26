@@ -1,2 +1,3 @@
+message-schemas/generated/** linguist-generated
 proto/ros/**/*.proto linguist-generated
 json-schema/**/*.json linguist-generated

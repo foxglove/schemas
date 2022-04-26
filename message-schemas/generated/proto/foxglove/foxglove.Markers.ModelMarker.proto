@@ -1,0 +1,55 @@
+// Generated from foxglove.Markers.ModelMarker by @foxglove/message-schemas
+
+syntax = "proto3";
+
+import "foxglove/Color.proto";
+import "foxglove/KeyValuePair.proto";
+import "foxglove/Pose.proto";
+import "foxglove/Vector3.proto";
+import "foxglove/builtins.proto";
+
+package foxglove;
+
+message foxglove.Markers.ModelMarker {
+  // Timestamp of the marker
+  foxglove.Time timestamp = 1;
+
+  // Frame of reference
+  string frame_id = 2;
+
+  // Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.
+  string namespace = 3;
+
+  // Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.
+  string id = 4;
+
+  // Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.
+  foxglove.Duration lifetime = 5;
+
+  // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
+  boolean frame_locked = 6;
+
+  // Additional user-provided metadata associated with the marker. Keys must be unique.
+  repeated foxglove.KeyValuePair metadata = 7;
+
+  // Origin of model relative to reference frame
+  foxglove.Pose pose = 8;
+
+  // Scale factor to apply to the model along each axis
+  foxglove.Vector3 scale = 9;
+
+  // Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.
+  foxglove.Color color = 10;
+
+  // Whether to use materials embedded in the model, or only the `color`
+  boolean use_embedded_materials = 11;
+
+  // URL pointing to model file. Either `url` or `mime_type` and `data` should be provided.
+  string url = 12;
+
+  // MIME type of embedded model (e.g. `model/gltf-binary`). Either `url` or `mime_type` and `data` should be provided.
+  string mime_type = 13;
+
+  // Embedded model. Either `url` or `mime_type` and `data` should be provided.
+  bytes data = 14;
+}

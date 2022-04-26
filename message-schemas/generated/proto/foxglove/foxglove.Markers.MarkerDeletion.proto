@@ -1,0 +1,21 @@
+// Generated from foxglove.Markers.MarkerDeletion by @foxglove/message-schemas
+
+syntax = "proto3";
+
+import "foxglove/builtins.proto";
+
+package foxglove;
+
+message foxglove.Markers.MarkerDeletion {
+  // Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.
+  foxglove.Time timestamp = 1;
+
+  // Type of deletion action to perform
+  foxglove.DeleteKind kind = 2;
+
+  // Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`.
+  string namespace = 3;
+
+  // Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`.
+  string id = 4;
+}

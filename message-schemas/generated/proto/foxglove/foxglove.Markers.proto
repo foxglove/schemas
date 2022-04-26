@@ -1,0 +1,44 @@
+// Generated from foxglove.Markers by @foxglove/message-schemas
+
+syntax = "proto3";
+
+import "foxglove/foxglove.Markers.ArrowMarker.proto";
+import "foxglove/foxglove.Markers.CubeMarker.proto";
+import "foxglove/foxglove.Markers.CylinderMarker.proto";
+import "foxglove/foxglove.Markers.LineMarker.proto";
+import "foxglove/foxglove.Markers.MarkerDeletion.proto";
+import "foxglove/foxglove.Markers.ModelMarker.proto";
+import "foxglove/foxglove.Markers.SphereMarker.proto";
+import "foxglove/foxglove.Markers.TextMarker.proto";
+import "foxglove/foxglove.Markers.TrianglesMarker.proto";
+
+package foxglove;
+
+message foxglove.Markers {
+  // Marker deletion actions
+  repeated foxglove.foxglove.Markers.MarkerDeletion deletions = 1;
+
+  // Arrow markers
+  repeated foxglove.foxglove.Markers.ArrowMarker arrows = 2;
+
+  // Cube markers
+  repeated foxglove.foxglove.Markers.CubeMarker cubes = 3;
+
+  // Sphere markers
+  repeated foxglove.foxglove.Markers.SphereMarker spheres = 4;
+
+  // Cylinder markers
+  repeated foxglove.foxglove.Markers.CylinderMarker cylinders = 5;
+
+  // Line markers
+  repeated foxglove.foxglove.Markers.LineMarker lines = 6;
+
+  // Triangles markers
+  repeated foxglove.foxglove.Markers.TrianglesMarker triangles = 7;
+
+  // Text markers
+  repeated foxglove.foxglove.Markers.TextMarker texts = 8;
+
+  // Model markers
+  repeated foxglove.foxglove.Markers.ModelMarker models = 9;
+}

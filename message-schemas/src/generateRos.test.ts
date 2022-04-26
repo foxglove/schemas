@@ -1,5 +1,7 @@
-import { foxgloveSchemas } from ".";
+import { parse as parseMessageDefinition } from "@foxglove/rosmsg";
+
 import { generateRosMsgMergedSchema, generateRosMsgFiles } from "./generateRos";
+import { foxgloveSchemas } from "./schemas";
 
 describe("generateRosMsgFiles", () => {
   it("generates msg files", () => {
@@ -7,8 +9,8 @@ describe("generateRosMsgFiles", () => {
       .toMatchInlineSnapshot(`
       Array [
         Object {
-          "filename": "foxglove.Markers.LineMarker.msg",
-          "name": "foxglove.Markers.LineMarker",
+          "filename": "foxglove_msgs/foxglove.Markers.LineMarker.msg",
+          "name": "foxglove_msgs/foxglove.Markers.LineMarker",
           "source": "# Generated from foxglove.Markers.LineMarker by @foxglove/message-schemas
 
       # Timestamp of the marker
@@ -33,7 +35,7 @@ describe("generateRosMsgFiles", () => {
       KeyValuePair[] metadata
 
       # Origin of lines relative to reference frame
-      Pose pose
+      geometry_msgs/Pose pose
 
       # Line thickness
       float64 thickness
@@ -42,7 +44,7 @@ describe("generateRosMsgFiles", () => {
       bool scale_invariant
 
       # Points along the line
-      Point3[] points
+      geometry_msgs/Point[] points
 
       # Solid color to use for the whole line. One of \`color\` or \`colors\` must be provided.
       Color color
@@ -54,6 +56,90 @@ describe("generateRosMsgFiles", () => {
       int32[] indices
       ",
         },
+        Object {
+          "filename": "foxglove_msgs/Color.msg",
+          "name": "foxglove_msgs/Color",
+          "source": "# Generated from Color by @foxglove/message-schemas
+
+      # Red value between 0 and 1
+      float64 r
+
+      # Green value between 0 and 1
+      float64 g
+
+      # Blue value between 0 and 1
+      float64 b
+
+      # Alpha value between 0 and 1
+      float64 a
+      ",
+        },
+        Object {
+          "filename": "foxglove_msgs/Color.msg",
+          "name": "foxglove_msgs/Color",
+          "source": "# Generated from Color by @foxglove/message-schemas
+
+      # Red value between 0 and 1
+      float64 r
+
+      # Green value between 0 and 1
+      float64 g
+
+      # Blue value between 0 and 1
+      float64 b
+
+      # Alpha value between 0 and 1
+      float64 a
+      ",
+        },
+        Object {
+          "filename": "geometry_msgs/Point.msg",
+          "name": "geometry_msgs/Point",
+          "source": "# Generated from geometry_msgs/Point by @foxglove/message-schemas
+      float64 x
+      float64 y
+      float64 z
+      ",
+        },
+        Object {
+          "filename": "geometry_msgs/Quaternion.msg",
+          "name": "geometry_msgs/Quaternion",
+          "source": "# Generated from geometry_msgs/Quaternion by @foxglove/message-schemas
+      float64 x
+      float64 y
+      float64 z
+      float64 w
+      ",
+        },
+        Object {
+          "filename": "geometry_msgs/Point.msg",
+          "name": "geometry_msgs/Point",
+          "source": "# Generated from geometry_msgs/Point by @foxglove/message-schemas
+      float64 x
+      float64 y
+      float64 z
+      ",
+        },
+        Object {
+          "filename": "geometry_msgs/Pose.msg",
+          "name": "geometry_msgs/Pose",
+          "source": "# Generated from geometry_msgs/Pose by @foxglove/message-schemas
+      geometry_msgs/Point position
+      geometry_msgs/Quaternion orientation
+      ",
+        },
+        Object {
+          "filename": "foxglove_msgs/KeyValuePair.msg",
+          "name": "foxglove_msgs/KeyValuePair",
+          "source": "# Generated from KeyValuePair by @foxglove/message-schemas
+
+      # Key
+      string key
+
+      # Value
+      string value
+      ",
+        },
       ]
     `);
   });
@@ -61,9 +147,10 @@ describe("generateRosMsgFiles", () => {
 
 describe("generateRosMsgMergedSchema", () => {
   it("generates merged schema", () => {
-    expect(
-      generateRosMsgMergedSchema(foxgloveSchemas["foxglove.Markers.LineMarker"])
-    ).toMatchInlineSnapshot(`
+    const mergedSchema = generateRosMsgMergedSchema(
+      foxgloveSchemas["foxglove.Markers.LineMarker"]
+    );
+    expect(mergedSchema).toMatchInlineSnapshot(`
       "# Generated from foxglove.Markers.LineMarker by @foxglove/message-schemas
 
       # Timestamp of the marker
@@ -88,7 +175,7 @@ describe("generateRosMsgMergedSchema", () => {
       KeyValuePair[] metadata
 
       # Origin of lines relative to reference frame
-      Pose pose
+      geometry_msgs/Pose pose
 
       # Line thickness
       float64 thickness
@@ -97,7 +184,7 @@ describe("generateRosMsgMergedSchema", () => {
       bool scale_invariant
 
       # Points along the line
-      Point3[] points
+      geometry_msgs/Point[] points
 
       # Solid color to use for the whole line. One of \`color\` or \`colors\` must be provided.
       Color color
@@ -107,7 +194,330 @@ describe("generateRosMsgMergedSchema", () => {
 
       # Indexes into the \`points\` and \`colors\` attribute arrays, which can be used to avoid duplicating attribute data.
       int32[] indices
+      ================================================================================
+      MSG: foxglove_msgs/Color
+      # Generated from Color by @foxglove/message-schemas
+
+      # Red value between 0 and 1
+      float64 r
+
+      # Green value between 0 and 1
+      float64 g
+
+      # Blue value between 0 and 1
+      float64 b
+
+      # Alpha value between 0 and 1
+      float64 a
+      ================================================================================
+      MSG: foxglove_msgs/Color
+      # Generated from Color by @foxglove/message-schemas
+
+      # Red value between 0 and 1
+      float64 r
+
+      # Green value between 0 and 1
+      float64 g
+
+      # Blue value between 0 and 1
+      float64 b
+
+      # Alpha value between 0 and 1
+      float64 a
+      ================================================================================
+      MSG: geometry_msgs/Point
+      # Generated from geometry_msgs/Point by @foxglove/message-schemas
+      float64 x
+      float64 y
+      float64 z
+      ================================================================================
+      MSG: geometry_msgs/Quaternion
+      # Generated from geometry_msgs/Quaternion by @foxglove/message-schemas
+      float64 x
+      float64 y
+      float64 z
+      float64 w
+      ================================================================================
+      MSG: geometry_msgs/Point
+      # Generated from geometry_msgs/Point by @foxglove/message-schemas
+      float64 x
+      float64 y
+      float64 z
+      ================================================================================
+      MSG: geometry_msgs/Pose
+      # Generated from geometry_msgs/Pose by @foxglove/message-schemas
+      geometry_msgs/Point position
+      geometry_msgs/Quaternion orientation
+      ================================================================================
+      MSG: foxglove_msgs/KeyValuePair
+      # Generated from KeyValuePair by @foxglove/message-schemas
+
+      # Key
+      string key
+
+      # Value
+      string value
       "
+    `);
+    expect(parseMessageDefinition(mergedSchema)).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "definitions": Array [
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "timestamp",
+              "type": "time",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "frame_id",
+              "type": "string",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "namespace",
+              "type": "string",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "id",
+              "type": "string",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "lifetime",
+              "type": "duration",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "frame_locked",
+              "type": "bool",
+            },
+            Object {
+              "isArray": true,
+              "isComplex": true,
+              "name": "metadata",
+              "type": "foxglove_msgs/KeyValuePair",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": true,
+              "name": "pose",
+              "type": "geometry_msgs/Pose",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "thickness",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "scale_invariant",
+              "type": "bool",
+            },
+            Object {
+              "isArray": true,
+              "isComplex": true,
+              "name": "points",
+              "type": "geometry_msgs/Point",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": true,
+              "name": "color",
+              "type": "foxglove_msgs/Color",
+            },
+            Object {
+              "isArray": true,
+              "isComplex": true,
+              "name": "colors",
+              "type": "foxglove_msgs/Color",
+            },
+            Object {
+              "isArray": true,
+              "isComplex": false,
+              "name": "indices",
+              "type": "int32",
+            },
+          ],
+          "name": undefined,
+        },
+        Object {
+          "definitions": Array [
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "r",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "g",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "b",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "a",
+              "type": "float64",
+            },
+          ],
+          "name": "foxglove_msgs/Color",
+        },
+        Object {
+          "definitions": Array [
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "r",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "g",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "b",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "a",
+              "type": "float64",
+            },
+          ],
+          "name": "foxglove_msgs/Color",
+        },
+        Object {
+          "definitions": Array [
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "x",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "y",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "z",
+              "type": "float64",
+            },
+          ],
+          "name": "geometry_msgs/Point",
+        },
+        Object {
+          "definitions": Array [
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "x",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "y",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "z",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "w",
+              "type": "float64",
+            },
+          ],
+          "name": "geometry_msgs/Quaternion",
+        },
+        Object {
+          "definitions": Array [
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "x",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "y",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "z",
+              "type": "float64",
+            },
+          ],
+          "name": "geometry_msgs/Point",
+        },
+        Object {
+          "definitions": Array [
+            Object {
+              "isArray": false,
+              "isComplex": true,
+              "name": "position",
+              "type": "geometry_msgs/Point",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": true,
+              "name": "orientation",
+              "type": "geometry_msgs/Quaternion",
+            },
+          ],
+          "name": "geometry_msgs/Pose",
+        },
+        Object {
+          "definitions": Array [
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "key",
+              "type": "string",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "value",
+              "type": "string",
+            },
+          ],
+          "name": "foxglove_msgs/KeyValuePair",
+        },
+      ]
     `);
   });
 });

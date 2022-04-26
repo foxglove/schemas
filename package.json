@@ -7,12 +7,10 @@
     ]
   },
   "scripts": {
-    "generate:proto": "ts-node scripts/generate.ts proto -o proto",
-    "generate:json": "ts-node scripts/generate.ts json -o json-schema"
+    "generate:proto": "ts-node scripts/generateFromRosMsg.ts proto -o proto",
+    "generate:json": "ts-node scripts/generateFromRosMsg.ts json -o json-schema"
   },
   "devDependencies": {
-    "@foxglove/rosmsg-msgs-common": "^1.0.4",
-    "@foxglove/rosmsg-msgs-foxglove": "^2.0.3",
     "@foxglove/tsconfig": "^1.1.0",
     "@types/node": "^16.11.11",
     "commander": "^8.3.0",

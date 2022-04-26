@@ -1,0 +1,159 @@
+{
+  "$comment": "Generated from foxglove.Markers.TrianglesMarker by @foxglove/message-schemas",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "$comment": "originally time",
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
+      }
+    },
+    "frame_id": {
+      "type": "string"
+    },
+    "namespace": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "lifetime": {
+      "$comment": "originally duration",
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
+      }
+    },
+    "frame_locked": {
+      "type": "boolean"
+    },
+    "metadata": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pose": {
+      "$comment": "Generated from Pose by @foxglove/message-schemas",
+      "type": "object",
+      "properties": {
+        "position": {
+          "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "z": {
+              "type": "number"
+            }
+          }
+        },
+        "orientation": {
+          "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "z": {
+              "type": "number"
+            },
+            "w": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "points": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "z": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "color": {
+      "$comment": "Generated from Color by @foxglove/message-schemas",
+      "type": "object",
+      "properties": {
+        "r": {
+          "type": "number"
+        },
+        "g": {
+          "type": "number"
+        },
+        "b": {
+          "type": "number"
+        },
+        "a": {
+          "type": "number"
+        }
+      }
+    },
+    "colors": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from Color by @foxglove/message-schemas",
+        "type": "object",
+        "properties": {
+          "r": {
+            "type": "number"
+          },
+          "g": {
+            "type": "number"
+          },
+          "b": {
+            "type": "number"
+          },
+          "a": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "indices": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    }
+  }
+}

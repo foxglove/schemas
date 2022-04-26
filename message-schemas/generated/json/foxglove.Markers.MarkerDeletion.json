@@ -1,0 +1,27 @@
+{
+  "$comment": "Generated from foxglove.Markers.MarkerDeletion by @foxglove/message-schemas",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "$comment": "originally time",
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
+      }
+    },
+    "kind": {
+      "$comment": "TODO"
+    },
+    "namespace": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    }
+  }
+}

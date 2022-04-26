@@ -15,8 +15,13 @@ jobs:
           cache: yarn
 
       - run: yarn install --immutable
+      - run: yarn workspace @foxglove/message-schemas lint:ci
+      - run: yarn workspace @foxglove/message-schemas typecheck
+      - run: yarn workspace @foxglove/message-schemas test
+
       - run: yarn generate:proto
       - run: yarn generate:json
+
       - name: Ensure generated files are up to date
         run: |
           changes=$(git status --porcelain)
@@ -30,3 +35,5 @@ jobs:
 
       - name: Validate protobuf definitions
         run: protoc --proto_path=proto proto/**/*.proto --descriptor_set_out=/dev/null
+      - name: Validate protobuf definitions
+        run: protoc --proto_path=message-schemas/generated/proto message-schemas/generated/proto/**/*.proto --descriptor_set_out=/dev/null

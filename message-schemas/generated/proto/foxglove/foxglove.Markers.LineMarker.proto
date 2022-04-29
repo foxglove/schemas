@@ -4,8 +4,8 @@ syntax = "proto3";
 
 import "foxglove/Color.proto";
 import "foxglove/KeyValuePair.proto";
+import "foxglove/Point3.proto";
 import "foxglove/Pose.proto";
-import "foxglove/Vector3.proto";
 import "foxglove/builtins.proto";
 
 package foxglove;
@@ -42,7 +42,7 @@ message foxglove.Markers.LineMarker {
   boolean scale_invariant = 10;
 
   // Points along the line
-  repeated foxglove.Vector3 points = 11;
+  repeated foxglove.Point3 points = 11;
 
   // Solid color to use for the whole line. One of `color` or `colors` must be provided.
   foxglove.Color color = 12;

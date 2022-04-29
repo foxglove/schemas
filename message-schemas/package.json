@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "prepack": "tsc -b tsconfig.json tsconfig.cjs.json",
+    "prepack": "tsc -b tsconfig.json tsconfig.cjs.json && yarn update-generated-files",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint:ci": "eslint --report-unused-disable-directives .",
     "lint": "eslint --report-unused-disable-directives --fix .",

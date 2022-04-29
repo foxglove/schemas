@@ -25,6 +25,7 @@ const foxglove_Color: FoxgloveSchema = {
     },
   ],
 };
+
 const foxglove_Vector3: FoxgloveSchema = {
   name: "Vector3",
   rosEquivalent: "geometry_msgs/Vector3",
@@ -48,9 +49,25 @@ const foxglove_Vector3: FoxgloveSchema = {
 };
 
 const foxglove_Point3: FoxgloveSchema = {
-  //FIXME: distinct name?
-  ...foxglove_Vector3,
+  name: "Point3",
   rosEquivalent: "geometry_msgs/Point",
+  fields: [
+    {
+      name: "x",
+      type: { type: "primitive", name: "float" },
+      description: "x coordinate position",
+    },
+    {
+      name: "y",
+      type: { type: "primitive", name: "float" },
+      description: "y coordinate position",
+    },
+    {
+      name: "z",
+      type: { type: "primitive", name: "float" },
+      description: "z coordinate position",
+    },
+  ],
 };
 
 const foxglove_Quaternion: FoxgloveSchema = {
@@ -87,12 +104,12 @@ const foxglove_Pose: FoxgloveSchema = {
     {
       name: "position",
       type: { type: "nested", schema: foxglove_Vector3 },
-      description: "Point denoting position in free space",
+      description: "Point denoting position in 3D space",
     },
     {
       name: "orientation",
       type: { type: "nested", schema: foxglove_Quaternion },
-      description: "Point denoting position in free space",
+      description: "Quaternion denoting orientation in 3D space",
     },
   ],
 };

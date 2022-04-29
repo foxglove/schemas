@@ -656,7 +656,7 @@
           "points": {
             "type": "array",
             "items": {
-              "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+              "$comment": "Generated from Point3 by @foxglove/message-schemas",
               "type": "object",
               "properties": {
                 "x": {
@@ -818,7 +818,7 @@
           "points": {
             "type": "array",
             "items": {
-              "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+              "$comment": "Generated from Point3 by @foxglove/message-schemas",
               "type": "object",
               "properties": {
                 "x": {

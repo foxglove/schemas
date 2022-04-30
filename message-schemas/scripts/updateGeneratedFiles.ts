@@ -24,7 +24,7 @@ async function main({ outDir }: { outDir: string }) {
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       await fs.writeFile(
         path.join(outDir, "json", `${schema.name}.json`),
-        JSON.stringify(generateJsonSchema(schema), undefined, 2)
+        JSON.stringify(generateJsonSchema(schema), undefined, 2) + "\n"
       );
     }
   });

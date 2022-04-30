@@ -21,6 +21,7 @@ jobs:
 
       - run: yarn generate:proto
       - run: yarn generate:json
+      - run: yarn workspace @foxglove/message-schemas update-generated-files
 
       - name: Ensure generated files are up to date
         run: |

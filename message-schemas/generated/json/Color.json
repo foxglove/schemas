@@ -1,0 +1,22 @@
+{
+  "$comment": "Generated from Color by @foxglove/message-schemas",
+  "type": "object",
+  "properties": {
+    "r": {
+      "description": "Red value between 0 and 1",
+      "type": "number"
+    },
+    "g": {
+      "description": "Green value between 0 and 1",
+      "type": "number"
+    },
+    "b": {
+      "description": "Blue value between 0 and 1",
+      "type": "number"
+    },
+    "a": {
+      "description": "Alpha value between 0 and 1",
+      "type": "number"
+    }
+  }
+}

@@ -1,15 +1,16 @@
-// Generated from foxglove.Markers.CylinderMarker by @foxglove/message-schemas
+// Generated from CubeMarker by @foxglove/message-schemas
 
 syntax = "proto3";
 
 import "foxglove/Color.proto";
 import "foxglove/KeyValuePair.proto";
 import "foxglove/Pose.proto";
+import "foxglove/Vector3.proto";
 import "foxglove/builtins.proto";
 
 package foxglove;
 
-message foxglove.Markers.CylinderMarker {
+message CubeMarker {
   // Timestamp of the marker
   foxglove.Time timestamp = 1;
 
@@ -26,23 +27,17 @@ message foxglove.Markers.CylinderMarker {
   foxglove.Duration lifetime = 5;
 
   // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
-  boolean frame_locked = 6;
+  bool frame_locked = 6;
 
   // Additional user-provided metadata associated with the marker. Keys must be unique.
   repeated foxglove.KeyValuePair metadata = 7;
 
-  // Position of the center of the cylinder and orientation of the cylinder. The cylinder's flat faces are perpendicular to the z-axis.
+  // Position of the center of the cube and orientation of the cube
   foxglove.Pose pose = 8;
 
-  // Radius of the cylinder at min z
-  double bottom_radius = 9;
+  // Size of the cube along each axis
+  foxglove.Vector3 size = 9;
 
-  // Radius of the cylinder at max z
-  double top_radius = 10;
-
-  // Height of the cylinder along the z axis
-  double height = 11;
-
-  // Color of the sphere
-  foxglove.Color color = 12;
+  // Color of the arrow
+  foxglove.Color color = 10;
 }

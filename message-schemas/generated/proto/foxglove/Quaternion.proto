@@ -1,0 +1,19 @@
+// Generated from Quaternion by @foxglove/message-schemas
+
+syntax = "proto3";
+
+package foxglove;
+
+message Quaternion {
+  // x value
+  double x = 1;
+
+  // y value
+  double y = 2;
+
+  // z value
+  double z = 3;
+
+  // w value
+  double w = 4;
+}

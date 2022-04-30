@@ -1,4 +1,4 @@
-// Generated from foxglove.Markers.ArrowMarker by @foxglove/message-schemas
+// Generated from CylinderMarker by @foxglove/message-schemas
 
 syntax = "proto3";
 
@@ -9,7 +9,7 @@ import "foxglove/builtins.proto";
 
 package foxglove;
 
-message foxglove.Markers.ArrowMarker {
+message CylinderMarker {
   // Timestamp of the marker
   foxglove.Time timestamp = 1;
 
@@ -26,26 +26,23 @@ message foxglove.Markers.ArrowMarker {
   foxglove.Duration lifetime = 5;
 
   // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
-  boolean frame_locked = 6;
+  bool frame_locked = 6;
 
   // Additional user-provided metadata associated with the marker. Keys must be unique.
   repeated foxglove.KeyValuePair metadata = 7;
 
-  // Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.
+  // Position of the center of the cylinder and orientation of the cylinder. The cylinder's flat faces are perpendicular to the z-axis.
   foxglove.Pose pose = 8;
 
-  // Length of the arrow
-  double length = 9;
+  // Radius of the cylinder at min z
+  double bottom_radius = 9;
 
-  // Diameter of the arrow shaft
-  double shaft_diameter = 10;
+  // Radius of the cylinder at max z
+  double top_radius = 10;
 
-  // Diameter of the arrow head
-  double head_diameter = 11;
+  // Height of the cylinder along the z axis
+  double height = 11;
 
-  // Length of the arrow head
-  double head_length = 12;
-
-  // Color of the arrow
-  foxglove.Color color = 13;
+  // Color of the sphere
+  foxglove.Color color = 12;
 }

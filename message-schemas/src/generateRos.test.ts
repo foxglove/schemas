@@ -1,17 +1,17 @@
 import { parse as parseMessageDefinition } from "@foxglove/rosmsg";
 
 import { generateRosMsgMergedSchema, generateRosMsgFiles } from "./generateRos";
-import { foxgloveSchemas } from "./schemas";
+import { foxgloveMessageSchemas } from "./schemas";
 
 describe("generateRosMsgFiles", () => {
   it("generates msg files", () => {
-    expect(generateRosMsgFiles(foxgloveSchemas["foxglove.Markers.LineMarker"]))
+    expect(generateRosMsgFiles(foxgloveMessageSchemas["LineMarker"]))
       .toMatchInlineSnapshot(`
       Array [
         Object {
-          "filename": "foxglove_msgs/foxglove.Markers.LineMarker.msg",
-          "name": "foxglove_msgs/foxglove.Markers.LineMarker",
-          "source": "# Generated from foxglove.Markers.LineMarker by @foxglove/message-schemas
+          "filename": "foxglove_msgs/LineMarker.msg",
+          "name": "foxglove_msgs/LineMarker",
+          "source": "# Generated from LineMarker by @foxglove/message-schemas
 
       # Timestamp of the marker
       time timestamp
@@ -32,7 +32,19 @@ describe("generateRosMsgFiles", () => {
       bool frame_locked
 
       # Additional user-provided metadata associated with the marker. Keys must be unique.
-      KeyValuePair[] metadata
+      foxglove_msgs/KeyValuePair[] metadata
+
+      # 0-1, 1-2, ...
+      uint8 LINE_STRIP=0
+
+      # 0-1, 1-2, ..., n-0
+      uint8 LINE_LOOP=1
+
+      # 0-1, 2-3, 4-5, ...
+      uint8 LINE_LIST=2
+
+      # Drawing primitive to use for lines
+      uint8 type
 
       # Origin of lines relative to reference frame
       geometry_msgs/Pose pose
@@ -47,10 +59,10 @@ describe("generateRosMsgFiles", () => {
       geometry_msgs/Point[] points
 
       # Solid color to use for the whole line. One of \`color\` or \`colors\` must be provided.
-      Color color
+      foxglove_msgs/Color color
 
       # Per-point colors (if specified, must have the same length as \`points\`). One of \`color\` or \`colors\` must be provided.
-      Color[] colors
+      foxglove_msgs/Color[] colors
 
       # Indexes into the \`points\` and \`colors\` attribute arrays, which can be used to avoid duplicating attribute data.
       int32[] indices
@@ -148,10 +160,10 @@ describe("generateRosMsgFiles", () => {
 describe("generateRosMsgMergedSchema", () => {
   it("generates merged schema", () => {
     const mergedSchema = generateRosMsgMergedSchema(
-      foxgloveSchemas["foxglove.Markers.LineMarker"]
+      foxgloveMessageSchemas["LineMarker"]
     );
     expect(mergedSchema).toMatchInlineSnapshot(`
-      "# Generated from foxglove.Markers.LineMarker by @foxglove/message-schemas
+      "# Generated from LineMarker by @foxglove/message-schemas
 
       # Timestamp of the marker
       time timestamp
@@ -172,7 +184,19 @@ describe("generateRosMsgMergedSchema", () => {
       bool frame_locked
 
       # Additional user-provided metadata associated with the marker. Keys must be unique.
-      KeyValuePair[] metadata
+      foxglove_msgs/KeyValuePair[] metadata
+
+      # 0-1, 1-2, ...
+      uint8 LINE_STRIP=0
+
+      # 0-1, 1-2, ..., n-0
+      uint8 LINE_LOOP=1
+
+      # 0-1, 2-3, 4-5, ...
+      uint8 LINE_LIST=2
+
+      # Drawing primitive to use for lines
+      uint8 type
 
       # Origin of lines relative to reference frame
       geometry_msgs/Pose pose
@@ -187,10 +211,10 @@ describe("generateRosMsgMergedSchema", () => {
       geometry_msgs/Point[] points
 
       # Solid color to use for the whole line. One of \`color\` or \`colors\` must be provided.
-      Color color
+      foxglove_msgs/Color color
 
       # Per-point colors (if specified, must have the same length as \`points\`). One of \`color\` or \`colors\` must be provided.
-      Color[] colors
+      foxglove_msgs/Color[] colors
 
       # Indexes into the \`points\` and \`colors\` attribute arrays, which can be used to avoid duplicating attribute data.
       int32[] indices
@@ -304,6 +328,33 @@ describe("generateRosMsgMergedSchema", () => {
               "isComplex": true,
               "name": "metadata",
               "type": "foxglove_msgs/KeyValuePair",
+            },
+            Object {
+              "isConstant": true,
+              "name": "LINE_STRIP",
+              "type": "uint8",
+              "value": 0,
+              "valueText": "0",
+            },
+            Object {
+              "isConstant": true,
+              "name": "LINE_LOOP",
+              "type": "uint8",
+              "value": 1,
+              "valueText": "1",
+            },
+            Object {
+              "isConstant": true,
+              "name": "LINE_LIST",
+              "type": "uint8",
+              "value": 2,
+              "valueText": "2",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "type",
+              "type": "uint8",
             },
             Object {
               "isArray": false,

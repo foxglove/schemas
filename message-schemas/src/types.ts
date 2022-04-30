@@ -7,7 +7,8 @@ export type FoxglovePrimitive =
   | "Time"
   | "Duration";
 
-export type FoxgloveEnum = {
+export type FoxgloveEnumSchema = {
+  type: "enum";
   name: string;
   values: ReadonlyArray<{
     value: number;
@@ -16,18 +17,20 @@ export type FoxgloveEnum = {
   }>;
 };
 
-export type FoxgloveSchema = {
+export type FoxgloveMessageSchema = {
+  type: "message";
   name: string;
   rosEquivalent?: keyof typeof import("@foxglove/rosmsg-msgs-common").definitions;
-  enums?: ReadonlyArray<FoxgloveEnum>;
   fields: ReadonlyArray<{
     name: string;
     type:
       | { type: "primitive"; name: FoxglovePrimitive }
-      | { type: "nested"; schema: FoxgloveSchema }
-      | { type: "enum"; enum: FoxgloveEnum };
+      | { type: "nested"; schema: FoxgloveMessageSchema }
+      | { type: "enum"; enum: FoxgloveEnumSchema };
     array?: boolean;
     required?: true;
     description: string;
   }>;
 };
+
+export type FoxgloveSchema = FoxgloveMessageSchema | FoxgloveEnumSchema;

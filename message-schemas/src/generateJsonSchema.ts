@@ -1,4 +1,4 @@
-import { FoxglovePrimitive, FoxgloveSchema } from "./types";
+import { FoxgloveMessageSchema, FoxglovePrimitive } from "./types";
 
 function primitiveToJsonSchema(type: Exclude<FoxglovePrimitive, "bytes">) {
   //FIXME
@@ -12,7 +12,6 @@ function primitiveToJsonSchema(type: Exclude<FoxglovePrimitive, "bytes">) {
       return { type: "number" };
     case "Time":
       return {
-        $comment: "originally time",
         type: "object",
         properties: {
           sec: { type: "integer" },
@@ -21,7 +20,6 @@ function primitiveToJsonSchema(type: Exclude<FoxglovePrimitive, "bytes">) {
       };
     case "Duration":
       return {
-        $comment: "originally duration",
         type: "object",
         properties: {
           sec: { type: "integer" },
@@ -32,7 +30,7 @@ function primitiveToJsonSchema(type: Exclude<FoxglovePrimitive, "bytes">) {
 }
 
 export function generateJsonSchema(
-  schema: FoxgloveSchema
+  schema: FoxgloveMessageSchema
 ): Record<string, unknown> {
   const properties: Record<string, unknown> = {};
   for (const field of schema.fields) {
@@ -40,16 +38,34 @@ export function generateJsonSchema(
     switch (field.type.type) {
       case "primitive":
         if (field.type.name === "bytes") {
-          fieldType = { type: "string", contentEncoding: "base64" };
+          fieldType = {
+            type: "string",
+            description: field.description,
+            contentEncoding: "base64",
+          };
         } else {
-          fieldType = primitiveToJsonSchema(field.type.name); //FIXME
+          fieldType = {
+            description: field.description,
+            ...primitiveToJsonSchema(field.type.name),
+          }; //FIXME
         }
         break;
       case "nested":
-        fieldType = generateJsonSchema(field.type.schema);
+        fieldType = {
+          description: field.description,
+          ...generateJsonSchema(field.type.schema),
+        };
+        //FIXME: TODO required?
         break;
       case "enum":
-        fieldType = { $comment: "TODO" }; //FIXME;
+        fieldType = {
+          description: field.description,
+          oneOf: field.type.enum.values.map(({ name, value, description }) => ({
+            title: name,
+            const: value,
+            description,
+          })),
+        };
         break;
     }
     if (field.array === true) {

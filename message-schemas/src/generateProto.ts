@@ -9,56 +9,89 @@ function primitiveToProto(
     case "string":
       return "string";
     case "boolean":
-      return "boolean";
+      return "bool";
     case "float":
       return "double";
   }
 }
 
+export const BUILTINS_PROTO = `syntax = "proto3";
+
+package foxglove;
+
+message Time {
+  fixed32 sec = 1;
+  fixed32 nsec = 2;
+}
+
+message Duration {
+  fixed32 sec = 1;
+  fixed32 nsec = 2;
+}
+`;
+
 export function generateProto(schema: FoxgloveSchema): string {
   const imports = new Set<string>();
-  const fields: string[] = [];
   let fieldNumber = 1;
-  for (const field of schema.fields) {
-    const lineComments: string[] = [];
-    const qualifiers = [];
-    if (field.array === true) {
-      qualifiers.push("repeated");
-    }
-    switch (field.type.type) {
-      case "enum":
-        //FIXME
-        qualifiers.push(`foxglove.${field.type.enum.name}`);
-        break;
-      case "nested":
-        qualifiers.push(`foxglove.${field.type.schema.name}`);
-        imports.add(field.type.schema.name);
-        break;
-      case "primitive":
-        if (field.type.name === "integer") {
-          qualifiers.push("int32"); // FIXME
-        } else if (
-          field.type.name === "Time" ||
-          field.type.name === "Duration"
-        ) {
-          qualifiers.push(`foxglove.${field.type.name}`);
-          imports.add("builtins");
+
+  let definition: string;
+  switch (schema.type) {
+    case "enum": {
+      const fields = schema.values.map(({ name, value, description }) => {
+        if (description != undefined) {
+          return `// ${description}\n  ${name} = ${value};`;
         } else {
-          qualifiers.push(primitiveToProto(field.type.name));
+          return `${name} = ${value};`;
         }
-        break;
+      });
+      definition = `enum ${schema.name} {\n  ${fields.join("\n\n  ")}\n}`;
+      break;
     }
-    //FIXME
-    // if (field.arrayLength != undefined) {
-    //   lineComments.push(`length ${field.arrayLength}`);
-    // }
-    fields.push(
-      `// ${field.description}\n  ${qualifiers.join(" ")} ${
-        field.name
-      } = ${fieldNumber++};${
-        lineComments.length > 0 ? " // " + lineComments.join(", ") : ""
-      }`
-    );
+
+    case "message": {
+      const fields = schema.fields.map((field) => {
+        const lineComments: string[] = [];
+        const qualifiers = [];
+        if (field.array === true) {
+          qualifiers.push("repeated");
+        }
+        switch (field.type.type) {
+          case "enum":
+            qualifiers.push(`foxglove.${field.type.enum.name}`);
+            imports.add(field.type.enum.name);
+            break;
+          case "nested":
+            qualifiers.push(`foxglove.${field.type.schema.name}`);
+            imports.add(field.type.schema.name);
+            break;
+          case "primitive":
+            if (field.type.name === "integer") {
+              qualifiers.push("int32"); // FIXME
+            } else if (
+              field.type.name === "Time" ||
+              field.type.name === "Duration"
+            ) {
+              qualifiers.push(`foxglove.${field.type.name}`);
+              imports.add("builtins");
+            } else {
+              qualifiers.push(primitiveToProto(field.type.name));
+            }
+            break;
+        }
+        //FIXME
+        // if (field.arrayLength != undefined) {
+        //   lineComments.push(`length ${field.arrayLength}`);
+        // }
+        return `// ${field.description}\n  ${qualifiers.join(" ")} ${
+          field.name
+        } = ${fieldNumber++};${
+          lineComments.length > 0 ? " // " + lineComments.join(", ") : ""
+        }`;
+      });
+
+      definition = `message ${schema.name} {\n  ${fields.join("\n\n  ")}\n}`;
+      break;
+    }
   }
 
   const outputSections = [
@@ -72,8 +105,8 @@ export function generateProto(schema: FoxgloveSchema): string {
 
     `package foxglove;`,
 
-    `message ${schema.name} {\n  ${fields.join("\n\n  ")}\n}`,
-  ];
+    definition,
+  ].filter(Boolean);
 
   return outputSections.join("\n\n") + "\n";
 }

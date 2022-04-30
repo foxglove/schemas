@@ -1,0 +1,13 @@
+// Generated from DeleteKind by @foxglove/message-schemas
+
+syntax = "proto3";
+
+package foxglove;
+
+enum DeleteKind {
+  MATCHING_NAMESPACE_AND_ID = 0;
+
+  MATCHING_NAMESPACE = 1;
+
+  ALL = 2;
+}

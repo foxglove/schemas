@@ -1,0 +1,18 @@
+{
+  "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+  "type": "object",
+  "properties": {
+    "x": {
+      "description": "x coordinate length",
+      "type": "number"
+    },
+    "y": {
+      "description": "y coordinate length",
+      "type": "number"
+    },
+    "z": {
+      "description": "z coordinate length",
+      "type": "number"
+    }
+  }
+}

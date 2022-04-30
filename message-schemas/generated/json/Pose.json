@@ -1,0 +1,48 @@
+{
+  "$comment": "Generated from Pose by @foxglove/message-schemas",
+  "type": "object",
+  "properties": {
+    "position": {
+      "description": "Point denoting position in 3D space",
+      "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+      "type": "object",
+      "properties": {
+        "x": {
+          "description": "x coordinate length",
+          "type": "number"
+        },
+        "y": {
+          "description": "y coordinate length",
+          "type": "number"
+        },
+        "z": {
+          "description": "z coordinate length",
+          "type": "number"
+        }
+      }
+    },
+    "orientation": {
+      "description": "Quaternion denoting orientation in 3D space",
+      "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+      "type": "object",
+      "properties": {
+        "x": {
+          "description": "x value",
+          "type": "number"
+        },
+        "y": {
+          "description": "y value",
+          "type": "number"
+        },
+        "z": {
+          "description": "z value",
+          "type": "number"
+        },
+        "w": {
+          "description": "w value",
+          "type": "number"
+        }
+      }
+    }
+  }
+}

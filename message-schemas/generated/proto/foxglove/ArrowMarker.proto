@@ -1,16 +1,15 @@
-// Generated from foxglove.Markers.ModelMarker by @foxglove/message-schemas
+// Generated from ArrowMarker by @foxglove/message-schemas
 
 syntax = "proto3";
 
 import "foxglove/Color.proto";
 import "foxglove/KeyValuePair.proto";
 import "foxglove/Pose.proto";
-import "foxglove/Vector3.proto";
 import "foxglove/builtins.proto";
 
 package foxglove;
 
-message foxglove.Markers.ModelMarker {
+message ArrowMarker {
   // Timestamp of the marker
   foxglove.Time timestamp = 1;
 
@@ -27,29 +26,26 @@ message foxglove.Markers.ModelMarker {
   foxglove.Duration lifetime = 5;
 
   // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
-  boolean frame_locked = 6;
+  bool frame_locked = 6;
 
   // Additional user-provided metadata associated with the marker. Keys must be unique.
   repeated foxglove.KeyValuePair metadata = 7;
 
-  // Origin of model relative to reference frame
+  // Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.
   foxglove.Pose pose = 8;
 
-  // Scale factor to apply to the model along each axis
-  foxglove.Vector3 scale = 9;
+  // Length of the arrow
+  double length = 9;
 
-  // Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.
-  foxglove.Color color = 10;
+  // Diameter of the arrow shaft
+  double shaft_diameter = 10;
 
-  // Whether to use materials embedded in the model, or only the `color`
-  boolean use_embedded_materials = 11;
+  // Diameter of the arrow head
+  double head_diameter = 11;
 
-  // URL pointing to model file. Either `url` or `mime_type` and `data` should be provided.
-  string url = 12;
+  // Length of the arrow head
+  double head_length = 12;
 
-  // MIME type of embedded model (e.g. `model/gltf-binary`). Either `url` or `mime_type` and `data` should be provided.
-  string mime_type = 13;
-
-  // Embedded model. Either `url` or `mime_type` and `data` should be provided.
-  bytes data = 14;
+  // Color of the arrow
+  foxglove.Color color = 13;
 }

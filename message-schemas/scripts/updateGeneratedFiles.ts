@@ -5,8 +5,8 @@ import rimraf from "rimraf";
 import { promisify } from "util";
 
 import { generateJsonSchema } from "../src/generateJsonSchema";
-import { generateProto } from "../src/generateProto";
-import { foxgloveSchemas } from "../src/schemas";
+import { BUILTINS_PROTO, generateProto } from "../src/generateProto";
+import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../src/schemas";
 
 async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write(`${message}... `);
@@ -21,7 +21,7 @@ async function main({ outDir }: { outDir: string }) {
 
   await logProgress("Generating JSONSchema definitions", async () => {
     await fs.mkdir(path.join(outDir, "json"), { recursive: true });
-    for (const schema of Object.values(foxgloveSchemas)) {
+    for (const schema of Object.values(foxgloveMessageSchemas)) {
       await fs.writeFile(
         path.join(outDir, "json", `${schema.name}.json`),
         JSON.stringify(generateJsonSchema(schema), undefined, 2)
@@ -31,7 +31,17 @@ async function main({ outDir }: { outDir: string }) {
 
   await logProgress("Generating Protobuf definitions", async () => {
     await fs.mkdir(path.join(outDir, "proto", "foxglove"), { recursive: true });
-    for (const schema of Object.values(foxgloveSchemas)) {
+    await fs.writeFile(
+      path.join(outDir, "proto", "foxglove", "builtins.proto"),
+      BUILTINS_PROTO
+    );
+    for (const schema of Object.values(foxgloveMessageSchemas)) {
+      await fs.writeFile(
+        path.join(outDir, "proto", "foxglove", `${schema.name}.proto`),
+        generateProto(schema)
+      );
+    }
+    for (const schema of Object.values(foxgloveEnumSchemas)) {
       await fs.writeFile(
         path.join(outDir, "proto", "foxglove", `${schema.name}.proto`),
         generateProto(schema)

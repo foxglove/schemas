@@ -1,0 +1,19 @@
+// Generated from Color by @foxglove/message-schemas
+
+syntax = "proto3";
+
+package foxglove;
+
+message Color {
+  // Red value between 0 and 1
+  double r = 1;
+
+  // Green value between 0 and 1
+  double g = 2;
+
+  // Blue value between 0 and 1
+  double b = 3;
+
+  // Alpha value between 0 and 1
+  double a = 4;
+}

@@ -1,0 +1,43 @@
+{
+  "$comment": "Generated from MarkerDeletion by @foxglove/message-schemas",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "description": "Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.",
+      "type": "object",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
+      }
+    },
+    "kind": {
+      "description": "Type of deletion action to perform",
+      "oneOf": [
+        {
+          "title": "MATCHING_NAMESPACE_AND_ID",
+          "const": 0
+        },
+        {
+          "title": "MATCHING_NAMESPACE",
+          "const": 1
+        },
+        {
+          "title": "ALL",
+          "const": 2
+        }
+      ]
+    },
+    "namespace": {
+      "description": "Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`.",
+      "type": "string"
+    },
+    "id": {
+      "description": "Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`.",
+      "type": "string"
+    }
+  }
+}

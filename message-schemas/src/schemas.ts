@@ -1,6 +1,7 @@
-import { FoxgloveEnum, FoxgloveSchema } from "./types";
+import { FoxgloveEnumSchema, FoxgloveMessageSchema } from "./types";
 
-const foxglove_Color: FoxgloveSchema = {
+const foxglove_Color: FoxgloveMessageSchema = {
+  type: "message",
   name: "Color",
   fields: [
     {
@@ -26,7 +27,8 @@ const foxglove_Color: FoxgloveSchema = {
   ],
 };
 
-const foxglove_Vector3: FoxgloveSchema = {
+const foxglove_Vector3: FoxgloveMessageSchema = {
+  type: "message",
   name: "Vector3",
   rosEquivalent: "geometry_msgs/Vector3",
   fields: [
@@ -48,7 +50,8 @@ const foxglove_Vector3: FoxgloveSchema = {
   ],
 };
 
-const foxglove_Point3: FoxgloveSchema = {
+const foxglove_Point3: FoxgloveMessageSchema = {
+  type: "message",
   name: "Point3",
   rosEquivalent: "geometry_msgs/Point",
   fields: [
@@ -70,7 +73,8 @@ const foxglove_Point3: FoxgloveSchema = {
   ],
 };
 
-const foxglove_Quaternion: FoxgloveSchema = {
+const foxglove_Quaternion: FoxgloveMessageSchema = {
+  type: "message",
   name: "Quaternion",
   rosEquivalent: "geometry_msgs/Quaternion",
   fields: [
@@ -97,7 +101,8 @@ const foxglove_Quaternion: FoxgloveSchema = {
   ],
 };
 
-const foxglove_Pose: FoxgloveSchema = {
+const foxglove_Pose: FoxgloveMessageSchema = {
+  type: "message",
   name: "Pose",
   rosEquivalent: "geometry_msgs/Pose",
   fields: [
@@ -114,7 +119,8 @@ const foxglove_Pose: FoxgloveSchema = {
   ],
 };
 
-const foxglove_KeyVauePair: FoxgloveSchema = {
+const foxglove_KeyVauePair: FoxgloveMessageSchema = {
+  type: "message",
   name: "KeyValuePair",
   fields: [
     {
@@ -131,7 +137,7 @@ const foxglove_KeyVauePair: FoxgloveSchema = {
 };
 
 /** Fields used in each Marker message */
-const commonMarkerFields: FoxgloveSchema["fields"] = [
+const commonMarkerFields: FoxgloveMessageSchema["fields"] = [
   {
     name: "timestamp",
     type: { type: "primitive", name: "Time" },
@@ -175,7 +181,8 @@ const commonMarkerFields: FoxgloveSchema["fields"] = [
   },
 ];
 
-const foxglove_DeleteKind: FoxgloveEnum = {
+const foxglove_DeleteKind: FoxgloveEnumSchema = {
+  type: "enum",
   name: "DeleteKind",
   values: [
     { value: 0, name: "MATCHING_NAMESPACE_AND_ID" },
@@ -184,9 +191,9 @@ const foxglove_DeleteKind: FoxgloveEnum = {
   ],
 };
 
-const foxglove_MarkerDeletion: FoxgloveSchema = {
-  name: "foxglove.Markers.MarkerDeletion",
-  enums: [foxglove_DeleteKind],
+const foxglove_MarkerDeletion: FoxgloveMessageSchema = {
+  type: "message",
+  name: "MarkerDeletion",
   fields: [
     {
       name: "timestamp",
@@ -214,8 +221,9 @@ const foxglove_MarkerDeletion: FoxgloveSchema = {
   ],
 };
 
-const foxglove_ArrowMarker: FoxgloveSchema = {
-  name: "foxglove.Markers.ArrowMarker",
+const foxglove_ArrowMarker: FoxgloveMessageSchema = {
+  type: "message",
+  name: "ArrowMarker",
   fields: [
     ...commonMarkerFields,
     {
@@ -252,8 +260,9 @@ const foxglove_ArrowMarker: FoxgloveSchema = {
   ],
 };
 
-const foxglove_CubeMarker: FoxgloveSchema = {
-  name: "foxglove.Markers.CubeMarker",
+const foxglove_CubeMarker: FoxgloveMessageSchema = {
+  type: "message",
+  name: "CubeMarker",
   fields: [
     ...commonMarkerFields,
     {
@@ -275,8 +284,9 @@ const foxglove_CubeMarker: FoxgloveSchema = {
   ],
 };
 
-const foxglove_SphereMarker: FoxgloveSchema = {
-  name: "foxglove.Markers.SphereMarker",
+const foxglove_SphereMarker: FoxgloveMessageSchema = {
+  type: "message",
+  name: "SphereMarker",
   fields: [
     ...commonMarkerFields,
     {
@@ -298,8 +308,9 @@ const foxglove_SphereMarker: FoxgloveSchema = {
   ],
 };
 
-const foxglove_CylinderMarker: FoxgloveSchema = {
-  name: "foxglove.Markers.CylinderMarker",
+const foxglove_CylinderMarker: FoxgloveMessageSchema = {
+  type: "message",
+  name: "CylinderMarker",
   fields: [
     ...commonMarkerFields,
     {
@@ -331,20 +342,26 @@ const foxglove_CylinderMarker: FoxgloveSchema = {
   ],
 };
 
-const foxglove_LineMarker: FoxgloveSchema = {
-  name: "foxglove.Markers.LineMarker",
-  enums: [
-    {
-      name: "LineType",
-      values: [
-        { value: 0, name: "LINE_STRIP", description: "0-1, 1-2, ..." },
-        { value: 1, name: "LINE_LOOP", description: "0-1, 1-2, ..., n-0" },
-        { value: 1, name: "LINE_LIST", description: "0-1, 2-3, 4-5, ..." },
-      ],
-    },
+const foxglove_LineType: FoxgloveEnumSchema = {
+  type: "enum",
+  name: "LineType",
+  values: [
+    { value: 0, name: "LINE_STRIP", description: "0-1, 1-2, ..." },
+    { value: 1, name: "LINE_LOOP", description: "0-1, 1-2, ..., n-0" },
+    { value: 2, name: "LINE_LIST", description: "0-1, 2-3, 4-5, ..." },
   ],
+};
+
+const foxglove_LineMarker: FoxgloveMessageSchema = {
+  type: "message",
+  name: "LineMarker",
   fields: [
     ...commonMarkerFields,
+    {
+      name: "type",
+      type: { type: "enum", enum: foxglove_LineType },
+      description: "Drawing primitive to use for lines",
+    },
     {
       name: "pose",
       type: { type: "nested", schema: foxglove_Pose },
@@ -390,8 +407,9 @@ const foxglove_LineMarker: FoxgloveSchema = {
   ],
 };
 
-const foxglove_TextMarker: FoxgloveSchema = {
-  name: "foxglove.Markers.TextMarker",
+const foxglove_TextMarker: FoxgloveMessageSchema = {
+  type: "message",
+  name: "TextMarker",
   fields: [
     ...commonMarkerFields,
     {
@@ -430,28 +448,34 @@ const foxglove_TextMarker: FoxgloveSchema = {
   ],
 };
 
-const foxglove_TrianglesMarker: FoxgloveSchema = {
-  name: "foxglove.Markers.TrianglesMarker",
-  enums: [
+const foxglove_TrianglesType: FoxgloveEnumSchema = {
+  type: "enum",
+  name: "TriangleType",
+  values: [
+    { value: 0, name: "TRIANGLE_LIST", description: "0-1-2, 3-4-5, ..." },
     {
-      name: "TriangleType",
-      values: [
-        { value: 0, name: "TRIANGLE_LIST", description: "0-1-2, 3-4-5, ..." },
-        {
-          value: 1,
-          name: "TRIANGLE_STRIP",
-          description: "0-1-2, 1-2-3, 2-3-4, ...",
-        },
-        {
-          value: 1,
-          name: "TRIANGLE_FAN",
-          description: "0-1-2, 0-2-3, 0-3-4, ...",
-        },
-      ],
+      value: 1,
+      name: "TRIANGLE_STRIP",
+      description: "0-1-2, 1-2-3, 2-3-4, ...",
+    },
+    {
+      value: 2,
+      name: "TRIANGLE_FAN",
+      description: "0-1-2, 0-2-3, 0-3-4, ...",
     },
   ],
+};
+
+const foxglove_TrianglesMarker: FoxgloveMessageSchema = {
+  type: "message",
+  name: "TrianglesMarker",
   fields: [
     ...commonMarkerFields,
+    {
+      name: "type",
+      type: { type: "enum", enum: foxglove_TrianglesType },
+      description: "Drawing primitive to use for triangles",
+    },
     {
       name: "pose",
       type: { type: "nested", schema: foxglove_Pose },
@@ -486,8 +510,9 @@ const foxglove_TrianglesMarker: FoxgloveSchema = {
   ],
 };
 
-const foxglove_ModelMarker: FoxgloveSchema = {
-  name: "foxglove.Markers.ModelMarker",
+const foxglove_ModelMarker: FoxgloveMessageSchema = {
+  type: "message",
+  name: "ModelMarker",
   fields: [
     ...commonMarkerFields,
     {
@@ -533,8 +558,9 @@ const foxglove_ModelMarker: FoxgloveSchema = {
   ],
 };
 
-const foxglove_Markers: FoxgloveSchema = {
-  name: "foxglove.Markers",
+const foxglove_Markers: FoxgloveMessageSchema = {
+  type: "message",
+  name: "Markers",
   fields: [
     {
       name: "deletions",
@@ -593,23 +619,27 @@ const foxglove_Markers: FoxgloveSchema = {
   ],
 };
 
-const foxgloveSchemas = {
-  "foxglove.Markers": foxglove_Markers,
+export const foxgloveMessageSchemas = {
+  Color: foxglove_Color,
+  Pose: foxglove_Pose,
+  Vector3: foxglove_Vector3,
+  Point3: foxglove_Point3,
+  Quaternion: foxglove_Quaternion,
   KeyValuePair: foxglove_KeyVauePair,
-  "foxglove.Markers.MarkerDeletion": foxglove_MarkerDeletion,
-  "foxglove.Markers.ArrowMarker": foxglove_ArrowMarker,
-  "foxglove.Markers.CubeMarker": foxglove_CubeMarker,
-  "foxglove.Markers.SphereMarker": foxglove_SphereMarker,
-  "foxglove.Markers.CylinderMarker": foxglove_CylinderMarker,
-  "foxglove.Markers.LineMarker": foxglove_LineMarker,
-  "foxglove.Markers.TextMarker": foxglove_TextMarker,
-  "foxglove.Markers.TrianglesMarker": foxglove_TrianglesMarker,
-  "foxglove.Markers.ModelMarker": foxglove_ModelMarker,
-} as const;
+  Markers: foxglove_Markers,
+  MarkerDeletion: foxglove_MarkerDeletion,
+  ArrowMarker: foxglove_ArrowMarker,
+  CubeMarker: foxglove_CubeMarker,
+  SphereMarker: foxglove_SphereMarker,
+  CylinderMarker: foxglove_CylinderMarker,
+  LineMarker: foxglove_LineMarker,
+  TextMarker: foxglove_TextMarker,
+  TrianglesMarker: foxglove_TrianglesMarker,
+  ModelMarker: foxglove_ModelMarker,
+};
 
-const typedFoxgloveSchemas: Record<
-  keyof typeof foxgloveSchemas,
-  FoxgloveSchema
-> = foxgloveSchemas;
-
-export { typedFoxgloveSchemas as foxgloveSchemas };
+export const foxgloveEnumSchemas = {
+  TrianglesType: foxglove_TrianglesType,
+  LineType: foxglove_LineType,
+  DeleteKind: foxglove_DeleteKind,
+};

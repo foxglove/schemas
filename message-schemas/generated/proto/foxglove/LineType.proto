@@ -1,0 +1,16 @@
+// Generated from LineType by @foxglove/message-schemas
+
+syntax = "proto3";
+
+package foxglove;
+
+enum LineType {
+  // 0-1, 1-2, ...
+  LINE_STRIP = 0;
+
+  // 0-1, 1-2, ..., n-0
+  LINE_LOOP = 1;
+
+  // 0-1, 2-3, 4-5, ...
+  LINE_LIST = 2;
+}

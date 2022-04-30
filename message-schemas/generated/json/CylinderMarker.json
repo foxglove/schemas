@@ -1,9 +1,9 @@
 {
-  "$comment": "Generated from foxglove.Markers.LineMarker by @foxglove/message-schemas",
+  "$comment": "Generated from CylinderMarker by @foxglove/message-schemas",
   "type": "object",
   "properties": {
     "timestamp": {
-      "$comment": "originally time",
+      "description": "Timestamp of the marker",
       "type": "object",
       "properties": {
         "sec": {
@@ -15,16 +15,19 @@
       }
     },
     "frame_id": {
+      "description": "Frame of reference",
       "type": "string"
     },
     "namespace": {
+      "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
       "type": "string"
     },
     "id": {
+      "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
       "type": "string"
     },
     "lifetime": {
-      "$comment": "originally duration",
+      "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
       "type": "object",
       "properties": {
         "sec": {
@@ -36,129 +39,109 @@
       }
     },
     "frame_locked": {
+      "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
       "type": "boolean"
     },
     "metadata": {
       "type": "array",
       "items": {
+        "description": "Additional user-provided metadata associated with the marker. Keys must be unique.",
         "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
         "type": "object",
         "properties": {
           "key": {
+            "description": "Key",
             "type": "string"
           },
           "value": {
+            "description": "Value",
             "type": "string"
           }
         }
       }
     },
     "pose": {
+      "description": "Position of the center of the cylinder and orientation of the cylinder. The cylinder's flat faces are perpendicular to the z-axis.",
       "$comment": "Generated from Pose by @foxglove/message-schemas",
       "type": "object",
       "properties": {
         "position": {
+          "description": "Point denoting position in 3D space",
           "$comment": "Generated from Vector3 by @foxglove/message-schemas",
           "type": "object",
           "properties": {
             "x": {
+              "description": "x coordinate length",
               "type": "number"
             },
             "y": {
+              "description": "y coordinate length",
               "type": "number"
             },
             "z": {
+              "description": "z coordinate length",
               "type": "number"
             }
           }
         },
         "orientation": {
+          "description": "Quaternion denoting orientation in 3D space",
           "$comment": "Generated from Quaternion by @foxglove/message-schemas",
           "type": "object",
           "properties": {
             "x": {
+              "description": "x value",
               "type": "number"
             },
             "y": {
+              "description": "y value",
               "type": "number"
             },
             "z": {
+              "description": "z value",
               "type": "number"
             },
             "w": {
+              "description": "w value",
               "type": "number"
             }
           }
         }
       }
     },
-    "thickness": {
+    "bottom_radius": {
+      "description": "Radius of the cylinder at min z",
       "type": "number"
     },
-    "scale_invariant": {
-      "type": "boolean"
+    "top_radius": {
+      "description": "Radius of the cylinder at max z",
+      "type": "number"
     },
-    "points": {
-      "type": "array",
-      "items": {
-        "$comment": "Generated from Point3 by @foxglove/message-schemas",
-        "type": "object",
-        "properties": {
-          "x": {
-            "type": "number"
-          },
-          "y": {
-            "type": "number"
-          },
-          "z": {
-            "type": "number"
-          }
-        }
-      }
+    "height": {
+      "description": "Height of the cylinder along the z axis",
+      "type": "number"
     },
     "color": {
+      "description": "Color of the sphere",
       "$comment": "Generated from Color by @foxglove/message-schemas",
       "type": "object",
       "properties": {
         "r": {
+          "description": "Red value between 0 and 1",
           "type": "number"
         },
         "g": {
+          "description": "Green value between 0 and 1",
           "type": "number"
         },
         "b": {
+          "description": "Blue value between 0 and 1",
           "type": "number"
         },
         "a": {
+          "description": "Alpha value between 0 and 1",
           "type": "number"
         }
-      }
-    },
-    "colors": {
-      "type": "array",
-      "items": {
-        "$comment": "Generated from Color by @foxglove/message-schemas",
-        "type": "object",
-        "properties": {
-          "r": {
-            "type": "number"
-          },
-          "g": {
-            "type": "number"
-          },
-          "b": {
-            "type": "number"
-          },
-          "a": {
-            "type": "number"
-          }
-        }
-      }
-    },
-    "indices": {
-      "type": "array",
-      "items": {
-        "type": "number"
       }
     }
   }

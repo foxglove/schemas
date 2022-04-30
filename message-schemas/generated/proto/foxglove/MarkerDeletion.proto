@@ -1,12 +1,13 @@
-// Generated from foxglove.Markers.MarkerDeletion by @foxglove/message-schemas
+// Generated from MarkerDeletion by @foxglove/message-schemas
 
 syntax = "proto3";
 
+import "foxglove/DeleteKind.proto";
 import "foxglove/builtins.proto";
 
 package foxglove;
 
-message foxglove.Markers.MarkerDeletion {
+message MarkerDeletion {
   // Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.
   foxglove.Time timestamp = 1;
 

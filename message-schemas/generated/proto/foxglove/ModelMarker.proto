@@ -1,4 +1,4 @@
-// Generated from foxglove.Markers.CubeMarker by @foxglove/message-schemas
+// Generated from ModelMarker by @foxglove/message-schemas
 
 syntax = "proto3";
 
@@ -10,7 +10,7 @@ import "foxglove/builtins.proto";
 
 package foxglove;
 
-message foxglove.Markers.CubeMarker {
+message ModelMarker {
   // Timestamp of the marker
   foxglove.Time timestamp = 1;
 
@@ -27,17 +27,29 @@ message foxglove.Markers.CubeMarker {
   foxglove.Duration lifetime = 5;
 
   // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
-  boolean frame_locked = 6;
+  bool frame_locked = 6;
 
   // Additional user-provided metadata associated with the marker. Keys must be unique.
   repeated foxglove.KeyValuePair metadata = 7;
 
-  // Position of the center of the cube and orientation of the cube
+  // Origin of model relative to reference frame
   foxglove.Pose pose = 8;
 
-  // Size of the cube along each axis
-  foxglove.Vector3 size = 9;
+  // Scale factor to apply to the model along each axis
+  foxglove.Vector3 scale = 9;
 
-  // Color of the arrow
+  // Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.
   foxglove.Color color = 10;
+
+  // Whether to use materials embedded in the model, or only the `color`
+  bool use_embedded_materials = 11;
+
+  // URL pointing to model file. Either `url` or `mime_type` and `data` should be provided.
+  string url = 12;
+
+  // MIME type of embedded model (e.g. `model/gltf-binary`). Either `url` or `mime_type` and `data` should be provided.
+  string mime_type = 13;
+
+  // Embedded model. Either `url` or `mime_type` and `data` should be provided.
+  bytes data = 14;
 }

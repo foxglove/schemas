@@ -1,0 +1,22 @@
+{
+  "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+  "type": "object",
+  "properties": {
+    "x": {
+      "description": "x value",
+      "type": "number"
+    },
+    "y": {
+      "description": "y value",
+      "type": "number"
+    },
+    "z": {
+      "description": "z value",
+      "type": "number"
+    },
+    "w": {
+      "description": "w value",
+      "type": "number"
+    }
+  }
+}

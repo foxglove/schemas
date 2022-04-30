@@ -1,0 +1,18 @@
+{
+  "$comment": "Generated from Point3 by @foxglove/message-schemas",
+  "type": "object",
+  "properties": {
+    "x": {
+      "description": "x coordinate position",
+      "type": "number"
+    },
+    "y": {
+      "description": "y coordinate position",
+      "type": "number"
+    },
+    "z": {
+      "description": "z coordinate position",
+      "type": "number"
+    }
+  }
+}

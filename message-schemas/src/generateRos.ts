@@ -1,7 +1,7 @@
 import { RosMsgDefinition, RosMsgField } from "@foxglove/rosmsg";
 import { definitions as rosCommonDefs } from "@foxglove/rosmsg-msgs-common";
 
-import { FoxglovePrimitive, FoxgloveSchema } from "./types";
+import { FoxgloveMessageSchema, FoxglovePrimitive } from "./types";
 
 type RosMsgFieldWithDescription = RosMsgField & {
   description?: string;
@@ -28,7 +28,7 @@ function primitiveToRos(type: Exclude<FoxglovePrimitive, "integer" | "bytes">) {
 }
 
 export function generateRosMsgFiles(
-  schema: FoxgloveSchema
+  schema: FoxgloveMessageSchema
 ): Array<{ name: string; filename: string; source: string }> {
   const result: Array<{ name: string; filename: string; source: string }> = [];
   for (const def of generateRosMsgDefinitions(schema)) {
@@ -58,7 +58,9 @@ export function generateRosMsgFiles(
   return result;
 }
 
-export function generateRosMsgMergedSchema(schema: FoxgloveSchema): string {
+export function generateRosMsgMergedSchema(
+  schema: FoxgloveMessageSchema
+): string {
   const files = generateRosMsgFiles(schema);
   let result = "";
   for (const { name, source } of files) {
@@ -70,8 +72,9 @@ export function generateRosMsgMergedSchema(schema: FoxgloveSchema): string {
   return result;
 }
 
+//FIXME: what to do with enums?
 export function generateRosMsgDefinitions(
-  rootSchema: FoxgloveSchema
+  rootSchema: FoxgloveMessageSchema
 ): RosMsgDefinitionWithDescription[] {
   const seenTypes = new Set<string>();
   const result: RosMsgDefinitionWithDescription[] = [];
@@ -99,7 +102,7 @@ export function generateRosMsgDefinitions(
     }
   }
 
-  function addSchema(schema: FoxgloveSchema) {
+  function addSchema(schema: FoxgloveMessageSchema) {
     const fields: RosMsgFieldWithDescription[] = [];
     for (const field of schema.fields) {
       let isArray = field.array;
@@ -107,9 +110,8 @@ export function generateRosMsgDefinitions(
       switch (field.type.type) {
         case "enum": {
           const enumName = field.type.enum.name;
-          fieldType = enumName;
-
           const valueType = "uint8"; // FIXME
+          fieldType = valueType;
           if (enumFieldsByEnumName.has(enumName)) {
             break;
           }
@@ -124,6 +126,7 @@ export function generateRosMsgDefinitions(
             enumFields.push({
               name,
               value,
+              isConstant: true,
               valueText: value.toString(),
               type: valueType,
               description,
@@ -139,7 +142,7 @@ export function generateRosMsgDefinitions(
             fieldType = field.type.schema.rosEquivalent;
             addRosMsgDefinition(rosCommonDefs[field.type.schema.rosEquivalent]);
           } else {
-            fieldType = field.type.schema.name;
+            fieldType = `foxglove_msgs/${field.type.schema.name}`;
             addSchema(field.type.schema);
           }
           break;

@@ -1,0 +1,16 @@
+// Generated from Point3 by @foxglove/message-schemas
+
+syntax = "proto3";
+
+package foxglove;
+
+message Point3 {
+  // x coordinate position
+  double x = 1;
+
+  // y coordinate position
+  double y = 2;
+
+  // z coordinate position
+  double z = 3;
+}

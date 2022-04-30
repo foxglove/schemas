@@ -1,16 +1,15 @@
-// Generated from foxglove.Markers.SphereMarker by @foxglove/message-schemas
+// Generated from TextMarker by @foxglove/message-schemas
 
 syntax = "proto3";
 
 import "foxglove/Color.proto";
 import "foxglove/KeyValuePair.proto";
 import "foxglove/Pose.proto";
-import "foxglove/Vector3.proto";
 import "foxglove/builtins.proto";
 
 package foxglove;
 
-message foxglove.Markers.SphereMarker {
+message TextMarker {
   // Timestamp of the marker
   foxglove.Time timestamp = 1;
 
@@ -27,17 +26,26 @@ message foxglove.Markers.SphereMarker {
   foxglove.Duration lifetime = 5;
 
   // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
-  boolean frame_locked = 6;
+  bool frame_locked = 6;
 
   // Additional user-provided metadata associated with the marker. Keys must be unique.
   repeated foxglove.KeyValuePair metadata = 7;
 
-  // Position of the center of the sphere and orientation of the sphere
+  // Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x.
   foxglove.Pose pose = 8;
 
-  // Size (diameter) of the sphere along each axis
-  foxglove.Vector3 size = 9;
+  // Whether the text should respect `pose.orientation` (false) or always face the camera (true)
+  bool billboard = 9;
 
-  // Color of the sphere
-  foxglove.Color color = 10;
+  // Font size (height of one line of text)
+  double font_size = 10;
+
+  // Indicates whether `font_size` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
+  bool scale_invariant = 11;
+
+  // Color of the text
+  foxglove.Color color = 12;
+
+  // Text
+  string text = 13;
 }

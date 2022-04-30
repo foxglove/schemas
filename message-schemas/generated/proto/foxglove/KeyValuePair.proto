@@ -2,8 +2,6 @@
 
 syntax = "proto3";
 
-
-
 package foxglove;
 
 message KeyValuePair {

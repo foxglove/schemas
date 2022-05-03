@@ -1,5 +1,7 @@
 {
   "$comment": "Generated from Point3 by @foxglove/message-schemas",
+  "title": "Point3",
+  "description": "A point representing a position in 3D space",
   "type": "object",
   "properties": {
     "x": {

@@ -49,7 +49,9 @@ export function generateProto(schema: FoxgloveSchema): string {
           return `${name} = ${value};`;
         }
       });
-      definition = `enum ${schema.name} {\n  ${fields.join("\n\n  ")}\n}`;
+      definition = `// ${schema.description}\nenum ${
+        schema.name
+      } {\n  ${fields.join("\n\n  ")}\n}`;
       break;
     }
 
@@ -94,7 +96,9 @@ export function generateProto(schema: FoxgloveSchema): string {
         }`;
       });
 
-      definition = `message ${schema.name} {\n  ${fields.join("\n\n  ")}\n}`;
+      definition = `// ${schema.description}\nmessage ${
+        schema.name
+      } {\n  ${fields.join("\n\n  ")}\n}`;
       break;
     }
   }

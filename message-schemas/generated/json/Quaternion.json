@@ -1,5 +1,7 @@
 {
   "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+  "title": "Quaternion",
+  "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
   "type": "object",
   "properties": {
     "x": {

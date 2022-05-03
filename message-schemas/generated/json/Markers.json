@@ -1,1447 +1,1456 @@
 {
   "$comment": "Generated from Markers by @foxglove/message-schemas",
+  "title": "Markers",
+  "description": "A list that can contain any number of any type of marker",
   "type": "object",
   "properties": {
     "deletions": {
-      "type": "array",
-      "items": {
-        "description": "Marker deletion actions",
-        "$comment": "Generated from MarkerDeletion by @foxglove/message-schemas",
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "description": "Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+      "type": "object",
+      "description": "Deletion command to remove previously published markers",
+      "$comment": "Generated from MarkerDeletion by @foxglove/message-schemas",
+      "title": "MarkerDeletion",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.",
+          "type": "object",
+          "title": "Time",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "type": {
-            "description": "Type of deletion action to perform",
-            "oneOf": [
-              {
-                "title": "MATCHING_NAMESPACE_AND_ID",
-                "const": 0
-              },
-              {
-                "title": "MATCHING_NAMESPACE",
-                "const": 1
-              },
-              {
-                "title": "ALL",
-                "const": 2
-              }
-            ]
-          },
-          "namespace": {
-            "description": "Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`.",
-            "type": "string"
-          },
-          "id": {
-            "description": "Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`.",
-            "type": "string"
           }
+        },
+        "type": {
+          "title": "MarkerDeletionType: An enumeration indicating which markers should match a MarkerDeletion command",
+          "description": "Type of deletion action to perform",
+          "oneOf": [
+            {
+              "title": "MATCHING_NAMESPACE_AND_ID",
+              "const": 0
+            },
+            {
+              "title": "MATCHING_NAMESPACE",
+              "const": 1
+            },
+            {
+              "title": "ALL",
+              "const": 2
+            }
+          ]
+        },
+        "namespace": {
+          "description": "Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`.",
+          "type": "string"
         }
       }
     },
     "arrows": {
-      "type": "array",
-      "items": {
-        "description": "Arrow markers",
-        "$comment": "Generated from ArrowMarker by @foxglove/message-schemas",
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "description": "Timestamp of the marker",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+      "type": "object",
+      "description": "A marker representing an arrow",
+      "$comment": "Generated from ArrowMarker by @foxglove/message-schemas",
+      "title": "ArrowMarker",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp of the marker",
+          "type": "object",
+          "title": "Time",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_id": {
-            "description": "Frame of reference",
-            "type": "string"
-          },
-          "namespace": {
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "id": {
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "lifetime": {
-            "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+          }
+        },
+        "frame_id": {
+          "description": "Frame of reference",
+          "type": "string"
+        },
+        "namespace": {
+          "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "lifetime": {
+          "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
+          "type": "object",
+          "title": "Duration",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_locked": {
-            "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
-            "type": "boolean"
-          },
-          "metadata": {
-            "type": "array",
-            "items": {
-              "description": "Additional user-provided metadata associated with the marker. Keys must be unique.",
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          }
+        },
+        "frame_locked": {
+          "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
+          "type": "boolean"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "An entry representing a key and its associated value",
+          "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          "title": "KeyValuePair",
+          "properties": {
+            "key": {
+              "description": "Key",
+              "type": "string"
+            },
+            "value": {
+              "description": "Value",
+              "type": "string"
+            }
+          }
+        },
+        "pose": {
+          "description": "The position and orientation of an object or reference frame in 3D space",
+          "$comment": "Generated from Pose by @foxglove/message-schemas",
+          "title": "Pose",
+          "type": "object",
+          "properties": {
+            "position": {
+              "description": "A vector in 3D space that represents a direction only",
+              "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+              "title": "Vector3",
               "type": "object",
               "properties": {
-                "key": {
-                  "description": "Key",
-                  "type": "string"
+                "x": {
+                  "description": "x coordinate length",
+                  "type": "number"
                 },
-                "value": {
-                  "description": "Value",
-                  "type": "string"
+                "y": {
+                  "description": "y coordinate length",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z coordinate length",
+                  "type": "number"
+                }
+              }
+            },
+            "orientation": {
+              "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
+              "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+              "title": "Quaternion",
+              "type": "object",
+              "properties": {
+                "x": {
+                  "description": "x value",
+                  "type": "number"
+                },
+                "y": {
+                  "description": "y value",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z value",
+                  "type": "number"
+                },
+                "w": {
+                  "description": "w value",
+                  "type": "number"
                 }
               }
             }
-          },
-          "pose": {
-            "description": "Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.",
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "position": {
-                "description": "Point denoting position in 3D space",
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x coordinate length",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y coordinate length",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z coordinate length",
-                    "type": "number"
-                  }
-                }
-              },
-              "orientation": {
-                "description": "Quaternion denoting orientation in 3D space",
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x value",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y value",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z value",
-                    "type": "number"
-                  },
-                  "w": {
-                    "description": "w value",
-                    "type": "number"
-                  }
-                }
-              }
-            }
-          },
-          "length": {
-            "description": "Length of the arrow",
-            "type": "number"
-          },
-          "shaft_diameter": {
-            "description": "Diameter of the arrow shaft",
-            "type": "number"
-          },
-          "head_diameter": {
-            "description": "Diameter of the arrow head",
-            "type": "number"
-          },
-          "head_length": {
-            "description": "Length of the arrow head",
-            "type": "number"
-          },
-          "color": {
-            "description": "Color of the arrow",
-            "$comment": "Generated from Color by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "r": {
-                "description": "Red value between 0 and 1",
-                "type": "number"
-              },
-              "g": {
-                "description": "Green value between 0 and 1",
-                "type": "number"
-              },
-              "b": {
-                "description": "Blue value between 0 and 1",
-                "type": "number"
-              },
-              "a": {
-                "description": "Alpha value between 0 and 1",
-                "type": "number"
-              }
+          }
+        },
+        "length": {
+          "description": "Length of the arrow",
+          "type": "number"
+        },
+        "shaft_diameter": {
+          "description": "Diameter of the arrow shaft",
+          "type": "number"
+        },
+        "head_diameter": {
+          "description": "Diameter of the arrow head",
+          "type": "number"
+        },
+        "head_length": {
+          "description": "Length of the arrow head",
+          "type": "number"
+        },
+        "color": {
+          "description": "A color in RGBA format",
+          "$comment": "Generated from Color by @foxglove/message-schemas",
+          "title": "Color",
+          "type": "object",
+          "properties": {
+            "r": {
+              "description": "Red value between 0 and 1",
+              "type": "number"
+            },
+            "g": {
+              "description": "Green value between 0 and 1",
+              "type": "number"
+            },
+            "b": {
+              "description": "Blue value between 0 and 1",
+              "type": "number"
+            },
+            "a": {
+              "description": "Alpha value between 0 and 1",
+              "type": "number"
             }
           }
         }
       }
     },
     "cubes": {
-      "type": "array",
-      "items": {
-        "description": "Cube markers",
-        "$comment": "Generated from CubeMarker by @foxglove/message-schemas",
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "description": "Timestamp of the marker",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+      "type": "object",
+      "description": "A marker representing a cube or rectangular prism",
+      "$comment": "Generated from CubeMarker by @foxglove/message-schemas",
+      "title": "CubeMarker",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp of the marker",
+          "type": "object",
+          "title": "Time",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_id": {
-            "description": "Frame of reference",
-            "type": "string"
-          },
-          "namespace": {
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "id": {
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "lifetime": {
-            "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+          }
+        },
+        "frame_id": {
+          "description": "Frame of reference",
+          "type": "string"
+        },
+        "namespace": {
+          "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "lifetime": {
+          "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
+          "type": "object",
+          "title": "Duration",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_locked": {
-            "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
-            "type": "boolean"
-          },
-          "metadata": {
-            "type": "array",
-            "items": {
-              "description": "Additional user-provided metadata associated with the marker. Keys must be unique.",
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          }
+        },
+        "frame_locked": {
+          "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
+          "type": "boolean"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "An entry representing a key and its associated value",
+          "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          "title": "KeyValuePair",
+          "properties": {
+            "key": {
+              "description": "Key",
+              "type": "string"
+            },
+            "value": {
+              "description": "Value",
+              "type": "string"
+            }
+          }
+        },
+        "pose": {
+          "description": "The position and orientation of an object or reference frame in 3D space",
+          "$comment": "Generated from Pose by @foxglove/message-schemas",
+          "title": "Pose",
+          "type": "object",
+          "properties": {
+            "position": {
+              "description": "A vector in 3D space that represents a direction only",
+              "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+              "title": "Vector3",
               "type": "object",
               "properties": {
-                "key": {
-                  "description": "Key",
-                  "type": "string"
+                "x": {
+                  "description": "x coordinate length",
+                  "type": "number"
                 },
-                "value": {
-                  "description": "Value",
-                  "type": "string"
+                "y": {
+                  "description": "y coordinate length",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z coordinate length",
+                  "type": "number"
+                }
+              }
+            },
+            "orientation": {
+              "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
+              "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+              "title": "Quaternion",
+              "type": "object",
+              "properties": {
+                "x": {
+                  "description": "x value",
+                  "type": "number"
+                },
+                "y": {
+                  "description": "y value",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z value",
+                  "type": "number"
+                },
+                "w": {
+                  "description": "w value",
+                  "type": "number"
                 }
               }
             }
-          },
-          "pose": {
-            "description": "Position of the center of the cube and orientation of the cube",
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "position": {
-                "description": "Point denoting position in 3D space",
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x coordinate length",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y coordinate length",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z coordinate length",
-                    "type": "number"
-                  }
-                }
-              },
-              "orientation": {
-                "description": "Quaternion denoting orientation in 3D space",
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x value",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y value",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z value",
-                    "type": "number"
-                  },
-                  "w": {
-                    "description": "w value",
-                    "type": "number"
-                  }
-                }
-              }
+          }
+        },
+        "size": {
+          "description": "A vector in 3D space that represents a direction only",
+          "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+          "title": "Vector3",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "x coordinate length",
+              "type": "number"
+            },
+            "y": {
+              "description": "y coordinate length",
+              "type": "number"
+            },
+            "z": {
+              "description": "z coordinate length",
+              "type": "number"
             }
-          },
-          "size": {
-            "description": "Size of the cube along each axis",
-            "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "x": {
-                "description": "x coordinate length",
-                "type": "number"
-              },
-              "y": {
-                "description": "y coordinate length",
-                "type": "number"
-              },
-              "z": {
-                "description": "z coordinate length",
-                "type": "number"
-              }
-            }
-          },
-          "color": {
-            "description": "Color of the arrow",
-            "$comment": "Generated from Color by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "r": {
-                "description": "Red value between 0 and 1",
-                "type": "number"
-              },
-              "g": {
-                "description": "Green value between 0 and 1",
-                "type": "number"
-              },
-              "b": {
-                "description": "Blue value between 0 and 1",
-                "type": "number"
-              },
-              "a": {
-                "description": "Alpha value between 0 and 1",
-                "type": "number"
-              }
+          }
+        },
+        "color": {
+          "description": "A color in RGBA format",
+          "$comment": "Generated from Color by @foxglove/message-schemas",
+          "title": "Color",
+          "type": "object",
+          "properties": {
+            "r": {
+              "description": "Red value between 0 and 1",
+              "type": "number"
+            },
+            "g": {
+              "description": "Green value between 0 and 1",
+              "type": "number"
+            },
+            "b": {
+              "description": "Blue value between 0 and 1",
+              "type": "number"
+            },
+            "a": {
+              "description": "Alpha value between 0 and 1",
+              "type": "number"
             }
           }
         }
       }
     },
     "spheres": {
-      "type": "array",
-      "items": {
-        "description": "Sphere markers",
-        "$comment": "Generated from SphereMarker by @foxglove/message-schemas",
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "description": "Timestamp of the marker",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+      "type": "object",
+      "description": "A marker representing a sphere or ellipsoid",
+      "$comment": "Generated from SphereMarker by @foxglove/message-schemas",
+      "title": "SphereMarker",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp of the marker",
+          "type": "object",
+          "title": "Time",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_id": {
-            "description": "Frame of reference",
-            "type": "string"
-          },
-          "namespace": {
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "id": {
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "lifetime": {
-            "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+          }
+        },
+        "frame_id": {
+          "description": "Frame of reference",
+          "type": "string"
+        },
+        "namespace": {
+          "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "lifetime": {
+          "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
+          "type": "object",
+          "title": "Duration",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_locked": {
-            "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
-            "type": "boolean"
-          },
-          "metadata": {
-            "type": "array",
-            "items": {
-              "description": "Additional user-provided metadata associated with the marker. Keys must be unique.",
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          }
+        },
+        "frame_locked": {
+          "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
+          "type": "boolean"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "An entry representing a key and its associated value",
+          "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          "title": "KeyValuePair",
+          "properties": {
+            "key": {
+              "description": "Key",
+              "type": "string"
+            },
+            "value": {
+              "description": "Value",
+              "type": "string"
+            }
+          }
+        },
+        "pose": {
+          "description": "The position and orientation of an object or reference frame in 3D space",
+          "$comment": "Generated from Pose by @foxglove/message-schemas",
+          "title": "Pose",
+          "type": "object",
+          "properties": {
+            "position": {
+              "description": "A vector in 3D space that represents a direction only",
+              "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+              "title": "Vector3",
               "type": "object",
               "properties": {
-                "key": {
-                  "description": "Key",
-                  "type": "string"
+                "x": {
+                  "description": "x coordinate length",
+                  "type": "number"
                 },
-                "value": {
-                  "description": "Value",
-                  "type": "string"
+                "y": {
+                  "description": "y coordinate length",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z coordinate length",
+                  "type": "number"
+                }
+              }
+            },
+            "orientation": {
+              "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
+              "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+              "title": "Quaternion",
+              "type": "object",
+              "properties": {
+                "x": {
+                  "description": "x value",
+                  "type": "number"
+                },
+                "y": {
+                  "description": "y value",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z value",
+                  "type": "number"
+                },
+                "w": {
+                  "description": "w value",
+                  "type": "number"
                 }
               }
             }
-          },
-          "pose": {
-            "description": "Position of the center of the sphere and orientation of the sphere",
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "position": {
-                "description": "Point denoting position in 3D space",
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x coordinate length",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y coordinate length",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z coordinate length",
-                    "type": "number"
-                  }
-                }
-              },
-              "orientation": {
-                "description": "Quaternion denoting orientation in 3D space",
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x value",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y value",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z value",
-                    "type": "number"
-                  },
-                  "w": {
-                    "description": "w value",
-                    "type": "number"
-                  }
-                }
-              }
+          }
+        },
+        "size": {
+          "description": "A vector in 3D space that represents a direction only",
+          "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+          "title": "Vector3",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "x coordinate length",
+              "type": "number"
+            },
+            "y": {
+              "description": "y coordinate length",
+              "type": "number"
+            },
+            "z": {
+              "description": "z coordinate length",
+              "type": "number"
             }
-          },
-          "size": {
-            "description": "Size (diameter) of the sphere along each axis",
-            "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "x": {
-                "description": "x coordinate length",
-                "type": "number"
-              },
-              "y": {
-                "description": "y coordinate length",
-                "type": "number"
-              },
-              "z": {
-                "description": "z coordinate length",
-                "type": "number"
-              }
-            }
-          },
-          "color": {
-            "description": "Color of the sphere",
-            "$comment": "Generated from Color by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "r": {
-                "description": "Red value between 0 and 1",
-                "type": "number"
-              },
-              "g": {
-                "description": "Green value between 0 and 1",
-                "type": "number"
-              },
-              "b": {
-                "description": "Blue value between 0 and 1",
-                "type": "number"
-              },
-              "a": {
-                "description": "Alpha value between 0 and 1",
-                "type": "number"
-              }
+          }
+        },
+        "color": {
+          "description": "A color in RGBA format",
+          "$comment": "Generated from Color by @foxglove/message-schemas",
+          "title": "Color",
+          "type": "object",
+          "properties": {
+            "r": {
+              "description": "Red value between 0 and 1",
+              "type": "number"
+            },
+            "g": {
+              "description": "Green value between 0 and 1",
+              "type": "number"
+            },
+            "b": {
+              "description": "Blue value between 0 and 1",
+              "type": "number"
+            },
+            "a": {
+              "description": "Alpha value between 0 and 1",
+              "type": "number"
             }
           }
         }
       }
     },
     "cylinders": {
-      "type": "array",
-      "items": {
-        "description": "Cylinder markers",
-        "$comment": "Generated from CylinderMarker by @foxglove/message-schemas",
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "description": "Timestamp of the marker",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+      "type": "object",
+      "description": "A marker representing a cylinder or elliptic cylinder",
+      "$comment": "Generated from CylinderMarker by @foxglove/message-schemas",
+      "title": "CylinderMarker",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp of the marker",
+          "type": "object",
+          "title": "Time",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_id": {
-            "description": "Frame of reference",
-            "type": "string"
-          },
-          "namespace": {
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "id": {
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "lifetime": {
-            "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+          }
+        },
+        "frame_id": {
+          "description": "Frame of reference",
+          "type": "string"
+        },
+        "namespace": {
+          "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "lifetime": {
+          "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
+          "type": "object",
+          "title": "Duration",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_locked": {
-            "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
-            "type": "boolean"
-          },
-          "metadata": {
-            "type": "array",
-            "items": {
-              "description": "Additional user-provided metadata associated with the marker. Keys must be unique.",
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          }
+        },
+        "frame_locked": {
+          "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
+          "type": "boolean"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "An entry representing a key and its associated value",
+          "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          "title": "KeyValuePair",
+          "properties": {
+            "key": {
+              "description": "Key",
+              "type": "string"
+            },
+            "value": {
+              "description": "Value",
+              "type": "string"
+            }
+          }
+        },
+        "pose": {
+          "description": "The position and orientation of an object or reference frame in 3D space",
+          "$comment": "Generated from Pose by @foxglove/message-schemas",
+          "title": "Pose",
+          "type": "object",
+          "properties": {
+            "position": {
+              "description": "A vector in 3D space that represents a direction only",
+              "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+              "title": "Vector3",
               "type": "object",
               "properties": {
-                "key": {
-                  "description": "Key",
-                  "type": "string"
+                "x": {
+                  "description": "x coordinate length",
+                  "type": "number"
                 },
-                "value": {
-                  "description": "Value",
-                  "type": "string"
+                "y": {
+                  "description": "y coordinate length",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z coordinate length",
+                  "type": "number"
+                }
+              }
+            },
+            "orientation": {
+              "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
+              "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+              "title": "Quaternion",
+              "type": "object",
+              "properties": {
+                "x": {
+                  "description": "x value",
+                  "type": "number"
+                },
+                "y": {
+                  "description": "y value",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z value",
+                  "type": "number"
+                },
+                "w": {
+                  "description": "w value",
+                  "type": "number"
                 }
               }
             }
-          },
-          "pose": {
-            "description": "Position of the center of the cylinder and orientation of the cylinder. The cylinder's flat faces are perpendicular to the z-axis.",
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "position": {
-                "description": "Point denoting position in 3D space",
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x coordinate length",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y coordinate length",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z coordinate length",
-                    "type": "number"
-                  }
-                }
-              },
-              "orientation": {
-                "description": "Quaternion denoting orientation in 3D space",
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x value",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y value",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z value",
-                    "type": "number"
-                  },
-                  "w": {
-                    "description": "w value",
-                    "type": "number"
-                  }
-                }
-              }
-            }
-          },
-          "bottom_radius": {
-            "description": "Radius of the cylinder at min z",
-            "type": "number"
-          },
-          "top_radius": {
-            "description": "Radius of the cylinder at max z",
-            "type": "number"
-          },
-          "height": {
-            "description": "Height of the cylinder along the z axis",
-            "type": "number"
-          },
-          "color": {
-            "description": "Color of the sphere",
-            "$comment": "Generated from Color by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "r": {
-                "description": "Red value between 0 and 1",
-                "type": "number"
-              },
-              "g": {
-                "description": "Green value between 0 and 1",
-                "type": "number"
-              },
-              "b": {
-                "description": "Blue value between 0 and 1",
-                "type": "number"
-              },
-              "a": {
-                "description": "Alpha value between 0 and 1",
-                "type": "number"
-              }
+          }
+        },
+        "bottom_radius": {
+          "description": "Radius of the cylinder at min z",
+          "type": "number"
+        },
+        "top_radius": {
+          "description": "Radius of the cylinder at max z",
+          "type": "number"
+        },
+        "height": {
+          "description": "Height of the cylinder along the z axis",
+          "type": "number"
+        },
+        "color": {
+          "description": "A color in RGBA format",
+          "$comment": "Generated from Color by @foxglove/message-schemas",
+          "title": "Color",
+          "type": "object",
+          "properties": {
+            "r": {
+              "description": "Red value between 0 and 1",
+              "type": "number"
+            },
+            "g": {
+              "description": "Green value between 0 and 1",
+              "type": "number"
+            },
+            "b": {
+              "description": "Blue value between 0 and 1",
+              "type": "number"
+            },
+            "a": {
+              "description": "Alpha value between 0 and 1",
+              "type": "number"
             }
           }
         }
       }
     },
     "lines": {
-      "type": "array",
-      "items": {
-        "description": "Line markers",
-        "$comment": "Generated from LineMarker by @foxglove/message-schemas",
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "description": "Timestamp of the marker",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+      "type": "object",
+      "description": "A marker representing a series of points connected by lines",
+      "$comment": "Generated from LineMarker by @foxglove/message-schemas",
+      "title": "LineMarker",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp of the marker",
+          "type": "object",
+          "title": "Time",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_id": {
-            "description": "Frame of reference",
-            "type": "string"
-          },
-          "namespace": {
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "id": {
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "lifetime": {
-            "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+          }
+        },
+        "frame_id": {
+          "description": "Frame of reference",
+          "type": "string"
+        },
+        "namespace": {
+          "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "lifetime": {
+          "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
+          "type": "object",
+          "title": "Duration",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_locked": {
-            "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
-            "type": "boolean"
-          },
-          "metadata": {
-            "type": "array",
-            "items": {
-              "description": "Additional user-provided metadata associated with the marker. Keys must be unique.",
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
-              "type": "object",
-              "properties": {
-                "key": {
-                  "description": "Key",
-                  "type": "string"
-                },
-                "value": {
-                  "description": "Value",
-                  "type": "string"
-                }
-              }
+          }
+        },
+        "frame_locked": {
+          "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
+          "type": "boolean"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "An entry representing a key and its associated value",
+          "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          "title": "KeyValuePair",
+          "properties": {
+            "key": {
+              "description": "Key",
+              "type": "string"
+            },
+            "value": {
+              "description": "Value",
+              "type": "string"
             }
-          },
-          "type": {
-            "description": "Drawing primitive to use for lines",
-            "oneOf": [
-              {
-                "title": "LINE_STRIP",
-                "const": 0,
-                "description": "0-1, 1-2, ..."
-              },
-              {
-                "title": "LINE_LOOP",
-                "const": 1,
-                "description": "0-1, 1-2, ..., n-0"
-              },
-              {
-                "title": "LINE_LIST",
-                "const": 2,
-                "description": "0-1, 2-3, 4-5, ..."
-              }
-            ]
-          },
-          "pose": {
-            "description": "Origin of lines relative to reference frame",
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "position": {
-                "description": "Point denoting position in 3D space",
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x coordinate length",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y coordinate length",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z coordinate length",
-                    "type": "number"
-                  }
-                }
-              },
-              "orientation": {
-                "description": "Quaternion denoting orientation in 3D space",
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x value",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y value",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z value",
-                    "type": "number"
-                  },
-                  "w": {
-                    "description": "w value",
-                    "type": "number"
-                  }
-                }
-              }
+          }
+        },
+        "type": {
+          "title": "LineType: An enumeration indicating how input points should be interpreted to create lines",
+          "description": "Drawing primitive to use for lines",
+          "oneOf": [
+            {
+              "title": "LINE_STRIP",
+              "const": 0,
+              "description": "0-1, 1-2, ..., (n-1)-n"
+            },
+            {
+              "title": "LINE_LOOP",
+              "const": 1,
+              "description": "0-1, 1-2, ..., (n-1)-n, n-0"
+            },
+            {
+              "title": "LINE_LIST",
+              "const": 2,
+              "description": "0-1, 2-3, 4-5, ..."
             }
-          },
-          "thickness": {
-            "description": "Line thickness",
-            "type": "number"
-          },
-          "scale_invariant": {
-            "description": "Indicates whether `thickness` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)",
-            "type": "boolean"
-          },
-          "points": {
-            "type": "array",
-            "items": {
-              "description": "Points along the line",
-              "$comment": "Generated from Point3 by @foxglove/message-schemas",
+          ]
+        },
+        "pose": {
+          "description": "The position and orientation of an object or reference frame in 3D space",
+          "$comment": "Generated from Pose by @foxglove/message-schemas",
+          "title": "Pose",
+          "type": "object",
+          "properties": {
+            "position": {
+              "description": "A vector in 3D space that represents a direction only",
+              "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+              "title": "Vector3",
               "type": "object",
               "properties": {
                 "x": {
-                  "description": "x coordinate position",
+                  "description": "x coordinate length",
                   "type": "number"
                 },
                 "y": {
-                  "description": "y coordinate position",
+                  "description": "y coordinate length",
                   "type": "number"
                 },
                 "z": {
-                  "description": "z coordinate position",
+                  "description": "z coordinate length",
                   "type": "number"
                 }
               }
-            }
-          },
-          "color": {
-            "description": "Solid color to use for the whole line. One of `color` or `colors` must be provided.",
-            "$comment": "Generated from Color by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "r": {
-                "description": "Red value between 0 and 1",
-                "type": "number"
-              },
-              "g": {
-                "description": "Green value between 0 and 1",
-                "type": "number"
-              },
-              "b": {
-                "description": "Blue value between 0 and 1",
-                "type": "number"
-              },
-              "a": {
-                "description": "Alpha value between 0 and 1",
-                "type": "number"
-              }
-            }
-          },
-          "colors": {
-            "type": "array",
-            "items": {
-              "description": "Per-point colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.",
-              "$comment": "Generated from Color by @foxglove/message-schemas",
+            },
+            "orientation": {
+              "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
+              "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+              "title": "Quaternion",
               "type": "object",
               "properties": {
-                "r": {
-                  "description": "Red value between 0 and 1",
+                "x": {
+                  "description": "x value",
                   "type": "number"
                 },
-                "g": {
-                  "description": "Green value between 0 and 1",
+                "y": {
+                  "description": "y value",
                   "type": "number"
                 },
-                "b": {
-                  "description": "Blue value between 0 and 1",
+                "z": {
+                  "description": "z value",
                   "type": "number"
                 },
-                "a": {
-                  "description": "Alpha value between 0 and 1",
+                "w": {
+                  "description": "w value",
                   "type": "number"
                 }
               }
             }
-          },
-          "indices": {
-            "type": "array",
-            "items": {
-              "description": "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.",
+          }
+        },
+        "thickness": {
+          "description": "Line thickness",
+          "type": "number"
+        },
+        "scale_invariant": {
+          "description": "Indicates whether `thickness` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)",
+          "type": "boolean"
+        },
+        "points": {
+          "type": "object",
+          "description": "A point representing a position in 3D space",
+          "$comment": "Generated from Point3 by @foxglove/message-schemas",
+          "title": "Point3",
+          "properties": {
+            "x": {
+              "description": "x coordinate position",
+              "type": "number"
+            },
+            "y": {
+              "description": "y coordinate position",
+              "type": "number"
+            },
+            "z": {
+              "description": "z coordinate position",
               "type": "number"
             }
           }
+        },
+        "color": {
+          "description": "A color in RGBA format",
+          "$comment": "Generated from Color by @foxglove/message-schemas",
+          "title": "Color",
+          "type": "object",
+          "properties": {
+            "r": {
+              "description": "Red value between 0 and 1",
+              "type": "number"
+            },
+            "g": {
+              "description": "Green value between 0 and 1",
+              "type": "number"
+            },
+            "b": {
+              "description": "Blue value between 0 and 1",
+              "type": "number"
+            },
+            "a": {
+              "description": "Alpha value between 0 and 1",
+              "type": "number"
+            }
+          }
+        },
+        "colors": {
+          "type": "object",
+          "description": "A color in RGBA format",
+          "$comment": "Generated from Color by @foxglove/message-schemas",
+          "title": "Color",
+          "properties": {
+            "r": {
+              "description": "Red value between 0 and 1",
+              "type": "number"
+            },
+            "g": {
+              "description": "Green value between 0 and 1",
+              "type": "number"
+            },
+            "b": {
+              "description": "Blue value between 0 and 1",
+              "type": "number"
+            },
+            "a": {
+              "description": "Alpha value between 0 and 1",
+              "type": "number"
+            }
+          }
+        },
+        "indices": {
+          "type": "integer",
+          "description": "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data."
         }
       }
     },
     "triangles": {
-      "type": "array",
-      "items": {
-        "description": "Triangles markers",
-        "$comment": "Generated from TrianglesMarker by @foxglove/message-schemas",
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "description": "Timestamp of the marker",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+      "type": "object",
+      "description": "A marker representing a set of triangles or a surface tiled by triangles",
+      "$comment": "Generated from TrianglesMarker by @foxglove/message-schemas",
+      "title": "TrianglesMarker",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp of the marker",
+          "type": "object",
+          "title": "Time",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_id": {
-            "description": "Frame of reference",
-            "type": "string"
-          },
-          "namespace": {
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "id": {
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "lifetime": {
-            "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+          }
+        },
+        "frame_id": {
+          "description": "Frame of reference",
+          "type": "string"
+        },
+        "namespace": {
+          "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "lifetime": {
+          "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
+          "type": "object",
+          "title": "Duration",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_locked": {
-            "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
-            "type": "boolean"
-          },
-          "metadata": {
-            "type": "array",
-            "items": {
-              "description": "Additional user-provided metadata associated with the marker. Keys must be unique.",
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
-              "type": "object",
-              "properties": {
-                "key": {
-                  "description": "Key",
-                  "type": "string"
-                },
-                "value": {
-                  "description": "Value",
-                  "type": "string"
-                }
-              }
+          }
+        },
+        "frame_locked": {
+          "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
+          "type": "boolean"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "An entry representing a key and its associated value",
+          "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          "title": "KeyValuePair",
+          "properties": {
+            "key": {
+              "description": "Key",
+              "type": "string"
+            },
+            "value": {
+              "description": "Value",
+              "type": "string"
             }
-          },
-          "type": {
-            "description": "Drawing primitive to use for triangles",
-            "oneOf": [
-              {
-                "title": "TRIANGLE_LIST",
-                "const": 0,
-                "description": "0-1-2, 3-4-5, ..."
-              },
-              {
-                "title": "TRIANGLE_STRIP",
-                "const": 1,
-                "description": "0-1-2, 1-2-3, 2-3-4, ..."
-              },
-              {
-                "title": "TRIANGLE_FAN",
-                "const": 2,
-                "description": "0-1-2, 0-2-3, 0-3-4, ..."
-              }
-            ]
-          },
-          "pose": {
-            "description": "Origin of triangles relative to reference frame",
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "position": {
-                "description": "Point denoting position in 3D space",
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x coordinate length",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y coordinate length",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z coordinate length",
-                    "type": "number"
-                  }
-                }
-              },
-              "orientation": {
-                "description": "Quaternion denoting orientation in 3D space",
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x value",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y value",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z value",
-                    "type": "number"
-                  },
-                  "w": {
-                    "description": "w value",
-                    "type": "number"
-                  }
-                }
-              }
+          }
+        },
+        "type": {
+          "title": "TriangleType: An enumeration indicating how input points should be interpreted to create triangles",
+          "description": "Drawing primitive to use for triangles",
+          "oneOf": [
+            {
+              "title": "TRIANGLE_LIST",
+              "const": 0,
+              "description": "0-1-2, 3-4-5, ..."
+            },
+            {
+              "title": "TRIANGLE_STRIP",
+              "const": 1,
+              "description": "0-1-2, 1-2-3, 2-3-4, ..."
+            },
+            {
+              "title": "TRIANGLE_FAN",
+              "const": 2,
+              "description": "0-1-2, 0-2-3, 0-3-4, ..."
             }
-          },
-          "points": {
-            "type": "array",
-            "items": {
-              "description": "Vertices to use for triangles",
-              "$comment": "Generated from Point3 by @foxglove/message-schemas",
+          ]
+        },
+        "pose": {
+          "description": "The position and orientation of an object or reference frame in 3D space",
+          "$comment": "Generated from Pose by @foxglove/message-schemas",
+          "title": "Pose",
+          "type": "object",
+          "properties": {
+            "position": {
+              "description": "A vector in 3D space that represents a direction only",
+              "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+              "title": "Vector3",
               "type": "object",
               "properties": {
                 "x": {
-                  "description": "x coordinate position",
+                  "description": "x coordinate length",
                   "type": "number"
                 },
                 "y": {
-                  "description": "y coordinate position",
+                  "description": "y coordinate length",
                   "type": "number"
                 },
                 "z": {
-                  "description": "z coordinate position",
+                  "description": "z coordinate length",
                   "type": "number"
                 }
               }
-            }
-          },
-          "color": {
-            "description": "Solid color to use for the whole shape. One of `color` or `colors` must be provided.",
-            "$comment": "Generated from Color by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "r": {
-                "description": "Red value between 0 and 1",
-                "type": "number"
-              },
-              "g": {
-                "description": "Green value between 0 and 1",
-                "type": "number"
-              },
-              "b": {
-                "description": "Blue value between 0 and 1",
-                "type": "number"
-              },
-              "a": {
-                "description": "Alpha value between 0 and 1",
-                "type": "number"
-              }
-            }
-          },
-          "colors": {
-            "type": "array",
-            "items": {
-              "description": "Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` should be provided.",
-              "$comment": "Generated from Color by @foxglove/message-schemas",
+            },
+            "orientation": {
+              "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
+              "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+              "title": "Quaternion",
               "type": "object",
               "properties": {
-                "r": {
-                  "description": "Red value between 0 and 1",
+                "x": {
+                  "description": "x value",
                   "type": "number"
                 },
-                "g": {
-                  "description": "Green value between 0 and 1",
+                "y": {
+                  "description": "y value",
                   "type": "number"
                 },
-                "b": {
-                  "description": "Blue value between 0 and 1",
+                "z": {
+                  "description": "z value",
                   "type": "number"
                 },
-                "a": {
-                  "description": "Alpha value between 0 and 1",
+                "w": {
+                  "description": "w value",
                   "type": "number"
                 }
               }
             }
-          },
-          "indices": {
-            "type": "array",
-            "items": {
-              "description": "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.",
+          }
+        },
+        "points": {
+          "type": "object",
+          "description": "A point representing a position in 3D space",
+          "$comment": "Generated from Point3 by @foxglove/message-schemas",
+          "title": "Point3",
+          "properties": {
+            "x": {
+              "description": "x coordinate position",
+              "type": "number"
+            },
+            "y": {
+              "description": "y coordinate position",
+              "type": "number"
+            },
+            "z": {
+              "description": "z coordinate position",
               "type": "number"
             }
           }
+        },
+        "color": {
+          "description": "A color in RGBA format",
+          "$comment": "Generated from Color by @foxglove/message-schemas",
+          "title": "Color",
+          "type": "object",
+          "properties": {
+            "r": {
+              "description": "Red value between 0 and 1",
+              "type": "number"
+            },
+            "g": {
+              "description": "Green value between 0 and 1",
+              "type": "number"
+            },
+            "b": {
+              "description": "Blue value between 0 and 1",
+              "type": "number"
+            },
+            "a": {
+              "description": "Alpha value between 0 and 1",
+              "type": "number"
+            }
+          }
+        },
+        "colors": {
+          "type": "object",
+          "description": "A color in RGBA format",
+          "$comment": "Generated from Color by @foxglove/message-schemas",
+          "title": "Color",
+          "properties": {
+            "r": {
+              "description": "Red value between 0 and 1",
+              "type": "number"
+            },
+            "g": {
+              "description": "Green value between 0 and 1",
+              "type": "number"
+            },
+            "b": {
+              "description": "Blue value between 0 and 1",
+              "type": "number"
+            },
+            "a": {
+              "description": "Alpha value between 0 and 1",
+              "type": "number"
+            }
+          }
+        },
+        "indices": {
+          "type": "integer",
+          "description": "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data."
         }
       }
     },
     "texts": {
-      "type": "array",
-      "items": {
-        "description": "Text markers",
-        "$comment": "Generated from TextMarker by @foxglove/message-schemas",
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "description": "Timestamp of the marker",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+      "type": "object",
+      "description": "A marker representing a text label",
+      "$comment": "Generated from TextMarker by @foxglove/message-schemas",
+      "title": "TextMarker",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp of the marker",
+          "type": "object",
+          "title": "Time",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_id": {
-            "description": "Frame of reference",
-            "type": "string"
-          },
-          "namespace": {
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "id": {
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "lifetime": {
-            "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+          }
+        },
+        "frame_id": {
+          "description": "Frame of reference",
+          "type": "string"
+        },
+        "namespace": {
+          "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "lifetime": {
+          "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
+          "type": "object",
+          "title": "Duration",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_locked": {
-            "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
-            "type": "boolean"
-          },
-          "metadata": {
-            "type": "array",
-            "items": {
-              "description": "Additional user-provided metadata associated with the marker. Keys must be unique.",
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          }
+        },
+        "frame_locked": {
+          "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
+          "type": "boolean"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "An entry representing a key and its associated value",
+          "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          "title": "KeyValuePair",
+          "properties": {
+            "key": {
+              "description": "Key",
+              "type": "string"
+            },
+            "value": {
+              "description": "Value",
+              "type": "string"
+            }
+          }
+        },
+        "pose": {
+          "description": "The position and orientation of an object or reference frame in 3D space",
+          "$comment": "Generated from Pose by @foxglove/message-schemas",
+          "title": "Pose",
+          "type": "object",
+          "properties": {
+            "position": {
+              "description": "A vector in 3D space that represents a direction only",
+              "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+              "title": "Vector3",
               "type": "object",
               "properties": {
-                "key": {
-                  "description": "Key",
-                  "type": "string"
+                "x": {
+                  "description": "x coordinate length",
+                  "type": "number"
                 },
-                "value": {
-                  "description": "Value",
-                  "type": "string"
+                "y": {
+                  "description": "y coordinate length",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z coordinate length",
+                  "type": "number"
+                }
+              }
+            },
+            "orientation": {
+              "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
+              "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+              "title": "Quaternion",
+              "type": "object",
+              "properties": {
+                "x": {
+                  "description": "x value",
+                  "type": "number"
+                },
+                "y": {
+                  "description": "y value",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z value",
+                  "type": "number"
+                },
+                "w": {
+                  "description": "w value",
+                  "type": "number"
                 }
               }
             }
-          },
-          "pose": {
-            "description": "Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x.",
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "position": {
-                "description": "Point denoting position in 3D space",
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x coordinate length",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y coordinate length",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z coordinate length",
-                    "type": "number"
-                  }
-                }
-              },
-              "orientation": {
-                "description": "Quaternion denoting orientation in 3D space",
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x value",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y value",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z value",
-                    "type": "number"
-                  },
-                  "w": {
-                    "description": "w value",
-                    "type": "number"
-                  }
-                }
-              }
-            }
-          },
-          "billboard": {
-            "description": "Whether the text should respect `pose.orientation` (false) or always face the camera (true)",
-            "type": "boolean"
-          },
-          "font_size": {
-            "description": "Font size (height of one line of text)",
-            "type": "number"
-          },
-          "scale_invariant": {
-            "description": "Indicates whether `font_size` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)",
-            "type": "boolean"
-          },
-          "color": {
-            "description": "Color of the text",
-            "$comment": "Generated from Color by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "r": {
-                "description": "Red value between 0 and 1",
-                "type": "number"
-              },
-              "g": {
-                "description": "Green value between 0 and 1",
-                "type": "number"
-              },
-              "b": {
-                "description": "Blue value between 0 and 1",
-                "type": "number"
-              },
-              "a": {
-                "description": "Alpha value between 0 and 1",
-                "type": "number"
-              }
-            }
-          },
-          "text": {
-            "description": "Text",
-            "type": "string"
           }
+        },
+        "billboard": {
+          "description": "Whether the text should respect `pose.orientation` (false) or always face the camera (true)",
+          "type": "boolean"
+        },
+        "font_size": {
+          "description": "Font size (height of one line of text)",
+          "type": "number"
+        },
+        "scale_invariant": {
+          "description": "Indicates whether `font_size` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)",
+          "type": "boolean"
+        },
+        "color": {
+          "description": "A color in RGBA format",
+          "$comment": "Generated from Color by @foxglove/message-schemas",
+          "title": "Color",
+          "type": "object",
+          "properties": {
+            "r": {
+              "description": "Red value between 0 and 1",
+              "type": "number"
+            },
+            "g": {
+              "description": "Green value between 0 and 1",
+              "type": "number"
+            },
+            "b": {
+              "description": "Blue value between 0 and 1",
+              "type": "number"
+            },
+            "a": {
+              "description": "Alpha value between 0 and 1",
+              "type": "number"
+            }
+          }
+        },
+        "text": {
+          "description": "Text",
+          "type": "string"
         }
       }
     },
     "models": {
-      "type": "array",
-      "items": {
-        "description": "Model markers",
-        "$comment": "Generated from ModelMarker by @foxglove/message-schemas",
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "description": "Timestamp of the marker",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+      "type": "object",
+      "description": "A marker representing a 3D model",
+      "$comment": "Generated from ModelMarker by @foxglove/message-schemas",
+      "title": "ModelMarker",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp of the marker",
+          "type": "object",
+          "title": "Time",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_id": {
-            "description": "Frame of reference",
-            "type": "string"
-          },
-          "namespace": {
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "id": {
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-            "type": "string"
-          },
-          "lifetime": {
-            "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
-            "type": "object",
-            "properties": {
-              "sec": {
-                "type": "integer"
-              },
-              "nsec": {
-                "type": "integer"
-              }
+          }
+        },
+        "frame_id": {
+          "description": "Frame of reference",
+          "type": "string"
+        },
+        "namespace": {
+          "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+          "type": "string"
+        },
+        "lifetime": {
+          "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
+          "type": "object",
+          "title": "Duration",
+          "properties": {
+            "sec": {
+              "type": "integer"
+            },
+            "nsec": {
+              "type": "integer"
             }
-          },
-          "frame_locked": {
-            "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
-            "type": "boolean"
-          },
-          "metadata": {
-            "type": "array",
-            "items": {
-              "description": "Additional user-provided metadata associated with the marker. Keys must be unique.",
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          }
+        },
+        "frame_locked": {
+          "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
+          "type": "boolean"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "An entry representing a key and its associated value",
+          "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+          "title": "KeyValuePair",
+          "properties": {
+            "key": {
+              "description": "Key",
+              "type": "string"
+            },
+            "value": {
+              "description": "Value",
+              "type": "string"
+            }
+          }
+        },
+        "pose": {
+          "description": "The position and orientation of an object or reference frame in 3D space",
+          "$comment": "Generated from Pose by @foxglove/message-schemas",
+          "title": "Pose",
+          "type": "object",
+          "properties": {
+            "position": {
+              "description": "A vector in 3D space that represents a direction only",
+              "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+              "title": "Vector3",
               "type": "object",
               "properties": {
-                "key": {
-                  "description": "Key",
-                  "type": "string"
+                "x": {
+                  "description": "x coordinate length",
+                  "type": "number"
                 },
-                "value": {
-                  "description": "Value",
-                  "type": "string"
+                "y": {
+                  "description": "y coordinate length",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z coordinate length",
+                  "type": "number"
+                }
+              }
+            },
+            "orientation": {
+              "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
+              "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+              "title": "Quaternion",
+              "type": "object",
+              "properties": {
+                "x": {
+                  "description": "x value",
+                  "type": "number"
+                },
+                "y": {
+                  "description": "y value",
+                  "type": "number"
+                },
+                "z": {
+                  "description": "z value",
+                  "type": "number"
+                },
+                "w": {
+                  "description": "w value",
+                  "type": "number"
                 }
               }
             }
-          },
-          "pose": {
-            "description": "Origin of model relative to reference frame",
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "position": {
-                "description": "Point denoting position in 3D space",
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x coordinate length",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y coordinate length",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z coordinate length",
-                    "type": "number"
-                  }
-                }
-              },
-              "orientation": {
-                "description": "Quaternion denoting orientation in 3D space",
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "description": "x value",
-                    "type": "number"
-                  },
-                  "y": {
-                    "description": "y value",
-                    "type": "number"
-                  },
-                  "z": {
-                    "description": "z value",
-                    "type": "number"
-                  },
-                  "w": {
-                    "description": "w value",
-                    "type": "number"
-                  }
-                }
-              }
-            }
-          },
-          "scale": {
-            "description": "Scale factor to apply to the model along each axis",
-            "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "x": {
-                "description": "x coordinate length",
-                "type": "number"
-              },
-              "y": {
-                "description": "y coordinate length",
-                "type": "number"
-              },
-              "z": {
-                "description": "z coordinate length",
-                "type": "number"
-              }
-            }
-          },
-          "color": {
-            "description": "Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.",
-            "$comment": "Generated from Color by @foxglove/message-schemas",
-            "type": "object",
-            "properties": {
-              "r": {
-                "description": "Red value between 0 and 1",
-                "type": "number"
-              },
-              "g": {
-                "description": "Green value between 0 and 1",
-                "type": "number"
-              },
-              "b": {
-                "description": "Blue value between 0 and 1",
-                "type": "number"
-              },
-              "a": {
-                "description": "Alpha value between 0 and 1",
-                "type": "number"
-              }
-            }
-          },
-          "use_embedded_materials": {
-            "description": "Whether to use materials embedded in the model, or only the `color`",
-            "type": "boolean"
-          },
-          "url": {
-            "description": "URL pointing to model file. Either `url` or `mime_type` and `data` should be provided.",
-            "type": "string"
-          },
-          "mime_type": {
-            "description": "MIME type of embedded model (e.g. `model/gltf-binary`). Either `url` or `mime_type` and `data` should be provided.",
-            "type": "string"
-          },
-          "data": {
-            "type": "string",
-            "description": "Embedded model. Either `url` or `mime_type` and `data` should be provided.",
-            "contentEncoding": "base64"
           }
+        },
+        "scale": {
+          "description": "A vector in 3D space that represents a direction only",
+          "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+          "title": "Vector3",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "x coordinate length",
+              "type": "number"
+            },
+            "y": {
+              "description": "y coordinate length",
+              "type": "number"
+            },
+            "z": {
+              "description": "z coordinate length",
+              "type": "number"
+            }
+          }
+        },
+        "color": {
+          "description": "A color in RGBA format",
+          "$comment": "Generated from Color by @foxglove/message-schemas",
+          "title": "Color",
+          "type": "object",
+          "properties": {
+            "r": {
+              "description": "Red value between 0 and 1",
+              "type": "number"
+            },
+            "g": {
+              "description": "Green value between 0 and 1",
+              "type": "number"
+            },
+            "b": {
+              "description": "Blue value between 0 and 1",
+              "type": "number"
+            },
+            "a": {
+              "description": "Alpha value between 0 and 1",
+              "type": "number"
+            }
+          }
+        },
+        "use_embedded_materials": {
+          "description": "Whether to use materials embedded in the model, or only the `color`",
+          "type": "boolean"
+        },
+        "url": {
+          "description": "URL pointing to model file. Either `url` or `mime_type` and `data` should be provided.",
+          "type": "string"
+        },
+        "mime_type": {
+          "description": "MIME type of embedded model (e.g. `model/gltf-binary`). Either `url` or `mime_type` and `data` should be provided.",
+          "type": "string"
+        },
+        "data": {
+          "type": "string",
+          "description": "Embedded model. Either `url` or `mime_type` and `data` should be provided.",
+          "contentEncoding": "base64"
         }
       }
     }

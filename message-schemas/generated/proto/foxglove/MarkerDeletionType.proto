@@ -4,6 +4,7 @@ syntax = "proto3";
 
 package foxglove;
 
+// An enumeration indicating which markers should match a MarkerDeletion command
 enum MarkerDeletionType {
   MATCHING_NAMESPACE_AND_ID = 0;
 

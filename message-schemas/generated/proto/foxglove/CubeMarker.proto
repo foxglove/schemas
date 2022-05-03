@@ -11,6 +11,7 @@ import "foxglove/Vector3.proto";
 
 package foxglove;
 
+// A marker representing a cube or rectangular prism
 message CubeMarker {
   // Timestamp of the marker
   foxglove.Time timestamp = 1;

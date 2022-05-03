@@ -7,6 +7,7 @@ import "foxglove/Time.proto";
 
 package foxglove;
 
+// Deletion command to remove previously published markers
 message MarkerDeletion {
   // Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.
   foxglove.Time timestamp = 1;

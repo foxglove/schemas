@@ -12,6 +12,7 @@ import "foxglove/TriangleType.proto";
 
 package foxglove;
 
+// A marker representing a set of triangles or a surface tiled by triangles
 message TrianglesMarker {
   // Timestamp of the marker
   foxglove.Time timestamp = 1;

@@ -1,10 +1,13 @@
 {
   "$comment": "Generated from MarkerDeletion by @foxglove/message-schemas",
+  "title": "MarkerDeletion",
+  "description": "Deletion command to remove previously published markers",
   "type": "object",
   "properties": {
     "timestamp": {
       "description": "Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.",
       "type": "object",
+      "title": "Time",
       "properties": {
         "sec": {
           "type": "integer"
@@ -15,6 +18,7 @@
       }
     },
     "type": {
+      "title": "MarkerDeletionType: An enumeration indicating which markers should match a MarkerDeletion command",
       "description": "Type of deletion action to perform",
       "oneOf": [
         {

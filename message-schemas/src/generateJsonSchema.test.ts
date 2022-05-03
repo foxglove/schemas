@@ -9,10 +9,11 @@ describe("generateJsonSchema", () => {
       .toMatchInlineSnapshot(`
       Object {
         "$comment": "Generated from LineMarker by @foxglove/message-schemas",
+        "description": "A marker representing a series of points connected by lines",
         "properties": Object {
           "color": Object {
             "$comment": "Generated from Color by @foxglove/message-schemas",
-            "description": "Solid color to use for the whole line. One of \`color\` or \`colors\` must be provided.",
+            "description": "A color in RGBA format",
             "properties": Object {
               "a": Object {
                 "description": "Alpha value between 0 and 1",
@@ -31,33 +32,32 @@ describe("generateJsonSchema", () => {
                 "type": "number",
               },
             },
+            "title": "Color",
             "type": "object",
           },
           "colors": Object {
-            "items": Object {
-              "$comment": "Generated from Color by @foxglove/message-schemas",
-              "description": "Per-point colors (if specified, must have the same length as \`points\`). One of \`color\` or \`colors\` must be provided.",
-              "properties": Object {
-                "a": Object {
-                  "description": "Alpha value between 0 and 1",
-                  "type": "number",
-                },
-                "b": Object {
-                  "description": "Blue value between 0 and 1",
-                  "type": "number",
-                },
-                "g": Object {
-                  "description": "Green value between 0 and 1",
-                  "type": "number",
-                },
-                "r": Object {
-                  "description": "Red value between 0 and 1",
-                  "type": "number",
-                },
+            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "description": "A color in RGBA format",
+            "properties": Object {
+              "a": Object {
+                "description": "Alpha value between 0 and 1",
+                "type": "number",
               },
-              "type": "object",
+              "b": Object {
+                "description": "Blue value between 0 and 1",
+                "type": "number",
+              },
+              "g": Object {
+                "description": "Green value between 0 and 1",
+                "type": "number",
+              },
+              "r": Object {
+                "description": "Red value between 0 and 1",
+                "type": "number",
+              },
             },
-            "type": "array",
+            "title": "Color",
+            "type": "object",
           },
           "frame_id": Object {
             "description": "Frame of reference",
@@ -72,11 +72,8 @@ describe("generateJsonSchema", () => {
             "type": "string",
           },
           "indices": Object {
-            "items": Object {
-              "description": "Indexes into the \`points\` and \`colors\` attribute arrays, which can be used to avoid duplicating attribute data.",
-              "type": "number",
-            },
-            "type": "array",
+            "description": "Indexes into the \`points\` and \`colors\` attribute arrays, which can be used to avoid duplicating attribute data.",
+            "type": "number",
           },
           "lifetime": Object {
             "description": "Length of time (relative to \`timestamp\`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
@@ -88,59 +85,56 @@ describe("generateJsonSchema", () => {
                 "type": "integer",
               },
             },
+            "title": "Duration",
             "type": "object",
           },
           "metadata": Object {
-            "items": Object {
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
-              "description": "Additional user-provided metadata associated with the marker. Keys must be unique.",
-              "properties": Object {
-                "key": Object {
-                  "description": "Key",
-                  "type": "string",
-                },
-                "value": Object {
-                  "description": "Value",
-                  "type": "string",
-                },
+            "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+            "description": "An entry representing a key and its associated value",
+            "properties": Object {
+              "key": Object {
+                "description": "Key",
+                "type": "string",
               },
-              "type": "object",
+              "value": Object {
+                "description": "Value",
+                "type": "string",
+              },
             },
-            "type": "array",
+            "title": "KeyValuePair",
+            "type": "object",
           },
           "namespace": Object {
             "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same \`namespace\` and \`id\`.",
             "type": "string",
           },
           "points": Object {
-            "items": Object {
-              "$comment": "Generated from Point3 by @foxglove/message-schemas",
-              "description": "Points along the line",
-              "properties": Object {
-                "x": Object {
-                  "description": "x coordinate position",
-                  "type": "number",
-                },
-                "y": Object {
-                  "description": "y coordinate position",
-                  "type": "number",
-                },
-                "z": Object {
-                  "description": "z coordinate position",
-                  "type": "number",
-                },
+            "$comment": "Generated from Point3 by @foxglove/message-schemas",
+            "description": "A point representing a position in 3D space",
+            "properties": Object {
+              "x": Object {
+                "description": "x coordinate position",
+                "type": "number",
               },
-              "type": "object",
+              "y": Object {
+                "description": "y coordinate position",
+                "type": "number",
+              },
+              "z": Object {
+                "description": "z coordinate position",
+                "type": "number",
+              },
             },
-            "type": "array",
+            "title": "Point3",
+            "type": "object",
           },
           "pose": Object {
             "$comment": "Generated from Pose by @foxglove/message-schemas",
-            "description": "Origin of lines relative to reference frame",
+            "description": "The position and orientation of an object or reference frame in 3D space",
             "properties": Object {
               "orientation": Object {
                 "$comment": "Generated from Quaternion by @foxglove/message-schemas",
-                "description": "Quaternion denoting orientation in 3D space",
+                "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
                 "properties": Object {
                   "w": Object {
                     "description": "w value",
@@ -159,11 +153,12 @@ describe("generateJsonSchema", () => {
                     "type": "number",
                   },
                 },
+                "title": "Quaternion",
                 "type": "object",
               },
               "position": Object {
                 "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-                "description": "Point denoting position in 3D space",
+                "description": "A vector in 3D space that represents a direction only",
                 "properties": Object {
                   "x": Object {
                     "description": "x coordinate length",
@@ -178,9 +173,11 @@ describe("generateJsonSchema", () => {
                     "type": "number",
                   },
                 },
+                "title": "Vector3",
                 "type": "object",
               },
             },
+            "title": "Pose",
             "type": "object",
           },
           "scale_invariant": Object {
@@ -201,6 +198,7 @@ describe("generateJsonSchema", () => {
                 "type": "integer",
               },
             },
+            "title": "Time",
             "type": "object",
           },
           "type": Object {
@@ -208,12 +206,12 @@ describe("generateJsonSchema", () => {
             "oneOf": Array [
               Object {
                 "const": 0,
-                "description": "0-1, 1-2, ...",
+                "description": "0-1, 1-2, ..., (n-1)-n",
                 "title": "LINE_STRIP",
               },
               Object {
                 "const": 1,
-                "description": "0-1, 1-2, ..., n-0",
+                "description": "0-1, 1-2, ..., (n-1)-n, n-0",
                 "title": "LINE_LOOP",
               },
               Object {
@@ -222,8 +220,10 @@ describe("generateJsonSchema", () => {
                 "title": "LINE_LIST",
               },
             ],
+            "title": "LineType: An enumeration indicating how input points should be interpreted to create lines",
           },
         },
+        "title": "LineMarker",
         "type": "object",
       }
     `);

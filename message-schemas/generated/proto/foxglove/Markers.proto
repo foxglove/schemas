@@ -14,6 +14,7 @@ import "foxglove/TrianglesMarker.proto";
 
 package foxglove;
 
+// A list that can contain any number of any type of marker
 message Markers {
   // Marker deletion actions
   repeated foxglove.MarkerDeletion deletions = 1;

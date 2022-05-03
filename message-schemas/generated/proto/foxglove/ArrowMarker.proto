@@ -10,6 +10,7 @@ import "foxglove/Time.proto";
 
 package foxglove;
 
+// A marker representing an arrow
 message ArrowMarker {
   // Timestamp of the marker
   foxglove.Time timestamp = 1;

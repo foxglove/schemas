@@ -4,6 +4,7 @@ syntax = "proto3";
 
 package foxglove;
 
+// A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space
 message Quaternion {
   // x value
   double x = 1;

@@ -4,6 +4,7 @@ syntax = "proto3";
 
 package foxglove;
 
+// An enumeration indicating how input points should be interpreted to create triangles
 enum TriangleType {
   // 0-1-2, 3-4-5, ...
   TRIANGLE_LIST = 0;

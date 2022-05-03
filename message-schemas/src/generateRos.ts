@@ -27,13 +27,14 @@ function primitiveToRos(type: Exclude<FoxglovePrimitive, "integer" | "bytes">) {
   }
 }
 
+//FIXME: change to one call per file like other generators?
 export function generateRosMsgFiles(
   schema: FoxgloveMessageSchema
 ): Array<{ name: string; filename: string; source: string }> {
   const result: Array<{ name: string; filename: string; source: string }> = [];
   for (const def of generateRosMsgDefinitions(schema)) {
     let source = "";
-    source += `# Generated from ${def.originalName} by @foxglove/message-schemas\n`;
+    source += `# Generated from ${def.originalName} by @foxglove/message-schemas\n# ${schema.description}`;
     for (const field of def.definitions) {
       if (field.description != undefined) {
         source += `\n# ${field.description}\n`;

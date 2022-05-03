@@ -1,10 +1,13 @@
 {
   "$comment": "Generated from Pose by @foxglove/message-schemas",
+  "title": "Pose",
+  "description": "The position and orientation of an object or reference frame in 3D space",
   "type": "object",
   "properties": {
     "position": {
-      "description": "Point denoting position in 3D space",
+      "description": "A vector in 3D space that represents a direction only",
       "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+      "title": "Vector3",
       "type": "object",
       "properties": {
         "x": {
@@ -22,8 +25,9 @@
       }
     },
     "orientation": {
-      "description": "Quaternion denoting orientation in 3D space",
+      "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
       "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+      "title": "Quaternion",
       "type": "object",
       "properties": {
         "x": {

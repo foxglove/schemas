@@ -11,6 +11,7 @@ import "foxglove/Vector3.proto";
 
 package foxglove;
 
+// A marker representing a sphere or ellipsoid
 message SphereMarker {
   // Timestamp of the marker
   foxglove.Time timestamp = 1;

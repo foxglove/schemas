@@ -4,6 +4,7 @@ syntax = "proto3";
 
 package foxglove;
 
+// A color in RGBA format
 message Color {
   // Red value between 0 and 1
   double r = 1;

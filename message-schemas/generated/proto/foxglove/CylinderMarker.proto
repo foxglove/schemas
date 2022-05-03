@@ -10,6 +10,7 @@ import "foxglove/Time.proto";
 
 package foxglove;
 
+// A marker representing a cylinder or elliptic cylinder
 message CylinderMarker {
   // Timestamp of the marker
   foxglove.Time timestamp = 1;

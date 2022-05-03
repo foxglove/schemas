@@ -10,6 +10,7 @@ export type FoxglovePrimitive =
 export type FoxgloveEnumSchema = {
   type: "enum";
   name: string;
+  description: string;
   values: ReadonlyArray<{
     value: number;
     name: string;
@@ -20,6 +21,7 @@ export type FoxgloveEnumSchema = {
 export type FoxgloveMessageSchema = {
   type: "message";
   name: string;
+  description: string;
   rosEquivalent?: keyof typeof import("@foxglove/rosmsg-msgs-common").definitions;
   fields: ReadonlyArray<{
     name: string;

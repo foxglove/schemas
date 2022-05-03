@@ -8,11 +8,13 @@ function primitiveToJsonSchema(type: Exclude<FoxglovePrimitive, "bytes">) {
     case "boolean":
       return { type: "boolean" };
     case "float":
-    case "integer":
       return { type: "number" };
+    case "integer":
+      return { type: "integer" };
     case "Time":
       return {
         type: "object",
+        title: "Time",
         properties: {
           sec: { type: "integer" },
           nsec: { type: "integer" },
@@ -21,6 +23,7 @@ function primitiveToJsonSchema(type: Exclude<FoxglovePrimitive, "bytes">) {
     case "Duration":
       return {
         type: "object",
+        title: "Duration",
         properties: {
           sec: { type: "integer" },
           nsec: { type: "integer" },
@@ -59,6 +62,7 @@ export function generateJsonSchema(
         break;
       case "enum":
         fieldType = {
+          title: `${field.type.enum.name}: ${field.type.enum.description}`,
           description: field.description,
           oneOf: field.type.enum.values.map(({ name, value, description }) => ({
             title: name,
@@ -69,7 +73,8 @@ export function generateJsonSchema(
         break;
     }
     if (field.array === true) {
-      fieldType = { type: "array", items: fieldType };
+      const { description, ...rest } = fieldType;
+      fieldType = { type: "array", description, ...rest };
     }
     properties[field.name] = fieldType;
     // if (field.arrayLength != undefined) {
@@ -82,6 +87,8 @@ export function generateJsonSchema(
 
   return {
     $comment: `Generated from ${schema.name} by @foxglove/message-schemas`,
+    title: schema.name,
+    description: schema.description,
     type: "object",
     properties,
   };

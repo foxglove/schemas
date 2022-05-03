@@ -1,5 +1,7 @@
 {
   "$comment": "Generated from Color by @foxglove/message-schemas",
+  "title": "Color",
+  "description": "A color in RGBA format",
   "type": "object",
   "properties": {
     "r": {

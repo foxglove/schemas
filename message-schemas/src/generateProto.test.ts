@@ -21,6 +21,7 @@ describe("generateProtoFiles", () => {
 
       package foxglove;
 
+      // A marker representing a series of points connected by lines
       message LineMarker {
         // Timestamp of the marker
         foxglove.Time timestamp = 1;

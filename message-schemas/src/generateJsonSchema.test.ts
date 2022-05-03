@@ -4,7 +4,7 @@ import { generateJsonSchema } from "./generateJsonSchema";
 import { foxgloveMessageSchemas } from "./schemas";
 
 describe("generateJsonSchema", () => {
-  it("generates valid JSON Schema", () => {
+  it("generates expected JSON Schema", () => {
     expect(generateJsonSchema(foxgloveMessageSchemas["LineMarker"]))
       .toMatchInlineSnapshot(`
       Object {
@@ -227,10 +227,13 @@ describe("generateJsonSchema", () => {
         "type": "object",
       }
     `);
-
-    const ajv = new Ajv();
-    expect(() =>
-      ajv.compile(generateJsonSchema(foxgloveMessageSchemas["LineMarker"]))
-    ).not.toThrow();
   });
+
+  it.each(Object.values(foxgloveMessageSchemas))(
+    "generates parseable JSON Schema for $name",
+    (schema) => {
+      const ajv = new Ajv();
+      expect(() => ajv.compile(generateJsonSchema(schema))).not.toThrow();
+    }
+  );
 });

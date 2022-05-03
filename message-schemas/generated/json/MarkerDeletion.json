@@ -14,7 +14,7 @@
         }
       }
     },
-    "kind": {
+    "type": {
       "description": "Type of deletion action to perform",
       "oneOf": [
         {

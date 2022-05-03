@@ -5,7 +5,11 @@ import rimraf from "rimraf";
 import { promisify } from "util";
 
 import { generateJsonSchema } from "../src/generateJsonSchema";
-import { BUILTINS_PROTO, generateProto } from "../src/generateProto";
+import {
+  TIME_PROTO,
+  DURATION_PROTO,
+  generateProto,
+} from "../src/generateProto";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../src/schemas";
 
 async function logProgress(message: string, body: () => Promise<void>) {
@@ -32,8 +36,12 @@ async function main({ outDir }: { outDir: string }) {
   await logProgress("Generating Protobuf definitions", async () => {
     await fs.mkdir(path.join(outDir, "proto", "foxglove"), { recursive: true });
     await fs.writeFile(
-      path.join(outDir, "proto", "foxglove", "builtins.proto"),
-      BUILTINS_PROTO
+      path.join(outDir, "proto", "foxglove", "Time.proto"),
+      TIME_PROTO
+    );
+    await fs.writeFile(
+      path.join(outDir, "proto", "foxglove", "Duration.proto"),
+      DURATION_PROTO
     );
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       await fs.writeFile(

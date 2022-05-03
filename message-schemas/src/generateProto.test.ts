@@ -1,7 +1,7 @@
 import protobufjs from "protobufjs";
 
-import { generateProto } from "./generateProto";
-import { foxgloveMessageSchemas } from "./schemas";
+import { DURATION_PROTO, generateProto, TIME_PROTO } from "./generateProto";
+import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "./schemas";
 
 describe("generateProtoFiles", () => {
   it("generates .proto files", () => {
@@ -12,11 +12,12 @@ describe("generateProtoFiles", () => {
       syntax = \\"proto3\\";
 
       import \\"foxglove/Color.proto\\";
+      import \\"foxglove/Duration.proto\\";
       import \\"foxglove/KeyValuePair.proto\\";
       import \\"foxglove/LineType.proto\\";
       import \\"foxglove/Point3.proto\\";
       import \\"foxglove/Pose.proto\\";
-      import \\"foxglove/builtins.proto\\";
+      import \\"foxglove/Time.proto\\";
 
       package foxglove;
 
@@ -68,9 +69,18 @@ describe("generateProtoFiles", () => {
       }
       "
     `);
+  });
 
-    expect(() =>
-      protobufjs.parse(generateProto(foxgloveMessageSchemas["LineMarker"]))
-    ).not.toThrow();
+  it("generates parseable .proto files", () => {
+    const root = new protobufjs.Root();
+    root.add(protobufjs.parse(TIME_PROTO).root);
+    root.add(protobufjs.parse(DURATION_PROTO).root);
+    for (const schema of Object.values(foxgloveMessageSchemas)) {
+      root.add(protobufjs.parse(generateProto(schema)).root);
+    }
+    for (const schema of Object.values(foxgloveEnumSchemas)) {
+      root.add(protobufjs.parse(generateProto(schema)).root);
+    }
+    expect(() => root.resolveAll()).not.toThrow();
   });
 });

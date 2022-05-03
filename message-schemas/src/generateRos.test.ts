@@ -571,4 +571,13 @@ describe("generateRosMsgMergedSchema", () => {
       ]
     `);
   });
+
+  it.each(Object.values(foxgloveMessageSchemas))(
+    "generates parseable merged schemas",
+    (schema) => {
+      expect(() =>
+        parseMessageDefinition(generateRosMsgMergedSchema(schema))
+      ).not.toThrow();
+    }
+  );
 });

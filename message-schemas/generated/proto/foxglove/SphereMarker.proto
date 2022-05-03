@@ -3,10 +3,11 @@
 syntax = "proto3";
 
 import "foxglove/Color.proto";
+import "foxglove/Duration.proto";
 import "foxglove/KeyValuePair.proto";
 import "foxglove/Pose.proto";
+import "foxglove/Time.proto";
 import "foxglove/Vector3.proto";
-import "foxglove/builtins.proto";
 
 package foxglove;
 

@@ -181,9 +181,9 @@ const commonMarkerFields: FoxgloveMessageSchema["fields"] = [
   },
 ];
 
-const foxglove_DeleteKind: FoxgloveEnumSchema = {
+const foxglove_MarkerDeletionType: FoxgloveEnumSchema = {
   type: "enum",
-  name: "DeleteKind",
+  name: "MarkerDeletionType",
   values: [
     { value: 0, name: "MATCHING_NAMESPACE_AND_ID" },
     { value: 1, name: "MATCHING_NAMESPACE" },
@@ -202,8 +202,8 @@ const foxglove_MarkerDeletion: FoxgloveMessageSchema = {
         "Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.",
     },
     {
-      name: "kind",
-      type: { type: "enum", enum: foxglove_DeleteKind },
+      name: "type",
+      type: { type: "enum", enum: foxglove_MarkerDeletionType },
       description: "Type of deletion action to perform",
     },
     {
@@ -641,5 +641,5 @@ export const foxgloveMessageSchemas = {
 export const foxgloveEnumSchemas = {
   TrianglesType: foxglove_TrianglesType,
   LineType: foxglove_LineType,
-  DeleteKind: foxglove_DeleteKind,
+  MarkerDeletionType: foxglove_MarkerDeletionType,
 };

@@ -15,7 +15,7 @@ function primitiveToProto(
   }
 }
 
-export const BUILTINS_PROTO = `syntax = "proto3";
+export const TIME_PROTO = `syntax = "proto3";
 
 package foxglove;
 
@@ -23,6 +23,11 @@ message Time {
   fixed32 sec = 1;
   fixed32 nsec = 2;
 }
+`;
+
+export const DURATION_PROTO = `syntax = "proto3";
+
+package foxglove;
 
 message Duration {
   fixed32 sec = 1;
@@ -72,7 +77,7 @@ export function generateProto(schema: FoxgloveSchema): string {
               field.type.name === "Duration"
             ) {
               qualifiers.push(`foxglove.${field.type.name}`);
-              imports.add("builtins");
+              imports.add(field.type.name);
             } else {
               qualifiers.push(primitiveToProto(field.type.name));
             }

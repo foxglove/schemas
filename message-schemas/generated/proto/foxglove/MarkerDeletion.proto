@@ -2,8 +2,8 @@
 
 syntax = "proto3";
 
-import "foxglove/DeleteKind.proto";
-import "foxglove/builtins.proto";
+import "foxglove/MarkerDeletionType.proto";
+import "foxglove/Time.proto";
 
 package foxglove;
 
@@ -12,7 +12,7 @@ message MarkerDeletion {
   foxglove.Time timestamp = 1;
 
   // Type of deletion action to perform
-  foxglove.DeleteKind kind = 2;
+  foxglove.MarkerDeletionType type = 2;
 
   // Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`.
   string namespace = 3;

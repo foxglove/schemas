@@ -29,7 +29,7 @@ export type FoxgloveMessageSchema = {
       | { type: "primitive"; name: FoxglovePrimitive }
       | { type: "nested"; schema: FoxgloveMessageSchema }
       | { type: "enum"; enum: FoxgloveEnumSchema };
-    array?: boolean;
+    array?: true | number;
     required?: true;
     description: string;
   }>;

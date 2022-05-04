@@ -48,9 +48,9 @@ export function generateRosMsg(def: RosMsgDefinitionWithDescription): string {
       }
       constant = `=${field.valueText}`;
     }
-    source += `${field.type}${field.isArray === true ? `[]` : ""} ${
-      field.name
-    }${constant}\n`;
+    source += `${field.type}${
+      field.isArray === true ? `[${field.arrayLength ?? ""}]` : ""
+    } ${field.name}${constant}\n`;
   }
   return source;
 }
@@ -105,7 +105,9 @@ export function generateRosMsgDefinition(
 
   const fields: RosMsgFieldWithDescription[] = [];
   for (const field of schema.fields) {
-    let isArray = field.array;
+    let isArray = field.array != undefined;
+    const arrayLength =
+      typeof field.array === "number" ? field.array : undefined;
     let fieldType: string;
     switch (field.type.type) {
       case "enum": {
@@ -155,7 +157,7 @@ export function generateRosMsgDefinition(
       case "primitive":
         if (field.type.name === "bytes") {
           fieldType = "uint8";
-          if (isArray === true) {
+          if (isArray) {
             throw new Error("Array of bytes is not supported in ROS msg");
           }
           isArray = true;
@@ -167,10 +169,11 @@ export function generateRosMsgDefinition(
         break;
     }
     fields.push({
-      name: field.name,
+      name: rosVersion === 2 ? field.name.toLowerCase() : field.name,
       type: fieldType,
       isComplex: field.type.type === "nested",
       isArray,
+      arrayLength,
       description: field.description,
     });
   }

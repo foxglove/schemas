@@ -20,10 +20,10 @@ describe("generateRosMsgFiles", () => {
       "# Generated from ExampleMessage by @foxglove/message-schemas
 
       # Duration field
-      duration field_duration
+      duration field_Duration
 
       # Time field
-      time field_time
+      time field_Time
 
       # boolean field
       bool field_boolean
@@ -41,10 +41,10 @@ describe("generateRosMsgFiles", () => {
       string field_string
 
       # Duration array field
-      duration[] field_duration_array
+      duration[] field_Duration_array
 
       # Time array field
-      time[] field_time_array
+      time[] field_Time_array
 
       # boolean array field
       bool[] field_boolean_array
@@ -57,6 +57,24 @@ describe("generateRosMsgFiles", () => {
 
       # string array field
       string[] field_string_array
+
+      # Duration fixed-length array field
+      duration[3] field_Duration_fixed_array
+
+      # Time fixed-length array field
+      time[3] field_Time_fixed_array
+
+      # boolean fixed-length array field
+      bool[3] field_boolean_fixed_array
+
+      # float fixed-length array field
+      float64[3] field_float_fixed_array
+
+      # integer fixed-length array field
+      int32[3] field_integer_fixed_array
+
+      # string fixed-length array field
+      string[3] field_string_fixed_array
 
       # Value A
       uint8 A=1
@@ -128,6 +146,24 @@ describe("generateRosMsgFiles", () => {
       # string array field
       string[] field_string_array
 
+      # Duration fixed-length array field
+      builtin_interfaces/Duration[3] field_duration_fixed_array
+
+      # Time fixed-length array field
+      builtin_interfaces/Time[3] field_time_fixed_array
+
+      # boolean fixed-length array field
+      bool[3] field_boolean_fixed_array
+
+      # float fixed-length array field
+      float64[3] field_float_fixed_array
+
+      # integer fixed-length array field
+      int32[3] field_integer_fixed_array
+
+      # string fixed-length array field
+      string[3] field_string_fixed_array
+
       # Value A
       uint8 A=1
 
@@ -160,10 +196,10 @@ describe("generateRosMsgMergedSchema", () => {
       "# Generated from ExampleMessage by @foxglove/message-schemas
 
       # Duration field
-      duration field_duration
+      duration field_Duration
 
       # Time field
-      time field_time
+      time field_Time
 
       # boolean field
       bool field_boolean
@@ -181,10 +217,10 @@ describe("generateRosMsgMergedSchema", () => {
       string field_string
 
       # Duration array field
-      duration[] field_duration_array
+      duration[] field_Duration_array
 
       # Time array field
-      time[] field_time_array
+      time[] field_Time_array
 
       # boolean array field
       bool[] field_boolean_array
@@ -197,6 +233,24 @@ describe("generateRosMsgMergedSchema", () => {
 
       # string array field
       string[] field_string_array
+
+      # Duration fixed-length array field
+      duration[3] field_Duration_fixed_array
+
+      # Time fixed-length array field
+      time[3] field_Time_fixed_array
+
+      # boolean fixed-length array field
+      bool[3] field_boolean_fixed_array
+
+      # float fixed-length array field
+      float64[3] field_float_fixed_array
+
+      # integer fixed-length array field
+      int32[3] field_integer_fixed_array
+
+      # string fixed-length array field
+      string[3] field_string_fixed_array
 
       # Value A
       uint8 A=1
@@ -230,13 +284,13 @@ describe("generateRosMsgMergedSchema", () => {
             Object {
               "isArray": false,
               "isComplex": false,
-              "name": "field_duration",
+              "name": "field_Duration",
               "type": "duration",
             },
             Object {
               "isArray": false,
               "isComplex": false,
-              "name": "field_time",
+              "name": "field_Time",
               "type": "time",
             },
             Object {
@@ -272,13 +326,13 @@ describe("generateRosMsgMergedSchema", () => {
             Object {
               "isArray": true,
               "isComplex": false,
-              "name": "field_duration_array",
+              "name": "field_Duration_array",
               "type": "duration",
             },
             Object {
               "isArray": true,
               "isComplex": false,
-              "name": "field_time_array",
+              "name": "field_Time_array",
               "type": "time",
             },
             Object {
@@ -303,6 +357,48 @@ describe("generateRosMsgMergedSchema", () => {
               "isArray": true,
               "isComplex": false,
               "name": "field_string_array",
+              "type": "string",
+            },
+            Object {
+              "arrayLength": 3,
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_Duration_fixed_array",
+              "type": "duration",
+            },
+            Object {
+              "arrayLength": 3,
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_Time_fixed_array",
+              "type": "time",
+            },
+            Object {
+              "arrayLength": 3,
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_boolean_fixed_array",
+              "type": "bool",
+            },
+            Object {
+              "arrayLength": 3,
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_float_fixed_array",
+              "type": "float64",
+            },
+            Object {
+              "arrayLength": 3,
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_integer_fixed_array",
+              "type": "int32",
+            },
+            Object {
+              "arrayLength": 3,
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_string_fixed_array",
               "type": "string",
             },
             Object {
@@ -407,6 +503,24 @@ describe("generateRosMsgMergedSchema", () => {
 
       # string array field
       string[] field_string_array
+
+      # Duration fixed-length array field
+      builtin_interfaces/Duration[3] field_duration_fixed_array
+
+      # Time fixed-length array field
+      builtin_interfaces/Time[3] field_time_fixed_array
+
+      # boolean fixed-length array field
+      bool[3] field_boolean_fixed_array
+
+      # float fixed-length array field
+      float64[3] field_float_fixed_array
+
+      # integer fixed-length array field
+      int32[3] field_integer_fixed_array
+
+      # string fixed-length array field
+      string[3] field_string_fixed_array
 
       # Value A
       uint8 A=1
@@ -602,6 +716,84 @@ describe("generateRosMsgMergedSchema", () => {
               "isComplex": false,
               "isConstant": undefined,
               "name": "field_string_array",
+              "type": "string",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": 3,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_duration_fixed_array",
+              "type": "duration",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": 3,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_time_fixed_array",
+              "type": "time",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": 3,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_boolean_fixed_array",
+              "type": "bool",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": 3,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_float_fixed_array",
+              "type": "float64",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": 3,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_integer_fixed_array",
+              "type": "int32",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": 3,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_string_fixed_array",
               "type": "string",
               "upperBound": undefined,
               "value": undefined,

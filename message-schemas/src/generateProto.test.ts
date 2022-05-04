@@ -38,10 +38,10 @@ describe("generateProto", () => {
       // An example type
       message ExampleMessage {
         // Duration field
-        foxglove.Duration field_duration = 1;
+        foxglove.Duration field_Duration = 1;
 
         // Time field
-        foxglove.Time field_time = 2;
+        foxglove.Time field_Time = 2;
 
         // boolean field
         bool field_boolean = 3;
@@ -59,10 +59,10 @@ describe("generateProto", () => {
         string field_string = 7;
 
         // Duration array field
-        repeated foxglove.Duration field_duration_array = 8;
+        repeated foxglove.Duration field_Duration_array = 8;
 
         // Time array field
-        repeated foxglove.Time field_time_array = 9;
+        repeated foxglove.Time field_Time_array = 9;
 
         // boolean array field
         repeated bool field_boolean_array = 10;
@@ -79,17 +79,38 @@ describe("generateProto", () => {
         // string array field
         repeated string field_string_array = 14;
 
+        // Duration fixed-length array field
+        repeated foxglove.Duration field_Duration_fixed_array = 15; // length 3
+
+        // Time fixed-length array field
+        repeated foxglove.Time field_Time_fixed_array = 16; // length 3
+
+        // boolean fixed-length array field
+        repeated bool field_boolean_fixed_array = 17; // length 3
+
+        // bytes fixed-length array field
+        repeated bytes field_bytes_fixed_array = 18; // length 3
+
+        // float fixed-length array field
+        repeated double field_float_fixed_array = 19; // length 3
+
+        // integer fixed-length array field
+        repeated int32 field_integer_fixed_array = 20; // length 3
+
+        // string fixed-length array field
+        repeated string field_string_fixed_array = 21; // length 3
+
         // An enum field
-        foxglove.ExampleEnum field_enum = 15;
+        foxglove.ExampleEnum field_enum = 22;
 
         // An enum array field
-        repeated foxglove.ExampleEnum field_enum_array = 16;
+        repeated foxglove.ExampleEnum field_enum_array = 23;
 
         // A nested field
-        foxglove.NestedMessage field_nested = 17;
+        foxglove.NestedMessage field_nested = 24;
 
         // A nested array field
-        repeated foxglove.NestedMessage field_nested_array = 18;
+        repeated foxglove.NestedMessage field_nested_array = 25;
       }
       "
     `);

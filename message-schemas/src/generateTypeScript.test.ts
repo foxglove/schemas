@@ -27,10 +27,10 @@ describe("generateTypeScript", () => {
       /** An example type */
       export type ExampleMessage = {
         /** Duration field */
-        field_duration: Duration;
+        field_Duration: Duration;
 
         /** Time field */
-        field_time: Time;
+        field_Time: Time;
 
         /** boolean field */
         field_boolean: boolean;
@@ -48,10 +48,10 @@ describe("generateTypeScript", () => {
         field_string: string;
 
         /** Duration array field */
-        field_duration_array: Duration[];
+        field_Duration_array: Duration[];
 
         /** Time array field */
-        field_time_array: Time[];
+        field_Time_array: Time[];
 
         /** boolean array field */
         field_boolean_array: boolean[];
@@ -67,6 +67,27 @@ describe("generateTypeScript", () => {
 
         /** string array field */
         field_string_array: string[];
+
+        /** Duration fixed-length array field */
+        field_Duration_fixed_array: [Duration, Duration, Duration];
+
+        /** Time fixed-length array field */
+        field_Time_fixed_array: [Time, Time, Time];
+
+        /** boolean fixed-length array field */
+        field_boolean_fixed_array: [boolean, boolean, boolean];
+
+        /** bytes fixed-length array field */
+        field_bytes_fixed_array: [Uint8Array, Uint8Array, Uint8Array];
+
+        /** float fixed-length array field */
+        field_float_fixed_array: [number, number, number];
+
+        /** integer fixed-length array field */
+        field_integer_fixed_array: [number, number, number];
+
+        /** string fixed-length array field */
+        field_string_fixed_array: [string, string, string];
 
         /** An enum field */
         field_enum: ExampleEnum;

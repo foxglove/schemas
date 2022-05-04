@@ -68,9 +68,12 @@ export function generateTypeScript(schema: FoxgloveSchema): string {
             }
             break;
         }
-        return `/** ${field.description} */\n  ${field.name}: ${fieldType}${
-          field.array === true ? "[]" : ""
-        };`;
+        if (typeof field.array === "number") {
+          fieldType = `[${new Array(field.array).fill(fieldType).join(", ")}]`;
+        } else if (field.array != undefined) {
+          fieldType = `${fieldType}[]`;
+        }
+        return `/** ${field.description} */\n  ${field.name}: ${fieldType};`;
       });
 
       definition = `/** ${schema.description} */\nexport type ${

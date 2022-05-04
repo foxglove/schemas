@@ -11,6 +11,100 @@ describe("generateJsonSchema", () => {
         "$comment": "Generated from ExampleMessage by @foxglove/message-schemas",
         "description": "An example type",
         "properties": Object {
+          "field_Duration": Object {
+            "description": "Duration field",
+            "properties": Object {
+              "nsec": Object {
+                "type": "integer",
+              },
+              "sec": Object {
+                "type": "integer",
+              },
+            },
+            "title": "Duration",
+            "type": "object",
+          },
+          "field_Duration_array": Object {
+            "description": "Duration array field",
+            "items": Object {
+              "properties": Object {
+                "nsec": Object {
+                  "type": "integer",
+                },
+                "sec": Object {
+                  "type": "integer",
+                },
+              },
+              "title": "Duration",
+              "type": "object",
+            },
+            "type": "array",
+          },
+          "field_Duration_fixed_array": Object {
+            "description": "Duration fixed-length array field",
+            "items": Object {
+              "properties": Object {
+                "nsec": Object {
+                  "type": "integer",
+                },
+                "sec": Object {
+                  "type": "integer",
+                },
+              },
+              "title": "Duration",
+              "type": "object",
+            },
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array",
+          },
+          "field_Time": Object {
+            "description": "Time field",
+            "properties": Object {
+              "nsec": Object {
+                "type": "integer",
+              },
+              "sec": Object {
+                "type": "integer",
+              },
+            },
+            "title": "Time",
+            "type": "object",
+          },
+          "field_Time_array": Object {
+            "description": "Time array field",
+            "items": Object {
+              "properties": Object {
+                "nsec": Object {
+                  "type": "integer",
+                },
+                "sec": Object {
+                  "type": "integer",
+                },
+              },
+              "title": "Time",
+              "type": "object",
+            },
+            "type": "array",
+          },
+          "field_Time_fixed_array": Object {
+            "description": "Time fixed-length array field",
+            "items": Object {
+              "properties": Object {
+                "nsec": Object {
+                  "type": "integer",
+                },
+                "sec": Object {
+                  "type": "integer",
+                },
+              },
+              "title": "Time",
+              "type": "object",
+            },
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array",
+          },
           "field_boolean": Object {
             "description": "boolean field",
             "type": "boolean",
@@ -20,6 +114,15 @@ describe("generateJsonSchema", () => {
             "items": Object {
               "type": "boolean",
             },
+            "type": "array",
+          },
+          "field_boolean_fixed_array": Object {
+            "description": "boolean fixed-length array field",
+            "items": Object {
+              "type": "boolean",
+            },
+            "maxItems": 3,
+            "minItems": 3,
             "type": "array",
           },
           "field_bytes": Object {
@@ -35,33 +138,14 @@ describe("generateJsonSchema", () => {
             },
             "type": "array",
           },
-          "field_duration": Object {
-            "description": "Duration field",
-            "properties": Object {
-              "nsec": Object {
-                "type": "integer",
-              },
-              "sec": Object {
-                "type": "integer",
-              },
-            },
-            "title": "Duration",
-            "type": "object",
-          },
-          "field_duration_array": Object {
-            "description": "Duration array field",
+          "field_bytes_fixed_array": Object {
+            "description": "bytes fixed-length array field",
             "items": Object {
-              "properties": Object {
-                "nsec": Object {
-                  "type": "integer",
-                },
-                "sec": Object {
-                  "type": "integer",
-                },
-              },
-              "title": "Duration",
-              "type": "object",
+              "contentEncoding": "base64",
+              "type": "string",
             },
+            "maxItems": 3,
+            "minItems": 3,
             "type": "array",
           },
           "field_enum": Object {
@@ -111,6 +195,15 @@ describe("generateJsonSchema", () => {
             },
             "type": "array",
           },
+          "field_float_fixed_array": Object {
+            "description": "float fixed-length array field",
+            "items": Object {
+              "type": "number",
+            },
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array",
+          },
           "field_integer": Object {
             "description": "integer field",
             "type": "integer",
@@ -120,6 +213,15 @@ describe("generateJsonSchema", () => {
             "items": Object {
               "type": "integer",
             },
+            "type": "array",
+          },
+          "field_integer_fixed_array": Object {
+            "description": "integer fixed-length array field",
+            "items": Object {
+              "type": "integer",
+            },
+            "maxItems": 3,
+            "minItems": 3,
             "type": "array",
           },
           "field_nested": Object {
@@ -161,33 +263,13 @@ describe("generateJsonSchema", () => {
             },
             "type": "array",
           },
-          "field_time": Object {
-            "description": "Time field",
-            "properties": Object {
-              "nsec": Object {
-                "type": "integer",
-              },
-              "sec": Object {
-                "type": "integer",
-              },
-            },
-            "title": "Time",
-            "type": "object",
-          },
-          "field_time_array": Object {
-            "description": "Time array field",
+          "field_string_fixed_array": Object {
+            "description": "string fixed-length array field",
             "items": Object {
-              "properties": Object {
-                "nsec": Object {
-                  "type": "integer",
-                },
-                "sec": Object {
-                  "type": "integer",
-                },
-              },
-              "title": "Time",
-              "type": "object",
+              "type": "string",
             },
+            "maxItems": 3,
+            "minItems": 3,
             "type": "array",
           },
         },

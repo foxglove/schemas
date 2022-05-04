@@ -57,9 +57,13 @@ export function generateProto(schema: FoxgloveSchema): string {
 
     case "message": {
       const fields = schema.fields.map((field) => {
+        const lineComments: string[] = [];
         const qualifiers = [];
-        if (field.array === true) {
+        if (field.array != undefined) {
           qualifiers.push("repeated");
+        }
+        if (typeof field.array === "number") {
+          lineComments.push(`length ${field.array}`);
         }
         switch (field.type.type) {
           case "enum":
@@ -86,7 +90,9 @@ export function generateProto(schema: FoxgloveSchema): string {
         }
         return `// ${field.description}\n  ${qualifiers.join(" ")} ${
           field.name
-        } = ${fieldNumber++};`;
+        } = ${fieldNumber++};${
+          lineComments.length > 0 ? " // " + lineComments.join(", ") : ""
+        }`;
       });
 
       definition = `// ${schema.description}\nmessage ${

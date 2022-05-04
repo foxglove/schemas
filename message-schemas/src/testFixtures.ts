@@ -43,15 +43,21 @@ export const exampleMessage: FoxgloveMessageSchema = {
   description: "An example type",
   fields: [
     ...allPrimitives.map((name): FoxgloveMessageSchema["fields"][0] => ({
-      name: `field_${name.toLowerCase()}`,
+      name: `field_${name}`,
       description: `${name} field`,
       type: { type: "primitive", name },
     })),
     ...allPrimitives.map((name): FoxgloveMessageSchema["fields"][0] => ({
-      name: `field_${name.toLowerCase()}_array`,
+      name: `field_${name}_array`,
       description: `${name} array field`,
       type: { type: "primitive", name },
       array: true,
+    })),
+    ...allPrimitives.map((name): FoxgloveMessageSchema["fields"][0] => ({
+      name: `field_${name}_fixed_array`,
+      description: `${name} fixed-length array field`,
+      type: { type: "primitive", name },
+      array: 3,
     })),
     {
       name: "field_enum",
@@ -81,6 +87,7 @@ export const exampleMessage: FoxgloveMessageSchema = {
 export const exampleMessageWithoutArrayOfBytes: FoxgloveMessageSchema = {
   ...exampleMessage,
   fields: exampleMessage.fields.filter(
-    ({ name }) => name !== "field_bytes_array"
+    ({ name }) =>
+      name !== "field_bytes_array" && name !== "field_bytes_fixed_array"
   ),
 };

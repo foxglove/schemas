@@ -60,7 +60,14 @@ export function generateJsonSchema(
         };
         break;
     }
-    if (field.array === true) {
+    if (typeof field.array === "number") {
+      fieldType = {
+        type: "array",
+        items: fieldType,
+        minItems: field.array,
+        maxItems: field.array,
+      };
+    } else if (field.array === true) {
       fieldType = { type: "array", items: fieldType };
     }
     fieldType.description = field.description;

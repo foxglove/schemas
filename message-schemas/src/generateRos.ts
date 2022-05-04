@@ -96,12 +96,10 @@ function* getRosDependencies(schema: RosMsgDefinition): Iterable<Dependency> {
   }
 }
 
-//FIXME: what to do with enums?
 export function generateRosMsgDefinition(
   schema: FoxgloveMessageSchema,
   { rosVersion }: { rosVersion: 1 | 2 }
 ): RosMsgDefinitionWithDescription {
-  // const result: RosMsgDefinitionWithDescription[] = [];
   const enumFieldNames = new Set<string>();
   const seenEnumNames = new Set<string>();
 

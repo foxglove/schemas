@@ -25,10 +25,10 @@ async function main({ outDir }: { outDir: string }) {
   });
 
   await logProgress("Generating JSONSchema definitions", async () => {
-    await fs.mkdir(path.join(outDir, "json"), { recursive: true });
+    await fs.mkdir(path.join(outDir, "jsonschema"), { recursive: true });
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       await fs.writeFile(
-        path.join(outDir, "json", `${schema.name}.json`),
+        path.join(outDir, "jsonschema", `${schema.name}.json`),
         JSON.stringify(generateJsonSchema(schema), undefined, 2) + "\n"
       );
     }

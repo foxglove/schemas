@@ -38,10 +38,10 @@ describe("generateProtoFiles", () => {
       // An example type
       message ExampleMessage {
         // Duration field
-        foxglove.Duration field_Duration = 1;
+        foxglove.Duration field_duration = 1;
 
         // Time field
-        foxglove.Time field_Time = 2;
+        foxglove.Time field_time = 2;
 
         // boolean field
         bool field_boolean = 3;
@@ -59,10 +59,10 @@ describe("generateProtoFiles", () => {
         string field_string = 7;
 
         // Duration array field
-        repeated foxglove.Duration field_Duration_array = 8;
+        repeated foxglove.Duration field_duration_array = 8;
 
         // Time array field
-        repeated foxglove.Time field_Time_array = 9;
+        repeated foxglove.Time field_time_array = 9;
 
         // boolean array field
         repeated bool field_boolean_array = 10;

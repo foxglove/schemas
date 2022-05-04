@@ -4,7 +4,7 @@ import { DURATION_PROTO, generateProto, TIME_PROTO } from "./generateProto";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "./schemas";
 import { exampleEnum, exampleMessage } from "./testFixtures";
 
-describe("generateProtoFiles", () => {
+describe("generateProto", () => {
   it("generates .proto files", () => {
     expect(generateProto(exampleEnum)).toMatchInlineSnapshot(`
       "// Generated from ExampleEnum by @foxglove/message-schemas

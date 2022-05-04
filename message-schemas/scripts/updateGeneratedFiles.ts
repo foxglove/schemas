@@ -11,6 +11,11 @@ import {
   DURATION_PROTO,
   generateProto,
 } from "../src/generateProto";
+import {
+  generateTypeScript,
+  DURATION_TS,
+  TIME_TS,
+} from "../src/generateTypeScript";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../src/schemas";
 
 async function logProgress(message: string, body: () => Promise<void>) {
@@ -82,6 +87,36 @@ async function main({ outDir }: { outDir: string }) {
         generateProto(schema)
       );
     }
+  });
+
+  await logProgress("Generating TypeScript definitions", async () => {
+    await fs.mkdir(path.join(outDir, "typescript"), { recursive: true });
+    await fs.writeFile(path.join(outDir, "typescript", "Time.ts"), TIME_TS);
+    await fs.writeFile(
+      path.join(outDir, "typescript", "Duration.ts"),
+      DURATION_TS
+    );
+    for (const schema of Object.values(foxgloveMessageSchemas)) {
+      await fs.writeFile(
+        path.join(outDir, "typescript", `${schema.name}.ts`),
+        generateTypeScript(schema)
+      );
+    }
+    for (const schema of Object.values(foxgloveEnumSchemas)) {
+      await fs.writeFile(
+        path.join(outDir, "typescript", `${schema.name}.ts`),
+        generateTypeScript(schema)
+      );
+    }
+    const allSchemaNames = [
+      ...Object.values(foxgloveMessageSchemas),
+      ...Object.values(foxgloveEnumSchemas),
+    ].sort((a, b) => a.name.localeCompare(b.name));
+    let indexTS = "";
+    for (const schema of allSchemaNames) {
+      indexTS += `export * from "./${schema.name}";\n`;
+    }
+    await fs.writeFile(path.join(outDir, "typescript", `index.ts`), indexTS);
   });
 }
 

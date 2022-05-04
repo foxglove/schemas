@@ -57,7 +57,6 @@ export function generateProto(schema: FoxgloveSchema): string {
 
     case "message": {
       const fields = schema.fields.map((field) => {
-        const lineComments: string[] = [];
         const qualifiers = [];
         if (field.array === true) {
           qualifiers.push("repeated");
@@ -87,9 +86,7 @@ export function generateProto(schema: FoxgloveSchema): string {
         }
         return `// ${field.description}\n  ${qualifiers.join(" ")} ${
           field.name
-        } = ${fieldNumber++};${
-          lineComments.length > 0 ? " // " + lineComments.join(", ") : ""
-        }`;
+        } = ${fieldNumber++};`;
       });
 
       definition = `// ${schema.description}\nmessage ${

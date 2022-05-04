@@ -1,0 +1,60 @@
+{
+  "$comment": "Generated from DataField by @foxglove/message-schemas",
+  "title": "DataField",
+  "description": "List of fields included for every entity in an accompanying `data` field array",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the field"
+    },
+    "offset": {
+      "type": "integer",
+      "description": "Byte offset from start of data buffer"
+    },
+    "type": {
+      "title": "NumericType: Numeric type",
+      "description": "Type of data in field",
+      "oneOf": [
+        {
+          "title": "UINT8",
+          "const": 1
+        },
+        {
+          "title": "INT8",
+          "const": 2
+        },
+        {
+          "title": "UINT16",
+          "const": 3,
+          "description": "little-endian"
+        },
+        {
+          "title": "INT16",
+          "const": 4,
+          "description": "little-endian"
+        },
+        {
+          "title": "UINT32",
+          "const": 5,
+          "description": "little-endian"
+        },
+        {
+          "title": "INT32",
+          "const": 6,
+          "description": "little-endian"
+        },
+        {
+          "title": "FLOAT32",
+          "const": 7,
+          "description": "little-endian"
+        },
+        {
+          "title": "FLOAT64",
+          "const": 8,
+          "description": "little-endian"
+        }
+      ]
+    }
+  }
+}

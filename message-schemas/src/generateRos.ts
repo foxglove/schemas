@@ -37,9 +37,15 @@ export function generateRosMsg(def: RosMsgDefinitionWithDescription): string {
   if (def.description != undefined) {
     source += `# ${def.description}\n`;
   }
+  let prevFieldHadComment = true; // start true because of top-of-file comment
   for (const field of def.fields) {
+    if (prevFieldHadComment || field.description != undefined) {
+      source += "\n";
+    }
+    prevFieldHadComment = false;
     if (field.description != undefined) {
-      source += `\n# ${field.description}\n`;
+      source += `# ${field.description}\n`;
+      prevFieldHadComment = true;
     }
     let constant = "";
     if (field.isConstant === true) {

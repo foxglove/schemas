@@ -1,0 +1,51 @@
+{
+  "$comment": "Generated from LocationFix by @foxglove/message-schemas",
+  "title": "LocationFix",
+  "description": "A navigation satellite fix for any Global Navigation Satellite System",
+  "type": "object",
+  "properties": {
+    "latitude": {
+      "type": "number",
+      "description": "Latitude in degrees"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "Longitude in degrees"
+    },
+    "altitude": {
+      "type": "number",
+      "description": "Altitude in meters"
+    },
+    "position_covariance": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 9,
+      "maxItems": 9,
+      "description": "Position covariance (m^2) defined relative to a tangential plane through the reported position. The components are East, North, and Up (ENU), in row-major order."
+    },
+    "position_covariance_type": {
+      "title": "PositionCovarianceType: Type of position covariance",
+      "description": "If `position_covariance` is available, `position_covariance_type` must be set to indicate the type of covariance.",
+      "oneOf": [
+        {
+          "title": "UNKNOWN",
+          "const": 0
+        },
+        {
+          "title": "APPROXIMATED",
+          "const": 1
+        },
+        {
+          "title": "DIAGONAL_KNOWN",
+          "const": 2
+        },
+        {
+          "title": "KNOWN",
+          "const": 3
+        }
+      ]
+    }
+  }
+}

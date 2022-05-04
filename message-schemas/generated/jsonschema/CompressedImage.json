@@ -1,0 +1,30 @@
+{
+  "$comment": "Generated from CompressedImage by @foxglove/message-schemas",
+  "title": "CompressedImage",
+  "description": "A compressed image",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "object",
+      "title": "Time",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
+      },
+      "description": "Timestamp of image"
+    },
+    "data": {
+      "type": "string",
+      "contentEncoding": "base64",
+      "description": "Compressed image data"
+    },
+    "format": {
+      "type": "string",
+      "description": "Image format"
+    }
+  }
+}

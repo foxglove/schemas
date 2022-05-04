@@ -1,0 +1,99 @@
+{
+  "$comment": "Generated from LaserScan by @foxglove/message-schemas",
+  "title": "LaserScan",
+  "description": "A a single scan from a planar laser range-finder",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "object",
+      "title": "Time",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
+      },
+      "description": "Timestamp of scan"
+    },
+    "frame_id": {
+      "type": "string",
+      "description": "Frame of reference"
+    },
+    "pose": {
+      "$comment": "Generated from Pose by @foxglove/message-schemas",
+      "title": "Pose",
+      "description": "Origin of scan relative to frame of reference; points are positioned in the x-y plane relative to this origin; angles are interpreted as counterclockwise rotations around the z axis with 0 rad being in the +x direction",
+      "type": "object",
+      "properties": {
+        "position": {
+          "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+          "title": "Vector3",
+          "description": "Point denoting position in 3D space",
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "description": "x coordinate length"
+            },
+            "y": {
+              "type": "number",
+              "description": "y coordinate length"
+            },
+            "z": {
+              "type": "number",
+              "description": "z coordinate length"
+            }
+          }
+        },
+        "orientation": {
+          "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+          "title": "Quaternion",
+          "description": "Quaternion denoting orientation in 3D space",
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "description": "x value"
+            },
+            "y": {
+              "type": "number",
+              "description": "y value"
+            },
+            "z": {
+              "type": "number",
+              "description": "z value"
+            },
+            "w": {
+              "type": "number",
+              "description": "w value"
+            }
+          }
+        }
+      }
+    },
+    "start_angle": {
+      "type": "number",
+      "description": "Bearing of first point, in radians"
+    },
+    "end_angle": {
+      "type": "number",
+      "description": "Bearing of last point, in radians"
+    },
+    "ranges": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Distance of detections from origin; assumed to be at equally-spaced angles between `start_angle` and `end_angle`"
+    },
+    "intensities": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Intensity of detections"
+    }
+  }
+}

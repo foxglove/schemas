@@ -1,0 +1,67 @@
+{
+  "$comment": "Generated from CameraCalibration by @foxglove/message-schemas",
+  "title": "CameraCalibration",
+  "description": "Camera calibration parameters",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "object",
+      "title": "Time",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
+      },
+      "description": "Timestamp of calibration data"
+    },
+    "width": {
+      "type": "integer",
+      "description": "Image width"
+    },
+    "height": {
+      "type": "integer",
+      "description": "Image height"
+    },
+    "distortion_model": {
+      "type": "string",
+      "description": "Name of distortion model"
+    },
+    "D": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Distortion parameters"
+    },
+    "K": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 9,
+      "maxItems": 9,
+      "description": "Intrinsic camera matrix (3x3 row-major matrix)"
+    },
+    "R": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 9,
+      "maxItems": 9,
+      "description": "Rectification matrix (3x3 row-major matrix)"
+    },
+    "P": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 12,
+      "maxItems": 12,
+      "description": "Projection/camera matrix (3x4 row-major matrix)"
+    }
+  }
+}

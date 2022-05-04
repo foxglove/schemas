@@ -1,0 +1,34 @@
+// Generated from CameraCalibration by @foxglove/message-schemas
+
+syntax = "proto3";
+
+import "foxglove/Time.proto";
+
+package foxglove;
+
+// Camera calibration parameters
+message CameraCalibration {
+  // Timestamp of calibration data
+  foxglove.Time timestamp = 1;
+
+  // Image width
+  int32 width = 2;
+
+  // Image height
+  int32 height = 3;
+
+  // Name of distortion model
+  string distortion_model = 4;
+
+  // Distortion parameters
+  repeated double D = 5;
+
+  // Intrinsic camera matrix (3x3 row-major matrix)
+  repeated double K = 6; // length 9
+
+  // Rectification matrix (3x3 row-major matrix)
+  repeated double R = 7; // length 9
+
+  // Projection/camera matrix (3x4 row-major matrix)
+  repeated double P = 8; // length 12
+}

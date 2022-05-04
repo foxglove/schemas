@@ -1,0 +1,19 @@
+// Generated from DataField by @foxglove/message-schemas
+
+syntax = "proto3";
+
+import "foxglove/NumericType.proto";
+
+package foxglove;
+
+// List of fields included for every entity in an accompanying `data` field array
+message DataField {
+  // Name of the field
+  string name = 1;
+
+  // Byte offset from start of data buffer
+  int32 offset = 2;
+
+  // Type of data in field
+  foxglove.NumericType type = 3;
+}

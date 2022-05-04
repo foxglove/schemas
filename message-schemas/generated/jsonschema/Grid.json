@@ -1,0 +1,170 @@
+{
+  "$comment": "Generated from Grid by @foxglove/message-schemas",
+  "title": "Grid",
+  "description": "A 2D grid of data",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "object",
+      "title": "Time",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer"
+        }
+      },
+      "description": "Timestamp of grid"
+    },
+    "frame_id": {
+      "type": "string",
+      "description": "Frame of reference"
+    },
+    "pose": {
+      "$comment": "Generated from Pose by @foxglove/message-schemas",
+      "title": "Pose",
+      "description": "Origin of grid's corner relative to frame of reference; grid is positioned in the x-y plane relative to this origin",
+      "type": "object",
+      "properties": {
+        "position": {
+          "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+          "title": "Vector3",
+          "description": "Point denoting position in 3D space",
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "description": "x coordinate length"
+            },
+            "y": {
+              "type": "number",
+              "description": "y coordinate length"
+            },
+            "z": {
+              "type": "number",
+              "description": "z coordinate length"
+            }
+          }
+        },
+        "orientation": {
+          "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+          "title": "Quaternion",
+          "description": "Quaternion denoting orientation in 3D space",
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "description": "x value"
+            },
+            "y": {
+              "type": "number",
+              "description": "y value"
+            },
+            "z": {
+              "type": "number",
+              "description": "z value"
+            },
+            "w": {
+              "type": "number",
+              "description": "w value"
+            }
+          }
+        }
+      }
+    },
+    "column_count": {
+      "type": "integer",
+      "description": "Number of grid columns"
+    },
+    "cell_size": {
+      "$comment": "Generated from Vector2 by @foxglove/message-schemas",
+      "title": "Vector2",
+      "description": "Size of single grid cell along x and y axes, relative to `pose`",
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number",
+          "description": "x coordinate length"
+        },
+        "y": {
+          "type": "number",
+          "description": "y coordinate length"
+        }
+      }
+    },
+    "row_stride": {
+      "type": "integer",
+      "description": "Number of bytes between rows in `data`"
+    },
+    "cell_stride": {
+      "type": "integer",
+      "description": "Number of bytes between cells within a row in `data`"
+    },
+    "fields": {
+      "$comment": "Generated from DataField by @foxglove/message-schemas",
+      "title": "DataField",
+      "description": "Fields in `data`",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the field"
+        },
+        "offset": {
+          "type": "integer",
+          "description": "Byte offset from start of data buffer"
+        },
+        "type": {
+          "title": "NumericType: Numeric type",
+          "description": "Type of data in field",
+          "oneOf": [
+            {
+              "title": "UINT8",
+              "const": 1
+            },
+            {
+              "title": "INT8",
+              "const": 2
+            },
+            {
+              "title": "UINT16",
+              "const": 3,
+              "description": "little-endian"
+            },
+            {
+              "title": "INT16",
+              "const": 4,
+              "description": "little-endian"
+            },
+            {
+              "title": "UINT32",
+              "const": 5,
+              "description": "little-endian"
+            },
+            {
+              "title": "INT32",
+              "const": 6,
+              "description": "little-endian"
+            },
+            {
+              "title": "FLOAT32",
+              "const": 7,
+              "description": "little-endian"
+            },
+            {
+              "title": "FLOAT64",
+              "const": 8,
+              "description": "little-endian"
+            }
+          ]
+        }
+      }
+    },
+    "data": {
+      "type": "string",
+      "contentEncoding": "base64",
+      "description": "Grid cell data, interpreted using `fields`, in row-major (y-major) order"
+    }
+  }
+}

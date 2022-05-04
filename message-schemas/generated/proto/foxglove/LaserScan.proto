@@ -1,0 +1,32 @@
+// Generated from LaserScan by @foxglove/message-schemas
+
+syntax = "proto3";
+
+import "foxglove/Pose.proto";
+import "foxglove/Time.proto";
+
+package foxglove;
+
+// A a single scan from a planar laser range-finder
+message LaserScan {
+  // Timestamp of scan
+  foxglove.Time timestamp = 1;
+
+  // Frame of reference
+  string frame_id = 2;
+
+  // Origin of scan relative to frame of reference; points are positioned in the x-y plane relative to this origin; angles are interpreted as counterclockwise rotations around the z axis with 0 rad being in the +x direction
+  foxglove.Pose pose = 3;
+
+  // Bearing of first point, in radians
+  double start_angle = 4;
+
+  // Bearing of last point, in radians
+  double end_angle = 5;
+
+  // Distance of detections from origin; assumed to be at equally-spaced angles between `start_angle` and `end_angle`
+  repeated double ranges = 6;
+
+  // Intensity of detections
+  repeated double intensities = 7;
+}

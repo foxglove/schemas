@@ -1,0 +1,19 @@
+// Generated from CompressedImage by @foxglove/message-schemas
+
+syntax = "proto3";
+
+import "foxglove/Time.proto";
+
+package foxglove;
+
+// A compressed image
+message CompressedImage {
+  // Timestamp of image
+  foxglove.Time timestamp = 1;
+
+  // Compressed image data
+  bytes data = 2;
+
+  // Image format
+  string format = 3;
+}

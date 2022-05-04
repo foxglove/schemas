@@ -5,16 +5,16 @@
   "type": "object",
   "properties": {
     "x": {
-      "description": "x coordinate length",
-      "type": "number"
+      "type": "number",
+      "description": "x coordinate length"
     },
     "y": {
-      "description": "y coordinate length",
-      "type": "number"
+      "type": "number",
+      "description": "y coordinate length"
     },
     "z": {
-      "description": "z coordinate length",
-      "type": "number"
+      "type": "number",
+      "description": "z coordinate length"
     }
   }
 }

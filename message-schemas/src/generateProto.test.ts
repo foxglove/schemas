@@ -2,71 +2,94 @@ import protobufjs from "protobufjs";
 
 import { DURATION_PROTO, generateProto, TIME_PROTO } from "./generateProto";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "./schemas";
+import { exampleEnum, exampleMessage } from "./testFixtures";
 
 describe("generateProtoFiles", () => {
   it("generates .proto files", () => {
-    expect(generateProto(foxgloveMessageSchemas["LineMarker"]))
-      .toMatchInlineSnapshot(`
-      "// Generated from LineMarker by @foxglove/message-schemas
+    expect(generateProto(exampleEnum)).toMatchInlineSnapshot(`
+      "// Generated from ExampleEnum by @foxglove/message-schemas
 
       syntax = \\"proto3\\";
 
-      import \\"foxglove/Color.proto\\";
+      package foxglove;
+
+      // An example enum
+      enum ExampleEnum {
+        // Value A
+        A = 1;
+
+        // Value B
+        B = 2;
+      }
+      "
+    `);
+    expect(generateProto(exampleMessage)).toMatchInlineSnapshot(`
+      "// Generated from ExampleMessage by @foxglove/message-schemas
+
+      syntax = \\"proto3\\";
+
       import \\"foxglove/Duration.proto\\";
-      import \\"foxglove/KeyValuePair.proto\\";
-      import \\"foxglove/LineType.proto\\";
-      import \\"foxglove/Point3.proto\\";
-      import \\"foxglove/Pose.proto\\";
+      import \\"foxglove/ExampleEnum.proto\\";
+      import \\"foxglove/NestedMessage.proto\\";
       import \\"foxglove/Time.proto\\";
 
       package foxglove;
 
-      // A marker representing a series of points connected by lines
-      message LineMarker {
-        // Timestamp of the marker
-        foxglove.Time timestamp = 1;
+      // An example type
+      message ExampleMessage {
+        // Duration field
+        foxglove.Duration field_Duration = 1;
 
-        // Frame of reference
-        string frame_id = 2;
+        // Time field
+        foxglove.Time field_Time = 2;
 
-        // Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same \`namespace\` and \`id\`.
-        string namespace = 3;
+        // boolean field
+        bool field_boolean = 3;
 
-        // Identifier for the marker. A marker will replace any prior marker on the same topic with the same \`namespace\` and \`id\`.
-        string id = 4;
+        // bytes field
+        bytes field_bytes = 4;
 
-        // Length of time (relative to \`timestamp\`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.
-        foxglove.Duration lifetime = 5;
+        // float field
+        double field_float = 5;
 
-        // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in \`frame_id\` as it moves relative to the fixed frame (true)
-        bool frame_locked = 6;
+        // integer field
+        int32 field_integer = 6;
 
-        // Additional user-provided metadata associated with the marker. Keys must be unique.
-        repeated foxglove.KeyValuePair metadata = 7;
+        // string field
+        string field_string = 7;
 
-        // Drawing primitive to use for lines
-        foxglove.LineType type = 8;
+        // Duration array field
+        repeated foxglove.Duration field_Duration_array = 8;
 
-        // Origin of lines relative to reference frame
-        foxglove.Pose pose = 9;
+        // Time array field
+        repeated foxglove.Time field_Time_array = 9;
 
-        // Line thickness
-        double thickness = 10;
+        // boolean array field
+        repeated bool field_boolean_array = 10;
 
-        // Indicates whether \`thickness\` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
-        bool scale_invariant = 11;
+        // bytes array field
+        repeated bytes field_bytes_array = 11;
 
-        // Points along the line
-        repeated foxglove.Point3 points = 12;
+        // float array field
+        repeated double field_float_array = 12;
 
-        // Solid color to use for the whole line. One of \`color\` or \`colors\` must be provided.
-        foxglove.Color color = 13;
+        // integer array field
+        repeated int32 field_integer_array = 13;
 
-        // Per-point colors (if specified, must have the same length as \`points\`). One of \`color\` or \`colors\` must be provided.
-        repeated foxglove.Color colors = 14;
+        // string array field
+        repeated string field_string_array = 14;
 
-        // Indexes into the \`points\` and \`colors\` attribute arrays, which can be used to avoid duplicating attribute data.
-        repeated int32 indices = 15;
+        // An enum field
+        foxglove.ExampleEnum field_enum = 15;
+
+        // An enum array field
+        repeated foxglove.ExampleEnum field_enum_array = 16;
+
+        // A nested field
+        foxglove.NestedMessage field_nested = 17;
+
+        // A nested array field
+        repeated foxglove.NestedMessage field_nested_array = 18;
       }
       "
     `);

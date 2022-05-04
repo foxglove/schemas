@@ -5,46 +5,46 @@
   "type": "object",
   "properties": {
     "position": {
-      "description": "A vector in 3D space that represents a direction only",
       "$comment": "Generated from Vector3 by @foxglove/message-schemas",
       "title": "Vector3",
+      "description": "Point denoting position in 3D space",
       "type": "object",
       "properties": {
         "x": {
-          "description": "x coordinate length",
-          "type": "number"
+          "type": "number",
+          "description": "x coordinate length"
         },
         "y": {
-          "description": "y coordinate length",
-          "type": "number"
+          "type": "number",
+          "description": "y coordinate length"
         },
         "z": {
-          "description": "z coordinate length",
-          "type": "number"
+          "type": "number",
+          "description": "z coordinate length"
         }
       }
     },
     "orientation": {
-      "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
       "$comment": "Generated from Quaternion by @foxglove/message-schemas",
       "title": "Quaternion",
+      "description": "Quaternion denoting orientation in 3D space",
       "type": "object",
       "properties": {
         "x": {
-          "description": "x value",
-          "type": "number"
+          "type": "number",
+          "description": "x value"
         },
         "y": {
-          "description": "y value",
-          "type": "number"
+          "type": "number",
+          "description": "y value"
         },
         "z": {
-          "description": "z value",
-          "type": "number"
+          "type": "number",
+          "description": "z value"
         },
         "w": {
-          "description": "w value",
-          "type": "number"
+          "type": "number",
+          "description": "w value"
         }
       }
     }

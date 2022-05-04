@@ -85,10 +85,6 @@ export function generateProto(schema: FoxgloveSchema): string {
             }
             break;
         }
-        //FIXME
-        // if (field.arrayLength != undefined) {
-        //   lineComments.push(`length ${field.arrayLength}`);
-        // }
         return `// ${field.description}\n  ${qualifiers.join(" ")} ${
           field.name
         } = ${fieldNumber++};${
@@ -119,5 +115,3 @@ export function generateProto(schema: FoxgloveSchema): string {
 
   return outputSections.join("\n\n") + "\n";
 }
-
-//FIXME: generate FileDescriptorSet?

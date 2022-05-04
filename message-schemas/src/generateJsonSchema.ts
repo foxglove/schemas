@@ -1,7 +1,6 @@
 import { FoxgloveMessageSchema, FoxglovePrimitive } from "./types";
 
 function primitiveToJsonSchema(type: Exclude<FoxglovePrimitive, "bytes">) {
-  //FIXME
   switch (type) {
     case "string":
       return { type: "string" };
@@ -41,24 +40,13 @@ export function generateJsonSchema(
     switch (field.type.type) {
       case "primitive":
         if (field.type.name === "bytes") {
-          fieldType = {
-            type: "string",
-            description: field.description,
-            contentEncoding: "base64",
-          };
+          fieldType = { type: "string", contentEncoding: "base64" };
         } else {
-          fieldType = {
-            description: field.description,
-            ...primitiveToJsonSchema(field.type.name),
-          }; //FIXME
+          fieldType = primitiveToJsonSchema(field.type.name);
         }
         break;
       case "nested":
-        fieldType = {
-          description: field.description,
-          ...generateJsonSchema(field.type.schema),
-        };
-        //FIXME: TODO required?
+        fieldType = generateJsonSchema(field.type.schema);
         break;
       case "enum":
         fieldType = {
@@ -73,16 +61,10 @@ export function generateJsonSchema(
         break;
     }
     if (field.array === true) {
-      const { description, ...rest } = fieldType;
-      fieldType = { type: "array", description, ...rest };
+      fieldType = { type: "array", items: fieldType };
     }
+    fieldType.description = field.description;
     properties[field.name] = fieldType;
-    // if (field.arrayLength != undefined) {
-    //   fieldType.$comment = [fieldType.$comment, `length ${field.arrayLength}`]
-    //     .filter(Boolean)
-    //     .join(", ");
-    // }
-    // properties[field.name] = fieldType;
   }
 
   return {

@@ -5,12 +5,12 @@
   "type": "object",
   "properties": {
     "key": {
-      "description": "Key",
-      "type": "string"
+      "type": "string",
+      "description": "Key"
     },
     "value": {
-      "description": "Value",
-      "type": "string"
+      "type": "string",
+      "description": "Value"
     }
   }
 }

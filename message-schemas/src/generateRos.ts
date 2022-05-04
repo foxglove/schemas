@@ -8,11 +8,15 @@ type RosMsgFieldWithDescription = RosMsgField & {
 };
 type RosMsgDefinitionWithDescription = {
   originalName: string;
+  description?: string;
   qualifiedRosName: string;
-  definitions: RosMsgFieldWithDescription[];
+  fields: RosMsgFieldWithDescription[];
 };
 
-function primitiveToRos(type: Exclude<FoxglovePrimitive, "integer" | "bytes">) {
+function primitiveToRos(
+  type: Exclude<FoxglovePrimitive, "integer" | "bytes">,
+  { rosVersion }: { rosVersion: 1 | 2 }
+) {
   switch (type) {
     case "string":
       return "string";
@@ -21,165 +25,193 @@ function primitiveToRos(type: Exclude<FoxglovePrimitive, "integer" | "bytes">) {
     case "float":
       return "float64";
     case "Time":
-      return "time";
+      return rosVersion === 2 ? "builtin_interfaces/Time" : "time";
     case "Duration":
-      return "duration";
+      return rosVersion === 2 ? "builtin_interfaces/Duration" : "duration";
   }
 }
 
-//FIXME: change to one call per file like other generators?
-export function generateRosMsgFiles(
-  schema: FoxgloveMessageSchema
-): Array<{ name: string; filename: string; source: string }> {
-  const result: Array<{ name: string; filename: string; source: string }> = [];
-  for (const def of generateRosMsgDefinitions(schema)) {
-    let source = "";
-    source += `# Generated from ${def.originalName} by @foxglove/message-schemas\n# ${schema.description}`;
-    for (const field of def.definitions) {
-      if (field.description != undefined) {
-        source += `\n# ${field.description}\n`;
-      }
-      let constant = "";
-      if (field.isConstant === true) {
-        if (field.valueText == undefined) {
-          throw new Error(`Constant ${field.name} has no valueText`);
-        }
-        constant = `=${field.valueText}`;
-      }
-      source += `${field.type}${field.isArray === true ? `[]` : ""} ${
-        field.name
-      }${constant}\n`;
-    }
-    result.push({
-      name: def.qualifiedRosName,
-      filename: `${def.qualifiedRosName}.msg`,
-      source,
-    });
+export function generateRosMsg(def: RosMsgDefinitionWithDescription): string {
+  let source = "";
+  source += `# Generated from ${def.originalName} by @foxglove/message-schemas\n`;
+  if (def.description != undefined) {
+    source += `# ${def.description}\n`;
   }
-  return result;
+  for (const field of def.fields) {
+    if (field.description != undefined) {
+      source += `\n# ${field.description}\n`;
+    }
+    let constant = "";
+    if (field.isConstant === true) {
+      if (field.valueText == undefined) {
+        throw new Error(`Constant ${field.name} has no valueText`);
+      }
+      constant = `=${field.valueText}`;
+    }
+    source += `${field.type}${field.isArray === true ? `[]` : ""} ${
+      field.name
+    }${constant}\n`;
+  }
+  return source;
 }
 
-export function generateRosMsgMergedSchema(
+type Dependency =
+  | { type: "ros"; name: keyof typeof rosCommonDefs }
+  | { type: "foxglove"; schema: FoxgloveMessageSchema };
+
+function dependenciesEqual(a: Dependency, b: Dependency) {
+  return (
+    (a.type === "foxglove" &&
+      b.type === "foxglove" &&
+      a.schema.name === b.schema.name) ||
+    (a.type === "ros" && b.type === "ros" && a.name === b.name)
+  );
+}
+
+function* getSchemaDependencies(
   schema: FoxgloveMessageSchema
-): string {
-  const files = generateRosMsgFiles(schema);
-  let result = "";
-  for (const { name, source } of files) {
-    if (result.length > 0) {
-      result += `================================================================================\nMSG: ${name}\n`;
+): Iterable<Dependency> {
+  for (const field of schema.fields) {
+    if (field.type.type === "nested") {
+      if (field.type.schema.rosEquivalent != undefined) {
+        yield { type: "ros", name: field.type.schema.rosEquivalent };
+        yield* getRosDependencies(
+          rosCommonDefs[field.type.schema.rosEquivalent]
+        );
+      } else {
+        yield { type: "foxglove", schema: field.type.schema };
+        yield* getSchemaDependencies(field.type.schema);
+      }
     }
-    result += source;
   }
-  return result;
+}
+function* getRosDependencies(schema: RosMsgDefinition): Iterable<Dependency> {
+  for (const field of schema.definitions) {
+    if (field.isComplex === true) {
+      yield { type: "ros", name: field.type as keyof typeof rosCommonDefs };
+      yield* getRosDependencies(
+        rosCommonDefs[field.type as keyof typeof rosCommonDefs]!
+      );
+    }
+  }
 }
 
 //FIXME: what to do with enums?
-export function generateRosMsgDefinitions(
-  rootSchema: FoxgloveMessageSchema
-): RosMsgDefinitionWithDescription[] {
-  const seenTypes = new Set<string>();
-  const result: RosMsgDefinitionWithDescription[] = [];
+export function generateRosMsgDefinition(
+  schema: FoxgloveMessageSchema,
+  { rosVersion }: { rosVersion: 1 | 2 }
+): RosMsgDefinitionWithDescription {
+  // const result: RosMsgDefinitionWithDescription[] = [];
   const enumFieldNames = new Set<string>();
-  const enumFieldsByEnumName = new Map<string, RosMsgFieldWithDescription[]>();
+  const seenEnumNames = new Set<string>();
 
-  function addRosMsgDefinition(def: RosMsgDefinition) {
-    if (def.name == undefined) {
-      throw new Error("Cannot add definition with no name");
-    }
-    result.unshift({
-      ...def,
-      originalName: def.name,
-      qualifiedRosName: def.name,
-    });
-    seenTypes.add(def.name);
-    for (const field of def.definitions) {
-      if (field.isComplex === true) {
-        if (field.type in rosCommonDefs && !seenTypes.has(field.type)) {
-          addRosMsgDefinition(
-            rosCommonDefs[field.type as keyof typeof rosCommonDefs]
-          );
+  const fields: RosMsgFieldWithDescription[] = [];
+  for (const field of schema.fields) {
+    let isArray = field.array;
+    let fieldType: string;
+    switch (field.type.type) {
+      case "enum": {
+        // Add enum constants preceding the field so that Studio can pick them up:
+        // https://foxglove.dev/docs/studio/annotating-data
+        const enumName = field.type.enum.name;
+        const valueType = "uint8";
+        fieldType = valueType;
+        if (seenEnumNames.has(enumName)) {
+          break;
         }
+        const enumFields: RosMsgFieldWithDescription[] = [];
+        for (const { name, value, description } of field.type.enum.values) {
+          if (enumFieldNames.has(name)) {
+            throw new Error(
+              `Enum value ${name} occurs in more than one enum referenced by ${schema.name}, this is not supported in ROS msg files`
+            );
+          }
+          if (value < 0 || value > 255 || !Number.isInteger(value)) {
+            throw new Error(
+              `Only uint8 enums are currently supported; value ${name}=${value} is out of range`
+            );
+          }
+          enumFieldNames.add(name);
+          enumFields.push({
+            name,
+            value,
+            isConstant: true,
+            valueText: value.toString(),
+            type: valueType,
+            description,
+          });
+        }
+        fields.push(...enumFields);
+        seenEnumNames.add(enumName);
+        break;
       }
+
+      case "nested":
+        if (field.type.schema.rosEquivalent != undefined) {
+          fieldType = field.type.schema.rosEquivalent;
+        } else {
+          fieldType = `foxglove_msgs/${field.type.schema.name}`;
+        }
+        break;
+
+      case "primitive":
+        if (field.type.name === "bytes") {
+          fieldType = "uint8";
+          if (isArray === true) {
+            throw new Error("Array of bytes is not supported in ROS msg");
+          }
+          isArray = true;
+        } else if (field.type.name === "integer") {
+          fieldType = "int32"; //FIXME
+        } else {
+          fieldType = primitiveToRos(field.type.name, { rosVersion });
+        }
+        break;
+    }
+    fields.push({
+      name: field.name,
+      type: fieldType,
+      isComplex: field.type.type === "nested",
+      isArray,
+      description: field.description,
+    });
+  }
+
+  return {
+    originalName: schema.name,
+    qualifiedRosName: `foxglove_msgs/${schema.name}`,
+    fields,
+  };
+}
+
+export function generateRosMsgMergedSchema(
+  schema: FoxgloveMessageSchema,
+  { rosVersion }: { rosVersion: 1 | 2 }
+): string {
+  const dependencies: Dependency[] = [];
+  for (const dep of getSchemaDependencies(schema)) {
+    if (!dependencies.some((existing) => dependenciesEqual(existing, dep))) {
+      dependencies.push(dep);
     }
   }
 
-  function addSchema(schema: FoxgloveMessageSchema) {
-    const fields: RosMsgFieldWithDescription[] = [];
-    for (const field of schema.fields) {
-      let isArray = field.array;
-      let fieldType: string;
-      switch (field.type.type) {
-        case "enum": {
-          const enumName = field.type.enum.name;
-          const valueType = "uint8"; // FIXME
-          fieldType = valueType;
-          if (enumFieldsByEnumName.has(enumName)) {
-            break;
-          }
-          const enumFields: RosMsgFieldWithDescription[] = [];
-          for (const { name, value, description } of field.type.enum.values) {
-            if (enumFieldNames.has(name)) {
-              throw new Error(
-                `Enum value ${name} occurs in more than one enum`
-              );
-            }
-            enumFieldNames.add(name);
-            enumFields.push({
-              name,
-              value,
-              isConstant: true,
-              valueText: value.toString(),
-              type: valueType,
-              description,
-            });
-          }
-          fields.push(...enumFields); //FIXME do we need to store whole array in map?
-          enumFieldsByEnumName.set(enumName, enumFields);
-          break;
-        }
-
-        case "nested":
-          if (field.type.schema.rosEquivalent != undefined) {
-            fieldType = field.type.schema.rosEquivalent;
-            addRosMsgDefinition(rosCommonDefs[field.type.schema.rosEquivalent]);
-          } else {
-            fieldType = `foxglove_msgs/${field.type.schema.name}`;
-            addSchema(field.type.schema);
-          }
-          break;
-
-        case "primitive":
-          if (field.type.name === "bytes") {
-            fieldType = "uint8";
-            if (isArray === true) {
-              throw new Error("Array of bytes is not supported in ROS msg");
-            }
-            isArray = true;
-          } else if (field.type.name === "integer") {
-            fieldType = "int32"; //FIXME
-          } else {
-            fieldType = primitiveToRos(field.type.name);
-          }
-          break;
-      }
-      fields.push({
-        name: field.name,
-        type: fieldType,
-        isComplex: field.type.type === "nested",
-        isArray,
-        description: field.description,
+  let result = generateRosMsg(generateRosMsgDefinition(schema, { rosVersion }));
+  for (const dep of dependencies) {
+    let name: string;
+    let source: string;
+    if (dep.type === "ros") {
+      name = dep.name;
+      source = generateRosMsg({
+        originalName: dep.name,
+        qualifiedRosName: dep.name,
+        fields: rosCommonDefs[dep.name].definitions,
       });
+    } else {
+      const definition = generateRosMsgDefinition(dep.schema, { rosVersion });
+      name = definition.qualifiedRosName;
+      source = generateRosMsg(definition);
     }
-
-    result.unshift({
-      originalName: schema.name,
-      qualifiedRosName: `foxglove_msgs/${schema.name}`,
-      definitions: fields,
-    });
-    seenTypes.add(schema.name);
+    result += `================================================================================\nMSG: ${name}\n${source}`;
   }
-
-  addSchema(rootSchema);
-
   return result;
 }

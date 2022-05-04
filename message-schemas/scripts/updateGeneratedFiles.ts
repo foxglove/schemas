@@ -4,6 +4,7 @@ import path from "path";
 import rimraf from "rimraf";
 import { promisify } from "util";
 
+import { generateRosMsg, generateRosMsgDefinition } from "../src";
 import { generateJsonSchema } from "../src/generateJsonSchema";
 import {
   TIME_PROTO,
@@ -29,6 +30,32 @@ async function main({ outDir }: { outDir: string }) {
       await fs.writeFile(
         path.join(outDir, "json", `${schema.name}.json`),
         JSON.stringify(generateJsonSchema(schema), undefined, 2) + "\n"
+      );
+    }
+  });
+
+  await logProgress("Generating ROS 1 msg files", async () => {
+    await fs.mkdir(path.join(outDir, "ros1"), { recursive: true });
+    for (const schema of Object.values(foxgloveMessageSchemas)) {
+      if (schema.rosEquivalent != undefined) {
+        continue;
+      }
+      await fs.writeFile(
+        path.join(outDir, "ros1", `${schema.name}.msg`),
+        generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 1 }))
+      );
+    }
+  });
+
+  await logProgress("Generating ROS 2 msg files", async () => {
+    await fs.mkdir(path.join(outDir, "ros2"), { recursive: true });
+    for (const schema of Object.values(foxgloveMessageSchemas)) {
+      if (schema.rosEquivalent != undefined) {
+        continue;
+      }
+      await fs.writeFile(
+        path.join(outDir, "ros2", `${schema.name}.msg`),
+        generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 2 }))
       );
     }
   });

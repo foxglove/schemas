@@ -5,7 +5,6 @@
   "type": "object",
   "properties": {
     "timestamp": {
-      "description": "Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.",
       "type": "object",
       "title": "Time",
       "properties": {
@@ -15,7 +14,8 @@
         "nsec": {
           "type": "integer"
         }
-      }
+      },
+      "description": "Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted."
     },
     "type": {
       "title": "MarkerDeletionType: An enumeration indicating which markers should match a MarkerDeletion command",
@@ -36,12 +36,12 @@
       ]
     },
     "namespace": {
-      "description": "Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`.",
-      "type": "string"
+      "type": "string",
+      "description": "Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`."
     },
     "id": {
-      "description": "Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`.",
-      "type": "string"
+      "type": "string",
+      "description": "Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`."
     }
   }
 }

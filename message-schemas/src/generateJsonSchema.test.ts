@@ -2,81 +2,41 @@ import Ajv from "ajv";
 
 import { generateJsonSchema } from "./generateJsonSchema";
 import { foxgloveMessageSchemas } from "./schemas";
+import { exampleMessage } from "./testFixtures";
 
 describe("generateJsonSchema", () => {
   it("generates expected JSON Schema", () => {
-    expect(generateJsonSchema(foxgloveMessageSchemas["LineMarker"]))
-      .toMatchInlineSnapshot(`
+    expect(generateJsonSchema(exampleMessage)).toMatchInlineSnapshot(`
       Object {
-        "$comment": "Generated from LineMarker by @foxglove/message-schemas",
-        "description": "A marker representing a series of points connected by lines",
+        "$comment": "Generated from ExampleMessage by @foxglove/message-schemas",
+        "description": "An example type",
         "properties": Object {
-          "color": Object {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
-            "description": "A color in RGBA format",
-            "properties": Object {
-              "a": Object {
-                "description": "Alpha value between 0 and 1",
-                "type": "number",
-              },
-              "b": Object {
-                "description": "Blue value between 0 and 1",
-                "type": "number",
-              },
-              "g": Object {
-                "description": "Green value between 0 and 1",
-                "type": "number",
-              },
-              "r": Object {
-                "description": "Red value between 0 and 1",
-                "type": "number",
-              },
-            },
-            "title": "Color",
-            "type": "object",
-          },
-          "colors": Object {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
-            "description": "A color in RGBA format",
-            "properties": Object {
-              "a": Object {
-                "description": "Alpha value between 0 and 1",
-                "type": "number",
-              },
-              "b": Object {
-                "description": "Blue value between 0 and 1",
-                "type": "number",
-              },
-              "g": Object {
-                "description": "Green value between 0 and 1",
-                "type": "number",
-              },
-              "r": Object {
-                "description": "Red value between 0 and 1",
-                "type": "number",
-              },
-            },
-            "title": "Color",
-            "type": "object",
-          },
-          "frame_id": Object {
-            "description": "Frame of reference",
-            "type": "string",
-          },
-          "frame_locked": Object {
-            "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in \`frame_id\` as it moves relative to the fixed frame (true)",
+          "field_boolean": Object {
+            "description": "boolean field",
             "type": "boolean",
           },
-          "id": Object {
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same \`namespace\` and \`id\`.",
+          "field_boolean_array": Object {
+            "description": "boolean array field",
+            "items": Object {
+              "type": "boolean",
+            },
+            "type": "array",
+          },
+          "field_bytes": Object {
+            "contentEncoding": "base64",
+            "description": "bytes field",
             "type": "string",
           },
-          "indices": Object {
-            "description": "Indexes into the \`points\` and \`colors\` attribute arrays, which can be used to avoid duplicating attribute data.",
-            "type": "number",
+          "field_bytes_array": Object {
+            "description": "bytes array field",
+            "items": Object {
+              "contentEncoding": "base64",
+              "type": "string",
+            },
+            "type": "array",
           },
-          "lifetime": Object {
-            "description": "Length of time (relative to \`timestamp\`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
+          "field_duration": Object {
+            "description": "Duration field",
             "properties": Object {
               "nsec": Object {
                 "type": "integer",
@@ -88,108 +48,121 @@ describe("generateJsonSchema", () => {
             "title": "Duration",
             "type": "object",
           },
-          "metadata": Object {
-            "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
-            "description": "An entry representing a key and its associated value",
-            "properties": Object {
-              "key": Object {
-                "description": "Key",
-                "type": "string",
-              },
-              "value": Object {
-                "description": "Value",
-                "type": "string",
-              },
-            },
-            "title": "KeyValuePair",
-            "type": "object",
-          },
-          "namespace": Object {
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same \`namespace\` and \`id\`.",
-            "type": "string",
-          },
-          "points": Object {
-            "$comment": "Generated from Point3 by @foxglove/message-schemas",
-            "description": "A point representing a position in 3D space",
-            "properties": Object {
-              "x": Object {
-                "description": "x coordinate position",
-                "type": "number",
-              },
-              "y": Object {
-                "description": "y coordinate position",
-                "type": "number",
-              },
-              "z": Object {
-                "description": "z coordinate position",
-                "type": "number",
-              },
-            },
-            "title": "Point3",
-            "type": "object",
-          },
-          "pose": Object {
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
-            "description": "The position and orientation of an object or reference frame in 3D space",
-            "properties": Object {
-              "orientation": Object {
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
-                "description": "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
-                "properties": Object {
-                  "w": Object {
-                    "description": "w value",
-                    "type": "number",
-                  },
-                  "x": Object {
-                    "description": "x value",
-                    "type": "number",
-                  },
-                  "y": Object {
-                    "description": "y value",
-                    "type": "number",
-                  },
-                  "z": Object {
-                    "description": "z value",
-                    "type": "number",
-                  },
+          "field_duration_array": Object {
+            "description": "Duration array field",
+            "items": Object {
+              "properties": Object {
+                "nsec": Object {
+                  "type": "integer",
                 },
-                "title": "Quaternion",
-                "type": "object",
-              },
-              "position": Object {
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
-                "description": "A vector in 3D space that represents a direction only",
-                "properties": Object {
-                  "x": Object {
-                    "description": "x coordinate length",
-                    "type": "number",
-                  },
-                  "y": Object {
-                    "description": "y coordinate length",
-                    "type": "number",
-                  },
-                  "z": Object {
-                    "description": "z coordinate length",
-                    "type": "number",
-                  },
+                "sec": Object {
+                  "type": "integer",
                 },
-                "title": "Vector3",
-                "type": "object",
               },
+              "title": "Duration",
+              "type": "object",
             },
-            "title": "Pose",
-            "type": "object",
+            "type": "array",
           },
-          "scale_invariant": Object {
-            "description": "Indicates whether \`thickness\` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)",
-            "type": "boolean",
+          "field_enum": Object {
+            "description": "An enum field",
+            "oneOf": Array [
+              Object {
+                "const": 1,
+                "description": "Value A",
+                "title": "A",
+              },
+              Object {
+                "const": 2,
+                "description": "Value B",
+                "title": "B",
+              },
+            ],
+            "title": "ExampleEnum: An example enum",
           },
-          "thickness": Object {
-            "description": "Line thickness",
+          "field_enum_array": Object {
+            "description": "An enum array field",
+            "items": Object {
+              "description": "An enum array field",
+              "oneOf": Array [
+                Object {
+                  "const": 1,
+                  "description": "Value A",
+                  "title": "A",
+                },
+                Object {
+                  "const": 2,
+                  "description": "Value B",
+                  "title": "B",
+                },
+              ],
+              "title": "ExampleEnum: An example enum",
+            },
+            "type": "array",
+          },
+          "field_float": Object {
+            "description": "float field",
             "type": "number",
           },
-          "timestamp": Object {
-            "description": "Timestamp of the marker",
+          "field_float_array": Object {
+            "description": "float array field",
+            "items": Object {
+              "type": "number",
+            },
+            "type": "array",
+          },
+          "field_integer": Object {
+            "description": "integer field",
+            "type": "integer",
+          },
+          "field_integer_array": Object {
+            "description": "integer array field",
+            "items": Object {
+              "type": "integer",
+            },
+            "type": "array",
+          },
+          "field_nested": Object {
+            "$comment": "Generated from NestedMessage by @foxglove/message-schemas",
+            "description": "A nested field",
+            "properties": Object {
+              "field_enum": Object {
+                "description": "An enum field",
+                "type": "integer",
+              },
+            },
+            "title": "NestedMessage",
+            "type": "object",
+          },
+          "field_nested_array": Object {
+            "description": "A nested array field",
+            "items": Object {
+              "$comment": "Generated from NestedMessage by @foxglove/message-schemas",
+              "description": "An example nested message",
+              "properties": Object {
+                "field_enum": Object {
+                  "description": "An enum field",
+                  "type": "integer",
+                },
+              },
+              "title": "NestedMessage",
+              "type": "object",
+            },
+            "type": "array",
+          },
+          "field_string": Object {
+            "description": "string field",
+            "type": "string",
+          },
+          "field_string_array": Object {
+            "description": "string array field",
+            "items": Object {
+              "type": "string",
+            },
+            "type": "array",
+          },
+          "field_time": Object {
+            "description": "Time field",
             "properties": Object {
               "nsec": Object {
                 "type": "integer",
@@ -201,29 +174,24 @@ describe("generateJsonSchema", () => {
             "title": "Time",
             "type": "object",
           },
-          "type": Object {
-            "description": "Drawing primitive to use for lines",
-            "oneOf": Array [
-              Object {
-                "const": 0,
-                "description": "0-1, 1-2, ..., (n-1)-n",
-                "title": "LINE_STRIP",
+          "field_time_array": Object {
+            "description": "Time array field",
+            "items": Object {
+              "properties": Object {
+                "nsec": Object {
+                  "type": "integer",
+                },
+                "sec": Object {
+                  "type": "integer",
+                },
               },
-              Object {
-                "const": 1,
-                "description": "0-1, 1-2, ..., (n-1)-n, n-0",
-                "title": "LINE_LOOP",
-              },
-              Object {
-                "const": 2,
-                "description": "0-1, 2-3, 4-5, ...",
-                "title": "LINE_LIST",
-              },
-            ],
-            "title": "LineType: An enumeration indicating how input points should be interpreted to create lines",
+              "title": "Time",
+              "type": "object",
+            },
+            "type": "array",
           },
         },
-        "title": "LineMarker",
+        "title": "ExampleMessage",
         "type": "object",
       }
     `);

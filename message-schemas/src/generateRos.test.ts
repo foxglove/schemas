@@ -1,286 +1,226 @@
 import { parse as parseMessageDefinition } from "@foxglove/rosmsg";
 
-import { generateRosMsgMergedSchema, generateRosMsgFiles } from "./generateRos";
+import {
+  generateRosMsgMergedSchema,
+  generateRosMsgDefinition,
+  generateRosMsg,
+} from "./generateRos";
 import { foxgloveMessageSchemas } from "./schemas";
+import { exampleMessageWithoutArrayOfBytes } from "./testFixtures";
 
 describe("generateRosMsgFiles", () => {
-  it("generates msg files", () => {
-    expect(generateRosMsgFiles(foxgloveMessageSchemas["LineMarker"]))
-      .toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "filename": "foxglove_msgs/LineMarker.msg",
-          "name": "foxglove_msgs/LineMarker",
-          "source": "# Generated from LineMarker by @foxglove/message-schemas
+  it("generates msg file for ROS 1", () => {
+    expect(
+      generateRosMsg(
+        generateRosMsgDefinition(exampleMessageWithoutArrayOfBytes, {
+          rosVersion: 1,
+        })
+      )
+    ).toMatchInlineSnapshot(`
+      "# Generated from ExampleMessage by @foxglove/message-schemas
 
-      # Timestamp of the marker
-      time timestamp
+      # Duration field
+      duration field_duration
 
-      # Frame of reference
-      string frame_id
+      # Time field
+      time field_time
 
-      # Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same \`namespace\` and \`id\`.
-      string namespace
+      # boolean field
+      bool field_boolean
 
-      # Identifier for the marker. A marker will replace any prior marker on the same topic with the same \`namespace\` and \`id\`.
-      string id
+      # bytes field
+      uint8[] field_bytes
 
-      # Length of time (relative to \`timestamp\`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.
-      duration lifetime
+      # float field
+      float64 field_float
 
-      # Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in \`frame_id\` as it moves relative to the fixed frame (true)
-      bool frame_locked
+      # integer field
+      int32 field_integer
 
-      # Additional user-provided metadata associated with the marker. Keys must be unique.
-      foxglove_msgs/KeyValuePair[] metadata
+      # string field
+      string field_string
 
-      # 0-1, 1-2, ...
-      uint8 LINE_STRIP=0
+      # Duration array field
+      duration[] field_duration_array
 
-      # 0-1, 1-2, ..., n-0
-      uint8 LINE_LOOP=1
+      # Time array field
+      time[] field_time_array
 
-      # 0-1, 2-3, 4-5, ...
-      uint8 LINE_LIST=2
+      # boolean array field
+      bool[] field_boolean_array
 
-      # Drawing primitive to use for lines
-      uint8 type
+      # float array field
+      float64[] field_float_array
 
-      # Origin of lines relative to reference frame
-      geometry_msgs/Pose pose
+      # integer array field
+      int32[] field_integer_array
 
-      # Line thickness
-      float64 thickness
+      # string array field
+      string[] field_string_array
 
-      # Indicates whether \`thickness\` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
-      bool scale_invariant
+      # Value A
+      uint8 A=1
 
-      # Points along the line
-      geometry_msgs/Point[] points
+      # Value B
+      uint8 B=2
 
-      # Solid color to use for the whole line. One of \`color\` or \`colors\` must be provided.
-      foxglove_msgs/Color color
+      # An enum field
+      uint8 field_enum
 
-      # Per-point colors (if specified, must have the same length as \`points\`). One of \`color\` or \`colors\` must be provided.
-      foxglove_msgs/Color[] colors
+      # An enum array field
+      uint8[] field_enum_array
 
-      # Indexes into the \`points\` and \`colors\` attribute arrays, which can be used to avoid duplicating attribute data.
-      int32[] indices
-      ",
-        },
-        Object {
-          "filename": "foxglove_msgs/Color.msg",
-          "name": "foxglove_msgs/Color",
-          "source": "# Generated from Color by @foxglove/message-schemas
+      # A nested field
+      foxglove_msgs/NestedMessage field_nested
 
-      # Red value between 0 and 1
-      float64 r
+      # A nested array field
+      foxglove_msgs/NestedMessage[] field_nested_array
+      "
+    `);
+  });
 
-      # Green value between 0 and 1
-      float64 g
+  it("generates msg file for ROS 2", () => {
+    expect(
+      generateRosMsg(
+        generateRosMsgDefinition(exampleMessageWithoutArrayOfBytes, {
+          rosVersion: 2,
+        })
+      )
+    ).toMatchInlineSnapshot(`
+      "# Generated from ExampleMessage by @foxglove/message-schemas
 
-      # Blue value between 0 and 1
-      float64 b
+      # Duration field
+      builtin_interfaces/Duration field_duration
 
-      # Alpha value between 0 and 1
-      float64 a
-      ",
-        },
-        Object {
-          "filename": "foxglove_msgs/Color.msg",
-          "name": "foxglove_msgs/Color",
-          "source": "# Generated from Color by @foxglove/message-schemas
+      # Time field
+      builtin_interfaces/Time field_time
 
-      # Red value between 0 and 1
-      float64 r
+      # boolean field
+      bool field_boolean
 
-      # Green value between 0 and 1
-      float64 g
+      # bytes field
+      uint8[] field_bytes
 
-      # Blue value between 0 and 1
-      float64 b
+      # float field
+      float64 field_float
 
-      # Alpha value between 0 and 1
-      float64 a
-      ",
-        },
-        Object {
-          "filename": "geometry_msgs/Point.msg",
-          "name": "geometry_msgs/Point",
-          "source": "# Generated from geometry_msgs/Point by @foxglove/message-schemas
-      float64 x
-      float64 y
-      float64 z
-      ",
-        },
-        Object {
-          "filename": "geometry_msgs/Quaternion.msg",
-          "name": "geometry_msgs/Quaternion",
-          "source": "# Generated from geometry_msgs/Quaternion by @foxglove/message-schemas
-      float64 x
-      float64 y
-      float64 z
-      float64 w
-      ",
-        },
-        Object {
-          "filename": "geometry_msgs/Point.msg",
-          "name": "geometry_msgs/Point",
-          "source": "# Generated from geometry_msgs/Point by @foxglove/message-schemas
-      float64 x
-      float64 y
-      float64 z
-      ",
-        },
-        Object {
-          "filename": "geometry_msgs/Pose.msg",
-          "name": "geometry_msgs/Pose",
-          "source": "# Generated from geometry_msgs/Pose by @foxglove/message-schemas
-      geometry_msgs/Point position
-      geometry_msgs/Quaternion orientation
-      ",
-        },
-        Object {
-          "filename": "foxglove_msgs/KeyValuePair.msg",
-          "name": "foxglove_msgs/KeyValuePair",
-          "source": "# Generated from KeyValuePair by @foxglove/message-schemas
+      # integer field
+      int32 field_integer
 
-      # Key
-      string key
+      # string field
+      string field_string
 
-      # Value
-      string value
-      ",
-        },
-      ]
+      # Duration array field
+      builtin_interfaces/Duration[] field_duration_array
+
+      # Time array field
+      builtin_interfaces/Time[] field_time_array
+
+      # boolean array field
+      bool[] field_boolean_array
+
+      # float array field
+      float64[] field_float_array
+
+      # integer array field
+      int32[] field_integer_array
+
+      # string array field
+      string[] field_string_array
+
+      # Value A
+      uint8 A=1
+
+      # Value B
+      uint8 B=2
+
+      # An enum field
+      uint8 field_enum
+
+      # An enum array field
+      uint8[] field_enum_array
+
+      # A nested field
+      foxglove_msgs/NestedMessage field_nested
+
+      # A nested array field
+      foxglove_msgs/NestedMessage[] field_nested_array
+      "
     `);
   });
 });
 
 describe("generateRosMsgMergedSchema", () => {
-  it("generates merged schema", () => {
+  it("generates merged schema for ROS 1", () => {
     const mergedSchema = generateRosMsgMergedSchema(
-      foxgloveMessageSchemas["LineMarker"]
+      exampleMessageWithoutArrayOfBytes,
+      { rosVersion: 1 }
     );
     expect(mergedSchema).toMatchInlineSnapshot(`
-      "# Generated from LineMarker by @foxglove/message-schemas
+      "# Generated from ExampleMessage by @foxglove/message-schemas
 
-      # Timestamp of the marker
-      time timestamp
+      # Duration field
+      duration field_duration
 
-      # Frame of reference
-      string frame_id
+      # Time field
+      time field_time
 
-      # Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same \`namespace\` and \`id\`.
-      string namespace
+      # boolean field
+      bool field_boolean
 
-      # Identifier for the marker. A marker will replace any prior marker on the same topic with the same \`namespace\` and \`id\`.
-      string id
+      # bytes field
+      uint8[] field_bytes
 
-      # Length of time (relative to \`timestamp\`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.
-      duration lifetime
+      # float field
+      float64 field_float
 
-      # Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in \`frame_id\` as it moves relative to the fixed frame (true)
-      bool frame_locked
+      # integer field
+      int32 field_integer
 
-      # Additional user-provided metadata associated with the marker. Keys must be unique.
-      foxglove_msgs/KeyValuePair[] metadata
+      # string field
+      string field_string
 
-      # 0-1, 1-2, ...
-      uint8 LINE_STRIP=0
+      # Duration array field
+      duration[] field_duration_array
 
-      # 0-1, 1-2, ..., n-0
-      uint8 LINE_LOOP=1
+      # Time array field
+      time[] field_time_array
 
-      # 0-1, 2-3, 4-5, ...
-      uint8 LINE_LIST=2
+      # boolean array field
+      bool[] field_boolean_array
 
-      # Drawing primitive to use for lines
-      uint8 type
+      # float array field
+      float64[] field_float_array
 
-      # Origin of lines relative to reference frame
-      geometry_msgs/Pose pose
+      # integer array field
+      int32[] field_integer_array
 
-      # Line thickness
-      float64 thickness
+      # string array field
+      string[] field_string_array
 
-      # Indicates whether \`thickness\` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
-      bool scale_invariant
+      # Value A
+      uint8 A=1
 
-      # Points along the line
-      geometry_msgs/Point[] points
+      # Value B
+      uint8 B=2
 
-      # Solid color to use for the whole line. One of \`color\` or \`colors\` must be provided.
-      foxglove_msgs/Color color
+      # An enum field
+      uint8 field_enum
 
-      # Per-point colors (if specified, must have the same length as \`points\`). One of \`color\` or \`colors\` must be provided.
-      foxglove_msgs/Color[] colors
+      # An enum array field
+      uint8[] field_enum_array
 
-      # Indexes into the \`points\` and \`colors\` attribute arrays, which can be used to avoid duplicating attribute data.
-      int32[] indices
+      # A nested field
+      foxglove_msgs/NestedMessage field_nested
+
+      # A nested array field
+      foxglove_msgs/NestedMessage[] field_nested_array
       ================================================================================
-      MSG: foxglove_msgs/Color
-      # Generated from Color by @foxglove/message-schemas
+      MSG: foxglove_msgs/NestedMessage
+      # Generated from NestedMessage by @foxglove/message-schemas
 
-      # Red value between 0 and 1
-      float64 r
-
-      # Green value between 0 and 1
-      float64 g
-
-      # Blue value between 0 and 1
-      float64 b
-
-      # Alpha value between 0 and 1
-      float64 a
-      ================================================================================
-      MSG: foxglove_msgs/Color
-      # Generated from Color by @foxglove/message-schemas
-
-      # Red value between 0 and 1
-      float64 r
-
-      # Green value between 0 and 1
-      float64 g
-
-      # Blue value between 0 and 1
-      float64 b
-
-      # Alpha value between 0 and 1
-      float64 a
-      ================================================================================
-      MSG: geometry_msgs/Point
-      # Generated from geometry_msgs/Point by @foxglove/message-schemas
-      float64 x
-      float64 y
-      float64 z
-      ================================================================================
-      MSG: geometry_msgs/Quaternion
-      # Generated from geometry_msgs/Quaternion by @foxglove/message-schemas
-      float64 x
-      float64 y
-      float64 z
-      float64 w
-      ================================================================================
-      MSG: geometry_msgs/Point
-      # Generated from geometry_msgs/Point by @foxglove/message-schemas
-      float64 x
-      float64 y
-      float64 z
-      ================================================================================
-      MSG: geometry_msgs/Pose
-      # Generated from geometry_msgs/Pose by @foxglove/message-schemas
-      geometry_msgs/Point position
-      geometry_msgs/Quaternion orientation
-      ================================================================================
-      MSG: foxglove_msgs/KeyValuePair
-      # Generated from KeyValuePair by @foxglove/message-schemas
-
-      # Key
-      string key
-
-      # Value
-      string value
+      # An enum field
+      int32 field_enum
       "
     `);
     expect(parseMessageDefinition(mergedSchema)).toMatchInlineSnapshot(`
@@ -290,62 +230,91 @@ describe("generateRosMsgMergedSchema", () => {
             Object {
               "isArray": false,
               "isComplex": false,
-              "name": "timestamp",
-              "type": "time",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "frame_id",
-              "type": "string",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "namespace",
-              "type": "string",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "id",
-              "type": "string",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "lifetime",
+              "name": "field_duration",
               "type": "duration",
             },
             Object {
               "isArray": false,
               "isComplex": false,
-              "name": "frame_locked",
+              "name": "field_time",
+              "type": "time",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "field_boolean",
               "type": "bool",
             },
             Object {
               "isArray": true,
-              "isComplex": true,
-              "name": "metadata",
-              "type": "foxglove_msgs/KeyValuePair",
-            },
-            Object {
-              "isConstant": true,
-              "name": "LINE_STRIP",
+              "isComplex": false,
+              "name": "field_bytes",
               "type": "uint8",
-              "value": 0,
-              "valueText": "0",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "field_float",
+              "type": "float64",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "field_integer",
+              "type": "int32",
+            },
+            Object {
+              "isArray": false,
+              "isComplex": false,
+              "name": "field_string",
+              "type": "string",
+            },
+            Object {
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_duration_array",
+              "type": "duration",
+            },
+            Object {
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_time_array",
+              "type": "time",
+            },
+            Object {
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_boolean_array",
+              "type": "bool",
+            },
+            Object {
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_float_array",
+              "type": "float64",
+            },
+            Object {
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_integer_array",
+              "type": "int32",
+            },
+            Object {
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_string_array",
+              "type": "string",
             },
             Object {
               "isConstant": true,
-              "name": "LINE_LOOP",
+              "name": "A",
               "type": "uint8",
               "value": 1,
               "valueText": "1",
             },
             Object {
               "isConstant": true,
-              "name": "LINE_LIST",
+              "name": "B",
               "type": "uint8",
               "value": 2,
               "valueText": "2",
@@ -353,50 +322,26 @@ describe("generateRosMsgMergedSchema", () => {
             Object {
               "isArray": false,
               "isComplex": false,
-              "name": "type",
+              "name": "field_enum",
+              "type": "uint8",
+            },
+            Object {
+              "isArray": true,
+              "isComplex": false,
+              "name": "field_enum_array",
               "type": "uint8",
             },
             Object {
               "isArray": false,
               "isComplex": true,
-              "name": "pose",
-              "type": "geometry_msgs/Pose",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "thickness",
-              "type": "float64",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "scale_invariant",
-              "type": "bool",
+              "name": "field_nested",
+              "type": "foxglove_msgs/NestedMessage",
             },
             Object {
               "isArray": true,
               "isComplex": true,
-              "name": "points",
-              "type": "geometry_msgs/Point",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": true,
-              "name": "color",
-              "type": "foxglove_msgs/Color",
-            },
-            Object {
-              "isArray": true,
-              "isComplex": true,
-              "name": "colors",
-              "type": "foxglove_msgs/Color",
-            },
-            Object {
-              "isArray": true,
-              "isComplex": false,
-              "name": "indices",
-              "type": "int32",
+              "name": "field_nested_array",
+              "type": "foxglove_msgs/NestedMessage",
             },
           ],
           "name": undefined,
@@ -406,167 +351,360 @@ describe("generateRosMsgMergedSchema", () => {
             Object {
               "isArray": false,
               "isComplex": false,
-              "name": "r",
-              "type": "float64",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "g",
-              "type": "float64",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "b",
-              "type": "float64",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "a",
-              "type": "float64",
+              "name": "field_enum",
+              "type": "int32",
             },
           ],
-          "name": "foxglove_msgs/Color",
+          "name": "foxglove_msgs/NestedMessage",
         },
+      ]
+    `);
+  });
+
+  it("generates merged schema for ROS 2", () => {
+    const mergedSchema = generateRosMsgMergedSchema(
+      exampleMessageWithoutArrayOfBytes,
+      { rosVersion: 2 }
+    );
+    expect(mergedSchema).toMatchInlineSnapshot(`
+      "# Generated from ExampleMessage by @foxglove/message-schemas
+
+      # Duration field
+      builtin_interfaces/Duration field_duration
+
+      # Time field
+      builtin_interfaces/Time field_time
+
+      # boolean field
+      bool field_boolean
+
+      # bytes field
+      uint8[] field_bytes
+
+      # float field
+      float64 field_float
+
+      # integer field
+      int32 field_integer
+
+      # string field
+      string field_string
+
+      # Duration array field
+      builtin_interfaces/Duration[] field_duration_array
+
+      # Time array field
+      builtin_interfaces/Time[] field_time_array
+
+      # boolean array field
+      bool[] field_boolean_array
+
+      # float array field
+      float64[] field_float_array
+
+      # integer array field
+      int32[] field_integer_array
+
+      # string array field
+      string[] field_string_array
+
+      # Value A
+      uint8 A=1
+
+      # Value B
+      uint8 B=2
+
+      # An enum field
+      uint8 field_enum
+
+      # An enum array field
+      uint8[] field_enum_array
+
+      # A nested field
+      foxglove_msgs/NestedMessage field_nested
+
+      # A nested array field
+      foxglove_msgs/NestedMessage[] field_nested_array
+      ================================================================================
+      MSG: foxglove_msgs/NestedMessage
+      # Generated from NestedMessage by @foxglove/message-schemas
+
+      # An enum field
+      int32 field_enum
+      "
+    `);
+    expect(parseMessageDefinition(mergedSchema, { ros2: true }))
+      .toMatchInlineSnapshot(`
+      Array [
         Object {
           "definitions": Array [
             Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
               "isArray": false,
               "isComplex": false,
-              "name": "r",
-              "type": "float64",
+              "isConstant": undefined,
+              "name": "field_duration",
+              "type": "duration",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
             },
             Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
               "isArray": false,
               "isComplex": false,
-              "name": "g",
-              "type": "float64",
+              "isConstant": undefined,
+              "name": "field_time",
+              "type": "time",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
             },
             Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
               "isArray": false,
               "isComplex": false,
-              "name": "b",
-              "type": "float64",
+              "isConstant": undefined,
+              "name": "field_boolean",
+              "type": "bool",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
             },
             Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_bytes",
+              "type": "uint8",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
               "isArray": false,
               "isComplex": false,
-              "name": "a",
+              "isConstant": undefined,
+              "name": "field_float",
               "type": "float64",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
             },
-          ],
-          "name": "foxglove_msgs/Color",
-        },
-        Object {
-          "definitions": Array [
             Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
               "isArray": false,
               "isComplex": false,
-              "name": "x",
-              "type": "float64",
+              "isConstant": undefined,
+              "name": "field_integer",
+              "type": "int32",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
             },
             Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
               "isArray": false,
               "isComplex": false,
-              "name": "y",
-              "type": "float64",
+              "isConstant": undefined,
+              "name": "field_string",
+              "type": "string",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
             },
             Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_duration_array",
+              "type": "duration",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_time_array",
+              "type": "time",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_boolean_array",
+              "type": "bool",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_float_array",
+              "type": "float64",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_integer_array",
+              "type": "int32",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
+              "isComplex": false,
+              "isConstant": undefined,
+              "name": "field_string_array",
+              "type": "string",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
+            },
+            Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": undefined,
+              "isComplex": undefined,
+              "isConstant": true,
+              "name": "A",
+              "type": "uint8",
+              "upperBound": undefined,
+              "value": 1,
+              "valueText": "1",
+            },
+            Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": undefined,
+              "isComplex": undefined,
+              "isConstant": true,
+              "name": "B",
+              "type": "uint8",
+              "upperBound": undefined,
+              "value": 2,
+              "valueText": "2",
+            },
+            Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
               "isArray": false,
               "isComplex": false,
-              "name": "z",
-              "type": "float64",
+              "isConstant": undefined,
+              "name": "field_enum",
+              "type": "uint8",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
             },
-          ],
-          "name": "geometry_msgs/Point",
-        },
-        Object {
-          "definitions": Array [
             Object {
-              "isArray": false,
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
               "isComplex": false,
-              "name": "x",
-              "type": "float64",
+              "isConstant": undefined,
+              "name": "field_enum_array",
+              "type": "uint8",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
             },
             Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "y",
-              "type": "float64",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "z",
-              "type": "float64",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "w",
-              "type": "float64",
-            },
-          ],
-          "name": "geometry_msgs/Quaternion",
-        },
-        Object {
-          "definitions": Array [
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "x",
-              "type": "float64",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "y",
-              "type": "float64",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "z",
-              "type": "float64",
-            },
-          ],
-          "name": "geometry_msgs/Point",
-        },
-        Object {
-          "definitions": Array [
-            Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
               "isArray": false,
               "isComplex": true,
-              "name": "position",
-              "type": "geometry_msgs/Point",
+              "isConstant": undefined,
+              "name": "field_nested",
+              "type": "foxglove_msgs/NestedMessage",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
             },
             Object {
-              "isArray": false,
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
+              "isArray": true,
               "isComplex": true,
-              "name": "orientation",
-              "type": "geometry_msgs/Quaternion",
+              "isConstant": undefined,
+              "name": "field_nested_array",
+              "type": "foxglove_msgs/NestedMessage",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
             },
           ],
-          "name": "geometry_msgs/Pose",
+          "name": undefined,
         },
         Object {
           "definitions": Array [
             Object {
+              "arrayLength": undefined,
+              "arrayUpperBound": undefined,
+              "defaultValue": undefined,
               "isArray": false,
               "isComplex": false,
-              "name": "key",
-              "type": "string",
-            },
-            Object {
-              "isArray": false,
-              "isComplex": false,
-              "name": "value",
-              "type": "string",
+              "isConstant": undefined,
+              "name": "field_enum",
+              "type": "int32",
+              "upperBound": undefined,
+              "value": undefined,
+              "valueText": undefined,
             },
           ],
-          "name": "foxglove_msgs/KeyValuePair",
+          "name": "foxglove_msgs/NestedMessage",
         },
       ]
     `);
@@ -576,7 +714,16 @@ describe("generateRosMsgMergedSchema", () => {
     "generates parseable merged schemas",
     (schema) => {
       expect(() =>
-        parseMessageDefinition(generateRosMsgMergedSchema(schema))
+        parseMessageDefinition(
+          generateRosMsgMergedSchema(schema, { rosVersion: 1 })
+        )
+      ).not.toThrow();
+
+      expect(() =>
+        parseMessageDefinition(
+          generateRosMsgMergedSchema(schema, { rosVersion: 2 }),
+          { ros2: true }
+        )
       ).not.toThrow();
     }
   );

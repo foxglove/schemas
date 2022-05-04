@@ -1,4 +1,4 @@
-import { RosMsgDefinition, RosMsgField } from "@foxglove/rosmsg";
+import type { RosMsgDefinition, RosMsgField } from "@foxglove/rosmsg";
 import { definitions as rosCommonDefs } from "@foxglove/rosmsg-msgs-common";
 
 import { FoxgloveMessageSchema, FoxglovePrimitive } from "./types";

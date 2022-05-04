@@ -331,13 +331,6 @@
   dependencies:
     "@foxglove/rosmsg" "^2.0.0 || ^3.0.0"
 
-"@foxglove/rosmsg-msgs-foxglove@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@foxglove/rosmsg-msgs-foxglove/-/rosmsg-msgs-foxglove-2.0.3.tgz#53c248f5203c7f748c3e7507504071ca4058d1a6"
-  integrity sha512-4YHSwazNLqjl84oc46ieoF3m0PQGcDtvQp4wGeyDD9X1//zvkK3Bb4mgnV0LC2U8OdBYiNQQy4eQaVnfVc5t8A==
-  dependencies:
-    "@foxglove/rosmsg" "^2.0.0 || ^3.0.0"
-
 "@foxglove/rosmsg@^2.0.0 || ^3.0.0", "@foxglove/rosmsg@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@foxglove/rosmsg/-/rosmsg-3.0.0.tgz#10ce39e42dab6804977cda297d0d317649184a16"
@@ -764,11 +757,6 @@
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
-
-"@types/lodash@4.14.176":
-  version "4.14.176"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.176.tgz#641150fc1cda36fbfa329de603bbb175d7ee20c0"
-  integrity sha512-xZmuPTa3rlZoIbtDUyJKZQimJV3bxCmzMIO2c9Pz9afyDro6kr7R79GwcB6mRhuoPmV2p1Vb66WOJH7F886WKQ==
 
 "@types/long@^4.0.1":
   version "4.0.2"

@@ -15,7 +15,6 @@
     "@foxglove/rosmsg": "^3.0.0",
     "@foxglove/tsconfig": "1.1.0",
     "@types/jest": "27.0.3",
-    "@types/lodash": "4.14.176",
     "@types/node": "16.11.9",
     "@types/rimraf": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "5.4.0",
@@ -38,7 +37,6 @@
   },
   "dependencies": {
     "@foxglove/rosmsg-msgs-common": "^1.0.4",
-    "@foxglove/rosmsg-msgs-foxglove": "^2.0.3",
     "tslib": "^2"
   }
 }

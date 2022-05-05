@@ -72,7 +72,7 @@
       "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
     },
     "type": {
-      "title": "TriangleType: An enumeration indicating how input points should be interpreted to create triangles",
+      "title": "TrianglesType: An enumeration indicating how input points should be interpreted to create triangles",
       "description": "Drawing primitive to use for triangles",
       "oneOf": [
         {

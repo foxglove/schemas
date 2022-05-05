@@ -498,7 +498,7 @@ const foxglove_TextMarker: FoxgloveMessageSchema = {
 
 const foxglove_TrianglesType: FoxgloveEnumSchema = {
   type: "enum",
-  name: "TriangleType",
+  name: "TrianglesType",
   description:
     "An enumeration indicating how input points should be interpreted to create triangles",
   values: [

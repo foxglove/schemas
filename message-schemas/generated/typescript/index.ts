@@ -37,6 +37,6 @@ export * from "./SphereMarker";
 export * from "./TextMarker";
 export * from "./Transform";
 export * from "./TrianglesMarker";
-export * from "./TriangleType";
+export * from "./TrianglesType";
 export * from "./Vector2";
 export * from "./Vector3";

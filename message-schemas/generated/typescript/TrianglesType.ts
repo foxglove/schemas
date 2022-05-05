@@ -1,7 +1,7 @@
-// Generated from TriangleType by @foxglove/message-schemas
+// Generated from TrianglesType by @foxglove/message-schemas
 
 /** An enumeration indicating how input points should be interpreted to create triangles */
-export enum TriangleType {
+export enum TrianglesType {
   /** 0-1-2, 3-4-5, ... */
   TRIANGLE_LIST = 0,
 

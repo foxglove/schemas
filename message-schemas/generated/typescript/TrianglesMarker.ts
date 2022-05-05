@@ -6,7 +6,7 @@ import { KeyValuePair } from "./KeyValuePair";
 import { Point3 } from "./Point3";
 import { Pose } from "./Pose";
 import { Time } from "./Time";
-import { TriangleType } from "./TriangleType";
+import { TrianglesType } from "./TrianglesType";
 
 /** A marker representing a set of triangles or a surface tiled by triangles */
 export type TrianglesMarker = {
@@ -32,7 +32,7 @@ export type TrianglesMarker = {
   metadata: KeyValuePair[];
 
   /** Drawing primitive to use for triangles */
-  type: TriangleType;
+  type: TrianglesType;
 
   /** Origin of triangles relative to reference frame */
   pose: Pose;

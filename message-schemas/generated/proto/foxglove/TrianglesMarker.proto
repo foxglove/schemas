@@ -6,7 +6,7 @@ import "foxglove/Color.proto";
 import "foxglove/KeyValuePair.proto";
 import "foxglove/Point3.proto";
 import "foxglove/Pose.proto";
-import "foxglove/TriangleType.proto";
+import "foxglove/TrianglesType.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -36,7 +36,7 @@ message TrianglesMarker {
   repeated foxglove.KeyValuePair metadata = 7;
 
   // Drawing primitive to use for triangles
-  foxglove.TriangleType type = 8;
+  foxglove.TrianglesType type = 8;
 
   // Origin of triangles relative to reference frame
   foxglove.Pose pose = 9;

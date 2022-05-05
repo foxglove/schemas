@@ -3,15 +3,15 @@
 syntax = "proto3";
 
 import "foxglove/Quaternion.proto";
-import "foxglove/Time.proto";
 import "foxglove/Vector3.proto";
+import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
 // A transform in 3D space
 message Transform {
   // Transform time
-  foxglove.Time timestamp = 1;
+  google.protobuf.Timestamp timestamp = 1;
 
   // Translation component of the transform
   foxglove.Vector3 translation = 2;

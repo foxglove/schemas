@@ -13,26 +13,6 @@ function primitiveToProto(type: Exclude<FoxglovePrimitive, "uint32" | "Time" | "
   }
 }
 
-export const TIME_PROTO = `syntax = "proto3";
-
-package foxglove;
-
-message Time {
-  fixed32 sec = 1;
-  fixed32 nsec = 2;
-}
-`;
-
-export const DURATION_PROTO = `syntax = "proto3";
-
-package foxglove;
-
-message Duration {
-  sfixed32 sec = 1;
-  fixed32 nsec = 2;
-}
-`;
-
 export function generateProto(schema: FoxgloveSchema): string {
   const imports = new Set<string>();
   let fieldNumber = 1;
@@ -64,18 +44,21 @@ export function generateProto(schema: FoxgloveSchema): string {
         switch (field.type.type) {
           case "enum":
             qualifiers.push(`foxglove.${field.type.enum.name}`);
-            imports.add(field.type.enum.name);
+            imports.add(`foxglove/${field.type.enum.name}`);
             break;
           case "nested":
             qualifiers.push(`foxglove.${field.type.schema.name}`);
-            imports.add(field.type.schema.name);
+            imports.add(`foxglove/${field.type.schema.name}`);
             break;
           case "primitive":
             if (field.type.name === "uint32") {
               qualifiers.push("fixed32");
-            } else if (field.type.name === "Time" || field.type.name === "Duration") {
-              qualifiers.push(`foxglove.${field.type.name}`);
-              imports.add(field.type.name);
+            } else if (field.type.name === "Time") {
+              qualifiers.push("google.protobuf.Timestamp");
+              imports.add(`google/protobuf/timestamp`);
+            } else if (field.type.name === "Duration") {
+              qualifiers.push("google.protobuf.Duration");
+              imports.add(`google/protobuf/duration`);
             } else {
               qualifiers.push(primitiveToProto(field.type.name));
             }
@@ -99,7 +82,7 @@ export function generateProto(schema: FoxgloveSchema): string {
 
     Array.from(imports)
       .sort()
-      .map((name) => `import "foxglove/${name}.proto";`)
+      .map((name) => `import "${name}.proto";`)
       .join("\n"),
 
     `package foxglove;`,

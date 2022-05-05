@@ -3,19 +3,19 @@
 syntax = "proto3";
 
 import "foxglove/Color.proto";
-import "foxglove/Duration.proto";
 import "foxglove/KeyValuePair.proto";
 import "foxglove/Point3.proto";
 import "foxglove/Pose.proto";
-import "foxglove/Time.proto";
 import "foxglove/TriangleType.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
 // A marker representing a set of triangles or a surface tiled by triangles
 message TrianglesMarker {
   // Timestamp of the marker
-  foxglove.Time timestamp = 1;
+  google.protobuf.Timestamp timestamp = 1;
 
   // Frame of reference
   string frame_id = 2;
@@ -27,7 +27,7 @@ message TrianglesMarker {
   string id = 4;
 
   // Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.
-  foxglove.Duration lifetime = 5;
+  google.protobuf.Duration lifetime = 5;
 
   // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
   bool frame_locked = 6;

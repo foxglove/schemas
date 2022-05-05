@@ -2,15 +2,15 @@
 
 syntax = "proto3";
 
-import "foxglove/Time.proto";
 import "foxglove/Transform.proto";
+import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
 // A transform between two named coordinate frames in 3D space
 message FrameTransform {
   // Timestamp of transform
-  foxglove.Time timestamp = 1;
+  google.protobuf.Timestamp timestamp = 1;
 
   // Name of the parent frame
   string parent_frame_id = 2;

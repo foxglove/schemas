@@ -3,14 +3,14 @@
 syntax = "proto3";
 
 import "foxglove/Pose.proto";
-import "foxglove/Time.proto";
+import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
 // A a single scan from a planar laser range-finder
 message LaserScan {
   // Timestamp of scan
-  foxglove.Time timestamp = 1;
+  google.protobuf.Timestamp timestamp = 1;
 
   // Frame of reference
   string frame_id = 2;

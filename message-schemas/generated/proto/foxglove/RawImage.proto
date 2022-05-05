@@ -2,14 +2,14 @@
 
 syntax = "proto3";
 
-import "foxglove/Time.proto";
+import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
 // A compressed image
 message RawImage {
   // Timestamp of image
-  foxglove.Time timestamp = 1;
+  google.protobuf.Timestamp timestamp = 1;
 
   // Image width
   fixed32 width = 2;

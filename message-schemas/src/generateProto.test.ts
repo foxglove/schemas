@@ -1,6 +1,6 @@
 import protobufjs from "protobufjs";
 
-import { DURATION_PROTO, generateProto, TIME_PROTO } from "./generateProto";
+import { generateProto } from "./generateProto";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "./schemas";
 import { exampleEnum, exampleMessage } from "./testFixtures";
 
@@ -28,20 +28,20 @@ describe("generateProto", () => {
 
       syntax = \\"proto3\\";
 
-      import \\"foxglove/Duration.proto\\";
       import \\"foxglove/ExampleEnum.proto\\";
       import \\"foxglove/NestedMessage.proto\\";
-      import \\"foxglove/Time.proto\\";
+      import \\"google/protobuf/duration.proto\\";
+      import \\"google/protobuf/timestamp.proto\\";
 
       package foxglove;
 
       // An example type
       message ExampleMessage {
         // Duration field
-        foxglove.Duration field_Duration = 1;
+        google.protobuf.Duration field_Duration = 1;
 
         // Time field
-        foxglove.Time field_Time = 2;
+        google.protobuf.Timestamp field_Time = 2;
 
         // boolean field
         bool field_boolean = 3;
@@ -59,10 +59,10 @@ describe("generateProto", () => {
         string field_string = 7;
 
         // Duration array field
-        repeated foxglove.Duration field_Duration_array = 8;
+        repeated google.protobuf.Duration field_Duration_array = 8;
 
         // Time array field
-        repeated foxglove.Time field_Time_array = 9;
+        repeated google.protobuf.Timestamp field_Time_array = 9;
 
         // boolean array field
         repeated bool field_boolean_array = 10;
@@ -80,10 +80,10 @@ describe("generateProto", () => {
         repeated string field_string_array = 14;
 
         // Duration fixed-length array field
-        repeated foxglove.Duration field_Duration_fixed_array = 15; // length 3
+        repeated google.protobuf.Duration field_Duration_fixed_array = 15; // length 3
 
         // Time fixed-length array field
-        repeated foxglove.Time field_Time_fixed_array = 16; // length 3
+        repeated google.protobuf.Timestamp field_Time_fixed_array = 16; // length 3
 
         // boolean fixed-length array field
         repeated bool field_boolean_fixed_array = 17; // length 3
@@ -118,8 +118,8 @@ describe("generateProto", () => {
 
   it("generates parseable .proto files", () => {
     const root = new protobufjs.Root();
-    root.add(protobufjs.parse(TIME_PROTO).root);
-    root.add(protobufjs.parse(DURATION_PROTO).root);
+    root.addJSON(protobufjs.common.get("google/protobuf/timestamp.proto")!.nested!);
+    root.addJSON(protobufjs.common.get("google/protobuf/duration.proto")!.nested!);
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       root.add(protobufjs.parse(generateProto(schema)).root);
     }

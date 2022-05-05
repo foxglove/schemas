@@ -6,7 +6,7 @@ import { promisify } from "util";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../src";
 import { generateJsonSchema } from "../src/generateJsonSchema";
-import { TIME_PROTO, DURATION_PROTO, generateProto } from "../src/generateProto";
+import { generateProto } from "../src/generateProto";
 import { generateTypeScript, DURATION_TS, TIME_TS } from "../src/generateTypeScript";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../src/schemas";
 
@@ -59,8 +59,6 @@ async function main({ outDir }: { outDir: string }) {
 
   await logProgress("Generating Protobuf definitions", async () => {
     await fs.mkdir(path.join(outDir, "proto", "foxglove"), { recursive: true });
-    await fs.writeFile(path.join(outDir, "proto", "foxglove", "Time.proto"), TIME_PROTO);
-    await fs.writeFile(path.join(outDir, "proto", "foxglove", "Duration.proto"), DURATION_PROTO);
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       await fs.writeFile(
         path.join(outDir, "proto", "foxglove", `${schema.name}.proto`),

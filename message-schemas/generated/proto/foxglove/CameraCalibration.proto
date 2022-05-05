@@ -2,14 +2,14 @@
 
 syntax = "proto3";
 
-import "foxglove/Time.proto";
+import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
 // Camera calibration parameters
 message CameraCalibration {
   // Timestamp of calibration data
-  foxglove.Time timestamp = 1;
+  google.protobuf.Timestamp timestamp = 1;
 
   // Image width
   fixed32 width = 2;

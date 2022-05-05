@@ -3,14 +3,14 @@
 syntax = "proto3";
 
 import "foxglove/MarkerDeletionType.proto";
-import "foxglove/Time.proto";
+import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
 // Deletion command to remove previously published markers
 message MarkerDeletion {
   // Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.
-  foxglove.Time timestamp = 1;
+  google.protobuf.Timestamp timestamp = 1;
 
   // Type of deletion action to perform
   foxglove.MarkerDeletionType type = 2;

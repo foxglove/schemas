@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package foxglove;
-
-message Time {
-  fixed32 sec = 1;
-  fixed32 nsec = 2;
-}

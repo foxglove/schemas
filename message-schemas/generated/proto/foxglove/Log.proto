@@ -3,14 +3,14 @@
 syntax = "proto3";
 
 import "foxglove/LogLevel.proto";
-import "foxglove/Time.proto";
+import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
 // A log message
 message Log {
   // Timestamp of log message
-  foxglove.Time timestamp = 1;
+  google.protobuf.Timestamp timestamp = 1;
 
   // Log level
   foxglove.LogLevel level = 2;

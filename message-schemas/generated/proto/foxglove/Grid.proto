@@ -4,15 +4,15 @@ syntax = "proto3";
 
 import "foxglove/DataField.proto";
 import "foxglove/Pose.proto";
-import "foxglove/Time.proto";
 import "foxglove/Vector2.proto";
+import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
 // A 2D grid of data
 message Grid {
   // Timestamp of grid
-  foxglove.Time timestamp = 1;
+  google.protobuf.Timestamp timestamp = 1;
 
   // Frame of reference
   string frame_id = 2;

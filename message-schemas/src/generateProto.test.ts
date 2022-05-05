@@ -52,8 +52,8 @@ describe("generateProto", () => {
         // float field
         double field_float = 5;
 
-        // integer field
-        int32 field_integer = 6;
+        // uint32 field
+        fixed32 field_uint32 = 6;
 
         // string field
         string field_string = 7;
@@ -73,8 +73,8 @@ describe("generateProto", () => {
         // float array field
         repeated double field_float_array = 12;
 
-        // integer array field
-        repeated int32 field_integer_array = 13;
+        // uint32 array field
+        repeated fixed32 field_uint32_array = 13;
 
         // string array field
         repeated string field_string_array = 14;
@@ -94,8 +94,8 @@ describe("generateProto", () => {
         // float fixed-length array field
         repeated double field_float_fixed_array = 19; // length 3
 
-        // integer fixed-length array field
-        repeated int32 field_integer_fixed_array = 20; // length 3
+        // uint32 fixed-length array field
+        repeated fixed32 field_uint32_fixed_array = 20; // length 3
 
         // string fixed-length array field
         repeated string field_string_fixed_array = 21; // length 3

@@ -1,8 +1,4 @@
-import {
-  FoxgloveEnumSchema,
-  FoxgloveMessageSchema,
-  FoxglovePrimitive,
-} from "./types";
+import { FoxgloveEnumSchema, FoxgloveMessageSchema, FoxglovePrimitive } from "./types";
 
 const allPrimitives: FoxglovePrimitive[] = [
   "Duration",
@@ -10,7 +6,7 @@ const allPrimitives: FoxglovePrimitive[] = [
   "boolean",
   "bytes",
   "float",
-  "integer",
+  "uint32",
   "string",
 ];
 
@@ -32,7 +28,7 @@ const exampleNestedMessage: FoxgloveMessageSchema = {
     {
       name: "field_enum",
       description: "An enum field",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
     },
   ],
 };
@@ -87,7 +83,6 @@ export const exampleMessage: FoxgloveMessageSchema = {
 export const exampleMessageWithoutArrayOfBytes: FoxgloveMessageSchema = {
   ...exampleMessage,
   fields: exampleMessage.fields.filter(
-    ({ name }) =>
-      name !== "field_bytes_array" && name !== "field_bytes_fixed_array"
+    ({ name }) => name !== "field_bytes_array" && name !== "field_bytes_fixed_array",
   ),
 };

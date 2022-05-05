@@ -9,10 +9,13 @@
       "title": "Time",
       "properties": {
         "sec": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0
         },
         "nsec": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999999999
         }
       },
       "description": "Timestamp of the marker"
@@ -37,7 +40,9 @@
           "type": "integer"
         },
         "nsec": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999999999
         }
       },
       "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted."

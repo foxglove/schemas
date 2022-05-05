@@ -41,8 +41,8 @@ describe("generateTypeScript", () => {
         /** float field */
         field_float: number;
 
-        /** integer field */
-        field_integer: number;
+        /** uint32 field */
+        field_uint32: number;
 
         /** string field */
         field_string: string;
@@ -62,8 +62,8 @@ describe("generateTypeScript", () => {
         /** float array field */
         field_float_array: number[];
 
-        /** integer array field */
-        field_integer_array: number[];
+        /** uint32 array field */
+        field_uint32_array: number[];
 
         /** string array field */
         field_string_array: string[];
@@ -83,8 +83,8 @@ describe("generateTypeScript", () => {
         /** float fixed-length array field */
         field_float_fixed_array: [number, number, number];
 
-        /** integer fixed-length array field */
-        field_integer_fixed_array: [number, number, number];
+        /** uint32 fixed-length array field */
+        field_uint32_fixed_array: [number, number, number];
 
         /** string fixed-length array field */
         field_string_fixed_array: [string, string, string];

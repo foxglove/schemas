@@ -20,7 +20,7 @@ message PointCloud {
   foxglove.Pose pose = 3;
 
   // Number of bytes between points in the `data`
-  int32 point_stride = 4;
+  fixed32 point_stride = 4;
 
   // Fields in the `data`
   foxglove.DataField fields = 5;

@@ -115,8 +115,7 @@ const foxglove_Point3: FoxgloveMessageSchema = {
 const foxglove_Quaternion: FoxgloveMessageSchema = {
   type: "message",
   name: "Quaternion",
-  description:
-    "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
+  description: "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
   rosEquivalent: "geometry_msgs/Quaternion",
   fields: [
     {
@@ -145,8 +144,7 @@ const foxglove_Quaternion: FoxgloveMessageSchema = {
 const foxglove_Pose: FoxgloveMessageSchema = {
   type: "message",
   name: "Pose",
-  description:
-    "The position and orientation of an object or reference frame in 3D space",
+  description: "The position and orientation of an object or reference frame in 3D space",
   rosEquivalent: "geometry_msgs/Pose",
   fields: [
     {
@@ -228,8 +226,7 @@ const commonMarkerFields: FoxgloveMessageSchema["fields"] = [
 const foxglove_MarkerDeletionType: FoxgloveEnumSchema = {
   type: "enum",
   name: "MarkerDeletionType",
-  description:
-    "An enumeration indicating which markers should match a MarkerDeletion command",
+  description: "An enumeration indicating which markers should match a MarkerDeletion command",
   values: [
     { value: 0, name: "MATCHING_NAMESPACE_AND_ID" },
     { value: 1, name: "MATCHING_NAMESPACE" },
@@ -262,8 +259,7 @@ const foxglove_MarkerDeletion: FoxgloveMessageSchema = {
     {
       name: "id",
       type: { type: "primitive", name: "string" },
-      description:
-        "Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`.",
+      description: "Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`.",
     },
   ],
 };
@@ -317,8 +313,7 @@ const foxglove_CubeMarker: FoxgloveMessageSchema = {
     {
       name: "pose",
       type: { type: "nested", schema: foxglove_Pose },
-      description:
-        "Position of the center of the cube and orientation of the cube",
+      description: "Position of the center of the cube and orientation of the cube",
     },
     {
       name: "size",
@@ -342,8 +337,7 @@ const foxglove_SphereMarker: FoxgloveMessageSchema = {
     {
       name: "pose",
       type: { type: "nested", schema: foxglove_Pose },
-      description:
-        "Position of the center of the sphere and orientation of the sphere",
+      description: "Position of the center of the sphere and orientation of the sphere",
     },
     {
       name: "size",
@@ -396,8 +390,7 @@ const foxglove_CylinderMarker: FoxgloveMessageSchema = {
 const foxglove_LineType: FoxgloveEnumSchema = {
   type: "enum",
   name: "LineType",
-  description:
-    "An enumeration indicating how input points should be interpreted to create lines",
+  description: "An enumeration indicating how input points should be interpreted to create lines",
   values: [
     { value: 0, name: "LINE_STRIP", description: "0-1, 1-2, ..., (n-1)-n" },
     { value: 1, name: "LINE_LOOP", description: "0-1, 1-2, ..., (n-1)-n, n-0" },
@@ -453,7 +446,7 @@ const foxglove_LineMarker: FoxgloveMessageSchema = {
     },
     {
       name: "indices",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       array: true,
       description:
         "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.",
@@ -526,8 +519,7 @@ const foxglove_TrianglesType: FoxgloveEnumSchema = {
 const foxglove_TrianglesMarker: FoxgloveMessageSchema = {
   type: "message",
   name: "TrianglesMarker",
-  description:
-    "A marker representing a set of triangles or a surface tiled by triangles",
+  description: "A marker representing a set of triangles or a surface tiled by triangles",
   fields: [
     ...commonMarkerFields,
     {
@@ -561,7 +553,7 @@ const foxglove_TrianglesMarker: FoxgloveMessageSchema = {
     },
     {
       name: "indices",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       array: true,
       description:
         "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.",
@@ -594,8 +586,7 @@ const foxglove_ModelMarker: FoxgloveMessageSchema = {
     {
       name: "use_embedded_materials",
       type: { type: "primitive", name: "boolean" },
-      description:
-        "Whether to use materials embedded in the model, or only the `color`",
+      description: "Whether to use materials embedded in the model, or only the `color`",
     },
     {
       name: "url",
@@ -612,8 +603,7 @@ const foxglove_ModelMarker: FoxgloveMessageSchema = {
     {
       name: "data",
       type: { type: "primitive", name: "bytes" },
-      description:
-        "Embedded model. Either `url` or `mime_type` and `data` should be provided.",
+      description: "Embedded model. Either `url` or `mime_type` and `data` should be provided.",
     },
   ],
 };
@@ -692,12 +682,12 @@ export const foxglove_CameraCalibration: FoxgloveMessageSchema = {
     },
     {
       name: "width",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       description: "Image width",
     },
     {
       name: "height",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       description: "Image height",
     },
     {
@@ -767,12 +757,12 @@ const foxglove_RawImage: FoxgloveMessageSchema = {
     },
     {
       name: "width",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       description: "Image width",
     },
     {
       name: "height",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       description: "Image height",
     },
     {
@@ -782,7 +772,7 @@ const foxglove_RawImage: FoxgloveMessageSchema = {
     },
     {
       name: "step",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       description: "Byte length of a single row",
     },
     {
@@ -923,8 +913,7 @@ const foxglove_NumericType: FoxgloveEnumSchema = {
 const foxglove_DataField: FoxgloveMessageSchema = {
   type: "message",
   name: "DataField",
-  description:
-    "List of fields included for every entity in an accompanying `data` field array",
+  description: "List of fields included for every entity in an accompanying `data` field array",
   fields: [
     {
       name: "name",
@@ -933,7 +922,7 @@ const foxglove_DataField: FoxgloveMessageSchema = {
     },
     {
       name: "offset",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       description: "Byte offset from start of data buffer",
     },
     {
@@ -967,23 +956,22 @@ const foxglove_Grid: FoxgloveMessageSchema = {
     },
     {
       name: "column_count",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       description: "Number of grid columns",
     },
     {
       name: "cell_size",
       type: { type: "nested", schema: foxglove_Vector2 },
-      description:
-        "Size of single grid cell along x and y axes, relative to `pose`",
+      description: "Size of single grid cell along x and y axes, relative to `pose`",
     },
     {
       name: "row_stride",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       description: "Number of bytes between rows in `data`",
     },
     {
       name: "cell_stride",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       description: "Number of bytes between cells within a row in `data`",
     },
     {
@@ -994,8 +982,7 @@ const foxglove_Grid: FoxgloveMessageSchema = {
     {
       name: "data",
       type: { type: "primitive", name: "bytes" },
-      description:
-        "Grid cell data, interpreted using `fields`, in row-major (y-major) order",
+      description: "Grid cell data, interpreted using `fields`, in row-major (y-major) order",
     },
   ],
 };
@@ -1120,8 +1107,7 @@ const foxglove_PositionCovarianceType: FoxgloveEnumSchema = {
 const foxglove_LocationFix: FoxgloveMessageSchema = {
   type: "message",
   name: "LocationFix",
-  description:
-    "A navigation satellite fix for any Global Navigation Satellite System",
+  description: "A navigation satellite fix for any Global Navigation Satellite System",
   fields: [
     {
       name: "latitude",
@@ -1199,7 +1185,7 @@ const foxglove_Log: FoxgloveMessageSchema = {
     },
     {
       name: "line",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       description: "Line number in the file",
     },
   ],
@@ -1224,12 +1210,11 @@ const foxglove_PointCloud: FoxgloveMessageSchema = {
     {
       name: "pose",
       type: { type: "nested", schema: foxglove_Pose },
-      description:
-        "The origin of the point cloud relative to the frame of reference",
+      description: "The origin of the point cloud relative to the frame of reference",
     },
     {
       name: "point_stride",
-      type: { type: "primitive", name: "integer" },
+      type: { type: "primitive", name: "uint32" },
       description: "Number of bytes between points in the `data`",
     },
     {

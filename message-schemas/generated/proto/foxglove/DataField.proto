@@ -12,7 +12,7 @@ message DataField {
   string name = 1;
 
   // Byte offset from start of data buffer
-  int32 offset = 2;
+  fixed32 offset = 2;
 
   // Type of data in field
   foxglove.NumericType type = 3;

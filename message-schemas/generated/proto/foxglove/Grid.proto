@@ -21,16 +21,16 @@ message Grid {
   foxglove.Pose pose = 3;
 
   // Number of grid columns
-  int32 column_count = 4;
+  fixed32 column_count = 4;
 
   // Size of single grid cell along x and y axes, relative to `pose`
   foxglove.Vector2 cell_size = 5;
 
   // Number of bytes between rows in `data`
-  int32 row_stride = 6;
+  fixed32 row_stride = 6;
 
   // Number of bytes between cells within a row in `data`
-  int32 cell_stride = 7;
+  fixed32 cell_stride = 7;
 
   // Fields in `data`
   foxglove.DataField fields = 8;

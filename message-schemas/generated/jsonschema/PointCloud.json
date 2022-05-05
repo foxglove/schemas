@@ -9,10 +9,13 @@
       "title": "Time",
       "properties": {
         "sec": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0
         },
         "nsec": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999999999
         }
       },
       "description": "Timestamp of point cloud"
@@ -75,6 +78,7 @@
     },
     "point_stride": {
       "type": "integer",
+      "minimum": 0,
       "description": "Number of bytes between points in the `data`"
     },
     "fields": {
@@ -89,6 +93,7 @@
         },
         "offset": {
           "type": "integer",
+          "minimum": 0,
           "description": "Byte offset from start of data buffer"
         },
         "type": {

@@ -4,10 +4,10 @@
 builtin_interfaces/Time timestamp
 
 # Image width
-int32 width
+uint32 width
 
 # Image height
-int32 height
+uint32 height
 
 # Name of distortion model
 string distortion_model

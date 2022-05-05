@@ -9,20 +9,25 @@
       "title": "Time",
       "properties": {
         "sec": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0
         },
         "nsec": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999999999
         }
       },
       "description": "Timestamp of image"
     },
     "width": {
       "type": "integer",
+      "minimum": 0,
       "description": "Image width"
     },
     "height": {
       "type": "integer",
+      "minimum": 0,
       "description": "Image height"
     },
     "encoding": {
@@ -31,6 +36,7 @@
     },
     "step": {
       "type": "integer",
+      "minimum": 0,
       "description": "Byte length of a single row"
     },
     "data": {

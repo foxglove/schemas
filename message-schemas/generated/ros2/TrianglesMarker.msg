@@ -46,4 +46,4 @@ foxglove_msgs/Color color
 foxglove_msgs/Color[] colors
 
 # Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
-int32[] indices
+uint32[] indices

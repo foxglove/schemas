@@ -25,5 +25,5 @@ message Log {
   string file = 5;
 
   // Line number in the file
-  int32 line = 6;
+  fixed32 line = 6;
 }

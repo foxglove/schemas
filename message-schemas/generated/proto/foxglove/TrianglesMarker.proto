@@ -51,5 +51,5 @@ message TrianglesMarker {
   repeated foxglove.Color colors = 12;
 
   // Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
-  repeated int32 indices = 13;
+  repeated fixed32 indices = 13;
 }

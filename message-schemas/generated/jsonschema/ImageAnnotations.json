@@ -17,10 +17,13 @@
             "title": "Time",
             "properties": {
               "sec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Timestamp of circle"
@@ -114,10 +117,13 @@
             "title": "Time",
             "properties": {
               "sec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Timestamp of annotation"

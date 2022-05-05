@@ -12,10 +12,10 @@ message CameraCalibration {
   foxglove.Time timestamp = 1;
 
   // Image width
-  int32 width = 2;
+  fixed32 width = 2;
 
   // Image height
-  int32 height = 3;
+  fixed32 height = 3;
 
   // Name of distortion model
   string distortion_model = 4;

@@ -15,6 +15,8 @@ describe("generateJsonSchema", () => {
             "description": "Duration field",
             "properties": Object {
               "nsec": Object {
+                "maximum": 999999999,
+                "minimum": 0,
                 "type": "integer",
               },
               "sec": Object {
@@ -29,6 +31,8 @@ describe("generateJsonSchema", () => {
             "items": Object {
               "properties": Object {
                 "nsec": Object {
+                  "maximum": 999999999,
+                  "minimum": 0,
                   "type": "integer",
                 },
                 "sec": Object {
@@ -45,6 +49,8 @@ describe("generateJsonSchema", () => {
             "items": Object {
               "properties": Object {
                 "nsec": Object {
+                  "maximum": 999999999,
+                  "minimum": 0,
                   "type": "integer",
                 },
                 "sec": Object {
@@ -62,9 +68,12 @@ describe("generateJsonSchema", () => {
             "description": "Time field",
             "properties": Object {
               "nsec": Object {
+                "maximum": 999999999,
+                "minimum": 0,
                 "type": "integer",
               },
               "sec": Object {
+                "minimum": 0,
                 "type": "integer",
               },
             },
@@ -76,9 +85,12 @@ describe("generateJsonSchema", () => {
             "items": Object {
               "properties": Object {
                 "nsec": Object {
+                  "maximum": 999999999,
+                  "minimum": 0,
                   "type": "integer",
                 },
                 "sec": Object {
+                  "minimum": 0,
                   "type": "integer",
                 },
               },
@@ -92,9 +104,12 @@ describe("generateJsonSchema", () => {
             "items": Object {
               "properties": Object {
                 "nsec": Object {
+                  "maximum": 999999999,
+                  "minimum": 0,
                   "type": "integer",
                 },
                 "sec": Object {
+                  "minimum": 0,
                   "type": "integer",
                 },
               },
@@ -204,32 +219,13 @@ describe("generateJsonSchema", () => {
             "minItems": 3,
             "type": "array",
           },
-          "field_integer": Object {
-            "description": "integer field",
-            "type": "integer",
-          },
-          "field_integer_array": Object {
-            "description": "integer array field",
-            "items": Object {
-              "type": "integer",
-            },
-            "type": "array",
-          },
-          "field_integer_fixed_array": Object {
-            "description": "integer fixed-length array field",
-            "items": Object {
-              "type": "integer",
-            },
-            "maxItems": 3,
-            "minItems": 3,
-            "type": "array",
-          },
           "field_nested": Object {
             "$comment": "Generated from NestedMessage by @foxglove/message-schemas",
             "description": "A nested field",
             "properties": Object {
               "field_enum": Object {
                 "description": "An enum field",
+                "minimum": 0,
                 "type": "integer",
               },
             },
@@ -244,6 +240,7 @@ describe("generateJsonSchema", () => {
               "properties": Object {
                 "field_enum": Object {
                   "description": "An enum field",
+                  "minimum": 0,
                   "type": "integer",
                 },
               },
@@ -272,6 +269,29 @@ describe("generateJsonSchema", () => {
             "minItems": 3,
             "type": "array",
           },
+          "field_uint32": Object {
+            "description": "uint32 field",
+            "minimum": 0,
+            "type": "integer",
+          },
+          "field_uint32_array": Object {
+            "description": "uint32 array field",
+            "items": Object {
+              "minimum": 0,
+              "type": "integer",
+            },
+            "type": "array",
+          },
+          "field_uint32_fixed_array": Object {
+            "description": "uint32 fixed-length array field",
+            "items": Object {
+              "minimum": 0,
+              "type": "integer",
+            },
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array",
+          },
         },
         "title": "ExampleMessage",
         "type": "object",
@@ -284,6 +304,6 @@ describe("generateJsonSchema", () => {
     (schema) => {
       const ajv = new Ajv();
       expect(() => ajv.compile(generateJsonSchema(schema))).not.toThrow();
-    }
+    },
   );
 });

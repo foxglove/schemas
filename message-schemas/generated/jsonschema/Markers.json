@@ -17,10 +17,13 @@
             "title": "Time",
             "properties": {
               "sec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted."
@@ -68,10 +71,13 @@
             "title": "Time",
             "properties": {
               "sec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Timestamp of the marker"
@@ -96,7 +102,9 @@
                 "type": "integer"
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted."
@@ -234,10 +242,13 @@
             "title": "Time",
             "properties": {
               "sec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Timestamp of the marker"
@@ -262,7 +273,9 @@
                 "type": "integer"
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted."
@@ -404,10 +417,13 @@
             "title": "Time",
             "properties": {
               "sec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Timestamp of the marker"
@@ -432,7 +448,9 @@
                 "type": "integer"
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted."
@@ -574,10 +592,13 @@
             "title": "Time",
             "properties": {
               "sec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Timestamp of the marker"
@@ -602,7 +623,9 @@
                 "type": "integer"
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted."
@@ -736,10 +759,13 @@
             "title": "Time",
             "properties": {
               "sec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Timestamp of the marker"
@@ -764,7 +790,9 @@
                 "type": "integer"
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted."
@@ -953,7 +981,8 @@
           "indices": {
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 0
             },
             "description": "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data."
           }
@@ -974,10 +1003,13 @@
             "title": "Time",
             "properties": {
               "sec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Timestamp of the marker"
@@ -1002,7 +1034,9 @@
                 "type": "integer"
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted."
@@ -1183,7 +1217,8 @@
           "indices": {
             "type": "array",
             "items": {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 0
             },
             "description": "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data."
           }
@@ -1204,10 +1239,13 @@
             "title": "Time",
             "properties": {
               "sec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Timestamp of the marker"
@@ -1232,7 +1270,9 @@
                 "type": "integer"
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted."
@@ -1370,10 +1410,13 @@
             "title": "Time",
             "properties": {
               "sec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Timestamp of the marker"
@@ -1398,7 +1441,9 @@
                 "type": "integer"
               },
               "nsec": {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
               }
             },
             "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted."

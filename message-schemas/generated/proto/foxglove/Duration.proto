@@ -3,6 +3,6 @@ syntax = "proto3";
 package foxglove;
 
 message Duration {
-  fixed32 sec = 1;
+  sfixed32 sec = 1;
   fixed32 nsec = 2;
 }

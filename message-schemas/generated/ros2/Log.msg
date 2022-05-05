@@ -22,4 +22,4 @@ string name
 string file
 
 # Line number in the file
-int32 line
+uint32 line

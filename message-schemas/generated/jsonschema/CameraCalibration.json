@@ -9,20 +9,25 @@
       "title": "Time",
       "properties": {
         "sec": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0
         },
         "nsec": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999999999
         }
       },
       "description": "Timestamp of calibration data"
     },
     "width": {
       "type": "integer",
+      "minimum": 0,
       "description": "Image width"
     },
     "height": {
       "type": "integer",
+      "minimum": 0,
       "description": "Image height"
     },
     "distortion_model": {

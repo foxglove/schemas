@@ -10,7 +10,7 @@ string frame_id
 geometry_msgs/Pose pose
 
 # Number of bytes between points in the `data`
-int32 point_stride
+uint32 point_stride
 
 # Fields in the `data`
 foxglove_msgs/DataField fields

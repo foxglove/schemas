@@ -10,16 +10,16 @@ string frame_id
 geometry_msgs/Pose pose
 
 # Number of grid columns
-int32 column_count
+uint32 column_count
 
 # Size of single grid cell along x and y axes, relative to `pose`
 foxglove_msgs/Vector2 cell_size
 
 # Number of bytes between rows in `data`
-int32 row_stride
+uint32 row_stride
 
 # Number of bytes between cells within a row in `data`
-int32 cell_stride
+uint32 cell_stride
 
 # Fields in `data`
 foxglove_msgs/DataField fields

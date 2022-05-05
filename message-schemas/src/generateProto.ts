@@ -1,8 +1,6 @@
 import { FoxglovePrimitive, FoxgloveSchema } from "./types";
 
-function primitiveToProto(
-  type: Exclude<FoxglovePrimitive, "integer" | "Time" | "Duration">
-) {
+function primitiveToProto(type: Exclude<FoxglovePrimitive, "uint32" | "Time" | "Duration">) {
   switch (type) {
     case "bytes":
       return "bytes";
@@ -30,7 +28,7 @@ export const DURATION_PROTO = `syntax = "proto3";
 package foxglove;
 
 message Duration {
-  fixed32 sec = 1;
+  sfixed32 sec = 1;
   fixed32 nsec = 2;
 }
 `;
@@ -49,9 +47,7 @@ export function generateProto(schema: FoxgloveSchema): string {
           return `${name} = ${value};`;
         }
       });
-      definition = `// ${schema.description}\nenum ${
-        schema.name
-      } {\n  ${fields.join("\n\n  ")}\n}`;
+      definition = `// ${schema.description}\nenum ${schema.name} {\n  ${fields.join("\n\n  ")}\n}`;
       break;
     }
 
@@ -75,12 +71,9 @@ export function generateProto(schema: FoxgloveSchema): string {
             imports.add(field.type.schema.name);
             break;
           case "primitive":
-            if (field.type.name === "integer") {
-              qualifiers.push("int32"); // FIXME
-            } else if (
-              field.type.name === "Time" ||
-              field.type.name === "Duration"
-            ) {
+            if (field.type.name === "uint32") {
+              qualifiers.push("fixed32");
+            } else if (field.type.name === "Time" || field.type.name === "Duration") {
               qualifiers.push(`foxglove.${field.type.name}`);
               imports.add(field.type.name);
             } else {
@@ -90,14 +83,12 @@ export function generateProto(schema: FoxgloveSchema): string {
         }
         return `// ${field.description}\n  ${qualifiers.join(" ")} ${
           field.name
-        } = ${fieldNumber++};${
-          lineComments.length > 0 ? " // " + lineComments.join(", ") : ""
-        }`;
+        } = ${fieldNumber++};${lineComments.length > 0 ? " // " + lineComments.join(", ") : ""}`;
       });
 
-      definition = `// ${schema.description}\nmessage ${
-        schema.name
-      } {\n  ${fields.join("\n\n  ")}\n}`;
+      definition = `// ${schema.description}\nmessage ${schema.name} {\n  ${fields.join(
+        "\n\n  ",
+      )}\n}`;
       break;
     }
   }

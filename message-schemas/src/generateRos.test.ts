@@ -14,8 +14,8 @@ describe("generateRosMsgFiles", () => {
       generateRosMsg(
         generateRosMsgDefinition(exampleMessageWithoutArrayOfBytes, {
           rosVersion: 1,
-        })
-      )
+        }),
+      ),
     ).toMatchInlineSnapshot(`
       "# Generated from ExampleMessage by @foxglove/message-schemas
 
@@ -34,8 +34,8 @@ describe("generateRosMsgFiles", () => {
       # float field
       float64 field_float
 
-      # integer field
-      int32 field_integer
+      # uint32 field
+      uint32 field_uint32
 
       # string field
       string field_string
@@ -52,8 +52,8 @@ describe("generateRosMsgFiles", () => {
       # float array field
       float64[] field_float_array
 
-      # integer array field
-      int32[] field_integer_array
+      # uint32 array field
+      uint32[] field_uint32_array
 
       # string array field
       string[] field_string_array
@@ -70,8 +70,8 @@ describe("generateRosMsgFiles", () => {
       # float fixed-length array field
       float64[3] field_float_fixed_array
 
-      # integer fixed-length array field
-      int32[3] field_integer_fixed_array
+      # uint32 fixed-length array field
+      uint32[3] field_uint32_fixed_array
 
       # string fixed-length array field
       string[3] field_string_fixed_array
@@ -102,8 +102,8 @@ describe("generateRosMsgFiles", () => {
       generateRosMsg(
         generateRosMsgDefinition(exampleMessageWithoutArrayOfBytes, {
           rosVersion: 2,
-        })
-      )
+        }),
+      ),
     ).toMatchInlineSnapshot(`
       "# Generated from ExampleMessage by @foxglove/message-schemas
 
@@ -122,8 +122,8 @@ describe("generateRosMsgFiles", () => {
       # float field
       float64 field_float
 
-      # integer field
-      int32 field_integer
+      # uint32 field
+      uint32 field_uint32
 
       # string field
       string field_string
@@ -140,8 +140,8 @@ describe("generateRosMsgFiles", () => {
       # float array field
       float64[] field_float_array
 
-      # integer array field
-      int32[] field_integer_array
+      # uint32 array field
+      uint32[] field_uint32_array
 
       # string array field
       string[] field_string_array
@@ -158,8 +158,8 @@ describe("generateRosMsgFiles", () => {
       # float fixed-length array field
       float64[3] field_float_fixed_array
 
-      # integer fixed-length array field
-      int32[3] field_integer_fixed_array
+      # uint32 fixed-length array field
+      uint32[3] field_uint32_fixed_array
 
       # string fixed-length array field
       string[3] field_string_fixed_array
@@ -188,10 +188,9 @@ describe("generateRosMsgFiles", () => {
 
 describe("generateRosMsgMergedSchema", () => {
   it("generates merged schema for ROS 1", () => {
-    const mergedSchema = generateRosMsgMergedSchema(
-      exampleMessageWithoutArrayOfBytes,
-      { rosVersion: 1 }
-    );
+    const mergedSchema = generateRosMsgMergedSchema(exampleMessageWithoutArrayOfBytes, {
+      rosVersion: 1,
+    });
     expect(mergedSchema).toMatchInlineSnapshot(`
       "# Generated from ExampleMessage by @foxglove/message-schemas
 
@@ -210,8 +209,8 @@ describe("generateRosMsgMergedSchema", () => {
       # float field
       float64 field_float
 
-      # integer field
-      int32 field_integer
+      # uint32 field
+      uint32 field_uint32
 
       # string field
       string field_string
@@ -228,8 +227,8 @@ describe("generateRosMsgMergedSchema", () => {
       # float array field
       float64[] field_float_array
 
-      # integer array field
-      int32[] field_integer_array
+      # uint32 array field
+      uint32[] field_uint32_array
 
       # string array field
       string[] field_string_array
@@ -246,8 +245,8 @@ describe("generateRosMsgMergedSchema", () => {
       # float fixed-length array field
       float64[3] field_float_fixed_array
 
-      # integer fixed-length array field
-      int32[3] field_integer_fixed_array
+      # uint32 fixed-length array field
+      uint32[3] field_uint32_fixed_array
 
       # string fixed-length array field
       string[3] field_string_fixed_array
@@ -274,7 +273,7 @@ describe("generateRosMsgMergedSchema", () => {
       # Generated from NestedMessage by @foxglove/message-schemas
 
       # An enum field
-      int32 field_enum
+      uint32 field_enum
       "
     `);
     expect(parseMessageDefinition(mergedSchema)).toMatchInlineSnapshot(`
@@ -314,8 +313,8 @@ describe("generateRosMsgMergedSchema", () => {
             Object {
               "isArray": false,
               "isComplex": false,
-              "name": "field_integer",
-              "type": "int32",
+              "name": "field_uint32",
+              "type": "uint32",
             },
             Object {
               "isArray": false,
@@ -350,8 +349,8 @@ describe("generateRosMsgMergedSchema", () => {
             Object {
               "isArray": true,
               "isComplex": false,
-              "name": "field_integer_array",
-              "type": "int32",
+              "name": "field_uint32_array",
+              "type": "uint32",
             },
             Object {
               "isArray": true,
@@ -391,8 +390,8 @@ describe("generateRosMsgMergedSchema", () => {
               "arrayLength": 3,
               "isArray": true,
               "isComplex": false,
-              "name": "field_integer_fixed_array",
-              "type": "int32",
+              "name": "field_uint32_fixed_array",
+              "type": "uint32",
             },
             Object {
               "arrayLength": 3,
@@ -448,7 +447,7 @@ describe("generateRosMsgMergedSchema", () => {
               "isArray": false,
               "isComplex": false,
               "name": "field_enum",
-              "type": "int32",
+              "type": "uint32",
             },
           ],
           "name": "foxglove_msgs/NestedMessage",
@@ -458,10 +457,9 @@ describe("generateRosMsgMergedSchema", () => {
   });
 
   it("generates merged schema for ROS 2", () => {
-    const mergedSchema = generateRosMsgMergedSchema(
-      exampleMessageWithoutArrayOfBytes,
-      { rosVersion: 2 }
-    );
+    const mergedSchema = generateRosMsgMergedSchema(exampleMessageWithoutArrayOfBytes, {
+      rosVersion: 2,
+    });
     expect(mergedSchema).toMatchInlineSnapshot(`
       "# Generated from ExampleMessage by @foxglove/message-schemas
 
@@ -480,8 +478,8 @@ describe("generateRosMsgMergedSchema", () => {
       # float field
       float64 field_float
 
-      # integer field
-      int32 field_integer
+      # uint32 field
+      uint32 field_uint32
 
       # string field
       string field_string
@@ -498,8 +496,8 @@ describe("generateRosMsgMergedSchema", () => {
       # float array field
       float64[] field_float_array
 
-      # integer array field
-      int32[] field_integer_array
+      # uint32 array field
+      uint32[] field_uint32_array
 
       # string array field
       string[] field_string_array
@@ -516,8 +514,8 @@ describe("generateRosMsgMergedSchema", () => {
       # float fixed-length array field
       float64[3] field_float_fixed_array
 
-      # integer fixed-length array field
-      int32[3] field_integer_fixed_array
+      # uint32 fixed-length array field
+      uint32[3] field_uint32_fixed_array
 
       # string fixed-length array field
       string[3] field_string_fixed_array
@@ -544,11 +542,10 @@ describe("generateRosMsgMergedSchema", () => {
       # Generated from NestedMessage by @foxglove/message-schemas
 
       # An enum field
-      int32 field_enum
+      uint32 field_enum
       "
     `);
-    expect(parseMessageDefinition(mergedSchema, { ros2: true }))
-      .toMatchInlineSnapshot(`
+    expect(parseMessageDefinition(mergedSchema, { ros2: true })).toMatchInlineSnapshot(`
       Array [
         Object {
           "definitions": Array [
@@ -624,8 +621,8 @@ describe("generateRosMsgMergedSchema", () => {
               "isArray": false,
               "isComplex": false,
               "isConstant": undefined,
-              "name": "field_integer",
-              "type": "int32",
+              "name": "field_uint32",
+              "type": "uint32",
               "upperBound": undefined,
               "value": undefined,
               "valueText": undefined,
@@ -702,8 +699,8 @@ describe("generateRosMsgMergedSchema", () => {
               "isArray": true,
               "isComplex": false,
               "isConstant": undefined,
-              "name": "field_integer_array",
-              "type": "int32",
+              "name": "field_uint32_array",
+              "type": "uint32",
               "upperBound": undefined,
               "value": undefined,
               "valueText": undefined,
@@ -780,8 +777,8 @@ describe("generateRosMsgMergedSchema", () => {
               "isArray": true,
               "isComplex": false,
               "isConstant": undefined,
-              "name": "field_integer_fixed_array",
-              "type": "int32",
+              "name": "field_uint32_fixed_array",
+              "type": "uint32",
               "upperBound": undefined,
               "value": undefined,
               "valueText": undefined,
@@ -890,7 +887,7 @@ describe("generateRosMsgMergedSchema", () => {
               "isComplex": false,
               "isConstant": undefined,
               "name": "field_enum",
-              "type": "int32",
+              "type": "uint32",
               "upperBound": undefined,
               "value": undefined,
               "valueText": undefined,
@@ -902,21 +899,13 @@ describe("generateRosMsgMergedSchema", () => {
     `);
   });
 
-  it.each(Object.values(foxgloveMessageSchemas))(
-    "generates parseable merged schemas",
-    (schema) => {
-      expect(() =>
-        parseMessageDefinition(
-          generateRosMsgMergedSchema(schema, { rosVersion: 1 })
-        )
-      ).not.toThrow();
+  it.each(Object.values(foxgloveMessageSchemas))("generates parseable merged schemas", (schema) => {
+    expect(() =>
+      parseMessageDefinition(generateRosMsgMergedSchema(schema, { rosVersion: 1 })),
+    ).not.toThrow();
 
-      expect(() =>
-        parseMessageDefinition(
-          generateRosMsgMergedSchema(schema, { rosVersion: 2 }),
-          { ros2: true }
-        )
-      ).not.toThrow();
-    }
-  );
+    expect(() =>
+      parseMessageDefinition(generateRosMsgMergedSchema(schema, { rosVersion: 2 }), { ros2: true }),
+    ).not.toThrow();
+  });
 });

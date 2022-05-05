@@ -4,7 +4,7 @@
 string name
 
 # Byte offset from start of data buffer
-int32 offset
+uint32 offset
 
 uint8 UINT8=1
 uint8 INT8=2

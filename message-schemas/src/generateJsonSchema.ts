@@ -8,15 +8,15 @@ function primitiveToJsonSchema(type: Exclude<FoxglovePrimitive, "bytes">) {
       return { type: "boolean" };
     case "float":
       return { type: "number" };
-    case "integer":
-      return { type: "integer" };
+    case "uint32":
+      return { type: "integer", minimum: 0 };
     case "Time":
       return {
         type: "object",
         title: "Time",
         properties: {
-          sec: { type: "integer" },
-          nsec: { type: "integer" },
+          sec: { type: "integer", minimum: 0 },
+          nsec: { type: "integer", minimum: 0, maximum: 999_999_999 },
         },
       };
     case "Duration":
@@ -25,15 +25,13 @@ function primitiveToJsonSchema(type: Exclude<FoxglovePrimitive, "bytes">) {
         title: "Duration",
         properties: {
           sec: { type: "integer" },
-          nsec: { type: "integer" },
+          nsec: { type: "integer", minimum: 0, maximum: 999_999_999 },
         },
       };
   }
 }
 
-export function generateJsonSchema(
-  schema: FoxgloveMessageSchema
-): Record<string, unknown> {
+export function generateJsonSchema(schema: FoxgloveMessageSchema): Record<string, unknown> {
   const properties: Record<string, unknown> = {};
   for (const field of schema.fields) {
     let fieldType: Record<string, unknown>;

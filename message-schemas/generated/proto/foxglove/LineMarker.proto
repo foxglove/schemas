@@ -57,5 +57,5 @@ message LineMarker {
   repeated foxglove.Color colors = 14;
 
   // Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
-  repeated int32 indices = 15;
+  repeated fixed32 indices = 15;
 }

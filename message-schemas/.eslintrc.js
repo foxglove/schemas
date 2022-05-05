@@ -14,9 +14,6 @@ module.exports = {
     },
   ],
   rules: {
-    "no-warning-comments": [
-      "error",
-      { terms: ["fixme"], location: "anywhere" },
-    ],
+    "no-warning-comments": ["error", { terms: ["fixme"], location: "anywhere" }],
   },
 };

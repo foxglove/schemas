@@ -1,8 +1,6 @@
 import { FoxglovePrimitive, FoxgloveSchema } from "./types";
 
-function primitiveToTypeScript(
-  type: Exclude<FoxglovePrimitive, "Time" | "Duration">
-) {
+function primitiveToTypeScript(type: Exclude<FoxglovePrimitive, "Time" | "Duration">) {
   switch (type) {
     case "bytes":
       return "Uint8Array";
@@ -11,7 +9,7 @@ function primitiveToTypeScript(
     case "boolean":
       return "boolean";
     case "float":
-    case "integer":
+    case "uint32":
       return "number";
   }
 }
@@ -41,9 +39,9 @@ export function generateTypeScript(schema: FoxgloveSchema): string {
           return `${name} = ${value},`;
         }
       });
-      definition = `/** ${schema.description} */\nexport enum ${
-        schema.name
-      } {\n  ${fields.join("\n\n  ")}\n}`;
+      definition = `/** ${schema.description} */\nexport enum ${schema.name} {\n  ${fields.join(
+        "\n\n  ",
+      )}\n}`;
       break;
     }
 
@@ -76,9 +74,9 @@ export function generateTypeScript(schema: FoxgloveSchema): string {
         return `/** ${field.description} */\n  ${field.name}: ${fieldType};`;
       });
 
-      definition = `/** ${schema.description} */\nexport type ${
-        schema.name
-      } = {\n  ${fields.join("\n\n  ")}\n};`;
+      definition = `/** ${schema.description} */\nexport type ${schema.name} = {\n  ${fields.join(
+        "\n\n  ",
+      )}\n};`;
       break;
     }
   }

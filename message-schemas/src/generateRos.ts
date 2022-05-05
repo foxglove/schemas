@@ -14,8 +14,8 @@ type RosMsgDefinitionWithDescription = {
 };
 
 function primitiveToRos(
-  type: Exclude<FoxglovePrimitive, "integer" | "bytes">,
-  { rosVersion }: { rosVersion: 1 | 2 }
+  type: Exclude<FoxglovePrimitive, "uint32" | "bytes">,
+  { rosVersion }: { rosVersion: 1 | 2 },
 ) {
   switch (type) {
     case "string":
@@ -54,9 +54,9 @@ export function generateRosMsg(def: RosMsgDefinitionWithDescription): string {
       }
       constant = `=${field.valueText}`;
     }
-    source += `${field.type}${
-      field.isArray === true ? `[${field.arrayLength ?? ""}]` : ""
-    } ${field.name}${constant}\n`;
+    source += `${field.type}${field.isArray === true ? `[${field.arrayLength ?? ""}]` : ""} ${
+      field.name
+    }${constant}\n`;
   }
   return source;
 }
@@ -67,23 +67,17 @@ type Dependency =
 
 function dependenciesEqual(a: Dependency, b: Dependency) {
   return (
-    (a.type === "foxglove" &&
-      b.type === "foxglove" &&
-      a.schema.name === b.schema.name) ||
+    (a.type === "foxglove" && b.type === "foxglove" && a.schema.name === b.schema.name) ||
     (a.type === "ros" && b.type === "ros" && a.name === b.name)
   );
 }
 
-function* getSchemaDependencies(
-  schema: FoxgloveMessageSchema
-): Iterable<Dependency> {
+function* getSchemaDependencies(schema: FoxgloveMessageSchema): Iterable<Dependency> {
   for (const field of schema.fields) {
     if (field.type.type === "nested") {
       if (field.type.schema.rosEquivalent != undefined) {
         yield { type: "ros", name: field.type.schema.rosEquivalent };
-        yield* getRosDependencies(
-          rosCommonDefs[field.type.schema.rosEquivalent]
-        );
+        yield* getRosDependencies(rosCommonDefs[field.type.schema.rosEquivalent]);
       } else {
         yield { type: "foxglove", schema: field.type.schema };
         yield* getSchemaDependencies(field.type.schema);
@@ -95,16 +89,14 @@ function* getRosDependencies(schema: RosMsgDefinition): Iterable<Dependency> {
   for (const field of schema.definitions) {
     if (field.isComplex === true) {
       yield { type: "ros", name: field.type as keyof typeof rosCommonDefs };
-      yield* getRosDependencies(
-        rosCommonDefs[field.type as keyof typeof rosCommonDefs]!
-      );
+      yield* getRosDependencies(rosCommonDefs[field.type as keyof typeof rosCommonDefs]!);
     }
   }
 }
 
 export function generateRosMsgDefinition(
   schema: FoxgloveMessageSchema,
-  { rosVersion }: { rosVersion: 1 | 2 }
+  { rosVersion }: { rosVersion: 1 | 2 },
 ): RosMsgDefinitionWithDescription {
   const enumFieldNames = new Set<string>();
   const seenEnumNames = new Set<string>();
@@ -112,8 +104,7 @@ export function generateRosMsgDefinition(
   const fields: RosMsgFieldWithDescription[] = [];
   for (const field of schema.fields) {
     let isArray = field.array != undefined;
-    const arrayLength =
-      typeof field.array === "number" ? field.array : undefined;
+    const arrayLength = typeof field.array === "number" ? field.array : undefined;
     let fieldType: string;
     switch (field.type.type) {
       case "enum": {
@@ -129,12 +120,12 @@ export function generateRosMsgDefinition(
         for (const { name, value, description } of field.type.enum.values) {
           if (enumFieldNames.has(name)) {
             throw new Error(
-              `Enum value ${name} occurs in more than one enum referenced by ${schema.name}, this is not supported in ROS msg files`
+              `Enum value ${name} occurs in more than one enum referenced by ${schema.name}, this is not supported in ROS msg files`,
             );
           }
           if (value < 0 || value > 255 || !Number.isInteger(value)) {
             throw new Error(
-              `Only uint8 enums are currently supported; value ${name}=${value} is out of range`
+              `Only uint8 enums are currently supported; value ${name}=${value} is out of range`,
             );
           }
           enumFieldNames.add(name);
@@ -167,8 +158,8 @@ export function generateRosMsgDefinition(
             throw new Error("Array of bytes is not supported in ROS msg");
           }
           isArray = true;
-        } else if (field.type.name === "integer") {
-          fieldType = "int32"; //FIXME
+        } else if (field.type.name === "uint32") {
+          fieldType = "uint32";
         } else {
           fieldType = primitiveToRos(field.type.name, { rosVersion });
         }
@@ -193,7 +184,7 @@ export function generateRosMsgDefinition(
 
 export function generateRosMsgMergedSchema(
   schema: FoxgloveMessageSchema,
-  { rosVersion }: { rosVersion: 1 | 2 }
+  { rosVersion }: { rosVersion: 1 | 2 },
 ): string {
   const dependencies: Dependency[] = [];
   for (const dep of getSchemaDependencies(schema)) {

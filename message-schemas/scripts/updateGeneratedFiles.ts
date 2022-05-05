@@ -6,16 +6,8 @@ import { promisify } from "util";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../src";
 import { generateJsonSchema } from "../src/generateJsonSchema";
-import {
-  TIME_PROTO,
-  DURATION_PROTO,
-  generateProto,
-} from "../src/generateProto";
-import {
-  generateTypeScript,
-  DURATION_TS,
-  TIME_TS,
-} from "../src/generateTypeScript";
+import { TIME_PROTO, DURATION_PROTO, generateProto } from "../src/generateProto";
+import { generateTypeScript, DURATION_TS, TIME_TS } from "../src/generateTypeScript";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../src/schemas";
 
 async function logProgress(message: string, body: () => Promise<void>) {
@@ -34,7 +26,7 @@ async function main({ outDir }: { outDir: string }) {
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       await fs.writeFile(
         path.join(outDir, "jsonschema", `${schema.name}.json`),
-        JSON.stringify(generateJsonSchema(schema), undefined, 2) + "\n"
+        JSON.stringify(generateJsonSchema(schema), undefined, 2) + "\n",
       );
     }
   });
@@ -47,7 +39,7 @@ async function main({ outDir }: { outDir: string }) {
       }
       await fs.writeFile(
         path.join(outDir, "ros1", `${schema.name}.msg`),
-        generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 1 }))
+        generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 1 })),
       );
     }
   });
@@ -60,31 +52,25 @@ async function main({ outDir }: { outDir: string }) {
       }
       await fs.writeFile(
         path.join(outDir, "ros2", `${schema.name}.msg`),
-        generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 2 }))
+        generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 2 })),
       );
     }
   });
 
   await logProgress("Generating Protobuf definitions", async () => {
     await fs.mkdir(path.join(outDir, "proto", "foxglove"), { recursive: true });
-    await fs.writeFile(
-      path.join(outDir, "proto", "foxglove", "Time.proto"),
-      TIME_PROTO
-    );
-    await fs.writeFile(
-      path.join(outDir, "proto", "foxglove", "Duration.proto"),
-      DURATION_PROTO
-    );
+    await fs.writeFile(path.join(outDir, "proto", "foxglove", "Time.proto"), TIME_PROTO);
+    await fs.writeFile(path.join(outDir, "proto", "foxglove", "Duration.proto"), DURATION_PROTO);
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       await fs.writeFile(
         path.join(outDir, "proto", "foxglove", `${schema.name}.proto`),
-        generateProto(schema)
+        generateProto(schema),
       );
     }
     for (const schema of Object.values(foxgloveEnumSchemas)) {
       await fs.writeFile(
         path.join(outDir, "proto", "foxglove", `${schema.name}.proto`),
-        generateProto(schema)
+        generateProto(schema),
       );
     }
   });
@@ -92,20 +78,17 @@ async function main({ outDir }: { outDir: string }) {
   await logProgress("Generating TypeScript definitions", async () => {
     await fs.mkdir(path.join(outDir, "typescript"), { recursive: true });
     await fs.writeFile(path.join(outDir, "typescript", "Time.ts"), TIME_TS);
-    await fs.writeFile(
-      path.join(outDir, "typescript", "Duration.ts"),
-      DURATION_TS
-    );
+    await fs.writeFile(path.join(outDir, "typescript", "Duration.ts"), DURATION_TS);
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       await fs.writeFile(
         path.join(outDir, "typescript", `${schema.name}.ts`),
-        generateTypeScript(schema)
+        generateTypeScript(schema),
       );
     }
     for (const schema of Object.values(foxgloveEnumSchemas)) {
       await fs.writeFile(
         path.join(outDir, "typescript", `${schema.name}.ts`),
-        generateTypeScript(schema)
+        generateTypeScript(schema),
       );
     }
     const allSchemaNames = [

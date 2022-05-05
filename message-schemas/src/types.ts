@@ -1,7 +1,7 @@
 export type FoxglovePrimitive =
   | "string"
   | "float"
-  | "integer"
+  | "uint32"
   | "boolean"
   | "bytes"
   | "Time"

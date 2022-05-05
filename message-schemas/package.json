@@ -1,7 +1,19 @@
 {
   "name": "@foxglove/message-schemas",
   "version": "0.0.1",
+  "description": "Foxglove-defined message schemas and generated definitions for multiple frameworks",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/foxglove/message-schemas.git"
+  },
+  "author": {
+    "name": "Foxglove Technologies",
+    "email": "support@foxglove.dev"
+  },
+  "module": "dist/esm/src/index.js",
+  "main": "dist/cjs/src/index.js",
+  "typings": "dist/esm/src/index.d.ts",
   "scripts": {
     "prepack": "tsc -b tsconfig.json tsconfig.cjs.json && yarn update-generated-files",
     "typecheck": "tsc -p tsconfig.json --noEmit",

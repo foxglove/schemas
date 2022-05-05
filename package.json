@@ -11,6 +11,7 @@
     "generate:json": "ts-node scripts/generateFromRosMsg.ts json -o json-schema"
   },
   "devDependencies": {
+    "@foxglove/rosmsg-msgs-foxglove": "^2.0.3",
     "@foxglove/tsconfig": "^1.1.0",
     "@types/node": "^16.11.11",
     "commander": "^8.3.0",

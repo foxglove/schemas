@@ -127,6 +127,10 @@
           "description": "Type of data in field",
           "oneOf": [
             {
+              "title": "UNKNOWN",
+              "const": 0
+            },
+            {
               "title": "UINT8",
               "const": 1
             },

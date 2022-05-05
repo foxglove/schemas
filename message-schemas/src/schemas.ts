@@ -899,6 +899,7 @@ const foxglove_NumericType: FoxgloveEnumSchema = {
   name: "NumericType",
   description: "Numeric type",
   values: [
+    { name: "UNKNOWN", value: 0 },
     { name: "UINT8", value: 1 },
     { name: "INT8", value: 2 },
     { name: "UINT16", value: 3, description: "little-endian" },
@@ -1030,6 +1031,7 @@ const foxglove_PointsAnnotationType: FoxgloveEnumSchema = {
   name: "PointsAnnotationType",
   description: "Type of points annotation",
   values: [
+    { name: "UNKNOWN", value: 0 },
     { name: "POINTS", value: 1 },
     { name: "LINE_LOOP", value: 2 },
     { name: "LINE_STRIP", value: 3 },
@@ -1145,6 +1147,7 @@ const foxglove_LogLevel: FoxgloveEnumSchema = {
   name: "LogLevel",
   description: "Log level",
   values: [
+    { name: "UNKNOWN", value: 0 },
     { name: "DEBUG", value: 1 },
     { name: "INFO", value: 2 },
     { name: "WARNING", value: 3 },

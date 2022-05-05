@@ -6,6 +6,8 @@ package foxglove;
 
 // Log level
 enum LogLevel {
+  UNKNOWN = 0;
+
   DEBUG = 1;
 
   INFO = 2;

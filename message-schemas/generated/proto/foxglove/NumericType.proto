@@ -6,6 +6,8 @@ package foxglove;
 
 // Numeric type
 enum NumericType {
+  UNKNOWN = 0;
+
   UINT8 = 1;
 
   INT8 = 2;

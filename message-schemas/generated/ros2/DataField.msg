@@ -6,6 +6,7 @@ string name
 # Byte offset from start of data buffer
 uint32 offset
 
+uint8 UNKNOWN=0
 uint8 UINT8=1
 uint8 INT8=2
 

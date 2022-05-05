@@ -2,6 +2,8 @@
 
 /** Log level */
 export enum LogLevel {
+  UNKNOWN = 0,
+
   DEBUG = 1,
 
   INFO = 2,

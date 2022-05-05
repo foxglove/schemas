@@ -2,6 +2,8 @@
 
 /** Numeric type */
 export enum NumericType {
+  UNKNOWN = 0,
+
   UINT8 = 1,
 
   INT8 = 2,

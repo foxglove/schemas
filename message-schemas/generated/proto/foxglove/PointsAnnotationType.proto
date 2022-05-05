@@ -6,6 +6,8 @@ package foxglove;
 
 // Type of points annotation
 enum PointsAnnotationType {
+  UNKNOWN = 0;
+
   POINTS = 1;
 
   LINE_LOOP = 2;

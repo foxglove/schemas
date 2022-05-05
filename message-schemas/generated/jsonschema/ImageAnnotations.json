@@ -133,6 +133,10 @@
             "description": "Type of points annotation to draw",
             "oneOf": [
               {
+                "title": "UNKNOWN",
+                "const": 0
+              },
+              {
                 "title": "POINTS",
                 "const": 1
               },

@@ -2,6 +2,8 @@
 
 /** Type of points annotation */
 export enum PointsAnnotationType {
+  UNKNOWN = 0,
+
   POINTS = 1,
 
   LINE_LOOP = 2,

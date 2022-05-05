@@ -25,6 +25,10 @@
       "description": "Log level",
       "oneOf": [
         {
+          "title": "UNKNOWN",
+          "const": 0
+        },
+        {
           "title": "DEBUG",
           "const": 1
         },

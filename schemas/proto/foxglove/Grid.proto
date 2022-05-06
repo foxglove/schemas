@@ -33,7 +33,7 @@ message Grid {
   fixed32 cell_stride = 7;
 
   // Fields in `data`
-  foxglove.DataField fields = 8;
+  repeated foxglove.DataField fields = 8;
 
   // Grid cell data, interpreted using `fields`, in row-major (y-major) order
   bytes data = 9;

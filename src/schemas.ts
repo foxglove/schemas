@@ -508,6 +508,7 @@ const foxglove_Grid: FoxgloveMessageSchema = {
     {
       name: "fields",
       type: { type: "nested", schema: foxglove_DataField },
+      array: true,
       description: "Fields in `data`",
     },
     {
@@ -759,6 +760,7 @@ const foxglove_PointCloud: FoxgloveMessageSchema = {
     {
       name: "fields",
       type: { type: "nested", schema: foxglove_DataField },
+      array: true,
       description: "Fields in the `data`",
     },
     {

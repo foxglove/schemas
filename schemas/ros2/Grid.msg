@@ -22,7 +22,7 @@ uint32 row_stride
 uint32 cell_stride
 
 # Fields in `data`
-foxglove_msgs/DataField fields
+foxglove_msgs/DataField[] fields
 
 # Grid cell data, interpreted using `fields`, in row-major (y-major) order
 uint8[] data

@@ -29,7 +29,7 @@ export type Grid = {
   cell_stride: number;
 
   /** Fields in `data` */
-  fields: DataField;
+  fields: DataField[];
 
   /** Grid cell data, interpreted using `fields`, in row-major (y-major) order */
   data: Uint8Array;

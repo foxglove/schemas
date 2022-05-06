@@ -23,7 +23,7 @@ message PointCloud {
   fixed32 point_stride = 4;
 
   // Fields in the `data`
-  foxglove.DataField fields = 5;
+  repeated foxglove.DataField fields = 5;
 
   // Point data, interpreted using `fields`
   bytes data = 6;

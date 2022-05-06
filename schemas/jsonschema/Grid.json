@@ -108,63 +108,67 @@
       "description": "Number of bytes between cells within a row in `data`"
     },
     "fields": {
-      "$comment": "Generated from DataField by @foxglove/message-schemas",
-      "title": "DataField",
-      "description": "Fields in `data`",
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "Name of the field"
-        },
-        "offset": {
-          "type": "integer",
-          "minimum": 0,
-          "description": "Byte offset from start of data buffer"
-        },
-        "type": {
-          "title": "NumericType: Numeric type",
-          "description": "Type of data in the field. Integers are stored using little-endian byte order.",
-          "oneOf": [
-            {
-              "title": "UNKNOWN",
-              "const": 0
-            },
-            {
-              "title": "UINT8",
-              "const": 1
-            },
-            {
-              "title": "INT8",
-              "const": 2
-            },
-            {
-              "title": "UINT16",
-              "const": 3
-            },
-            {
-              "title": "INT16",
-              "const": 4
-            },
-            {
-              "title": "UINT32",
-              "const": 5
-            },
-            {
-              "title": "INT32",
-              "const": 6
-            },
-            {
-              "title": "FLOAT32",
-              "const": 7
-            },
-            {
-              "title": "FLOAT64",
-              "const": 8
-            }
-          ]
+      "type": "array",
+      "items": {
+        "$comment": "Generated from DataField by @foxglove/message-schemas",
+        "title": "DataField",
+        "description": "List of fields included for every entity in an accompanying `data` field array",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the field"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Byte offset from start of data buffer"
+          },
+          "type": {
+            "title": "NumericType: Numeric type",
+            "description": "Type of data in the field. Integers are stored using little-endian byte order.",
+            "oneOf": [
+              {
+                "title": "UNKNOWN",
+                "const": 0
+              },
+              {
+                "title": "UINT8",
+                "const": 1
+              },
+              {
+                "title": "INT8",
+                "const": 2
+              },
+              {
+                "title": "UINT16",
+                "const": 3
+              },
+              {
+                "title": "INT16",
+                "const": 4
+              },
+              {
+                "title": "UINT32",
+                "const": 5
+              },
+              {
+                "title": "INT32",
+                "const": 6
+              },
+              {
+                "title": "FLOAT32",
+                "const": 7
+              },
+              {
+                "title": "FLOAT64",
+                "const": 8
+              }
+            ]
+          }
         }
-      }
+      },
+      "description": "Fields in `data`"
     },
     "data": {
       "type": "string",

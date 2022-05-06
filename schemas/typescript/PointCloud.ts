@@ -19,7 +19,7 @@ export type PointCloud = {
   point_stride: number;
 
   /** Fields in the `data` */
-  fields: DataField;
+  fields: DataField[];
 
   /** Point data, interpreted using `fields` */
   data: Uint8Array;

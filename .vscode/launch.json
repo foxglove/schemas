@@ -10,8 +10,6 @@
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "yarn",
       "args": [
-        "workspace",
-        "@foxglove/message-schemas",
         "test",
         "--runInBand",
         "--watchAll=false",

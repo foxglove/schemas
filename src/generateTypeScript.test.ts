@@ -106,6 +106,6 @@ describe("generateTypeScript", () => {
   });
 
   it("generates parseable .ts files", async () => {
-    await expect(import("../generated/typescript")).resolves.not.toThrow();
+    await expect(import("../schemas/typescript")).resolves.not.toThrow();
   });
 });

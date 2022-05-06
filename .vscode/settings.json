@@ -16,5 +16,5 @@
   "eslint.options": {
     "reportUnusedDisableDirectives": true
   },
-  "jest.jestCommandLine": "yarn workspace @foxglove/message-schemas test"
+  "jest.jestCommandLine": "yarn test"
 }

@@ -44,7 +44,11 @@ export function generateRosMsg(def: RosMsgDefinitionWithDescription): string {
     }
     prevFieldHadComment = false;
     if (field.description != undefined) {
-      source += `# ${field.description}\n`;
+      source += field.description
+        .trim()
+        .split("\n")
+        .map((line) => `# ${line}\n`)
+        .join("");
       prevFieldHadComment = true;
     }
     let constant = "";

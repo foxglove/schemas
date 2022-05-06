@@ -75,7 +75,7 @@ export const exampleMessage: FoxgloveMessageSchema = {
     },
     {
       name: "field_nested_array",
-      description: "A nested array field",
+      description: "A nested array field\nWith\na\nvery\nlong\ndescription",
       type: { type: "nested", schema: exampleNestedMessage },
       array: true,
     },

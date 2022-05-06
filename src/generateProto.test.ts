@@ -100,6 +100,11 @@ describe("generateProto", () => {
         foxglove.NestedMessage field_nested = 24;
 
         // A nested array field
+        // With
+        // a
+        // very
+        // long
+        // description
         repeated foxglove.NestedMessage field_nested_array = 25;
       }
       "

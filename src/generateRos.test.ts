@@ -92,6 +92,11 @@ describe("generateRosMsgFiles", () => {
       foxglove_msgs/NestedMessage field_nested
 
       # A nested array field
+      # With
+      # a
+      # very
+      # long
+      # description
       foxglove_msgs/NestedMessage[] field_nested_array
       "
     `);
@@ -180,6 +185,11 @@ describe("generateRosMsgFiles", () => {
       foxglove_msgs/NestedMessage field_nested
 
       # A nested array field
+      # With
+      # a
+      # very
+      # long
+      # description
       foxglove_msgs/NestedMessage[] field_nested_array
       "
     `);
@@ -267,6 +277,11 @@ describe("generateRosMsgMergedSchema", () => {
       foxglove_msgs/NestedMessage field_nested
 
       # A nested array field
+      # With
+      # a
+      # very
+      # long
+      # description
       foxglove_msgs/NestedMessage[] field_nested_array
       ================================================================================
       MSG: foxglove_msgs/NestedMessage
@@ -536,6 +551,11 @@ describe("generateRosMsgMergedSchema", () => {
       foxglove_msgs/NestedMessage field_nested
 
       # A nested array field
+      # With
+      # a
+      # very
+      # long
+      # description
       foxglove_msgs/NestedMessage[] field_nested_array
       ================================================================================
       MSG: foxglove_msgs/NestedMessage

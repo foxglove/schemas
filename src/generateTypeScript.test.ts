@@ -98,7 +98,14 @@ describe("generateTypeScript", () => {
         /** A nested field */
         field_nested: NestedMessage;
 
-        /** A nested array field */
+        /**
+         * A nested array field
+         * With
+         * a
+         * very
+         * long
+         * description
+         */
         field_nested_array: NestedMessage[];
       };
       "

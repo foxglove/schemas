@@ -29,9 +29,9 @@ export function generateProto(
       }
     });
     enumDefinitions.push(
-      `// ${enumSchema.description}\n  enum ${enumSchema.protobufEnumName} {\n    ${fields.join(
+      `  // ${enumSchema.description}\n  enum ${enumSchema.protobufEnumName} {\n    ${fields.join(
         "\n\n    ",
-      )}\n  }\n  `,
+      )}\n  }\n`,
     );
   }
 
@@ -66,14 +66,18 @@ export function generateProto(
         }
         break;
     }
-    return `// ${field.description}\n  ${qualifiers.join(" ")} ${field.name} = ${fieldNumber++};${
+    return `${field.description
+      .trim()
+      .split("\n")
+      .map((line) => `  // ${line}\n`)
+      .join("")}  ${qualifiers.join(" ")} ${field.name} = ${fieldNumber++};${
       lineComments.length > 0 ? " // " + lineComments.join(", ") : ""
     }`;
   });
 
-  const definition = `// ${schema.description}\nmessage ${schema.name} {\n  ${enumDefinitions.join(
+  const definition = `// ${schema.description}\nmessage ${schema.name} {\n${enumDefinitions.join(
     "\n\n",
-  )}${fields.join("\n\n  ")}\n}`;
+  )}${fields.join("\n\n")}\n}`;
 
   const outputSections = [
     `// Generated from ${schema.name} by @foxglove/message-schemas`,

@@ -71,7 +71,14 @@ export function generateTypeScript(schema: FoxgloveSchema): string {
         } else if (field.array != undefined) {
           fieldType = `${fieldType}[]`;
         }
-        return `/** ${field.description} */\n  ${field.name}: ${fieldType};`;
+        let comment: string;
+        const descriptionLines = field.description.trim().split("\n");
+        if (descriptionLines.length === 1) {
+          comment = `/** ${field.description} */`;
+        } else {
+          comment = `/**\n  ${descriptionLines.map((line) => ` * ${line}`).join("\n  ")}\n   */`;
+        }
+        return `${comment}\n  ${field.name}: ${fieldType};`;
       });
 
       definition = `/** ${schema.description} */\nexport type ${schema.name} = {\n  ${fields.join(

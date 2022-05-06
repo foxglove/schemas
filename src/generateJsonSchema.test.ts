@@ -233,7 +233,12 @@ describe("generateJsonSchema", () => {
             "type": "object",
           },
           "field_nested_array": Object {
-            "description": "A nested array field",
+            "description": "A nested array field
+      With
+      a
+      very
+      long
+      description",
             "items": Object {
               "$comment": "Generated from NestedMessage by @foxglove/message-schemas",
               "description": "An example nested message",

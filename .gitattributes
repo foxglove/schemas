@@ -1,2 +1,1 @@
-proto/ros/**/*.proto linguist-generated
-json-schema/**/*.json linguist-generated
+schemas/** linguist-generated

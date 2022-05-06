@@ -1,0 +1,20 @@
+{
+  "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+  "title": "Vector3",
+  "description": "A vector in 3D space that represents a direction only",
+  "type": "object",
+  "properties": {
+    "x": {
+      "type": "number",
+      "description": "x coordinate length"
+    },
+    "y": {
+      "type": "number",
+      "description": "y coordinate length"
+    },
+    "z": {
+      "type": "number",
+      "description": "z coordinate length"
+    }
+  }
+}

@@ -1,9 +1,0 @@
-// Generated from std_msgs/UInt64.msg using https://github.com/foxglove/message-schemas
-
-syntax = "proto3";
-
-package ros.std_msgs;
-
-message UInt64 {
-  uint64 data = 1;
-}

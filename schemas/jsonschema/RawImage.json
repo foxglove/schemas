@@ -1,0 +1,48 @@
+{
+  "$comment": "Generated from RawImage by @foxglove/message-schemas",
+  "title": "RawImage",
+  "description": "A compressed image",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "object",
+      "title": "time",
+      "properties": {
+        "sec": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nsec": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999999999
+        }
+      },
+      "description": "Timestamp of image"
+    },
+    "width": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Image width"
+    },
+    "height": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Image height"
+    },
+    "encoding": {
+      "type": "string",
+      "description": "Encoding of the raw image data"
+    },
+    "step": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Byte length of a single row"
+    },
+    "data": {
+      "type": "string",
+      "contentEncoding": "base64",
+      "description": "Raw image data"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$comment": "Generated from Point2 by @foxglove/message-schemas",
+  "title": "Point2",
+  "description": "A point representing a position in 2D space",
+  "type": "object",
+  "properties": {
+    "x": {
+      "type": "number",
+      "description": "x coordinate position"
+    },
+    "y": {
+      "type": "number",
+      "description": "y coordinate position"
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$comment": "Generated from Log by @foxglove/message-schemas",
+  "title": "Log",
+  "description": "A log message",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "object",
+      "title": "time",
+      "properties": {
+        "sec": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nsec": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999999999
+        }
+      },
+      "description": "Timestamp of log message"
+    },
+    "level": {
+      "title": "LogLevel: Log level",
+      "description": "Log level",
+      "oneOf": [
+        {
+          "title": "UNKNOWN",
+          "const": 0
+        },
+        {
+          "title": "DEBUG",
+          "const": 1
+        },
+        {
+          "title": "INFO",
+          "const": 2
+        },
+        {
+          "title": "WARNING",
+          "const": 3
+        },
+        {
+          "title": "ERROR",
+          "const": 4
+        },
+        {
+          "title": "FATAL",
+          "const": 5
+        }
+      ]
+    },
+    "message": {
+      "type": "string",
+      "description": "Log message"
+    },
+    "name": {
+      "type": "string",
+      "description": "Process or node name"
+    },
+    "file": {
+      "type": "string",
+      "description": "Filename"
+    },
+    "line": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Line number in the file"
+    }
+  }
+}

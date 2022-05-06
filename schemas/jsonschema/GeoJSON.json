@@ -1,0 +1,12 @@
+{
+  "$comment": "Generated from GeoJSON by @foxglove/message-schemas",
+  "title": "GeoJSON",
+  "description": "GeoJSON data used for annotating maps",
+  "type": "object",
+  "properties": {
+    "geojson": {
+      "type": "string",
+      "description": "GeoJSON data encoded as a UTF-8 string"
+    }
+  }
+}

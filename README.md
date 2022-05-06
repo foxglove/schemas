@@ -1,25 +1,31 @@
-This repo contains Protobuf and JSON schemas for [foxglove](https://foxglove.dev/docs/studio/messages/introduction) and ROS messages.
+# @foxglove/message-schemas
+
+> [Message schemas](https://foxglove.dev/docs/studio/messages/introduction) supported by [Foxglove Studio](https://studio.foxglove.dev)
+
+[![npm version](https://img.shields.io/npm/v/@foxglove/message-schemas.svg?style=flat)](https://www.npmjs.com/package/@foxglove/message-schemas)
+
+## Introduction
+
+The [schemas](./schemas) folder contains type definitions generated from these schemas for ROS 1, ROS 2, Protobuf, JSON Schema, and TypeScript.
 
 These schemas can be used in [MCAP](https://github.com/foxglove/mcap) files or [Foxglove WebSocket](https://github.com/foxglove/ws-protocol) servers to take advantage of Foxglove Studio's visualizations.
 
-The ROS schemas are generated from the common ROS message types at [@foxglove/rosmsg-msgs-common](https://github.com/foxglove/rosmsg-msgs-common) and [@foxglove/rosmsg-msgs-foxglove](https://github.com/foxglove/rosmsg-msgs-foxglove).
+## License
 
-## Proto
+@foxglove/message-schemas is licensed under [MIT License](https://opensource.org/licenses/MIT).
 
-The .proto schemas are located in the `proto` folder.
+## Development
 
-## Generate
+The schema definitions are in [src/schemas.ts](src/schemas.ts).
 
-### Generate .proto files and JSON Schemas for common ROS datatypes
+After editing the schemas, re-generate the language-specific definitions by running `yarn update-generated-files`.
 
-```
-$ yarn install
-$ yarn generate:proto
-$ yarn generate:json
-```
+### Releasing
 
-### Combine .proto files into a binary FileDescriptorSet
+1. Run `yarn version --[major|minor|patch]` to bump version
+2. Run `git push && git push --tags` to push new tag
+3. GitHub Actions will take care of the rest
 
-```
-$ protoc --proto_path=proto proto/ros/sensor_msgs/PointCloud2.proto --include_imports --descriptor_set_out=PointCloud2.bin
-```
+## Stay in touch
+
+Join our [Slack channel](https://foxglove.dev/join-slack) to ask questions, share feedback, and stay up to date on what our team is working on.

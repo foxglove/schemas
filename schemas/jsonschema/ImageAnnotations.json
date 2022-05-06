@@ -1,0 +1,234 @@
+{
+  "$comment": "Generated from ImageAnnotations by @foxglove/message-schemas",
+  "title": "ImageAnnotations",
+  "description": "Array of annotations for a 2D image",
+  "type": "object",
+  "properties": {
+    "circles": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from CircleAnnotation by @foxglove/message-schemas",
+        "title": "CircleAnnotation",
+        "description": "A circle annotation",
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "object",
+            "title": "time",
+            "properties": {
+              "sec": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "nsec": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
+              }
+            },
+            "description": "Timestamp of circle"
+          },
+          "position": {
+            "$comment": "Generated from Point2 by @foxglove/message-schemas",
+            "title": "Point2",
+            "description": "Center of the circle in 2D image coordinates",
+            "type": "object",
+            "properties": {
+              "x": {
+                "type": "number",
+                "description": "x coordinate position"
+              },
+              "y": {
+                "type": "number",
+                "description": "y coordinate position"
+              }
+            }
+          },
+          "diameter": {
+            "type": "number",
+            "description": "Circle diameter"
+          },
+          "thickness": {
+            "type": "number",
+            "description": "Line thickness"
+          },
+          "fill_color": {
+            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "title": "Color",
+            "description": "Fill color",
+            "type": "object",
+            "properties": {
+              "r": {
+                "type": "number",
+                "description": "Red value between 0 and 1"
+              },
+              "g": {
+                "type": "number",
+                "description": "Green value between 0 and 1"
+              },
+              "b": {
+                "type": "number",
+                "description": "Blue value between 0 and 1"
+              },
+              "a": {
+                "type": "number",
+                "description": "Alpha value between 0 and 1"
+              }
+            }
+          },
+          "outline_color": {
+            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "title": "Color",
+            "description": "Outline color",
+            "type": "object",
+            "properties": {
+              "r": {
+                "type": "number",
+                "description": "Red value between 0 and 1"
+              },
+              "g": {
+                "type": "number",
+                "description": "Green value between 0 and 1"
+              },
+              "b": {
+                "type": "number",
+                "description": "Blue value between 0 and 1"
+              },
+              "a": {
+                "type": "number",
+                "description": "Alpha value between 0 and 1"
+              }
+            }
+          }
+        }
+      },
+      "description": "Circle annotations"
+    },
+    "points": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from PointsAnnotation by @foxglove/message-schemas",
+        "title": "PointsAnnotation",
+        "description": "A set of points",
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "object",
+            "title": "time",
+            "properties": {
+              "sec": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "nsec": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999999999
+              }
+            },
+            "description": "Timestamp of annotation"
+          },
+          "type": {
+            "title": "PointsAnnotationType: Type of points annotation",
+            "description": "Type of points annotation to draw",
+            "oneOf": [
+              {
+                "title": "UNKNOWN",
+                "const": 0
+              },
+              {
+                "title": "POINTS",
+                "const": 1
+              },
+              {
+                "title": "LINE_LOOP",
+                "const": 2
+              },
+              {
+                "title": "LINE_STRIP",
+                "const": 3
+              },
+              {
+                "title": "LINE_LIST",
+                "const": 4
+              }
+            ]
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "$comment": "Generated from Point2 by @foxglove/message-schemas",
+              "title": "Point2",
+              "description": "A point representing a position in 2D space",
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number",
+                  "description": "x coordinate position"
+                },
+                "y": {
+                  "type": "number",
+                  "description": "y coordinate position"
+                }
+              }
+            },
+            "description": "Points in 2D image coordinates"
+          },
+          "outline_colors": {
+            "type": "array",
+            "items": {
+              "$comment": "Generated from Color by @foxglove/message-schemas",
+              "title": "Color",
+              "description": "A color in RGBA format",
+              "type": "object",
+              "properties": {
+                "r": {
+                  "type": "number",
+                  "description": "Red value between 0 and 1"
+                },
+                "g": {
+                  "type": "number",
+                  "description": "Green value between 0 and 1"
+                },
+                "b": {
+                  "type": "number",
+                  "description": "Blue value between 0 and 1"
+                },
+                "a": {
+                  "type": "number",
+                  "description": "Alpha value between 0 and 1"
+                }
+              }
+            },
+            "description": "Outline colors"
+          },
+          "fill_color": {
+            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "title": "Color",
+            "description": "Fill color",
+            "type": "object",
+            "properties": {
+              "r": {
+                "type": "number",
+                "description": "Red value between 0 and 1"
+              },
+              "g": {
+                "type": "number",
+                "description": "Green value between 0 and 1"
+              },
+              "b": {
+                "type": "number",
+                "description": "Blue value between 0 and 1"
+              },
+              "a": {
+                "type": "number",
+                "description": "Alpha value between 0 and 1"
+              }
+            }
+          }
+        }
+      },
+      "description": "Points annotations"
+    }
+  }
+}

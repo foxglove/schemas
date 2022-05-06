@@ -10,6 +10,6 @@ export type DataField = {
   /** Byte offset from start of data buffer */
   offset: number;
 
-  /** Type of data in field */
+  /** Type of data in the field. Integers are stored using little-endian byte order. */
   type: NumericType;
 };

@@ -2,12 +2,20 @@
 
 syntax = "proto3";
 
-import "foxglove/PositionCovarianceType.proto";
-
 package foxglove;
 
 // A navigation satellite fix for any Global Navigation Satellite System
 message LocationFix {
+  // Type of position covariance
+  enum PositionCovarianceType {
+    UNKNOWN = 0;
+
+    APPROXIMATED = 1;
+
+    DIAGONAL_KNOWN = 2;
+
+    KNOWN = 3;
+  }
   // Latitude in degrees
   double latitude = 1;
 
@@ -21,5 +29,5 @@ message LocationFix {
   repeated double position_covariance = 4; // length 9
 
   // If `position_covariance` is available, `position_covariance_type` must be set to indicate the type of covariance.
-  foxglove.PositionCovarianceType position_covariance_type = 5;
+  PositionCovarianceType position_covariance_type = 5;
 }

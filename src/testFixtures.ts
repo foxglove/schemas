@@ -13,6 +13,8 @@ const allPrimitives: FoxglovePrimitive[] = [
 export const exampleEnum: FoxgloveEnumSchema = {
   type: "enum",
   name: "ExampleEnum",
+  protobufEnumName: "ExampleProtoEnum",
+  protobufParentMessageName: "ExampleMessage",
   description: "An example enum",
   values: [
     { name: "A", value: 1, description: "Value A" },

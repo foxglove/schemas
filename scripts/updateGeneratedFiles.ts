@@ -60,15 +60,12 @@ async function main({ outDir }: { outDir: string }) {
   await logProgress("Generating Protobuf definitions", async () => {
     await fs.mkdir(path.join(outDir, "proto", "foxglove"), { recursive: true });
     for (const schema of Object.values(foxgloveMessageSchemas)) {
-      await fs.writeFile(
-        path.join(outDir, "proto", "foxglove", `${schema.name}.proto`),
-        generateProto(schema),
+      const enums = Object.values(foxgloveEnumSchemas).filter(
+        (enumSchema) => enumSchema.protobufParentMessageName === schema.name,
       );
-    }
-    for (const schema of Object.values(foxgloveEnumSchemas)) {
       await fs.writeFile(
         path.join(outDir, "proto", "foxglove", `${schema.name}.proto`),
-        generateProto(schema),
+        generateProto(schema, enums),
       );
     }
   });

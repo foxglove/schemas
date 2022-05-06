@@ -9,24 +9,12 @@ uint32 offset
 uint8 UNKNOWN=0
 uint8 UINT8=1
 uint8 INT8=2
-
-# little-endian
 uint8 UINT16=3
-
-# little-endian
 uint8 INT16=4
-
-# little-endian
 uint8 UINT32=5
-
-# little-endian
 uint8 INT32=6
-
-# little-endian
 uint8 FLOAT32=7
-
-# little-endian
 uint8 FLOAT64=8
 
-# Type of data in field
+# Type of data in the field. Integers are stored using little-endian byte order.
 uint8 type

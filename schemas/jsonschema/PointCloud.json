@@ -98,7 +98,7 @@
         },
         "type": {
           "title": "NumericType: Numeric type",
-          "description": "Type of data in field",
+          "description": "Type of data in the field. Integers are stored using little-endian byte order.",
           "oneOf": [
             {
               "title": "UNKNOWN",
@@ -114,33 +114,27 @@
             },
             {
               "title": "UINT16",
-              "const": 3,
-              "description": "little-endian"
+              "const": 3
             },
             {
               "title": "INT16",
-              "const": 4,
-              "description": "little-endian"
+              "const": 4
             },
             {
               "title": "UINT32",
-              "const": 5,
-              "description": "little-endian"
+              "const": 5
             },
             {
               "title": "INT32",
-              "const": 6,
-              "description": "little-endian"
+              "const": 6
             },
             {
               "title": "FLOAT32",
-              "const": 7,
-              "description": "little-endian"
+              "const": 7
             },
             {
               "title": "FLOAT64",
-              "const": 8,
-              "description": "little-endian"
+              "const": 8
             }
           ]
         }

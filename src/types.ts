@@ -11,6 +11,8 @@ export type FoxgloveEnumSchema = {
   type: "enum";
   name: string;
   description: string;
+  protobufParentMessageName: string;
+  protobufEnumName: string;
   values: ReadonlyArray<{
     value: number;
     name: string;

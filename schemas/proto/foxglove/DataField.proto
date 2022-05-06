@@ -2,18 +2,36 @@
 
 syntax = "proto3";
 
-import "foxglove/NumericType.proto";
-
 package foxglove;
 
 // List of fields included for every entity in an accompanying `data` field array
 message DataField {
+  // Numeric type
+  enum NumericType {
+    UNKNOWN = 0;
+
+    UINT8 = 1;
+
+    INT8 = 2;
+
+    UINT16 = 3;
+
+    INT16 = 4;
+
+    UINT32 = 5;
+
+    INT32 = 6;
+
+    FLOAT32 = 7;
+
+    FLOAT64 = 8;
+  }
   // Name of the field
   string name = 1;
 
   // Byte offset from start of data buffer
   fixed32 offset = 2;
 
-  // Type of data in field
-  foxglove.NumericType type = 3;
+  // Type of data in the field. Integers are stored using little-endian byte order.
+  NumericType type = 3;
 }

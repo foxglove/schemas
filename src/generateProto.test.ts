@@ -6,29 +6,11 @@ import { exampleEnum, exampleMessage } from "./testFixtures";
 
 describe("generateProto", () => {
   it("generates .proto files", () => {
-    expect(generateProto(exampleEnum)).toMatchInlineSnapshot(`
-      "// Generated from ExampleEnum by @foxglove/message-schemas
-
-      syntax = \\"proto3\\";
-
-      package foxglove;
-
-      // An example enum
-      enum ExampleEnum {
-        // Value A
-        A = 1;
-
-        // Value B
-        B = 2;
-      }
-      "
-    `);
-    expect(generateProto(exampleMessage)).toMatchInlineSnapshot(`
+    expect(generateProto(exampleMessage, [exampleEnum])).toMatchInlineSnapshot(`
       "// Generated from ExampleMessage by @foxglove/message-schemas
 
       syntax = \\"proto3\\";
 
-      import \\"foxglove/ExampleEnum.proto\\";
       import \\"foxglove/NestedMessage.proto\\";
       import \\"google/protobuf/duration.proto\\";
       import \\"google/protobuf/timestamp.proto\\";
@@ -37,6 +19,14 @@ describe("generateProto", () => {
 
       // An example type
       message ExampleMessage {
+        // An example enum
+        enum ExampleProtoEnum {
+          // Value A
+          A = 1;
+
+          // Value B
+          B = 2;
+        }
         // Duration field
         google.protobuf.Duration field_Duration = 1;
 
@@ -101,10 +91,10 @@ describe("generateProto", () => {
         repeated string field_string_fixed_array = 21; // length 3
 
         // An enum field
-        foxglove.ExampleEnum field_enum = 22;
+        ExampleProtoEnum field_enum = 22;
 
         // An enum array field
-        repeated foxglove.ExampleEnum field_enum_array = 23;
+        repeated ExampleProtoEnum field_enum_array = 23;
 
         // A nested field
         foxglove.NestedMessage field_nested = 24;
@@ -121,10 +111,10 @@ describe("generateProto", () => {
     root.addJSON(protobufjs.common.get("google/protobuf/timestamp.proto")!.nested!);
     root.addJSON(protobufjs.common.get("google/protobuf/duration.proto")!.nested!);
     for (const schema of Object.values(foxgloveMessageSchemas)) {
-      root.add(protobufjs.parse(generateProto(schema)).root);
-    }
-    for (const schema of Object.values(foxgloveEnumSchemas)) {
-      root.add(protobufjs.parse(generateProto(schema)).root);
+      const enums = Object.values(foxgloveEnumSchemas).filter(
+        (enumSchema) => enumSchema.protobufParentMessageName === schema.name,
+      );
+      root.add(protobufjs.parse(generateProto(schema, enums)).root);
     }
     expect(() => root.resolveAll()).not.toThrow();
   });

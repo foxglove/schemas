@@ -388,16 +388,18 @@ const foxglove_NumericType: FoxgloveEnumSchema = {
   type: "enum",
   name: "NumericType",
   description: "Numeric type",
+  protobufParentMessageName: "DataField",
+  protobufEnumName: "NumericType",
   values: [
     { name: "UNKNOWN", value: 0 },
     { name: "UINT8", value: 1 },
     { name: "INT8", value: 2 },
-    { name: "UINT16", value: 3, description: "little-endian" },
-    { name: "INT16", value: 4, description: "little-endian" },
-    { name: "UINT32", value: 5, description: "little-endian" },
-    { name: "INT32", value: 6, description: "little-endian" },
-    { name: "FLOAT32", value: 7, description: "little-endian" },
-    { name: "FLOAT64", value: 8, description: "little-endian" },
+    { name: "UINT16", value: 3 },
+    { name: "INT16", value: 4 },
+    { name: "UINT32", value: 5 },
+    { name: "INT32", value: 6 },
+    { name: "FLOAT32", value: 7 },
+    { name: "FLOAT64", value: 8 },
   ],
 };
 
@@ -419,7 +421,7 @@ const foxglove_DataField: FoxgloveMessageSchema = {
     {
       name: "type",
       type: { type: "enum", enum: foxglove_NumericType },
-      description: "Type of data in field",
+      description: "Type of data in the field. Integers are stored using little-endian byte order.",
     },
   ],
 };
@@ -520,6 +522,8 @@ const foxglove_PointsAnnotationType: FoxgloveEnumSchema = {
   type: "enum",
   name: "PointsAnnotationType",
   description: "Type of points annotation",
+  protobufParentMessageName: "PointsAnnotation",
+  protobufEnumName: "Type",
   values: [
     { name: "UNKNOWN", value: 0 },
     { name: "POINTS", value: 1 },
@@ -588,6 +592,8 @@ const foxglove_PositionCovarianceType: FoxgloveEnumSchema = {
   type: "enum",
   name: "PositionCovarianceType",
   description: "Type of position covariance",
+  protobufParentMessageName: "LocationFix",
+  protobufEnumName: "PositionCovarianceType",
   values: [
     { name: "UNKNOWN", value: 0 },
     { name: "APPROXIMATED", value: 1 },
@@ -636,6 +642,8 @@ const foxglove_LogLevel: FoxgloveEnumSchema = {
   type: "enum",
   name: "LogLevel",
   description: "Log level",
+  protobufParentMessageName: "Log",
+  protobufEnumName: "Level",
   values: [
     { name: "UNKNOWN", value: 0 },
     { name: "DEBUG", value: 1 },

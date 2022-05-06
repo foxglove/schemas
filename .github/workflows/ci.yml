@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: 16.x
           cache: yarn
+          registry-url: https://registry.npmjs.org
 
       - run: yarn install --immutable
       - run: yarn lint:ci

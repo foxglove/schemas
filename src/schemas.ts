@@ -7,22 +7,22 @@ const foxglove_Color: FoxgloveMessageSchema = {
   fields: [
     {
       name: "r",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Red value between 0 and 1",
     },
     {
       name: "g",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Green value between 0 and 1",
     },
     {
       name: "b",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Blue value between 0 and 1",
     },
     {
       name: "a",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Alpha value between 0 and 1",
     },
   ],
@@ -35,12 +35,12 @@ const foxglove_Vector2: FoxgloveMessageSchema = {
   fields: [
     {
       name: "x",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "x coordinate length",
     },
     {
       name: "y",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "y coordinate length",
     },
   ],
@@ -54,17 +54,17 @@ const foxglove_Vector3: FoxgloveMessageSchema = {
   fields: [
     {
       name: "x",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "x coordinate length",
     },
     {
       name: "y",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "y coordinate length",
     },
     {
       name: "z",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "z coordinate length",
     },
   ],
@@ -77,12 +77,12 @@ const foxglove_Point2: FoxgloveMessageSchema = {
   fields: [
     {
       name: "x",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "x coordinate position",
     },
     {
       name: "y",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "y coordinate position",
     },
   ],
@@ -96,17 +96,17 @@ const foxglove_Point3: FoxgloveMessageSchema = {
   fields: [
     {
       name: "x",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "x coordinate position",
     },
     {
       name: "y",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "y coordinate position",
     },
     {
       name: "z",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "z coordinate position",
     },
   ],
@@ -120,22 +120,22 @@ const foxglove_Quaternion: FoxgloveMessageSchema = {
   fields: [
     {
       name: "x",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "x value",
     },
     {
       name: "y",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "y value",
     },
     {
       name: "z",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "z value",
     },
     {
       name: "w",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "w value",
     },
   ],
@@ -167,7 +167,7 @@ export const foxglove_CameraCalibration: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of calibration data",
     },
     {
@@ -187,13 +187,13 @@ export const foxglove_CameraCalibration: FoxgloveMessageSchema = {
     },
     {
       name: "D",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Distortion parameters",
       array: true,
     },
     {
       name: "K",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       array: 9,
       description: `Intrinsic camera matrix (3x3 row-major matrix)
 
@@ -210,7 +210,7 @@ K = [ 0 fy cy]
     },
     {
       name: "R",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       array: 9,
       description: `Rectification matrix (3x3 row-major matrix)
 
@@ -218,7 +218,7 @@ A rotation matrix aligning the camera coordinate system to the ideal stereo imag
     },
     {
       name: "P",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       array: 12,
       description: `Projection/camera matrix (3x4 row-major matrix)
 
@@ -257,7 +257,7 @@ const foxglove_CompressedImage: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of image",
     },
     {
@@ -280,7 +280,7 @@ const foxglove_RawImage: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of image",
     },
     {
@@ -318,7 +318,7 @@ const foxglove_Transform: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Transform time",
     },
     {
@@ -341,7 +341,7 @@ const foxglove_FrameTransform: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of transform",
     },
     {
@@ -369,7 +369,7 @@ const foxglove_PoseInFrame: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of pose",
     },
     {
@@ -392,7 +392,7 @@ const foxglove_PosesInFrame: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of pose",
     },
     {
@@ -471,7 +471,7 @@ const foxglove_Grid: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of grid",
     },
     {
@@ -526,7 +526,7 @@ const foxglove_CircleAnnotation: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of circle",
     },
     {
@@ -536,12 +536,12 @@ const foxglove_CircleAnnotation: FoxgloveMessageSchema = {
     },
     {
       name: "diameter",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Circle diameter",
     },
     {
       name: "thickness",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Line thickness",
     },
     {
@@ -579,7 +579,7 @@ const foxglove_PointsAnnotation: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of annotation",
     },
     {
@@ -648,22 +648,22 @@ const foxglove_LocationFix: FoxgloveMessageSchema = {
   fields: [
     {
       name: "latitude",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Latitude in degrees",
     },
     {
       name: "longitude",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Longitude in degrees",
     },
     {
       name: "altitude",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Altitude in meters",
     },
     {
       name: "position_covariance",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description:
         "Position covariance (m^2) defined relative to a tangential plane through the reported position. The components are East, North, and Up (ENU), in row-major order.",
       array: 9,
@@ -700,7 +700,7 @@ const foxglove_Log: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of log message",
     },
     {
@@ -739,7 +739,7 @@ const foxglove_PointCloud: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of point cloud",
     },
     {
@@ -778,7 +778,7 @@ const foxglove_LaserScan: FoxgloveMessageSchema = {
   fields: [
     {
       name: "timestamp",
-      type: { type: "primitive", name: "Time" },
+      type: { type: "primitive", name: "time" },
       description: "Timestamp of scan",
     },
     {
@@ -794,24 +794,24 @@ const foxglove_LaserScan: FoxgloveMessageSchema = {
     },
     {
       name: "start_angle",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Bearing of first point, in radians",
     },
     {
       name: "end_angle",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Bearing of last point, in radians",
     },
     {
       name: "ranges",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description:
         "Distance of detections from origin; assumed to be at equally-spaced angles between `start_angle` and `end_angle`",
       array: true,
     },
     {
       name: "intensities",
-      type: { type: "primitive", name: "float" },
+      type: { type: "primitive", name: "float64" },
       description: "Intensity of detections",
       array: true,
     },

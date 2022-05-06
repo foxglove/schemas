@@ -27,11 +27,11 @@ describe("generateProto", () => {
           // Value B
           B = 2;
         }
-        // Duration field
-        google.protobuf.Duration field_Duration = 1;
+        // duration field
+        google.protobuf.Duration field_duration = 1;
 
-        // Time field
-        google.protobuf.Timestamp field_Time = 2;
+        // time field
+        google.protobuf.Timestamp field_time = 2;
 
         // boolean field
         bool field_boolean = 3;
@@ -39,8 +39,8 @@ describe("generateProto", () => {
         // bytes field
         bytes field_bytes = 4;
 
-        // float field
-        double field_float = 5;
+        // float64 field
+        double field_float64 = 5;
 
         // uint32 field
         fixed32 field_uint32 = 6;
@@ -48,11 +48,11 @@ describe("generateProto", () => {
         // string field
         string field_string = 7;
 
-        // Duration array field
-        repeated google.protobuf.Duration field_Duration_array = 8;
+        // duration array field
+        repeated google.protobuf.Duration field_duration_array = 8;
 
-        // Time array field
-        repeated google.protobuf.Timestamp field_Time_array = 9;
+        // time array field
+        repeated google.protobuf.Timestamp field_time_array = 9;
 
         // boolean array field
         repeated bool field_boolean_array = 10;
@@ -60,8 +60,8 @@ describe("generateProto", () => {
         // bytes array field
         repeated bytes field_bytes_array = 11;
 
-        // float array field
-        repeated double field_float_array = 12;
+        // float64 array field
+        repeated double field_float64_array = 12;
 
         // uint32 array field
         repeated fixed32 field_uint32_array = 13;
@@ -69,11 +69,11 @@ describe("generateProto", () => {
         // string array field
         repeated string field_string_array = 14;
 
-        // Duration fixed-length array field
-        repeated google.protobuf.Duration field_Duration_fixed_array = 15; // length 3
+        // duration fixed-length array field
+        repeated google.protobuf.Duration field_duration_fixed_array = 15; // length 3
 
-        // Time fixed-length array field
-        repeated google.protobuf.Timestamp field_Time_fixed_array = 16; // length 3
+        // time fixed-length array field
+        repeated google.protobuf.Timestamp field_time_fixed_array = 16; // length 3
 
         // boolean fixed-length array field
         repeated bool field_boolean_fixed_array = 17; // length 3
@@ -81,8 +81,8 @@ describe("generateProto", () => {
         // bytes fixed-length array field
         repeated bytes field_bytes_fixed_array = 18; // length 3
 
-        // float fixed-length array field
-        repeated double field_float_fixed_array = 19; // length 3
+        // float64 fixed-length array field
+        repeated double field_float64_fixed_array = 19; // length 3
 
         // uint32 fixed-length array field
         repeated fixed32 field_uint32_fixed_array = 20; // length 3

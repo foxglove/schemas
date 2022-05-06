@@ -19,11 +19,11 @@ describe("generateRosMsgFiles", () => {
     ).toMatchInlineSnapshot(`
       "# Generated from ExampleMessage by @foxglove/message-schemas
 
-      # Duration field
-      duration field_Duration
+      # duration field
+      duration field_duration
 
-      # Time field
-      time field_Time
+      # time field
+      time field_time
 
       # boolean field
       bool field_boolean
@@ -31,8 +31,8 @@ describe("generateRosMsgFiles", () => {
       # bytes field
       uint8[] field_bytes
 
-      # float field
-      float64 field_float
+      # float64 field
+      float64 field_float64
 
       # uint32 field
       uint32 field_uint32
@@ -40,17 +40,17 @@ describe("generateRosMsgFiles", () => {
       # string field
       string field_string
 
-      # Duration array field
-      duration[] field_Duration_array
+      # duration array field
+      duration[] field_duration_array
 
-      # Time array field
-      time[] field_Time_array
+      # time array field
+      time[] field_time_array
 
       # boolean array field
       bool[] field_boolean_array
 
-      # float array field
-      float64[] field_float_array
+      # float64 array field
+      float64[] field_float64_array
 
       # uint32 array field
       uint32[] field_uint32_array
@@ -58,17 +58,17 @@ describe("generateRosMsgFiles", () => {
       # string array field
       string[] field_string_array
 
-      # Duration fixed-length array field
-      duration[3] field_Duration_fixed_array
+      # duration fixed-length array field
+      duration[3] field_duration_fixed_array
 
-      # Time fixed-length array field
-      time[3] field_Time_fixed_array
+      # time fixed-length array field
+      time[3] field_time_fixed_array
 
       # boolean fixed-length array field
       bool[3] field_boolean_fixed_array
 
-      # float fixed-length array field
-      float64[3] field_float_fixed_array
+      # float64 fixed-length array field
+      float64[3] field_float64_fixed_array
 
       # uint32 fixed-length array field
       uint32[3] field_uint32_fixed_array
@@ -112,10 +112,10 @@ describe("generateRosMsgFiles", () => {
     ).toMatchInlineSnapshot(`
       "# Generated from ExampleMessage by @foxglove/message-schemas
 
-      # Duration field
+      # duration field
       builtin_interfaces/Duration field_duration
 
-      # Time field
+      # time field
       builtin_interfaces/Time field_time
 
       # boolean field
@@ -124,8 +124,8 @@ describe("generateRosMsgFiles", () => {
       # bytes field
       uint8[] field_bytes
 
-      # float field
-      float64 field_float
+      # float64 field
+      float64 field_float64
 
       # uint32 field
       uint32 field_uint32
@@ -133,17 +133,17 @@ describe("generateRosMsgFiles", () => {
       # string field
       string field_string
 
-      # Duration array field
+      # duration array field
       builtin_interfaces/Duration[] field_duration_array
 
-      # Time array field
+      # time array field
       builtin_interfaces/Time[] field_time_array
 
       # boolean array field
       bool[] field_boolean_array
 
-      # float array field
-      float64[] field_float_array
+      # float64 array field
+      float64[] field_float64_array
 
       # uint32 array field
       uint32[] field_uint32_array
@@ -151,17 +151,17 @@ describe("generateRosMsgFiles", () => {
       # string array field
       string[] field_string_array
 
-      # Duration fixed-length array field
+      # duration fixed-length array field
       builtin_interfaces/Duration[3] field_duration_fixed_array
 
-      # Time fixed-length array field
+      # time fixed-length array field
       builtin_interfaces/Time[3] field_time_fixed_array
 
       # boolean fixed-length array field
       bool[3] field_boolean_fixed_array
 
-      # float fixed-length array field
-      float64[3] field_float_fixed_array
+      # float64 fixed-length array field
+      float64[3] field_float64_fixed_array
 
       # uint32 fixed-length array field
       uint32[3] field_uint32_fixed_array
@@ -204,11 +204,11 @@ describe("generateRosMsgMergedSchema", () => {
     expect(mergedSchema).toMatchInlineSnapshot(`
       "# Generated from ExampleMessage by @foxglove/message-schemas
 
-      # Duration field
-      duration field_Duration
+      # duration field
+      duration field_duration
 
-      # Time field
-      time field_Time
+      # time field
+      time field_time
 
       # boolean field
       bool field_boolean
@@ -216,8 +216,8 @@ describe("generateRosMsgMergedSchema", () => {
       # bytes field
       uint8[] field_bytes
 
-      # float field
-      float64 field_float
+      # float64 field
+      float64 field_float64
 
       # uint32 field
       uint32 field_uint32
@@ -225,17 +225,17 @@ describe("generateRosMsgMergedSchema", () => {
       # string field
       string field_string
 
-      # Duration array field
-      duration[] field_Duration_array
+      # duration array field
+      duration[] field_duration_array
 
-      # Time array field
-      time[] field_Time_array
+      # time array field
+      time[] field_time_array
 
       # boolean array field
       bool[] field_boolean_array
 
-      # float array field
-      float64[] field_float_array
+      # float64 array field
+      float64[] field_float64_array
 
       # uint32 array field
       uint32[] field_uint32_array
@@ -243,17 +243,17 @@ describe("generateRosMsgMergedSchema", () => {
       # string array field
       string[] field_string_array
 
-      # Duration fixed-length array field
-      duration[3] field_Duration_fixed_array
+      # duration fixed-length array field
+      duration[3] field_duration_fixed_array
 
-      # Time fixed-length array field
-      time[3] field_Time_fixed_array
+      # time fixed-length array field
+      time[3] field_time_fixed_array
 
       # boolean fixed-length array field
       bool[3] field_boolean_fixed_array
 
-      # float fixed-length array field
-      float64[3] field_float_fixed_array
+      # float64 fixed-length array field
+      float64[3] field_float64_fixed_array
 
       # uint32 fixed-length array field
       uint32[3] field_uint32_fixed_array
@@ -298,13 +298,13 @@ describe("generateRosMsgMergedSchema", () => {
             Object {
               "isArray": false,
               "isComplex": false,
-              "name": "field_Duration",
+              "name": "field_duration",
               "type": "duration",
             },
             Object {
               "isArray": false,
               "isComplex": false,
-              "name": "field_Time",
+              "name": "field_time",
               "type": "time",
             },
             Object {
@@ -322,7 +322,7 @@ describe("generateRosMsgMergedSchema", () => {
             Object {
               "isArray": false,
               "isComplex": false,
-              "name": "field_float",
+              "name": "field_float64",
               "type": "float64",
             },
             Object {
@@ -340,13 +340,13 @@ describe("generateRosMsgMergedSchema", () => {
             Object {
               "isArray": true,
               "isComplex": false,
-              "name": "field_Duration_array",
+              "name": "field_duration_array",
               "type": "duration",
             },
             Object {
               "isArray": true,
               "isComplex": false,
-              "name": "field_Time_array",
+              "name": "field_time_array",
               "type": "time",
             },
             Object {
@@ -358,7 +358,7 @@ describe("generateRosMsgMergedSchema", () => {
             Object {
               "isArray": true,
               "isComplex": false,
-              "name": "field_float_array",
+              "name": "field_float64_array",
               "type": "float64",
             },
             Object {
@@ -377,14 +377,14 @@ describe("generateRosMsgMergedSchema", () => {
               "arrayLength": 3,
               "isArray": true,
               "isComplex": false,
-              "name": "field_Duration_fixed_array",
+              "name": "field_duration_fixed_array",
               "type": "duration",
             },
             Object {
               "arrayLength": 3,
               "isArray": true,
               "isComplex": false,
-              "name": "field_Time_fixed_array",
+              "name": "field_time_fixed_array",
               "type": "time",
             },
             Object {
@@ -398,7 +398,7 @@ describe("generateRosMsgMergedSchema", () => {
               "arrayLength": 3,
               "isArray": true,
               "isComplex": false,
-              "name": "field_float_fixed_array",
+              "name": "field_float64_fixed_array",
               "type": "float64",
             },
             Object {
@@ -478,10 +478,10 @@ describe("generateRosMsgMergedSchema", () => {
     expect(mergedSchema).toMatchInlineSnapshot(`
       "# Generated from ExampleMessage by @foxglove/message-schemas
 
-      # Duration field
+      # duration field
       builtin_interfaces/Duration field_duration
 
-      # Time field
+      # time field
       builtin_interfaces/Time field_time
 
       # boolean field
@@ -490,8 +490,8 @@ describe("generateRosMsgMergedSchema", () => {
       # bytes field
       uint8[] field_bytes
 
-      # float field
-      float64 field_float
+      # float64 field
+      float64 field_float64
 
       # uint32 field
       uint32 field_uint32
@@ -499,17 +499,17 @@ describe("generateRosMsgMergedSchema", () => {
       # string field
       string field_string
 
-      # Duration array field
+      # duration array field
       builtin_interfaces/Duration[] field_duration_array
 
-      # Time array field
+      # time array field
       builtin_interfaces/Time[] field_time_array
 
       # boolean array field
       bool[] field_boolean_array
 
-      # float array field
-      float64[] field_float_array
+      # float64 array field
+      float64[] field_float64_array
 
       # uint32 array field
       uint32[] field_uint32_array
@@ -517,17 +517,17 @@ describe("generateRosMsgMergedSchema", () => {
       # string array field
       string[] field_string_array
 
-      # Duration fixed-length array field
+      # duration fixed-length array field
       builtin_interfaces/Duration[3] field_duration_fixed_array
 
-      # Time fixed-length array field
+      # time fixed-length array field
       builtin_interfaces/Time[3] field_time_fixed_array
 
       # boolean fixed-length array field
       bool[3] field_boolean_fixed_array
 
-      # float fixed-length array field
-      float64[3] field_float_fixed_array
+      # float64 fixed-length array field
+      float64[3] field_float64_fixed_array
 
       # uint32 fixed-length array field
       uint32[3] field_uint32_fixed_array
@@ -628,7 +628,7 @@ describe("generateRosMsgMergedSchema", () => {
               "isArray": false,
               "isComplex": false,
               "isConstant": undefined,
-              "name": "field_float",
+              "name": "field_float64",
               "type": "float64",
               "upperBound": undefined,
               "value": undefined,
@@ -706,7 +706,7 @@ describe("generateRosMsgMergedSchema", () => {
               "isArray": true,
               "isComplex": false,
               "isConstant": undefined,
-              "name": "field_float_array",
+              "name": "field_float64_array",
               "type": "float64",
               "upperBound": undefined,
               "value": undefined,
@@ -784,7 +784,7 @@ describe("generateRosMsgMergedSchema", () => {
               "isArray": true,
               "isComplex": false,
               "isConstant": undefined,
-              "name": "field_float_fixed_array",
+              "name": "field_float64_fixed_array",
               "type": "float64",
               "upperBound": undefined,
               "value": undefined,

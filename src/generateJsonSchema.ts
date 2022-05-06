@@ -6,23 +6,23 @@ function primitiveToJsonSchema(type: Exclude<FoxglovePrimitive, "bytes">) {
       return { type: "string" };
     case "boolean":
       return { type: "boolean" };
-    case "float":
+    case "float64":
       return { type: "number" };
     case "uint32":
       return { type: "integer", minimum: 0 };
-    case "Time":
+    case "time":
       return {
         type: "object",
-        title: "Time",
+        title: "time",
         properties: {
           sec: { type: "integer", minimum: 0 },
           nsec: { type: "integer", minimum: 0, maximum: 999_999_999 },
         },
       };
-    case "Duration":
+    case "duration":
       return {
         type: "object",
-        title: "Duration",
+        title: "duration",
         properties: {
           sec: { type: "integer" },
           nsec: { type: "integer", minimum: 0, maximum: 999_999_999 },

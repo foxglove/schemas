@@ -1,6 +1,6 @@
 import { FoxgloveEnumSchema, FoxgloveMessageSchema, FoxglovePrimitive } from "./types";
 
-function primitiveToProto(type: Exclude<FoxglovePrimitive, "Time" | "Duration">) {
+function primitiveToProto(type: Exclude<FoxglovePrimitive, "time" | "duration">) {
   switch (type) {
     case "uint32":
       return "fixed32";
@@ -10,7 +10,7 @@ function primitiveToProto(type: Exclude<FoxglovePrimitive, "Time" | "Duration">)
       return "string";
     case "boolean":
       return "bool";
-    case "float":
+    case "float64":
       return "double";
   }
 }
@@ -55,10 +55,10 @@ export function generateProto(
         imports.add(`foxglove/${field.type.schema.name}`);
         break;
       case "primitive":
-        if (field.type.name === "Time") {
+        if (field.type.name === "time") {
           qualifiers.push("google.protobuf.Timestamp");
           imports.add(`google/protobuf/timestamp`);
-        } else if (field.type.name === "Duration") {
+        } else if (field.type.name === "duration") {
           qualifiers.push("google.protobuf.Duration");
           imports.add(`google/protobuf/duration`);
         } else {

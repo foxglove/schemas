@@ -22,11 +22,11 @@ function primitiveToRos(
       return "string";
     case "boolean":
       return "bool";
-    case "float":
+    case "float64":
       return "float64";
-    case "Time":
+    case "time":
       return rosVersion === 2 ? "builtin_interfaces/Time" : "time";
-    case "Duration":
+    case "duration":
       return rosVersion === 2 ? "builtin_interfaces/Duration" : "duration";
   }
 }

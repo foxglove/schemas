@@ -1,6 +1,6 @@
 import { FoxglovePrimitive, FoxgloveSchema } from "./types";
 
-function primitiveToTypeScript(type: Exclude<FoxglovePrimitive, "Time" | "Duration">) {
+function primitiveToTypeScript(type: Exclude<FoxglovePrimitive, "time" | "duration">) {
   switch (type) {
     case "bytes":
       return "Uint8Array";
@@ -8,7 +8,7 @@ function primitiveToTypeScript(type: Exclude<FoxglovePrimitive, "Time" | "Durati
       return "string";
     case "boolean":
       return "boolean";
-    case "float":
+    case "float64":
     case "uint32":
       return "number";
   }
@@ -58,9 +58,12 @@ export function generateTypeScript(schema: FoxgloveSchema): string {
             imports.add(field.type.schema.name);
             break;
           case "primitive":
-            if (field.type.name === "Time" || field.type.name === "Duration") {
-              fieldType = field.type.name;
-              imports.add(field.type.name);
+            if (field.type.name === "time") {
+              fieldType = "Time";
+              imports.add("Time");
+            } else if (field.type.name === "duration") {
+              fieldType = "Duration";
+              imports.add("Duration");
             } else {
               fieldType = primitiveToTypeScript(field.type.name);
             }

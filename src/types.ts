@@ -1,11 +1,11 @@
 export type FoxglovePrimitive =
   | "string"
-  | "float"
+  | "float64"
   | "uint32"
   | "boolean"
   | "bytes"
-  | "Time"
-  | "Duration";
+  | "time"
+  | "duration";
 
 export type FoxgloveEnumSchema = {
   type: "enum";

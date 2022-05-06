@@ -26,11 +26,11 @@ describe("generateTypeScript", () => {
 
       /** An example type */
       export type ExampleMessage = {
-        /** Duration field */
-        field_Duration: Duration;
+        /** duration field */
+        field_duration: Duration;
 
-        /** Time field */
-        field_Time: Time;
+        /** time field */
+        field_time: Time;
 
         /** boolean field */
         field_boolean: boolean;
@@ -38,8 +38,8 @@ describe("generateTypeScript", () => {
         /** bytes field */
         field_bytes: Uint8Array;
 
-        /** float field */
-        field_float: number;
+        /** float64 field */
+        field_float64: number;
 
         /** uint32 field */
         field_uint32: number;
@@ -47,11 +47,11 @@ describe("generateTypeScript", () => {
         /** string field */
         field_string: string;
 
-        /** Duration array field */
-        field_Duration_array: Duration[];
+        /** duration array field */
+        field_duration_array: Duration[];
 
-        /** Time array field */
-        field_Time_array: Time[];
+        /** time array field */
+        field_time_array: Time[];
 
         /** boolean array field */
         field_boolean_array: boolean[];
@@ -59,8 +59,8 @@ describe("generateTypeScript", () => {
         /** bytes array field */
         field_bytes_array: Uint8Array[];
 
-        /** float array field */
-        field_float_array: number[];
+        /** float64 array field */
+        field_float64_array: number[];
 
         /** uint32 array field */
         field_uint32_array: number[];
@@ -68,11 +68,11 @@ describe("generateTypeScript", () => {
         /** string array field */
         field_string_array: string[];
 
-        /** Duration fixed-length array field */
-        field_Duration_fixed_array: [Duration, Duration, Duration];
+        /** duration fixed-length array field */
+        field_duration_fixed_array: [Duration, Duration, Duration];
 
-        /** Time fixed-length array field */
-        field_Time_fixed_array: [Time, Time, Time];
+        /** time fixed-length array field */
+        field_time_fixed_array: [Time, Time, Time];
 
         /** boolean fixed-length array field */
         field_boolean_fixed_array: [boolean, boolean, boolean];
@@ -80,8 +80,8 @@ describe("generateTypeScript", () => {
         /** bytes fixed-length array field */
         field_bytes_fixed_array: [Uint8Array, Uint8Array, Uint8Array];
 
-        /** float fixed-length array field */
-        field_float_fixed_array: [number, number, number];
+        /** float64 fixed-length array field */
+        field_float64_fixed_array: [number, number, number];
 
         /** uint32 fixed-length array field */
         field_uint32_fixed_array: [number, number, number];

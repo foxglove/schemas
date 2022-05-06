@@ -1,0 +1,16 @@
+{
+  "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+  "title": "KeyValuePair",
+  "description": "An entry representing a key and its associated value",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "Key"
+    },
+    "value": {
+      "type": "string",
+      "description": "Value"
+    }
+  }
+}

@@ -1,0 +1,240 @@
+{
+  "$comment": "Generated from LineMarker by @foxglove/message-schemas",
+  "title": "LineMarker",
+  "description": "A marker representing a series of points connected by lines",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "object",
+      "title": "time",
+      "properties": {
+        "sec": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nsec": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999999999
+        }
+      },
+      "description": "Timestamp of the marker"
+    },
+    "frame_id": {
+      "type": "string",
+      "description": "Frame of reference"
+    },
+    "namespace": {
+      "type": "string",
+      "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
+    },
+    "id": {
+      "type": "string",
+      "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
+    },
+    "lifetime": {
+      "type": "object",
+      "title": "duration",
+      "properties": {
+        "sec": {
+          "type": "integer"
+        },
+        "nsec": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999999999
+        }
+      },
+      "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted."
+    },
+    "frame_locked": {
+      "type": "boolean",
+      "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)"
+    },
+    "metadata": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+        "title": "KeyValuePair",
+        "description": "An entry representing a key and its associated value",
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Key"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value"
+          }
+        }
+      },
+      "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
+    },
+    "type": {
+      "title": "LineType: An enumeration indicating how input points should be interpreted to create lines",
+      "description": "Drawing primitive to use for lines",
+      "oneOf": [
+        {
+          "title": "LINE_STRIP",
+          "const": 0,
+          "description": "0-1, 1-2, ..., (n-1)-n"
+        },
+        {
+          "title": "LINE_LOOP",
+          "const": 1,
+          "description": "0-1, 1-2, ..., (n-1)-n, n-0"
+        },
+        {
+          "title": "LINE_LIST",
+          "const": 2,
+          "description": "0-1, 2-3, 4-5, ..."
+        }
+      ]
+    },
+    "pose": {
+      "$comment": "Generated from Pose by @foxglove/message-schemas",
+      "title": "Pose",
+      "description": "Origin of lines relative to reference frame",
+      "type": "object",
+      "properties": {
+        "position": {
+          "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+          "title": "Vector3",
+          "description": "Point denoting position in 3D space",
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "description": "x coordinate length"
+            },
+            "y": {
+              "type": "number",
+              "description": "y coordinate length"
+            },
+            "z": {
+              "type": "number",
+              "description": "z coordinate length"
+            }
+          }
+        },
+        "orientation": {
+          "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+          "title": "Quaternion",
+          "description": "Quaternion denoting orientation in 3D space",
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "description": "x value"
+            },
+            "y": {
+              "type": "number",
+              "description": "y value"
+            },
+            "z": {
+              "type": "number",
+              "description": "z value"
+            },
+            "w": {
+              "type": "number",
+              "description": "w value"
+            }
+          }
+        }
+      }
+    },
+    "thickness": {
+      "type": "number",
+      "description": "Line thickness"
+    },
+    "scale_invariant": {
+      "type": "boolean",
+      "description": "Indicates whether `thickness` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)"
+    },
+    "points": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from Point3 by @foxglove/message-schemas",
+        "title": "Point3",
+        "description": "A point representing a position in 3D space",
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number",
+            "description": "x coordinate position"
+          },
+          "y": {
+            "type": "number",
+            "description": "y coordinate position"
+          },
+          "z": {
+            "type": "number",
+            "description": "z coordinate position"
+          }
+        }
+      },
+      "description": "Points along the line"
+    },
+    "color": {
+      "$comment": "Generated from Color by @foxglove/message-schemas",
+      "title": "Color",
+      "description": "Solid color to use for the whole line. One of `color` or `colors` must be provided.",
+      "type": "object",
+      "properties": {
+        "r": {
+          "type": "number",
+          "description": "Red value between 0 and 1"
+        },
+        "g": {
+          "type": "number",
+          "description": "Green value between 0 and 1"
+        },
+        "b": {
+          "type": "number",
+          "description": "Blue value between 0 and 1"
+        },
+        "a": {
+          "type": "number",
+          "description": "Alpha value between 0 and 1"
+        }
+      }
+    },
+    "colors": {
+      "type": "array",
+      "items": {
+        "$comment": "Generated from Color by @foxglove/message-schemas",
+        "title": "Color",
+        "description": "A color in RGBA format",
+        "type": "object",
+        "properties": {
+          "r": {
+            "type": "number",
+            "description": "Red value between 0 and 1"
+          },
+          "g": {
+            "type": "number",
+            "description": "Green value between 0 and 1"
+          },
+          "b": {
+            "type": "number",
+            "description": "Blue value between 0 and 1"
+          },
+          "a": {
+            "type": "number",
+            "description": "Alpha value between 0 and 1"
+          }
+        }
+      },
+      "description": "Per-point colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided."
+    },
+    "indices": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "description": "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data."
+    }
+  }
+}

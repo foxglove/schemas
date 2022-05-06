@@ -1,0 +1,50 @@
+// Generated from CylinderMarker by @foxglove/message-schemas
+
+syntax = "proto3";
+
+import "foxglove/Color.proto";
+import "foxglove/KeyValuePair.proto";
+import "foxglove/Pose.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+package foxglove;
+
+// A marker representing a cylinder or elliptic cylinder
+message CylinderMarker {
+  // Timestamp of the marker
+  google.protobuf.Timestamp timestamp = 1;
+
+  // Frame of reference
+  string frame_id = 2;
+
+  // Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.
+  string namespace = 3;
+
+  // Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.
+  string id = 4;
+
+  // Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.
+  google.protobuf.Duration lifetime = 5;
+
+  // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
+  bool frame_locked = 6;
+
+  // Additional user-provided metadata associated with the marker. Keys must be unique.
+  repeated foxglove.KeyValuePair metadata = 7;
+
+  // Position of the center of the cylinder and orientation of the cylinder. The cylinder's flat faces are perpendicular to the z-axis.
+  foxglove.Pose pose = 8;
+
+  // Radius of the cylinder at min z
+  double bottom_radius = 9;
+
+  // Radius of the cylinder at max z
+  double top_radius = 10;
+
+  // Height of the cylinder along the z axis
+  double height = 11;
+
+  // Color of the sphere
+  foxglove.Color color = 12;
+}

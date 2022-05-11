@@ -2,7 +2,7 @@
 
 syntax = "proto3";
 
-import "foxglove/DataField.proto";
+import "foxglove/PackedElementField.proto";
 import "foxglove/Pose.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -23,7 +23,7 @@ message PointCloud {
   fixed32 point_stride = 4;
 
   // Fields in the `data`
-  repeated foxglove.DataField fields = 5;
+  repeated foxglove.PackedElementField fields = 5;
 
   // Point data, interpreted using `fields`
   bytes data = 6;

@@ -4,7 +4,7 @@ import { Color } from "./Color";
 import { Point2 } from "./Point2";
 import { Time } from "./Time";
 
-/** A circle annotation */
+/** A circle annotation to be superimposed onto 2D images */
 export type CircleAnnotation = {
   /** Timestamp of circle */
   timestamp: Time;

@@ -2,7 +2,7 @@
 
 import { NumericType } from "./NumericType";
 
-/** List of fields included for every entity in an accompanying `data` field array */
+/** List of fields for every element in an accompanying `data` field array */
 export type DataField = {
   /** Name of the field */
   name: string;

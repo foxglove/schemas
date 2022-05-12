@@ -1,7 +1,7 @@
 {
   "$comment": "Generated from CircleAnnotation by @foxglove/message-schemas",
   "title": "CircleAnnotation",
-  "description": "A circle annotation",
+  "description": "A circle annotation to be superimposed onto 2D images",
   "type": "object",
   "properties": {
     "timestamp": {

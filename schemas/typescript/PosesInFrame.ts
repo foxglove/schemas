@@ -3,7 +3,7 @@
 import { Pose } from "./Pose";
 import { Time } from "./Time";
 
-/** An array of timestamped poses in a named coordinate frame */
+/** An array of timestamped poses for an object or reference frame in 3D space */
 export type PosesInFrame = {
   /** Timestamp of pose */
   timestamp: Time;

@@ -1,7 +1,7 @@
 {
   "$comment": "Generated from LaserScan by @foxglove/message-schemas",
   "title": "LaserScan",
-  "description": "A a single scan from a planar laser range-finder",
+  "description": "A single scan from a planar laser range-finder",
   "type": "object",
   "properties": {
     "timestamp": {

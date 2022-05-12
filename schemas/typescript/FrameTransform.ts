@@ -3,7 +3,7 @@
 import { Time } from "./Time";
 import { Transform } from "./Transform";
 
-/** A transform between two named coordinate frames in 3D space */
+/** A transform between two reference frames in 3D space */
 export type FrameTransform = {
   /** Timestamp of transform */
   timestamp: Time;

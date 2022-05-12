@@ -1,7 +1,7 @@
 {
   "$comment": "Generated from DataField by @foxglove/message-schemas",
   "title": "DataField",
-  "description": "List of fields included for every entity in an accompanying `data` field array",
+  "description": "List of fields for every element in an accompanying `data` field array",
   "type": "object",
   "properties": {
     "name": {

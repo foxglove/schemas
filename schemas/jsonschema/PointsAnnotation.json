@@ -1,7 +1,7 @@
 {
   "$comment": "Generated from PointsAnnotation by @foxglove/message-schemas",
   "title": "PointsAnnotation",
-  "description": "A set of points",
+  "description": "An array of points to be superimposed onto 2D images",
   "type": "object",
   "properties": {
     "timestamp": {

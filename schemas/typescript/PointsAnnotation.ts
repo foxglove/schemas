@@ -5,7 +5,7 @@ import { Point2 } from "./Point2";
 import { PointsAnnotationType } from "./PointsAnnotationType";
 import { Time } from "./Time";
 
-/** A set of points */
+/** An array of points to be superimposed onto 2D images */
 export type PointsAnnotation = {
   /** Timestamp of annotation */
   timestamp: Time;

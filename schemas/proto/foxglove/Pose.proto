@@ -7,7 +7,7 @@ import "foxglove/Vector3.proto";
 
 package foxglove;
 
-// The position and orientation of an object or reference frame in 3D space
+// A position and orientation for an object or reference frame in 3D space
 message Pose {
   // Point denoting position in 3D space
   foxglove.Vector3 position = 1;

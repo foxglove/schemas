@@ -253,7 +253,7 @@ This holds for both images of a stereo pair.
 const foxglove_CompressedImage: FoxgloveMessageSchema = {
   type: "message",
   name: "CompressedImage",
-  description: "A raw image",
+  description: "A compressed image",
   fields: [
     {
       name: "timestamp",
@@ -276,7 +276,7 @@ const foxglove_CompressedImage: FoxgloveMessageSchema = {
 const foxglove_RawImage: FoxgloveMessageSchema = {
   type: "message",
   name: "RawImage",
-  description: "A compressed image",
+  description: "A raw image",
   fields: [
     {
       name: "timestamp",
@@ -444,7 +444,7 @@ const foxglove_NumericType: FoxgloveEnumSchema = {
 const foxglove_DataField: FoxgloveMessageSchema = {
   type: "message",
   name: "DataField",
-  description: "List of fields for every element in an accompanying `data` field array",
+  description: "List of fields for every element in a byte array",
   fields: [
     {
       name: "name",
@@ -522,7 +522,7 @@ const foxglove_Grid: FoxgloveMessageSchema = {
 const foxglove_CircleAnnotation: FoxgloveMessageSchema = {
   type: "message",
   name: "CircleAnnotation",
-  description: "A circle annotation to be superimposed onto 2D images",
+  description: "A circle annotation on a 2D image",
   fields: [
     {
       name: "timestamp",
@@ -575,7 +575,7 @@ const foxglove_PointsAnnotationType: FoxgloveEnumSchema = {
 const foxglove_PointsAnnotation: FoxgloveMessageSchema = {
   type: "message",
   name: "PointsAnnotation",
-  description: "An array of points to be superimposed onto 2D images",
+  description: "An array of points on a 2D image",
   fields: [
     {
       name: "timestamp",

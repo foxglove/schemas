@@ -8,7 +8,7 @@ import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// An array of points to be superimposed onto 2D images
+// An array of points on a 2D image
 message PointsAnnotation {
   // Type of points annotation
   enum Type {

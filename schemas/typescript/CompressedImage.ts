@@ -2,7 +2,7 @@
 
 import { Time } from "./Time";
 
-/** A raw image */
+/** A compressed image */
 export type CompressedImage = {
   /** Timestamp of image */
   timestamp: Time;

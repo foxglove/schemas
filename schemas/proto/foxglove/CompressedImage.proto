@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// A raw image
+// A compressed image
 message CompressedImage {
   // Timestamp of image
   google.protobuf.Timestamp timestamp = 1;

@@ -86,7 +86,7 @@
       "items": {
         "$comment": "Generated from DataField by @foxglove/message-schemas",
         "title": "DataField",
-        "description": "List of fields for every element in an accompanying `data` field array",
+        "description": "List of fields for every element in a byte array",
         "type": "object",
         "properties": {
           "name": {

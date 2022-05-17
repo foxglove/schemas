@@ -2,7 +2,7 @@
 
 import { NumericType } from "./NumericType";
 
-/** Defines a field within packed data. Commonly used to represent a field of a single element within a byte array containing multiple packed elements. */
+/** A field present within each element in a byte array of packed elements. */
 export type PackedElementField = {
   /** Name of the field */
   name: string;

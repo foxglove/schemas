@@ -4,7 +4,7 @@ syntax = "proto3";
 
 package foxglove;
 
-// Defines a field within packed data. Commonly used to represent a field of a single element within a byte array containing multiple packed elements.
+// A field present within each element in a byte array of packed elements.
 message PackedElementField {
   // Numeric type
   enum NumericType {

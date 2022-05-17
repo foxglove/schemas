@@ -444,8 +444,7 @@ const foxglove_NumericType: FoxgloveEnumSchema = {
 const foxglove_PackedElementField: FoxgloveMessageSchema = {
   type: "message",
   name: "PackedElementField",
-  description:
-    "Defines a field within packed data. Commonly used to represent a field of a single element within a byte array containing multiple packed elements.",
+  description: "A field present within each element in a byte array of packed elements.",
   fields: [
     {
       name: "name",

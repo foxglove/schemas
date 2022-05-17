@@ -84,8 +84,8 @@
     "fields": {
       "type": "array",
       "items": {
-        "$comment": "Generated from DataField by @foxglove/message-schemas",
-        "title": "DataField",
+        "$comment": "Generated from PackedElementField by @foxglove/message-schemas",
+        "title": "PackedElementField",
         "description": "List of fields included for every entity in an accompanying `data` field array",
         "type": "object",
         "properties": {

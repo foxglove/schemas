@@ -1,6 +1,6 @@
 // Generated from Grid by @foxglove/message-schemas
 
-import { DataField } from "./DataField";
+import { PackedElementField } from "./PackedElementField";
 import { Pose } from "./Pose";
 import { Time } from "./Time";
 import { Vector2 } from "./Vector2";
@@ -29,7 +29,7 @@ export type Grid = {
   cell_stride: number;
 
   /** Fields in `data` */
-  fields: DataField[];
+  fields: PackedElementField[];
 
   /** Grid cell data, interpreted using `fields`, in row-major (y-major) order */
   data: Uint8Array;

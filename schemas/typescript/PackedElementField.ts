@@ -1,9 +1,9 @@
-// Generated from DataField by @foxglove/message-schemas
+// Generated from PackedElementField by @foxglove/message-schemas
 
 import { NumericType } from "./NumericType";
 
 /** List of fields included for every entity in an accompanying `data` field array */
-export type DataField = {
+export type PackedElementField = {
   /** Name of the field */
   name: string;
 

@@ -426,7 +426,7 @@ const foxglove_NumericType: FoxgloveEnumSchema = {
   type: "enum",
   name: "NumericType",
   description: "Numeric type",
-  protobufParentMessageName: "DataField",
+  protobufParentMessageName: "PackedElementField",
   protobufEnumName: "NumericType",
   values: [
     { name: "UNKNOWN", value: 0 },
@@ -441,9 +441,9 @@ const foxglove_NumericType: FoxgloveEnumSchema = {
   ],
 };
 
-const foxglove_DataField: FoxgloveMessageSchema = {
+const foxglove_PackedElementField: FoxgloveMessageSchema = {
   type: "message",
-  name: "DataField",
+  name: "PackedElementField",
   description: "List of fields for every element in a byte array",
   fields: [
     {
@@ -507,7 +507,7 @@ const foxglove_Grid: FoxgloveMessageSchema = {
     },
     {
       name: "fields",
-      type: { type: "nested", schema: foxglove_DataField },
+      type: { type: "nested", schema: foxglove_PackedElementField },
       array: true,
       description: "Fields in `data`",
     },
@@ -759,7 +759,7 @@ const foxglove_PointCloud: FoxgloveMessageSchema = {
     },
     {
       name: "fields",
-      type: { type: "nested", schema: foxglove_DataField },
+      type: { type: "nested", schema: foxglove_PackedElementField },
       array: true,
       description: "Fields in the `data`",
     },
@@ -823,7 +823,7 @@ export const foxgloveMessageSchemas = {
   CircleAnnotation: foxglove_CircleAnnotation,
   Color: foxglove_Color,
   CompressedImage: foxglove_CompressedImage,
-  DataField: foxglove_DataField,
+  PackedElementField: foxglove_PackedElementField,
   FrameTransform: foxglove_FrameTransform,
   GeoJSON: foxglove_GeoJSON,
   Grid: foxglove_Grid,

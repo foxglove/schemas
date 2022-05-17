@@ -2,7 +2,7 @@
 
 syntax = "proto3";
 
-import "foxglove/DataField.proto";
+import "foxglove/PackedElementField.proto";
 import "foxglove/Pose.proto";
 import "foxglove/Vector2.proto";
 import "google/protobuf/timestamp.proto";
@@ -33,7 +33,7 @@ message Grid {
   fixed32 cell_stride = 7;
 
   // Fields in `data`
-  repeated foxglove.DataField fields = 8;
+  repeated foxglove.PackedElementField fields = 8;
 
   // Grid cell data, interpreted using `fields`, in row-major (y-major) order
   bytes data = 9;

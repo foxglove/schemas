@@ -3,7 +3,7 @@
 import { Quaternion } from "./Quaternion";
 import { Vector3 } from "./Vector3";
 
-/** The position and orientation of an object or reference frame in 3D space */
+/** A position and orientation for an object or reference frame in 3D space */
 export type Pose = {
   /** Point denoting position in 3D space */
   position: Vector3;

@@ -1,7 +1,7 @@
 {
   "$comment": "Generated from Pose by @foxglove/message-schemas",
   "title": "Pose",
-  "description": "The position and orientation of an object or reference frame in 3D space",
+  "description": "A position and orientation for an object or reference frame in 3D space",
   "type": "object",
   "properties": {
     "position": {

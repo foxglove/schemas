@@ -9,7 +9,7 @@
       "items": {
         "$comment": "Generated from CircleAnnotation by @foxglove/message-schemas",
         "title": "CircleAnnotation",
-        "description": "A circle annotation",
+        "description": "A circle annotation on a 2D image",
         "type": "object",
         "properties": {
           "timestamp": {
@@ -109,7 +109,7 @@
       "items": {
         "$comment": "Generated from PointsAnnotation by @foxglove/message-schemas",
         "title": "PointsAnnotation",
-        "description": "A set of points",
+        "description": "An array of points on a 2D image",
         "type": "object",
         "properties": {
           "timestamp": {

@@ -1,7 +1,7 @@
 {
-  "$comment": "Generated from RawImage by @foxglove/message-schemas",
+  "$comment": "Generated from RawImage by @foxglove/schemas",
   "title": "RawImage",
-  "description": "A compressed image",
+  "description": "A raw image",
   "type": "object",
   "properties": {
     "timestamp": {

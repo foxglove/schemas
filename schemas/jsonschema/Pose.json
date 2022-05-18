@@ -1,11 +1,11 @@
 {
-  "$comment": "Generated from Pose by @foxglove/message-schemas",
+  "$comment": "Generated from Pose by @foxglove/schemas",
   "title": "Pose",
-  "description": "The position and orientation of an object or reference frame in 3D space",
+  "description": "A position and orientation for an object or reference frame in 3D space",
   "type": "object",
   "properties": {
     "position": {
-      "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+      "$comment": "Generated from Vector3 by @foxglove/schemas",
       "title": "Vector3",
       "description": "Point denoting position in 3D space",
       "type": "object",
@@ -25,7 +25,7 @@
       }
     },
     "orientation": {
-      "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+      "$comment": "Generated from Quaternion by @foxglove/schemas",
       "title": "Quaternion",
       "description": "Quaternion denoting orientation in 3D space",
       "type": "object",

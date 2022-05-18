@@ -1,4 +1,4 @@
-// Generated from TextMarker by @foxglove/message-schemas
+// Generated from TextMarker by @foxglove/schemas
 
 import { Color } from "./Color";
 import { Duration } from "./Duration";

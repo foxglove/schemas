@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from ModelMarker by @foxglove/message-schemas",
+  "$comment": "Generated from ModelMarker by @foxglove/schemas",
   "title": "ModelMarker",
   "description": "A marker representing a 3D model",
   "type": "object",
@@ -54,7 +54,7 @@
     "metadata": {
       "type": "array",
       "items": {
-        "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+        "$comment": "Generated from KeyValuePair by @foxglove/schemas",
         "title": "KeyValuePair",
         "description": "An entry representing a key and its associated value",
         "type": "object",
@@ -72,13 +72,13 @@
       "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
     },
     "pose": {
-      "$comment": "Generated from Pose by @foxglove/message-schemas",
+      "$comment": "Generated from Pose by @foxglove/schemas",
       "title": "Pose",
       "description": "Origin of model relative to reference frame",
       "type": "object",
       "properties": {
         "position": {
-          "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+          "$comment": "Generated from Vector3 by @foxglove/schemas",
           "title": "Vector3",
           "description": "Point denoting position in 3D space",
           "type": "object",
@@ -98,7 +98,7 @@
           }
         },
         "orientation": {
-          "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+          "$comment": "Generated from Quaternion by @foxglove/schemas",
           "title": "Quaternion",
           "description": "Quaternion denoting orientation in 3D space",
           "type": "object",
@@ -124,7 +124,7 @@
       }
     },
     "scale": {
-      "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+      "$comment": "Generated from Vector3 by @foxglove/schemas",
       "title": "Vector3",
       "description": "Scale factor to apply to the model along each axis",
       "type": "object",
@@ -144,7 +144,7 @@
       }
     },
     "color": {
-      "$comment": "Generated from Color by @foxglove/message-schemas",
+      "$comment": "Generated from Color by @foxglove/schemas",
       "title": "Color",
       "description": "Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.",
       "type": "object",

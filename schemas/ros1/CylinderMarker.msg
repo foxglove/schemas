@@ -1,4 +1,4 @@
-# Generated from CylinderMarker by @foxglove/message-schemas
+# Generated from CylinderMarker by @foxglove/schemas
 
 # Timestamp of the marker
 time timestamp

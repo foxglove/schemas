@@ -1,10 +1,10 @@
-// Generated from GeoJSON by @foxglove/message-schemas
+// Generated from GeoJSON by @foxglove/schemas
 
 syntax = "proto3";
 
 package foxglove;
 
-// GeoJSON data used for annotating maps
+// GeoJSON data for annotating maps
 message GeoJSON {
   // GeoJSON data encoded as a UTF-8 string
   string geojson = 1;

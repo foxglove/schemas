@@ -1,4 +1,4 @@
-// Generated from MarkerDeletionType by @foxglove/message-schemas
+// Generated from MarkerDeletionType by @foxglove/schemas
 
 /** An enumeration indicating which markers should match a MarkerDeletion command */
 export enum MarkerDeletionType {

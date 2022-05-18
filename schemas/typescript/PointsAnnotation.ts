@@ -1,11 +1,11 @@
-// Generated from PointsAnnotation by @foxglove/message-schemas
+// Generated from PointsAnnotation by @foxglove/schemas
 
 import { Color } from "./Color";
 import { Point2 } from "./Point2";
 import { PointsAnnotationType } from "./PointsAnnotationType";
 import { Time } from "./Time";
 
-/** A set of points */
+/** An array of points on a 2D image */
 export type PointsAnnotation = {
   /** Timestamp of annotation */
   timestamp: Time;

@@ -1,9 +1,9 @@
-// Generated from PoseInFrame by @foxglove/message-schemas
+// Generated from PoseInFrame by @foxglove/schemas
 
 import { Pose } from "./Pose";
 import { Time } from "./Time";
 
-/** A timestamped pose in a named coordinate frame */
+/** A timestamped pose for an object or reference frame in 3D space */
 export type PoseInFrame = {
   /** Timestamp of pose */
   timestamp: Time;

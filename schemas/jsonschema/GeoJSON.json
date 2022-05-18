@@ -1,7 +1,7 @@
 {
-  "$comment": "Generated from GeoJSON by @foxglove/message-schemas",
+  "$comment": "Generated from GeoJSON by @foxglove/schemas",
   "title": "GeoJSON",
-  "description": "GeoJSON data used for annotating maps",
+  "description": "GeoJSON data for annotating maps",
   "type": "object",
   "properties": {
     "geojson": {

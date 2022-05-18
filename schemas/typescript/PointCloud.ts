@@ -1,6 +1,6 @@
-// Generated from PointCloud by @foxglove/message-schemas
+// Generated from PointCloud by @foxglove/schemas
 
-import { DataField } from "./DataField";
+import { PackedElementField } from "./PackedElementField";
 import { Pose } from "./Pose";
 import { Time } from "./Time";
 
@@ -19,7 +19,7 @@ export type PointCloud = {
   point_stride: number;
 
   /** Fields in the `data` */
-  fields: DataField[];
+  fields: PackedElementField[];
 
   /** Point data, interpreted using `fields` */
   data: Uint8Array;

@@ -1,4 +1,4 @@
-# Generated from Markers by @foxglove/message-schemas
+# Generated from Markers by @foxglove/schemas
 
 # Marker deletion actions
 foxglove_msgs/MarkerDeletion[] deletions

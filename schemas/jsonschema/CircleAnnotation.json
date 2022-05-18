@@ -1,7 +1,7 @@
 {
-  "$comment": "Generated from CircleAnnotation by @foxglove/message-schemas",
+  "$comment": "Generated from CircleAnnotation by @foxglove/schemas",
   "title": "CircleAnnotation",
-  "description": "A circle annotation",
+  "description": "A circle annotation on a 2D image",
   "type": "object",
   "properties": {
     "timestamp": {
@@ -21,7 +21,7 @@
       "description": "Timestamp of circle"
     },
     "position": {
-      "$comment": "Generated from Point2 by @foxglove/message-schemas",
+      "$comment": "Generated from Point2 by @foxglove/schemas",
       "title": "Point2",
       "description": "Center of the circle in 2D image coordinates",
       "type": "object",
@@ -45,7 +45,7 @@
       "description": "Line thickness"
     },
     "fill_color": {
-      "$comment": "Generated from Color by @foxglove/message-schemas",
+      "$comment": "Generated from Color by @foxglove/schemas",
       "title": "Color",
       "description": "Fill color",
       "type": "object",
@@ -69,7 +69,7 @@
       }
     },
     "outline_color": {
-      "$comment": "Generated from Color by @foxglove/message-schemas",
+      "$comment": "Generated from Color by @foxglove/schemas",
       "title": "Color",
       "description": "Outline color",
       "type": "object",

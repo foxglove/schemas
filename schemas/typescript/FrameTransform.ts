@@ -1,9 +1,9 @@
-// Generated from FrameTransform by @foxglove/message-schemas
+// Generated from FrameTransform by @foxglove/schemas
 
 import { Time } from "./Time";
 import { Transform } from "./Transform";
 
-/** A transform between two named coordinate frames in 3D space */
+/** A transform between two reference frames in 3D space */
 export type FrameTransform = {
   /** Timestamp of transform */
   timestamp: Time;

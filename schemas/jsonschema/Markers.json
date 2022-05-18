@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from Markers by @foxglove/message-schemas",
+  "$comment": "Generated from Markers by @foxglove/schemas",
   "title": "Markers",
   "description": "A list that can contain any number of any type of marker",
   "type": "object",
@@ -7,7 +7,7 @@
     "deletions": {
       "type": "array",
       "items": {
-        "$comment": "Generated from MarkerDeletion by @foxglove/message-schemas",
+        "$comment": "Generated from MarkerDeletion by @foxglove/schemas",
         "title": "MarkerDeletion",
         "description": "Deletion command to remove previously published markers",
         "type": "object",
@@ -61,7 +61,7 @@
     "arrows": {
       "type": "array",
       "items": {
-        "$comment": "Generated from ArrowMarker by @foxglove/message-schemas",
+        "$comment": "Generated from ArrowMarker by @foxglove/schemas",
         "title": "ArrowMarker",
         "description": "A marker representing an arrow",
         "type": "object",
@@ -116,7 +116,7 @@
           "metadata": {
             "type": "array",
             "items": {
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+              "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
               "description": "An entry representing a key and its associated value",
               "type": "object",
@@ -134,13 +134,13 @@
             "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
           },
           "pose": {
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
+            "$comment": "Generated from Pose by @foxglove/schemas",
             "title": "Pose",
             "description": "Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.",
             "type": "object",
             "properties": {
               "position": {
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+                "$comment": "Generated from Vector3 by @foxglove/schemas",
                 "title": "Vector3",
                 "description": "Point denoting position in 3D space",
                 "type": "object",
@@ -160,7 +160,7 @@
                 }
               },
               "orientation": {
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+                "$comment": "Generated from Quaternion by @foxglove/schemas",
                 "title": "Quaternion",
                 "description": "Quaternion denoting orientation in 3D space",
                 "type": "object",
@@ -202,7 +202,7 @@
             "description": "Length of the arrow head"
           },
           "color": {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "$comment": "Generated from Color by @foxglove/schemas",
             "title": "Color",
             "description": "Color of the arrow",
             "type": "object",
@@ -232,7 +232,7 @@
     "cubes": {
       "type": "array",
       "items": {
-        "$comment": "Generated from CubeMarker by @foxglove/message-schemas",
+        "$comment": "Generated from CubeMarker by @foxglove/schemas",
         "title": "CubeMarker",
         "description": "A marker representing a cube or rectangular prism",
         "type": "object",
@@ -287,7 +287,7 @@
           "metadata": {
             "type": "array",
             "items": {
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+              "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
               "description": "An entry representing a key and its associated value",
               "type": "object",
@@ -305,13 +305,13 @@
             "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
           },
           "pose": {
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
+            "$comment": "Generated from Pose by @foxglove/schemas",
             "title": "Pose",
             "description": "Position of the center of the cube and orientation of the cube",
             "type": "object",
             "properties": {
               "position": {
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+                "$comment": "Generated from Vector3 by @foxglove/schemas",
                 "title": "Vector3",
                 "description": "Point denoting position in 3D space",
                 "type": "object",
@@ -331,7 +331,7 @@
                 }
               },
               "orientation": {
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+                "$comment": "Generated from Quaternion by @foxglove/schemas",
                 "title": "Quaternion",
                 "description": "Quaternion denoting orientation in 3D space",
                 "type": "object",
@@ -357,7 +357,7 @@
             }
           },
           "size": {
-            "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+            "$comment": "Generated from Vector3 by @foxglove/schemas",
             "title": "Vector3",
             "description": "Size of the cube along each axis",
             "type": "object",
@@ -377,7 +377,7 @@
             }
           },
           "color": {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "$comment": "Generated from Color by @foxglove/schemas",
             "title": "Color",
             "description": "Color of the arrow",
             "type": "object",
@@ -407,7 +407,7 @@
     "spheres": {
       "type": "array",
       "items": {
-        "$comment": "Generated from SphereMarker by @foxglove/message-schemas",
+        "$comment": "Generated from SphereMarker by @foxglove/schemas",
         "title": "SphereMarker",
         "description": "A marker representing a sphere or ellipsoid",
         "type": "object",
@@ -462,7 +462,7 @@
           "metadata": {
             "type": "array",
             "items": {
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+              "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
               "description": "An entry representing a key and its associated value",
               "type": "object",
@@ -480,13 +480,13 @@
             "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
           },
           "pose": {
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
+            "$comment": "Generated from Pose by @foxglove/schemas",
             "title": "Pose",
             "description": "Position of the center of the sphere and orientation of the sphere",
             "type": "object",
             "properties": {
               "position": {
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+                "$comment": "Generated from Vector3 by @foxglove/schemas",
                 "title": "Vector3",
                 "description": "Point denoting position in 3D space",
                 "type": "object",
@@ -506,7 +506,7 @@
                 }
               },
               "orientation": {
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+                "$comment": "Generated from Quaternion by @foxglove/schemas",
                 "title": "Quaternion",
                 "description": "Quaternion denoting orientation in 3D space",
                 "type": "object",
@@ -532,7 +532,7 @@
             }
           },
           "size": {
-            "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+            "$comment": "Generated from Vector3 by @foxglove/schemas",
             "title": "Vector3",
             "description": "Size (diameter) of the sphere along each axis",
             "type": "object",
@@ -552,7 +552,7 @@
             }
           },
           "color": {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "$comment": "Generated from Color by @foxglove/schemas",
             "title": "Color",
             "description": "Color of the sphere",
             "type": "object",
@@ -582,7 +582,7 @@
     "cylinders": {
       "type": "array",
       "items": {
-        "$comment": "Generated from CylinderMarker by @foxglove/message-schemas",
+        "$comment": "Generated from CylinderMarker by @foxglove/schemas",
         "title": "CylinderMarker",
         "description": "A marker representing a cylinder or elliptic cylinder",
         "type": "object",
@@ -637,7 +637,7 @@
           "metadata": {
             "type": "array",
             "items": {
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+              "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
               "description": "An entry representing a key and its associated value",
               "type": "object",
@@ -655,13 +655,13 @@
             "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
           },
           "pose": {
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
+            "$comment": "Generated from Pose by @foxglove/schemas",
             "title": "Pose",
             "description": "Position of the center of the cylinder and orientation of the cylinder. The cylinder's flat faces are perpendicular to the z-axis.",
             "type": "object",
             "properties": {
               "position": {
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+                "$comment": "Generated from Vector3 by @foxglove/schemas",
                 "title": "Vector3",
                 "description": "Point denoting position in 3D space",
                 "type": "object",
@@ -681,7 +681,7 @@
                 }
               },
               "orientation": {
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+                "$comment": "Generated from Quaternion by @foxglove/schemas",
                 "title": "Quaternion",
                 "description": "Quaternion denoting orientation in 3D space",
                 "type": "object",
@@ -719,7 +719,7 @@
             "description": "Height of the cylinder along the z axis"
           },
           "color": {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "$comment": "Generated from Color by @foxglove/schemas",
             "title": "Color",
             "description": "Color of the sphere",
             "type": "object",
@@ -749,7 +749,7 @@
     "lines": {
       "type": "array",
       "items": {
-        "$comment": "Generated from LineMarker by @foxglove/message-schemas",
+        "$comment": "Generated from LineMarker by @foxglove/schemas",
         "title": "LineMarker",
         "description": "A marker representing a series of points connected by lines",
         "type": "object",
@@ -804,7 +804,7 @@
           "metadata": {
             "type": "array",
             "items": {
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+              "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
               "description": "An entry representing a key and its associated value",
               "type": "object",
@@ -843,13 +843,13 @@
             ]
           },
           "pose": {
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
+            "$comment": "Generated from Pose by @foxglove/schemas",
             "title": "Pose",
             "description": "Origin of lines relative to reference frame",
             "type": "object",
             "properties": {
               "position": {
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+                "$comment": "Generated from Vector3 by @foxglove/schemas",
                 "title": "Vector3",
                 "description": "Point denoting position in 3D space",
                 "type": "object",
@@ -869,7 +869,7 @@
                 }
               },
               "orientation": {
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+                "$comment": "Generated from Quaternion by @foxglove/schemas",
                 "title": "Quaternion",
                 "description": "Quaternion denoting orientation in 3D space",
                 "type": "object",
@@ -905,7 +905,7 @@
           "points": {
             "type": "array",
             "items": {
-              "$comment": "Generated from Point3 by @foxglove/message-schemas",
+              "$comment": "Generated from Point3 by @foxglove/schemas",
               "title": "Point3",
               "description": "A point representing a position in 3D space",
               "type": "object",
@@ -927,7 +927,7 @@
             "description": "Points along the line"
           },
           "color": {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "$comment": "Generated from Color by @foxglove/schemas",
             "title": "Color",
             "description": "Solid color to use for the whole line. One of `color` or `colors` must be provided.",
             "type": "object",
@@ -953,7 +953,7 @@
           "colors": {
             "type": "array",
             "items": {
-              "$comment": "Generated from Color by @foxglove/message-schemas",
+              "$comment": "Generated from Color by @foxglove/schemas",
               "title": "Color",
               "description": "A color in RGBA format",
               "type": "object",
@@ -993,7 +993,7 @@
     "triangles": {
       "type": "array",
       "items": {
-        "$comment": "Generated from TrianglesMarker by @foxglove/message-schemas",
+        "$comment": "Generated from TrianglesMarker by @foxglove/schemas",
         "title": "TrianglesMarker",
         "description": "A marker representing a set of triangles or a surface tiled by triangles",
         "type": "object",
@@ -1048,7 +1048,7 @@
           "metadata": {
             "type": "array",
             "items": {
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+              "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
               "description": "An entry representing a key and its associated value",
               "type": "object",
@@ -1087,13 +1087,13 @@
             ]
           },
           "pose": {
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
+            "$comment": "Generated from Pose by @foxglove/schemas",
             "title": "Pose",
             "description": "Origin of triangles relative to reference frame",
             "type": "object",
             "properties": {
               "position": {
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+                "$comment": "Generated from Vector3 by @foxglove/schemas",
                 "title": "Vector3",
                 "description": "Point denoting position in 3D space",
                 "type": "object",
@@ -1113,7 +1113,7 @@
                 }
               },
               "orientation": {
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+                "$comment": "Generated from Quaternion by @foxglove/schemas",
                 "title": "Quaternion",
                 "description": "Quaternion denoting orientation in 3D space",
                 "type": "object",
@@ -1141,7 +1141,7 @@
           "points": {
             "type": "array",
             "items": {
-              "$comment": "Generated from Point3 by @foxglove/message-schemas",
+              "$comment": "Generated from Point3 by @foxglove/schemas",
               "title": "Point3",
               "description": "A point representing a position in 3D space",
               "type": "object",
@@ -1163,7 +1163,7 @@
             "description": "Vertices to use for triangles"
           },
           "color": {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "$comment": "Generated from Color by @foxglove/schemas",
             "title": "Color",
             "description": "Solid color to use for the whole shape. One of `color` or `colors` must be provided.",
             "type": "object",
@@ -1189,7 +1189,7 @@
           "colors": {
             "type": "array",
             "items": {
-              "$comment": "Generated from Color by @foxglove/message-schemas",
+              "$comment": "Generated from Color by @foxglove/schemas",
               "title": "Color",
               "description": "A color in RGBA format",
               "type": "object",
@@ -1229,7 +1229,7 @@
     "texts": {
       "type": "array",
       "items": {
-        "$comment": "Generated from TextMarker by @foxglove/message-schemas",
+        "$comment": "Generated from TextMarker by @foxglove/schemas",
         "title": "TextMarker",
         "description": "A marker representing a text label",
         "type": "object",
@@ -1284,7 +1284,7 @@
           "metadata": {
             "type": "array",
             "items": {
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+              "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
               "description": "An entry representing a key and its associated value",
               "type": "object",
@@ -1302,13 +1302,13 @@
             "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
           },
           "pose": {
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
+            "$comment": "Generated from Pose by @foxglove/schemas",
             "title": "Pose",
             "description": "Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x.",
             "type": "object",
             "properties": {
               "position": {
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+                "$comment": "Generated from Vector3 by @foxglove/schemas",
                 "title": "Vector3",
                 "description": "Point denoting position in 3D space",
                 "type": "object",
@@ -1328,7 +1328,7 @@
                 }
               },
               "orientation": {
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+                "$comment": "Generated from Quaternion by @foxglove/schemas",
                 "title": "Quaternion",
                 "description": "Quaternion denoting orientation in 3D space",
                 "type": "object",
@@ -1366,7 +1366,7 @@
             "description": "Indicates whether `font_size` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)"
           },
           "color": {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "$comment": "Generated from Color by @foxglove/schemas",
             "title": "Color",
             "description": "Color of the text",
             "type": "object",
@@ -1400,7 +1400,7 @@
     "models": {
       "type": "array",
       "items": {
-        "$comment": "Generated from ModelMarker by @foxglove/message-schemas",
+        "$comment": "Generated from ModelMarker by @foxglove/schemas",
         "title": "ModelMarker",
         "description": "A marker representing a 3D model",
         "type": "object",
@@ -1455,7 +1455,7 @@
           "metadata": {
             "type": "array",
             "items": {
-              "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+              "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
               "description": "An entry representing a key and its associated value",
               "type": "object",
@@ -1473,13 +1473,13 @@
             "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
           },
           "pose": {
-            "$comment": "Generated from Pose by @foxglove/message-schemas",
+            "$comment": "Generated from Pose by @foxglove/schemas",
             "title": "Pose",
             "description": "Origin of model relative to reference frame",
             "type": "object",
             "properties": {
               "position": {
-                "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+                "$comment": "Generated from Vector3 by @foxglove/schemas",
                 "title": "Vector3",
                 "description": "Point denoting position in 3D space",
                 "type": "object",
@@ -1499,7 +1499,7 @@
                 }
               },
               "orientation": {
-                "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+                "$comment": "Generated from Quaternion by @foxglove/schemas",
                 "title": "Quaternion",
                 "description": "Quaternion denoting orientation in 3D space",
                 "type": "object",
@@ -1525,7 +1525,7 @@
             }
           },
           "scale": {
-            "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+            "$comment": "Generated from Vector3 by @foxglove/schemas",
             "title": "Vector3",
             "description": "Scale factor to apply to the model along each axis",
             "type": "object",
@@ -1545,7 +1545,7 @@
             }
           },
           "color": {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "$comment": "Generated from Color by @foxglove/schemas",
             "title": "Color",
             "description": "Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.",
             "type": "object",

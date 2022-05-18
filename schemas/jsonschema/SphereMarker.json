@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from SphereMarker by @foxglove/message-schemas",
+  "$comment": "Generated from SphereMarker by @foxglove/schemas",
   "title": "SphereMarker",
   "description": "A marker representing a sphere or ellipsoid",
   "type": "object",
@@ -54,7 +54,7 @@
     "metadata": {
       "type": "array",
       "items": {
-        "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+        "$comment": "Generated from KeyValuePair by @foxglove/schemas",
         "title": "KeyValuePair",
         "description": "An entry representing a key and its associated value",
         "type": "object",
@@ -72,13 +72,13 @@
       "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
     },
     "pose": {
-      "$comment": "Generated from Pose by @foxglove/message-schemas",
+      "$comment": "Generated from Pose by @foxglove/schemas",
       "title": "Pose",
       "description": "Position of the center of the sphere and orientation of the sphere",
       "type": "object",
       "properties": {
         "position": {
-          "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+          "$comment": "Generated from Vector3 by @foxglove/schemas",
           "title": "Vector3",
           "description": "Point denoting position in 3D space",
           "type": "object",
@@ -98,7 +98,7 @@
           }
         },
         "orientation": {
-          "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+          "$comment": "Generated from Quaternion by @foxglove/schemas",
           "title": "Quaternion",
           "description": "Quaternion denoting orientation in 3D space",
           "type": "object",
@@ -124,7 +124,7 @@
       }
     },
     "size": {
-      "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+      "$comment": "Generated from Vector3 by @foxglove/schemas",
       "title": "Vector3",
       "description": "Size (diameter) of the sphere along each axis",
       "type": "object",
@@ -144,7 +144,7 @@
       }
     },
     "color": {
-      "$comment": "Generated from Color by @foxglove/message-schemas",
+      "$comment": "Generated from Color by @foxglove/schemas",
       "title": "Color",
       "description": "Color of the sphere",
       "type": "object",

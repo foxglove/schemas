@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from KeyValuePair by @foxglove/message-schemas",
+  "$comment": "Generated from KeyValuePair by @foxglove/schemas",
   "title": "KeyValuePair",
   "description": "An entry representing a key and its associated value",
   "type": "object",

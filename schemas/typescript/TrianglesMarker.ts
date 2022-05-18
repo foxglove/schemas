@@ -1,4 +1,4 @@
-// Generated from TrianglesMarker by @foxglove/message-schemas
+// Generated from TrianglesMarker by @foxglove/schemas
 
 import { Color } from "./Color";
 import { Duration } from "./Duration";

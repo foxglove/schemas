@@ -1,4 +1,4 @@
-// Generated from ArrowMarker by @foxglove/message-schemas
+// Generated from ArrowMarker by @foxglove/schemas
 
 import { Color } from "./Color";
 import { Duration } from "./Duration";

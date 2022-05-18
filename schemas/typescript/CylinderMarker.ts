@@ -1,4 +1,4 @@
-// Generated from CylinderMarker by @foxglove/message-schemas
+// Generated from CylinderMarker by @foxglove/schemas
 
 import { Color } from "./Color";
 import { Duration } from "./Duration";

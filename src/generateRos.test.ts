@@ -17,7 +17,7 @@ describe("generateRosMsgFiles", () => {
         }),
       ),
     ).toMatchInlineSnapshot(`
-      "# Generated from ExampleMessage by @foxglove/message-schemas
+      "# Generated from ExampleMessage by @foxglove/schemas
 
       # duration field
       duration field_duration
@@ -110,7 +110,7 @@ describe("generateRosMsgFiles", () => {
         }),
       ),
     ).toMatchInlineSnapshot(`
-      "# Generated from ExampleMessage by @foxglove/message-schemas
+      "# Generated from ExampleMessage by @foxglove/schemas
 
       # duration field
       builtin_interfaces/Duration field_duration
@@ -202,7 +202,7 @@ describe("generateRosMsgMergedSchema", () => {
       rosVersion: 1,
     });
     expect(mergedSchema).toMatchInlineSnapshot(`
-      "# Generated from ExampleMessage by @foxglove/message-schemas
+      "# Generated from ExampleMessage by @foxglove/schemas
 
       # duration field
       duration field_duration
@@ -285,7 +285,7 @@ describe("generateRosMsgMergedSchema", () => {
       foxglove_msgs/NestedMessage[] field_nested_array
       ================================================================================
       MSG: foxglove_msgs/NestedMessage
-      # Generated from NestedMessage by @foxglove/message-schemas
+      # Generated from NestedMessage by @foxglove/schemas
 
       # An enum field
       uint32 field_enum
@@ -476,7 +476,7 @@ describe("generateRosMsgMergedSchema", () => {
       rosVersion: 2,
     });
     expect(mergedSchema).toMatchInlineSnapshot(`
-      "# Generated from ExampleMessage by @foxglove/message-schemas
+      "# Generated from ExampleMessage by @foxglove/schemas
 
       # duration field
       builtin_interfaces/Duration field_duration
@@ -559,7 +559,7 @@ describe("generateRosMsgMergedSchema", () => {
       foxglove_msgs/NestedMessage[] field_nested_array
       ================================================================================
       MSG: foxglove_msgs/NestedMessage
-      # Generated from NestedMessage by @foxglove/message-schemas
+      # Generated from NestedMessage by @foxglove/schemas
 
       # An enum field
       uint32 field_enum

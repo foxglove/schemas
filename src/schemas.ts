@@ -144,7 +144,7 @@ const foxglove_Quaternion: FoxgloveMessageSchema = {
 const foxglove_Pose: FoxgloveMessageSchema = {
   type: "message",
   name: "Pose",
-  description: "The position and orientation of an object or reference frame in 3D space",
+  description: "A position and orientation for an object or reference frame in 3D space",
   rosEquivalent: "geometry_msgs/Pose",
   fields: [
     {
@@ -792,7 +792,7 @@ const foxglove_CompressedImage: FoxgloveMessageSchema = {
 const foxglove_RawImage: FoxgloveMessageSchema = {
   type: "message",
   name: "RawImage",
-  description: "A compressed image",
+  description: "A raw image",
   fields: [
     {
       name: "timestamp",
@@ -853,7 +853,7 @@ const foxglove_Transform: FoxgloveMessageSchema = {
 const foxglove_FrameTransform: FoxgloveMessageSchema = {
   type: "message",
   name: "FrameTransform",
-  description: "A transform between two named coordinate frames in 3D space",
+  description: "A transform between two reference frames in 3D space",
   fields: [
     {
       name: "timestamp",
@@ -881,7 +881,7 @@ const foxglove_FrameTransform: FoxgloveMessageSchema = {
 const foxglove_PoseInFrame: FoxgloveMessageSchema = {
   type: "message",
   name: "PoseInFrame",
-  description: "A timestamped pose in a named coordinate frame",
+  description: "A timestamped pose for an object or reference frame in 3D space",
   fields: [
     {
       name: "timestamp",
@@ -904,7 +904,7 @@ const foxglove_PoseInFrame: FoxgloveMessageSchema = {
 const foxglove_PosesInFrame: FoxgloveMessageSchema = {
   type: "message",
   name: "PosesInFrame",
-  description: "An array of timestamped poses in a named coordinate frame",
+  description: "An array of timestamped poses for an object or reference frame in 3D space",
   fields: [
     {
       name: "timestamp",
@@ -928,7 +928,7 @@ const foxglove_PosesInFrame: FoxgloveMessageSchema = {
 const foxglove_GeoJSON: FoxgloveMessageSchema = {
   type: "message",
   name: "GeoJSON",
-  description: "GeoJSON data used for annotating maps",
+  description: "GeoJSON data for annotating maps",
   fields: [
     {
       name: "geojson",
@@ -942,7 +942,7 @@ const foxglove_NumericType: FoxgloveEnumSchema = {
   type: "enum",
   name: "NumericType",
   description: "Numeric type",
-  protobufParentMessageName: "DataField",
+  protobufParentMessageName: "PackedElementField",
   protobufEnumName: "NumericType",
   values: [
     { name: "UNKNOWN", value: 0 },
@@ -957,10 +957,10 @@ const foxglove_NumericType: FoxgloveEnumSchema = {
   ],
 };
 
-const foxglove_DataField: FoxgloveMessageSchema = {
+const foxglove_PackedElementField: FoxgloveMessageSchema = {
   type: "message",
-  name: "DataField",
-  description: "List of fields included for every entity in an accompanying `data` field array",
+  name: "PackedElementField",
+  description: "List of fields for every element in a byte array",
   fields: [
     {
       name: "name",
@@ -1023,7 +1023,7 @@ const foxglove_Grid: FoxgloveMessageSchema = {
     },
     {
       name: "fields",
-      type: { type: "nested", schema: foxglove_DataField },
+      type: { type: "nested", schema: foxglove_PackedElementField },
       array: true,
       description: "Fields in `data`",
     },
@@ -1038,7 +1038,7 @@ const foxglove_Grid: FoxgloveMessageSchema = {
 const foxglove_CircleAnnotation: FoxgloveMessageSchema = {
   type: "message",
   name: "CircleAnnotation",
-  description: "A circle annotation",
+  description: "A circle annotation on a 2D image",
   fields: [
     {
       name: "timestamp",
@@ -1091,7 +1091,7 @@ const foxglove_PointsAnnotationType: FoxgloveEnumSchema = {
 const foxglove_PointsAnnotation: FoxgloveMessageSchema = {
   type: "message",
   name: "PointsAnnotation",
-  description: "A set of points",
+  description: "An array of points on a 2D image",
   fields: [
     {
       name: "timestamp",
@@ -1275,7 +1275,7 @@ const foxglove_PointCloud: FoxgloveMessageSchema = {
     },
     {
       name: "fields",
-      type: { type: "nested", schema: foxglove_DataField },
+      type: { type: "nested", schema: foxglove_PackedElementField },
       array: true,
       description: "Fields in the `data`",
     },
@@ -1290,7 +1290,7 @@ const foxglove_PointCloud: FoxgloveMessageSchema = {
 const foxglove_LaserScan: FoxgloveMessageSchema = {
   type: "message",
   name: "LaserScan",
-  description: "A a single scan from a planar laser range-finder",
+  description: "A single scan from a planar laser range-finder",
   fields: [
     {
       name: "timestamp",
@@ -1342,7 +1342,7 @@ export const foxgloveMessageSchemas = {
   CompressedImage: foxglove_CompressedImage,
   CubeMarker: foxglove_CubeMarker,
   CylinderMarker: foxglove_CylinderMarker,
-  DataField: foxglove_DataField,
+  PackedElementField: foxglove_PackedElementField,
   FrameTransform: foxglove_FrameTransform,
   GeoJSON: foxglove_GeoJSON,
   Grid: foxglove_Grid,

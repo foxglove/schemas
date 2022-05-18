@@ -1,4 +1,4 @@
-# Generated from PointCloud by @foxglove/message-schemas
+# Generated from PointCloud by @foxglove/schemas
 
 # Timestamp of point cloud
 builtin_interfaces/Time timestamp
@@ -13,7 +13,7 @@ geometry_msgs/Pose pose
 uint32 point_stride
 
 # Fields in the `data`
-foxglove_msgs/DataField[] fields
+foxglove_msgs/PackedElementField[] fields
 
 # Point data, interpreted using `fields`
 uint8[] data

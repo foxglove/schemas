@@ -1,4 +1,4 @@
-// Generated from FrameTransform by @foxglove/message-schemas
+// Generated from FrameTransform by @foxglove/schemas
 
 syntax = "proto3";
 
@@ -7,7 +7,7 @@ import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// A transform between two named coordinate frames in 3D space
+// A transform between two reference frames in 3D space
 message FrameTransform {
   // Timestamp of transform
   google.protobuf.Timestamp timestamp = 1;

@@ -1,8 +1,8 @@
-// Generated from RawImage by @foxglove/message-schemas
+// Generated from RawImage by @foxglove/schemas
 
 import { Time } from "./Time";
 
-/** A compressed image */
+/** A raw image */
 export type RawImage = {
   /** Timestamp of image */
   timestamp: Time;

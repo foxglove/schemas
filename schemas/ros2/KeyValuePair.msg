@@ -1,4 +1,4 @@
-# Generated from KeyValuePair by @foxglove/message-schemas
+# Generated from KeyValuePair by @foxglove/schemas
 
 # Key
 string key

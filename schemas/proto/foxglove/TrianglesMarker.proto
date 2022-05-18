@@ -1,4 +1,4 @@
-// Generated from TrianglesMarker by @foxglove/message-schemas
+// Generated from TrianglesMarker by @foxglove/schemas
 
 syntax = "proto3";
 

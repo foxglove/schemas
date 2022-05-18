@@ -1,4 +1,4 @@
-# Generated from LineMarker by @foxglove/message-schemas
+# Generated from LineMarker by @foxglove/schemas
 
 # Timestamp of the marker
 time timestamp

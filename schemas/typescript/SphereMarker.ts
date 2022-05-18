@@ -1,4 +1,4 @@
-// Generated from SphereMarker by @foxglove/message-schemas
+// Generated from SphereMarker by @foxglove/schemas
 
 import { Color } from "./Color";
 import { Duration } from "./Duration";

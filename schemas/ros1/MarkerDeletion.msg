@@ -1,4 +1,4 @@
-# Generated from MarkerDeletion by @foxglove/message-schemas
+# Generated from MarkerDeletion by @foxglove/schemas
 
 # Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.
 time timestamp

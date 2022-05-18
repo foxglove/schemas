@@ -1,4 +1,4 @@
-// Generated from KeyValuePair by @foxglove/message-schemas
+// Generated from KeyValuePair by @foxglove/schemas
 
 /** An entry representing a key and its associated value */
 export type KeyValuePair = {

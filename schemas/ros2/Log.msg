@@ -1,4 +1,4 @@
-# Generated from Log by @foxglove/message-schemas
+# Generated from Log by @foxglove/schemas
 
 # Timestamp of log message
 builtin_interfaces/Time timestamp

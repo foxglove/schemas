@@ -92,7 +92,7 @@ export function generateTypeScript(schema: FoxgloveSchema): string {
   }
 
   const outputSections = [
-    `// Generated from ${schema.name} by @foxglove/message-schemas`,
+    `// Generated from ${schema.name} by @foxglove/schemas`,
 
     Array.from(imports)
       .sort()

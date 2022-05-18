@@ -1,4 +1,4 @@
-// Generated from PoseInFrame by @foxglove/message-schemas
+// Generated from PoseInFrame by @foxglove/schemas
 
 syntax = "proto3";
 
@@ -7,7 +7,7 @@ import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// A timestamped pose in a named coordinate frame
+// A timestamped pose for an object or reference frame in 3D space
 message PoseInFrame {
   // Timestamp of pose
   google.protobuf.Timestamp timestamp = 1;

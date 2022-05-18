@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from LocationFix by @foxglove/message-schemas",
+  "$comment": "Generated from LocationFix by @foxglove/schemas",
   "title": "LocationFix",
   "description": "A navigation satellite fix for any Global Navigation Satellite System",
   "type": "object",

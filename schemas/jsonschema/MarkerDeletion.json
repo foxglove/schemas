@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from MarkerDeletion by @foxglove/message-schemas",
+  "$comment": "Generated from MarkerDeletion by @foxglove/schemas",
   "title": "MarkerDeletion",
   "description": "Deletion command to remove previously published markers",
   "type": "object",

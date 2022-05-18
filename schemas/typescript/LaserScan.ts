@@ -1,9 +1,9 @@
-// Generated from LaserScan by @foxglove/message-schemas
+// Generated from LaserScan by @foxglove/schemas
 
 import { Pose } from "./Pose";
 import { Time } from "./Time";
 
-/** A a single scan from a planar laser range-finder */
+/** A single scan from a planar laser range-finder */
 export type LaserScan = {
   /** Timestamp of scan */
   timestamp: Time;

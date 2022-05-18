@@ -1,4 +1,4 @@
-// Generated from LineType by @foxglove/message-schemas
+// Generated from LineType by @foxglove/schemas
 
 /** An enumeration indicating how input points should be interpreted to create lines */
 export enum LineType {

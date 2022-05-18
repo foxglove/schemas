@@ -1,4 +1,4 @@
-// Generated from LineMarker by @foxglove/message-schemas
+// Generated from LineMarker by @foxglove/schemas
 
 import { Color } from "./Color";
 import { Duration } from "./Duration";

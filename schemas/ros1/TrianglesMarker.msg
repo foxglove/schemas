@@ -1,4 +1,4 @@
-# Generated from TrianglesMarker by @foxglove/message-schemas
+# Generated from TrianglesMarker by @foxglove/schemas
 
 # Timestamp of the marker
 time timestamp

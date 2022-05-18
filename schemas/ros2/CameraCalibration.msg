@@ -1,4 +1,4 @@
-# Generated from CameraCalibration by @foxglove/message-schemas
+# Generated from CameraCalibration by @foxglove/schemas
 
 # Timestamp of calibration data
 builtin_interfaces/Time timestamp

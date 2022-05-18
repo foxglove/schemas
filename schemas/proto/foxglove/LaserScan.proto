@@ -1,4 +1,4 @@
-// Generated from LaserScan by @foxglove/message-schemas
+// Generated from LaserScan by @foxglove/schemas
 
 syntax = "proto3";
 
@@ -7,7 +7,7 @@ import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// A a single scan from a planar laser range-finder
+// A single scan from a planar laser range-finder
 message LaserScan {
   // Timestamp of scan
   google.protobuf.Timestamp timestamp = 1;

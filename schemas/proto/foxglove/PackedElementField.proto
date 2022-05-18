@@ -1,11 +1,11 @@
-// Generated from DataField by @foxglove/message-schemas
+// Generated from PackedElementField by @foxglove/schemas
 
 syntax = "proto3";
 
 package foxglove;
 
-// List of fields included for every entity in an accompanying `data` field array
-message DataField {
+// List of fields for every element in a byte array
+message PackedElementField {
   // Numeric type
   enum NumericType {
     UNKNOWN = 0;

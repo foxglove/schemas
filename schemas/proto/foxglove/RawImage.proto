@@ -1,4 +1,4 @@
-// Generated from RawImage by @foxglove/message-schemas
+// Generated from RawImage by @foxglove/schemas
 
 syntax = "proto3";
 
@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// A compressed image
+// A raw image
 message RawImage {
   // Timestamp of image
   google.protobuf.Timestamp timestamp = 1;

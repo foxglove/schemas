@@ -1,4 +1,4 @@
-// Generated from Markers by @foxglove/message-schemas
+// Generated from Markers by @foxglove/schemas
 
 import { ArrowMarker } from "./ArrowMarker";
 import { CubeMarker } from "./CubeMarker";

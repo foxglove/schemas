@@ -1,10 +1,10 @@
-// Generated from CircleAnnotation by @foxglove/message-schemas
+// Generated from CircleAnnotation by @foxglove/schemas
 
 import { Color } from "./Color";
 import { Point2 } from "./Point2";
 import { Time } from "./Time";
 
-/** A circle annotation */
+/** A circle annotation on a 2D image */
 export type CircleAnnotation = {
   /** Timestamp of circle */
   timestamp: Time;

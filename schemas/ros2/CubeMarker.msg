@@ -1,4 +1,4 @@
-# Generated from CubeMarker by @foxglove/message-schemas
+# Generated from CubeMarker by @foxglove/schemas
 
 # Timestamp of the marker
 builtin_interfaces/Time timestamp

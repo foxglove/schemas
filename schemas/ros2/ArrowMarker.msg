@@ -1,4 +1,4 @@
-# Generated from ArrowMarker by @foxglove/message-schemas
+# Generated from ArrowMarker by @foxglove/schemas
 
 # Timestamp of the marker
 builtin_interfaces/Time timestamp

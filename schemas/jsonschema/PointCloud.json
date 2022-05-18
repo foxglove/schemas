@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from PointCloud by @foxglove/message-schemas",
+  "$comment": "Generated from PointCloud by @foxglove/schemas",
   "title": "PointCloud",
   "description": "A collection of N-dimensional points, which may contain additional fields with information like normals, intensity, etc.",
   "type": "object",
@@ -25,13 +25,13 @@
       "description": "Frame of reference"
     },
     "pose": {
-      "$comment": "Generated from Pose by @foxglove/message-schemas",
+      "$comment": "Generated from Pose by @foxglove/schemas",
       "title": "Pose",
       "description": "The origin of the point cloud relative to the frame of reference",
       "type": "object",
       "properties": {
         "position": {
-          "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+          "$comment": "Generated from Vector3 by @foxglove/schemas",
           "title": "Vector3",
           "description": "Point denoting position in 3D space",
           "type": "object",
@@ -51,7 +51,7 @@
           }
         },
         "orientation": {
-          "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+          "$comment": "Generated from Quaternion by @foxglove/schemas",
           "title": "Quaternion",
           "description": "Quaternion denoting orientation in 3D space",
           "type": "object",
@@ -84,9 +84,9 @@
     "fields": {
       "type": "array",
       "items": {
-        "$comment": "Generated from DataField by @foxglove/message-schemas",
-        "title": "DataField",
-        "description": "List of fields included for every entity in an accompanying `data` field array",
+        "$comment": "Generated from PackedElementField by @foxglove/schemas",
+        "title": "PackedElementField",
+        "description": "List of fields for every element in a byte array",
         "type": "object",
         "properties": {
           "name": {

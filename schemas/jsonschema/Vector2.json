@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from Vector2 by @foxglove/message-schemas",
+  "$comment": "Generated from Vector2 by @foxglove/schemas",
   "title": "Vector2",
   "description": "A vector in 2D space that represents a direction only",
   "type": "object",

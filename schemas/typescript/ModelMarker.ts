@@ -1,4 +1,4 @@
-// Generated from ModelMarker by @foxglove/message-schemas
+// Generated from ModelMarker by @foxglove/schemas
 
 import { Color } from "./Color";
 import { Duration } from "./Duration";

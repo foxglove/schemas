@@ -1,4 +1,4 @@
-# Generated from TextMarker by @foxglove/message-schemas
+# Generated from TextMarker by @foxglove/schemas
 
 # Timestamp of the marker
 builtin_interfaces/Time timestamp

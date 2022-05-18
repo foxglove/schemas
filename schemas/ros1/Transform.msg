@@ -1,4 +1,4 @@
-# Generated from Transform by @foxglove/message-schemas
+# Generated from Transform by @foxglove/schemas
 
 # Transform time
 time timestamp

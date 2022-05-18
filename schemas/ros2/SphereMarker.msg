@@ -1,4 +1,4 @@
-# Generated from SphereMarker by @foxglove/message-schemas
+# Generated from SphereMarker by @foxglove/schemas
 
 # Timestamp of the marker
 builtin_interfaces/Time timestamp

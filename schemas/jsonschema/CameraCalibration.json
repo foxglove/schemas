@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from CameraCalibration by @foxglove/message-schemas",
+  "$comment": "Generated from CameraCalibration by @foxglove/schemas",
   "title": "CameraCalibration",
   "description": "Camera calibration parameters",
   "type": "object",

@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from CompressedImage by @foxglove/message-schemas",
+  "$comment": "Generated from CompressedImage by @foxglove/schemas",
   "title": "CompressedImage",
   "description": "A compressed image",
   "type": "object",

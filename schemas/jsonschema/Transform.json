@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from Transform by @foxglove/message-schemas",
+  "$comment": "Generated from Transform by @foxglove/schemas",
   "title": "Transform",
   "description": "A transform in 3D space",
   "type": "object",
@@ -21,7 +21,7 @@
       "description": "Transform time"
     },
     "translation": {
-      "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+      "$comment": "Generated from Vector3 by @foxglove/schemas",
       "title": "Vector3",
       "description": "Translation component of the transform",
       "type": "object",
@@ -41,7 +41,7 @@
       }
     },
     "rotation": {
-      "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+      "$comment": "Generated from Quaternion by @foxglove/schemas",
       "title": "Quaternion",
       "description": "Rotation component of the transform",
       "type": "object",

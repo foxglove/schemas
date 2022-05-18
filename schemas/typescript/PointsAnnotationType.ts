@@ -1,4 +1,4 @@
-// Generated from PointsAnnotationType by @foxglove/message-schemas
+// Generated from PointsAnnotationType by @foxglove/schemas
 
 /** Type of points annotation */
 export enum PointsAnnotationType {

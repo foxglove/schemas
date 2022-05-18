@@ -1,4 +1,4 @@
-// Generated from Quaternion by @foxglove/message-schemas
+// Generated from Quaternion by @foxglove/schemas
 
 /** A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space */
 export type Quaternion = {

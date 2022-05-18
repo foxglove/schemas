@@ -1,11 +1,11 @@
 {
-  "name": "@foxglove/message-schemas",
-  "version": "0.1.1",
+  "name": "@foxglove/schemas",
+  "version": "0.1.2",
   "description": "Foxglove-defined message schemas for ROS, Protobuf, and JSON",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/foxglove/message-schemas.git"
+    "url": "https://github.com/foxglove/schemas.git"
   },
   "author": {
     "name": "Foxglove Technologies",

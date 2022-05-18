@@ -1,4 +1,4 @@
-// Generated from GeoJSON by @foxglove/message-schemas
+// Generated from GeoJSON by @foxglove/schemas
 
 syntax = "proto3";
 

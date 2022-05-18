@@ -1,4 +1,4 @@
-// Generated from Vector2 by @foxglove/message-schemas
+// Generated from Vector2 by @foxglove/schemas
 
 /** A vector in 2D space that represents a direction only */
 export type Vector2 = {

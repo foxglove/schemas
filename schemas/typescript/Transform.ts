@@ -1,4 +1,4 @@
-// Generated from Transform by @foxglove/message-schemas
+// Generated from Transform by @foxglove/schemas
 
 import { Quaternion } from "./Quaternion";
 import { Time } from "./Time";

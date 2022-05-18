@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from ImageAnnotations by @foxglove/message-schemas",
+  "$comment": "Generated from ImageAnnotations by @foxglove/schemas",
   "title": "ImageAnnotations",
   "description": "Array of annotations for a 2D image",
   "type": "object",
@@ -7,7 +7,7 @@
     "circles": {
       "type": "array",
       "items": {
-        "$comment": "Generated from CircleAnnotation by @foxglove/message-schemas",
+        "$comment": "Generated from CircleAnnotation by @foxglove/schemas",
         "title": "CircleAnnotation",
         "description": "A circle annotation on a 2D image",
         "type": "object",
@@ -29,7 +29,7 @@
             "description": "Timestamp of circle"
           },
           "position": {
-            "$comment": "Generated from Point2 by @foxglove/message-schemas",
+            "$comment": "Generated from Point2 by @foxglove/schemas",
             "title": "Point2",
             "description": "Center of the circle in 2D image coordinates",
             "type": "object",
@@ -53,7 +53,7 @@
             "description": "Line thickness"
           },
           "fill_color": {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "$comment": "Generated from Color by @foxglove/schemas",
             "title": "Color",
             "description": "Fill color",
             "type": "object",
@@ -77,7 +77,7 @@
             }
           },
           "outline_color": {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "$comment": "Generated from Color by @foxglove/schemas",
             "title": "Color",
             "description": "Outline color",
             "type": "object",
@@ -107,7 +107,7 @@
     "points": {
       "type": "array",
       "items": {
-        "$comment": "Generated from PointsAnnotation by @foxglove/message-schemas",
+        "$comment": "Generated from PointsAnnotation by @foxglove/schemas",
         "title": "PointsAnnotation",
         "description": "An array of points on a 2D image",
         "type": "object",
@@ -157,7 +157,7 @@
           "points": {
             "type": "array",
             "items": {
-              "$comment": "Generated from Point2 by @foxglove/message-schemas",
+              "$comment": "Generated from Point2 by @foxglove/schemas",
               "title": "Point2",
               "description": "A point representing a position in 2D space",
               "type": "object",
@@ -177,7 +177,7 @@
           "outline_colors": {
             "type": "array",
             "items": {
-              "$comment": "Generated from Color by @foxglove/message-schemas",
+              "$comment": "Generated from Color by @foxglove/schemas",
               "title": "Color",
               "description": "A color in RGBA format",
               "type": "object",
@@ -203,7 +203,7 @@
             "description": "Outline colors"
           },
           "fill_color": {
-            "$comment": "Generated from Color by @foxglove/message-schemas",
+            "$comment": "Generated from Color by @foxglove/schemas",
             "title": "Color",
             "description": "Fill color",
             "type": "object",

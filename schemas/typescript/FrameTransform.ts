@@ -1,4 +1,4 @@
-// Generated from FrameTransform by @foxglove/message-schemas
+// Generated from FrameTransform by @foxglove/schemas
 
 import { Time } from "./Time";
 import { Transform } from "./Transform";

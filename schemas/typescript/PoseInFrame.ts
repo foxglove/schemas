@@ -1,4 +1,4 @@
-// Generated from PoseInFrame by @foxglove/message-schemas
+// Generated from PoseInFrame by @foxglove/schemas
 
 import { Pose } from "./Pose";
 import { Time } from "./Time";

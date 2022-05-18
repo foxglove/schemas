@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from Grid by @foxglove/message-schemas",
+  "$comment": "Generated from Grid by @foxglove/schemas",
   "title": "Grid",
   "description": "A 2D grid of data",
   "type": "object",
@@ -25,13 +25,13 @@
       "description": "Frame of reference"
     },
     "pose": {
-      "$comment": "Generated from Pose by @foxglove/message-schemas",
+      "$comment": "Generated from Pose by @foxglove/schemas",
       "title": "Pose",
       "description": "Origin of grid's corner relative to frame of reference; grid is positioned in the x-y plane relative to this origin",
       "type": "object",
       "properties": {
         "position": {
-          "$comment": "Generated from Vector3 by @foxglove/message-schemas",
+          "$comment": "Generated from Vector3 by @foxglove/schemas",
           "title": "Vector3",
           "description": "Point denoting position in 3D space",
           "type": "object",
@@ -51,7 +51,7 @@
           }
         },
         "orientation": {
-          "$comment": "Generated from Quaternion by @foxglove/message-schemas",
+          "$comment": "Generated from Quaternion by @foxglove/schemas",
           "title": "Quaternion",
           "description": "Quaternion denoting orientation in 3D space",
           "type": "object",
@@ -82,7 +82,7 @@
       "description": "Number of grid columns"
     },
     "cell_size": {
-      "$comment": "Generated from Vector2 by @foxglove/message-schemas",
+      "$comment": "Generated from Vector2 by @foxglove/schemas",
       "title": "Vector2",
       "description": "Size of single grid cell along x and y axes, relative to `pose`",
       "type": "object",
@@ -110,7 +110,7 @@
     "fields": {
       "type": "array",
       "items": {
-        "$comment": "Generated from PackedElementField by @foxglove/message-schemas",
+        "$comment": "Generated from PackedElementField by @foxglove/schemas",
         "title": "PackedElementField",
         "description": "A field present within each element in a byte array of packed elements.",
         "type": "object",

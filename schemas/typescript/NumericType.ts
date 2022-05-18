@@ -1,4 +1,4 @@
-// Generated from NumericType by @foxglove/message-schemas
+// Generated from NumericType by @foxglove/schemas
 
 /** Numeric type */
 export enum NumericType {

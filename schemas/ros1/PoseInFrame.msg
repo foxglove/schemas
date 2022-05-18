@@ -1,4 +1,4 @@
-# Generated from PoseInFrame by @foxglove/message-schemas
+# Generated from PoseInFrame by @foxglove/schemas
 
 # Timestamp of pose
 time timestamp

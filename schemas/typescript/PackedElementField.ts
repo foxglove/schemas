@@ -2,7 +2,7 @@
 
 import { NumericType } from "./NumericType";
 
-/** List of fields for every element in a byte array */
+/** A field present within each element in a byte array of packed elements. */
 export type PackedElementField = {
   /** Name of the field */
   name: string;

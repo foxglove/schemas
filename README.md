@@ -12,7 +12,7 @@ These schemas can be used in [MCAP](https://github.com/foxglove/mcap) files or [
 
 ## License
 
-@foxglove/schemas is licensed under [MIT License](https://opensource.org/licenses/MIT).
+@foxglove/schemas is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Development
 

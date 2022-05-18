@@ -1,4 +1,4 @@
-// Generated from LogLevel by @foxglove/message-schemas
+// Generated from LogLevel by @foxglove/schemas
 
 /** Log level */
 export enum LogLevel {

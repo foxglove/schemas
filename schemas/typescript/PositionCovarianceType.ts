@@ -1,4 +1,4 @@
-// Generated from PositionCovarianceType by @foxglove/message-schemas
+// Generated from PositionCovarianceType by @foxglove/schemas
 
 /** Type of position covariance */
 export enum PositionCovarianceType {

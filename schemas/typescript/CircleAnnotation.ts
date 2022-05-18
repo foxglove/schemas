@@ -1,4 +1,4 @@
-// Generated from CircleAnnotation by @foxglove/message-schemas
+// Generated from CircleAnnotation by @foxglove/schemas
 
 import { Color } from "./Color";
 import { Point2 } from "./Point2";

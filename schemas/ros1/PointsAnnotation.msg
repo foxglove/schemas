@@ -1,4 +1,4 @@
-# Generated from PointsAnnotation by @foxglove/message-schemas
+# Generated from PointsAnnotation by @foxglove/schemas
 
 # Timestamp of annotation
 time timestamp

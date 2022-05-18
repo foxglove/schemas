@@ -1,4 +1,4 @@
-# Generated from Grid by @foxglove/message-schemas
+# Generated from Grid by @foxglove/schemas
 
 # Timestamp of grid
 time timestamp

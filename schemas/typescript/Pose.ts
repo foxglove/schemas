@@ -1,4 +1,4 @@
-// Generated from Pose by @foxglove/message-schemas
+// Generated from Pose by @foxglove/schemas
 
 import { Quaternion } from "./Quaternion";
 import { Vector3 } from "./Vector3";

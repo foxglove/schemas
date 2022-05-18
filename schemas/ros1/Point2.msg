@@ -1,4 +1,4 @@
-# Generated from Point2 by @foxglove/message-schemas
+# Generated from Point2 by @foxglove/schemas
 
 # x coordinate position
 float64 x

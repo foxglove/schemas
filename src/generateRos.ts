@@ -33,7 +33,7 @@ function primitiveToRos(
 
 export function generateRosMsg(def: RosMsgDefinitionWithDescription): string {
   let source = "";
-  source += `# Generated from ${def.originalName} by @foxglove/message-schemas\n`;
+  source += `# Generated from ${def.originalName} by @foxglove/schemas\n`;
   if (def.description != undefined) {
     source += `# ${def.description}\n`;
   }

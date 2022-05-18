@@ -1,8 +1,8 @@
-# @foxglove/message-schemas
+# @foxglove/schemas
 
 > [Message schemas](https://foxglove.dev/docs/studio/messages/introduction) supported by [Foxglove Studio](https://studio.foxglove.dev)
 
-[![npm version](https://img.shields.io/npm/v/@foxglove/message-schemas.svg?style=flat)](https://www.npmjs.com/package/@foxglove/message-schemas)
+[![npm version](https://img.shields.io/npm/v/@foxglove/schemas.svg?style=flat)](https://www.npmjs.com/package/@foxglove/schemas)
 
 ## Introduction
 
@@ -12,7 +12,7 @@ These schemas can be used in [MCAP](https://github.com/foxglove/mcap) files or [
 
 ## License
 
-@foxglove/message-schemas is licensed under [MIT License](https://opensource.org/licenses/MIT).
+@foxglove/schemas is licensed under [MIT License](https://opensource.org/licenses/MIT).
 
 ## Development
 

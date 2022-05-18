@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from Log by @foxglove/message-schemas",
+  "$comment": "Generated from Log by @foxglove/schemas",
   "title": "Log",
   "description": "A log message",
   "type": "object",

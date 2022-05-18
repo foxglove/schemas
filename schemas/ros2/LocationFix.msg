@@ -1,4 +1,4 @@
-# Generated from LocationFix by @foxglove/message-schemas
+# Generated from LocationFix by @foxglove/schemas
 
 # Latitude in degrees
 float64 latitude

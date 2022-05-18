@@ -1,4 +1,4 @@
-// Generated from Vector3 by @foxglove/message-schemas
+// Generated from Vector3 by @foxglove/schemas
 
 /** A vector in 3D space that represents a direction only */
 export type Vector3 = {

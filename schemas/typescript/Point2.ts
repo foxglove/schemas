@@ -1,4 +1,4 @@
-// Generated from Point2 by @foxglove/message-schemas
+// Generated from Point2 by @foxglove/schemas
 
 /** A point representing a position in 2D space */
 export type Point2 = {

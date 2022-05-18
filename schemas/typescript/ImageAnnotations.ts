@@ -1,4 +1,4 @@
-// Generated from ImageAnnotations by @foxglove/message-schemas
+// Generated from ImageAnnotations by @foxglove/schemas
 
 import { CircleAnnotation } from "./CircleAnnotation";
 import { PointsAnnotation } from "./PointsAnnotation";

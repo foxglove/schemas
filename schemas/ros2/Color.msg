@@ -1,4 +1,4 @@
-# Generated from Color by @foxglove/message-schemas
+# Generated from Color by @foxglove/schemas
 
 # Red value between 0 and 1
 float64 r

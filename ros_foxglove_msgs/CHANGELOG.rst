@@ -2,6 +2,11 @@
 Changelog for package foxglove_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.2.0 (2022-05-17)
+------------------
+* Add new Foxglove message types to foxglove_msgs
+* Contributors: Jacob Bandes-Storch
+
 1.1.0 (2022-04-19)
 ------------------
 * Provide foxglove_msgs for ROS1 and ROS2

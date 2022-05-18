@@ -7,7 +7,7 @@ import { exampleEnum, exampleMessage } from "./testFixtures";
 describe("generateProto", () => {
   it("generates .proto files", () => {
     expect(generateProto(exampleMessage, [exampleEnum])).toMatchInlineSnapshot(`
-      "// Generated from ExampleMessage by @foxglove/message-schemas
+      "// Generated from ExampleMessage by @foxglove/schemas
 
       syntax = \\"proto3\\";
 

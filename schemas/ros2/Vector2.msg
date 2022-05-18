@@ -1,4 +1,4 @@
-# Generated from Vector2 by @foxglove/message-schemas
+# Generated from Vector2 by @foxglove/schemas
 
 # x coordinate length
 float64 x

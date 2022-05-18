@@ -1,4 +1,4 @@
-# Generated from CircleAnnotation by @foxglove/message-schemas
+# Generated from CircleAnnotation by @foxglove/schemas
 
 # Timestamp of circle
 time timestamp

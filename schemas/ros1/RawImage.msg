@@ -1,4 +1,4 @@
-# Generated from RawImage by @foxglove/message-schemas
+# Generated from RawImage by @foxglove/schemas
 
 # Timestamp of image
 time timestamp

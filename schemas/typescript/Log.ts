@@ -1,4 +1,4 @@
-// Generated from Log by @foxglove/message-schemas
+// Generated from Log by @foxglove/schemas
 
 import { LogLevel } from "./LogLevel";
 import { Time } from "./Time";

@@ -8,7 +8,7 @@ describe("generateJsonSchema", () => {
   it("generates expected JSON Schema", () => {
     expect(generateJsonSchema(exampleMessage)).toMatchInlineSnapshot(`
       Object {
-        "$comment": "Generated from ExampleMessage by @foxglove/message-schemas",
+        "$comment": "Generated from ExampleMessage by @foxglove/schemas",
         "description": "An example type",
         "properties": Object {
           "field_boolean": Object {
@@ -164,7 +164,7 @@ describe("generateJsonSchema", () => {
             "type": "array",
           },
           "field_nested": Object {
-            "$comment": "Generated from NestedMessage by @foxglove/message-schemas",
+            "$comment": "Generated from NestedMessage by @foxglove/schemas",
             "description": "A nested field",
             "properties": Object {
               "field_enum": Object {
@@ -184,7 +184,7 @@ describe("generateJsonSchema", () => {
       long
       description",
             "items": Object {
-              "$comment": "Generated from NestedMessage by @foxglove/message-schemas",
+              "$comment": "Generated from NestedMessage by @foxglove/schemas",
               "description": "An example nested message",
               "properties": Object {
                 "field_enum": Object {

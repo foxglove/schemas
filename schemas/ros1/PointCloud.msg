@@ -1,4 +1,4 @@
-# Generated from PointCloud by @foxglove/message-schemas
+# Generated from PointCloud by @foxglove/schemas
 
 # Timestamp of point cloud
 time timestamp

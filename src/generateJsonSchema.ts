@@ -73,7 +73,7 @@ export function generateJsonSchema(schema: FoxgloveMessageSchema): Record<string
   }
 
   return {
-    $comment: `Generated from ${schema.name} by @foxglove/message-schemas`,
+    $comment: `Generated from ${schema.name} by @foxglove/schemas`,
     title: schema.name,
     description: schema.description,
     type: "object",

@@ -1,4 +1,4 @@
-# Generated from LaserScan by @foxglove/message-schemas
+# Generated from LaserScan by @foxglove/schemas
 
 # Timestamp of scan
 time timestamp

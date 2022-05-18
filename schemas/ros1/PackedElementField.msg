@@ -1,4 +1,4 @@
-# Generated from PackedElementField by @foxglove/message-schemas
+# Generated from PackedElementField by @foxglove/schemas
 
 # Name of the field
 string name

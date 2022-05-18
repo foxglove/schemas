@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from PackedElementField by @foxglove/message-schemas",
+  "$comment": "Generated from PackedElementField by @foxglove/schemas",
   "title": "PackedElementField",
   "description": "List of fields for every element in a byte array",
   "type": "object",

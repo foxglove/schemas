@@ -1,4 +1,4 @@
-# Generated from CompressedImage by @foxglove/message-schemas
+# Generated from CompressedImage by @foxglove/schemas
 
 # Timestamp of image
 time timestamp

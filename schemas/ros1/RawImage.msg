@@ -9,7 +9,7 @@ uint32 width
 # Image height
 uint32 height
 
-# Encoding of the raw image data
+# Encoding of the raw image data (8UC1, 8UC3, 16UC1, 32FC1, bayer_bggr8, bayer_gbrg8, bayer_grbg8, bayer_rggb8, bgr8, mono8, mono16, rgb8, or yuv422)
 string encoding
 
 # Byte length of a single row

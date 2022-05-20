@@ -268,7 +268,7 @@ const foxglove_CompressedImage: FoxgloveMessageSchema = {
     {
       name: "format",
       type: { type: "primitive", name: "string" },
-      description: "Image format",
+      description: "Image format (webp, jpeg, png)",
     },
   ],
 };
@@ -296,7 +296,8 @@ const foxglove_RawImage: FoxgloveMessageSchema = {
     {
       name: "encoding",
       type: { type: "primitive", name: "string" },
-      description: "Encoding of the raw image data",
+      description:
+        "Encoding of the raw image data (8UC1, 8UC3, 16UC1, 32FC1, bayer_bggr8, bayer_gbrg8, bayer_grbg8, bayer_rggb8, bgr8, mono8, mono16, rgb8, or yuv422)",
     },
     {
       name: "step",

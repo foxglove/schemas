@@ -6,5 +6,5 @@ time timestamp
 # Compressed image data
 uint8[] data
 
-# Image format
+# Image format (webp, jpeg, png)
 string format

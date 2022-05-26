@@ -160,7 +160,7 @@ const foxglove_Pose: FoxgloveMessageSchema = {
   ],
 };
 
-export const foxglove_CameraCalibration: FoxgloveMessageSchema = {
+const foxglove_CameraCalibration: FoxgloveMessageSchema = {
   type: "message",
   name: "CameraCalibration",
   description: "Camera calibration parameters",

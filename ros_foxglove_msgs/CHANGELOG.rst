@@ -2,7 +2,7 @@
 Changelog for package foxglove_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
+1.2.1 (2022-06-03)
 ------------------
 * Fix CMake install share directory
 * Contributors: Jacob Bandes-Storch

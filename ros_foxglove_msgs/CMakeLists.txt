@@ -18,15 +18,16 @@ if(${ROS_VERSION} EQUAL 1)
     geometry_msgs
   )
 
-  add_message_files(
-    FILES
-    ImageMarkerArray.msg
-  )
-  add_message_files(
-    DIRECTORY ../schemas/ros1
-    FILES
+  # Copy .msg files into a msg/ folder, so that add_message_files installs them
+  # into share/${project_name}/msg.
+  file(GLOB _generated_ros1_schemas RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" ../schemas/ros1/*)
+  file(REMOVE_RECURSE msg)
+  file(COPY
     ${_generated_ros1_schemas}
+    ImageMarkerArray.msg
+    DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/msg"
   )
+  add_message_files(DIRECTORY msg)
 
   generate_messages(DEPENDENCIES visualization_msgs geometry_msgs)
 

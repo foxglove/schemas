@@ -9,7 +9,10 @@ type RosMsgFieldWithDescription = RosMsgField & {
 type RosMsgDefinitionWithDescription = {
   originalName: string;
   description?: string;
-  qualifiedRosName: string;
+  /** The name of this message type as used in .msg files (foo_msgs/Bar) */
+  rosMsgInterfaceName: string;
+  /** The name used to refer to this message type in ROS (foo_msgs/Bar for ROS 1, foo_msgs/msg/Bar for ROS 2) */
+  rosFullInterfaceName: string;
   fields: RosMsgFieldWithDescription[];
 };
 
@@ -181,7 +184,9 @@ export function generateRosMsgDefinition(
 
   return {
     originalName: schema.name,
-    qualifiedRosName: `foxglove_msgs/${schema.name}`,
+    rosMsgInterfaceName: `foxglove_msgs/${schema.name}`,
+    rosFullInterfaceName:
+      rosVersion === 2 ? `foxglove_msgs/msg/${schema.name}` : `foxglove_msgs/${schema.name}`,
     fields,
   };
 }
@@ -205,12 +210,13 @@ export function generateRosMsgMergedSchema(
       name = dep.name;
       source = generateRosMsg({
         originalName: dep.name,
-        qualifiedRosName: dep.name,
+        rosMsgInterfaceName: dep.name,
+        rosFullInterfaceName: dep.name,
         fields: rosCommonDefs[dep.name].definitions,
       });
     } else {
       const definition = generateRosMsgDefinition(dep.schema, { rosVersion });
-      name = definition.qualifiedRosName;
+      name = definition.rosMsgInterfaceName;
       source = generateRosMsg(definition);
     }
     result += `================================================================================\nMSG: ${name}\n${source}`;

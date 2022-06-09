@@ -453,7 +453,7 @@ const foxglove_LineMarker: FoxgloveMessageSchema = {
       type: { type: "primitive", name: "uint32" },
       array: true,
       description:
-        "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.",
+        "Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.\n\nIf omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).",
     },
   ],
 };
@@ -500,39 +500,12 @@ const foxglove_TextMarker: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_TrianglesType: FoxgloveEnumSchema = {
-  type: "enum",
-  name: "TrianglesType",
-  protobufParentMessageName: "TrianglesMarker",
-  protobufEnumName: "Type",
-  description:
-    "An enumeration indicating how input points should be interpreted to create triangles",
-  values: [
-    { value: 0, name: "TRIANGLE_LIST", description: "0-1-2, 3-4-5, ..." },
-    {
-      value: 1,
-      name: "TRIANGLE_STRIP",
-      description: "0-1-2, 1-2-3, 2-3-4, ...",
-    },
-    {
-      value: 2,
-      name: "TRIANGLE_FAN",
-      description: "0-1-2, 0-2-3, 0-3-4, ...",
-    },
-  ],
-};
-
 const foxglove_TrianglesMarker: FoxgloveMessageSchema = {
   type: "message",
   name: "TrianglesMarker",
   description: "A marker representing a set of triangles or a surface tiled by triangles",
   fields: [
     ...commonMarkerFields,
-    {
-      name: "type",
-      type: { type: "enum", enum: foxglove_TrianglesType },
-      description: "Drawing primitive to use for triangles",
-    },
     {
       name: "pose",
       type: { type: "nested", schema: foxglove_Pose },
@@ -542,7 +515,8 @@ const foxglove_TrianglesMarker: FoxgloveMessageSchema = {
       name: "points",
       type: { type: "nested", schema: foxglove_Point3 },
       array: true,
-      description: "Vertices to use for triangles",
+      description:
+        "Vertices to use for triangles, interpreted as a list of triples (0-1-2, 3-4-5, ...)",
     },
     {
       name: "color",
@@ -562,7 +536,7 @@ const foxglove_TrianglesMarker: FoxgloveMessageSchema = {
       type: { type: "primitive", name: "uint32" },
       array: true,
       description:
-        "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.",
+        "Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.\n\nIf omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).",
     },
   ],
 };
@@ -1379,5 +1353,4 @@ export const foxgloveEnumSchemas = {
   NumericType: foxglove_NumericType,
   PointsAnnotationType: foxglove_PointsAnnotationType,
   PositionCovarianceType: foxglove_PositionCovarianceType,
-  TrianglesType: foxglove_TrianglesType,
 };

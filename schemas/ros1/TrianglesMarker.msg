@@ -21,22 +21,10 @@ bool frame_locked
 # Additional user-provided metadata associated with the marker. Keys must be unique.
 foxglove_msgs/KeyValuePair[] metadata
 
-# 0-1-2, 3-4-5, ...
-uint8 TRIANGLE_LIST=0
-
-# 0-1-2, 1-2-3, 2-3-4, ...
-uint8 TRIANGLE_STRIP=1
-
-# 0-1-2, 0-2-3, 0-3-4, ...
-uint8 TRIANGLE_FAN=2
-
-# Drawing primitive to use for triangles
-uint8 type
-
 # Origin of triangles relative to reference frame
 geometry_msgs/Pose pose
 
-# Vertices to use for triangles
+# Vertices to use for triangles, interpreted as a list of triples (0-1-2, 3-4-5, ...)
 geometry_msgs/Point[] points
 
 # Solid color to use for the whole shape. One of `color` or `colors` must be provided.
@@ -45,5 +33,7 @@ foxglove_msgs/Color color
 # Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` should be provided.
 foxglove_msgs/Color[] colors
 
-# Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
+# Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
+# 
+# If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
 uint32[] indices

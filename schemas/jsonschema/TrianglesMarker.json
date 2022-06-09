@@ -71,27 +71,6 @@
       },
       "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
     },
-    "type": {
-      "title": "TrianglesType: An enumeration indicating how input points should be interpreted to create triangles",
-      "description": "Drawing primitive to use for triangles",
-      "oneOf": [
-        {
-          "title": "TRIANGLE_LIST",
-          "const": 0,
-          "description": "0-1-2, 3-4-5, ..."
-        },
-        {
-          "title": "TRIANGLE_STRIP",
-          "const": 1,
-          "description": "0-1-2, 1-2-3, 2-3-4, ..."
-        },
-        {
-          "title": "TRIANGLE_FAN",
-          "const": 2,
-          "description": "0-1-2, 0-2-3, 0-3-4, ..."
-        }
-      ]
-    },
     "pose": {
       "$comment": "Generated from Pose by @foxglove/schemas",
       "title": "Pose",
@@ -166,7 +145,7 @@
           }
         }
       },
-      "description": "Vertices to use for triangles"
+      "description": "Vertices to use for triangles, interpreted as a list of triples (0-1-2, 3-4-5, ...)"
     },
     "color": {
       "$comment": "Generated from Color by @foxglove/schemas",
@@ -226,7 +205,7 @@
         "type": "integer",
         "minimum": 0
       },
-      "description": "Indexes into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data."
+      "description": "Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.\n\nIf omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided)."
     }
   }
 }

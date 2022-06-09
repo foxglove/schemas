@@ -10,7 +10,7 @@ import { SphereMarker } from "./SphereMarker";
 import { TextMarker } from "./TextMarker";
 import { TrianglesMarker } from "./TrianglesMarker";
 
-/** A list that can contain any number of any type of marker */
+/** A list of any number or type of markers */
 export type Markers = {
   /** Marker deletion actions */
   deletions: MarkerDeletion[];

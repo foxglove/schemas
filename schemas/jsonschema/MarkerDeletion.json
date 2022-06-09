@@ -1,7 +1,7 @@
 {
   "$comment": "Generated from MarkerDeletion by @foxglove/schemas",
   "title": "MarkerDeletion",
-  "description": "Deletion command to remove previously published markers",
+  "description": "Command to remove previously published markers",
   "type": "object",
   "properties": {
     "timestamp": {

@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// Deletion command to remove previously published markers
+// Command to remove previously published markers
 message MarkerDeletion {
   // An enumeration indicating which markers should match a MarkerDeletion command
   enum Type {

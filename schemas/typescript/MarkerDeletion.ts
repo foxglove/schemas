@@ -3,7 +3,7 @@
 import { MarkerDeletionType } from "./MarkerDeletionType";
 import { Time } from "./Time";
 
-/** Deletion command to remove previously published markers */
+/** Command to remove previously published markers */
 export type MarkerDeletion = {
   /** Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted. */
   timestamp: Time;

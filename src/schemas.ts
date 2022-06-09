@@ -163,7 +163,7 @@ const foxglove_Pose: FoxgloveMessageSchema = {
 const foxglove_KeyVauePair: FoxgloveMessageSchema = {
   type: "message",
   name: "KeyValuePair",
-  description: "An entry representing a key and its associated value",
+  description: "A key with its associated value",
   fields: [
     {
       name: "key",
@@ -239,7 +239,7 @@ const foxglove_MarkerDeletionType: FoxgloveEnumSchema = {
 const foxglove_MarkerDeletion: FoxgloveMessageSchema = {
   type: "message",
   name: "MarkerDeletion",
-  description: "Deletion command to remove previously published markers",
+  description: "Command to remove previously published markers",
   fields: [
     {
       name: "timestamp",
@@ -591,7 +591,7 @@ const foxglove_ModelMarker: FoxgloveMessageSchema = {
 const foxglove_Markers: FoxgloveMessageSchema = {
   type: "message",
   name: "Markers",
-  description: "A list that can contain any number of any type of marker",
+  description: "A list of any number or type of markers",
   fields: [
     {
       name: "deletions",

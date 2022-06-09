@@ -1,7 +1,7 @@
 {
   "$comment": "Generated from Markers by @foxglove/schemas",
   "title": "Markers",
-  "description": "A list that can contain any number of any type of marker",
+  "description": "A list of any number or type of markers",
   "type": "object",
   "properties": {
     "deletions": {
@@ -9,7 +9,7 @@
       "items": {
         "$comment": "Generated from MarkerDeletion by @foxglove/schemas",
         "title": "MarkerDeletion",
-        "description": "Deletion command to remove previously published markers",
+        "description": "Command to remove previously published markers",
         "type": "object",
         "properties": {
           "timestamp": {
@@ -118,7 +118,7 @@
             "items": {
               "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
-              "description": "An entry representing a key and its associated value",
+              "description": "A key with its associated value",
               "type": "object",
               "properties": {
                 "key": {
@@ -289,7 +289,7 @@
             "items": {
               "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
-              "description": "An entry representing a key and its associated value",
+              "description": "A key with its associated value",
               "type": "object",
               "properties": {
                 "key": {
@@ -464,7 +464,7 @@
             "items": {
               "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
-              "description": "An entry representing a key and its associated value",
+              "description": "A key with its associated value",
               "type": "object",
               "properties": {
                 "key": {
@@ -639,7 +639,7 @@
             "items": {
               "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
-              "description": "An entry representing a key and its associated value",
+              "description": "A key with its associated value",
               "type": "object",
               "properties": {
                 "key": {
@@ -806,7 +806,7 @@
             "items": {
               "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
-              "description": "An entry representing a key and its associated value",
+              "description": "A key with its associated value",
               "type": "object",
               "properties": {
                 "key": {
@@ -1050,7 +1050,7 @@
             "items": {
               "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
-              "description": "An entry representing a key and its associated value",
+              "description": "A key with its associated value",
               "type": "object",
               "properties": {
                 "key": {
@@ -1265,7 +1265,7 @@
             "items": {
               "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
-              "description": "An entry representing a key and its associated value",
+              "description": "A key with its associated value",
               "type": "object",
               "properties": {
                 "key": {
@@ -1436,7 +1436,7 @@
             "items": {
               "$comment": "Generated from KeyValuePair by @foxglove/schemas",
               "title": "KeyValuePair",
-              "description": "An entry representing a key and its associated value",
+              "description": "A key with its associated value",
               "type": "object",
               "properties": {
                 "key": {

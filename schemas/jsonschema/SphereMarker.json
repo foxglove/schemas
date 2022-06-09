@@ -56,7 +56,7 @@
       "items": {
         "$comment": "Generated from KeyValuePair by @foxglove/schemas",
         "title": "KeyValuePair",
-        "description": "An entry representing a key and its associated value",
+        "description": "A key with its associated value",
         "type": "object",
         "properties": {
           "key": {

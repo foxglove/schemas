@@ -4,7 +4,7 @@ syntax = "proto3";
 
 package foxglove;
 
-// An entry representing a key and its associated value
+// A key with its associated value
 message KeyValuePair {
   // Key
   string key = 1;

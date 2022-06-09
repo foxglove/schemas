@@ -1,7 +1,7 @@
 {
   "$comment": "Generated from PackedElementField by @foxglove/schemas",
   "title": "PackedElementField",
-  "description": "List of fields for every element in a byte array",
+  "description": "A field present within each element in a byte array of packed elements.",
   "type": "object",
   "properties": {
     "name": {

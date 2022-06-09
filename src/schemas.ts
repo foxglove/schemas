@@ -676,7 +676,7 @@ const foxglove_Markers: FoxgloveMessageSchema = {
   ],
 };
 
-export const foxglove_CameraCalibration: FoxgloveMessageSchema = {
+const foxglove_CameraCalibration: FoxgloveMessageSchema = {
   type: "message",
   name: "CameraCalibration",
   description: "Camera calibration parameters",
@@ -960,7 +960,7 @@ const foxglove_NumericType: FoxgloveEnumSchema = {
 const foxglove_PackedElementField: FoxgloveMessageSchema = {
   type: "message",
   name: "PackedElementField",
-  description: "List of fields for every element in a byte array",
+  description: "A field present within each element in a byte array of packed elements.",
   fields: [
     {
       name: "name",

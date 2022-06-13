@@ -21,6 +21,7 @@ if(${ROS_VERSION} EQUAL 1)
   # Copy .msg files into a msg/ folder, so that add_message_files installs them
   # into share/${project_name}/msg.
   file(GLOB _generated_ros1_schemas RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" ../schemas/ros1/*)
+  message(STATUS "Using msg files: ${_generated_ros1_schemas}")
   file(REMOVE_RECURSE msg)
   file(COPY
     ${_generated_ros1_schemas}
@@ -32,6 +33,10 @@ if(${ROS_VERSION} EQUAL 1)
   generate_messages(DEPENDENCIES visualization_msgs geometry_msgs)
 
   catkin_package(CATKIN_DEPENDS message_runtime)
+
+  if(CATKIN_ENABLE_TESTING)
+    catkin_add_nosetests(test/test_msgs.py DEPENDENCIES ${${PROJECT_NAME}_EXPORTED_TARGETS})
+  endif()
 
 elseif(${ROS_VERSION} EQUAL 2)
   cmake_minimum_required(VERSION 3.5)
@@ -62,6 +67,7 @@ elseif(${ROS_VERSION} EQUAL 2)
     DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/msg"
   )
   file(GLOB _all_msg_files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" msg/*)
+  message(STATUS "Using msg files: ${_all_msg_files}")
   rosidl_generate_interfaces(${PROJECT_NAME}
     ${_all_msg_files}
     DEPENDENCIES visualization_msgs geometry_msgs
@@ -71,8 +77,13 @@ elseif(${ROS_VERSION} EQUAL 2)
   ament_export_dependencies(rosidl_default_runtime)
 
   if(BUILD_TESTING)
+    find_package(ament_cmake_pytest REQUIRED)
     find_package(ament_lint_auto REQUIRED)
+    list(APPEND AMENT_LINT_AUTO_EXCLUDE
+      ament_cmake_copyright
+    )
     ament_lint_auto_find_test_dependencies()
+    ament_add_pytest_test(${PROJECT_NAME}_test_msgs test/test_msgs.py)
   endif()
 
   ament_package()

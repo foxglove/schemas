@@ -33,6 +33,10 @@ if(${ROS_VERSION} EQUAL 1)
 
   catkin_package(CATKIN_DEPENDS message_runtime)
 
+  if (CATKIN_ENABLE_TESTING)
+    catkin_add_nosetests(test/test_msgs.py DEPENDENCIES ${${PROJECT_NAME}_EXPORTED_TARGETS})
+  endif()
+
 elseif(${ROS_VERSION} EQUAL 2)
   cmake_minimum_required(VERSION 3.5)
   project(foxglove_msgs)
@@ -71,8 +75,10 @@ elseif(${ROS_VERSION} EQUAL 2)
   ament_export_dependencies(rosidl_default_runtime)
 
   if(BUILD_TESTING)
+    find_package(ament_cmake_pytest REQUIRED)
     find_package(ament_lint_auto REQUIRED)
     ament_lint_auto_find_test_dependencies()
+    ament_add_pytest_test(${PROJECT_NAME}_test_msgs test/test_msgs.py)
   endif()
 
   ament_package()

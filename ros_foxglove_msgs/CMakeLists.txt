@@ -33,7 +33,7 @@ if(${ROS_VERSION} EQUAL 1)
 
   catkin_package(CATKIN_DEPENDS message_runtime)
 
-  if (CATKIN_ENABLE_TESTING)
+  if(CATKIN_ENABLE_TESTING)
     catkin_add_nosetests(test/test_msgs.py DEPENDENCIES ${${PROJECT_NAME}_EXPORTED_TARGETS})
   endif()
 

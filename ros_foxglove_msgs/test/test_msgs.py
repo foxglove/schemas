@@ -1,4 +1,5 @@
-# Copyright (c) 2022 Foxglove Technologies Inc
+# Copyright (c) Foxglove Technologies Inc.
+# Licensed under the MIT License
 
 from foxglove_msgs.msg import Color
 

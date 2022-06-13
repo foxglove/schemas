@@ -22,6 +22,9 @@ if(${ROS_VERSION} EQUAL 1)
   # into share/${project_name}/msg.
   file(GLOB _generated_ros1_schemas RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" ../schemas/ros1/*)
   message(STATUS "Using msg files: ${_generated_ros1_schemas}")
+  if(NOT _generated_ros1_schemas)
+    message(FATAL_ERROR "No msg files found")
+  endif()
   file(REMOVE_RECURSE msg)
   file(COPY
     ${_generated_ros1_schemas}
@@ -68,6 +71,9 @@ elseif(${ROS_VERSION} EQUAL 2)
   )
   file(GLOB _all_msg_files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" msg/*)
   message(STATUS "Using msg files: ${_all_msg_files}")
+  if(NOT _all_msg_files)
+    message(FATAL_ERROR "No msg files found")
+  endif()
   rosidl_generate_interfaces(${PROJECT_NAME}
     ${_all_msg_files}
     DEPENDENCIES visualization_msgs geometry_msgs

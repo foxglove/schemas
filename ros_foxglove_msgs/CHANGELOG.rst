@@ -2,7 +2,7 @@
 Changelog for package foxglove_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
+1.2.2 (2022-06-13)
 ------------------
 * Fix CMake build accessing parent directory
 * Contributors: Jacob Bandes-Storch

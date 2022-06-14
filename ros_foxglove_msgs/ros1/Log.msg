@@ -1,0 +1,26 @@
+# Generated from Log by @foxglove/schemas
+
+# Timestamp of log message
+time timestamp
+
+uint8 UNKNOWN=0
+uint8 DEBUG=1
+uint8 INFO=2
+uint8 WARNING=3
+uint8 ERROR=4
+uint8 FATAL=5
+
+# Log level
+uint8 level
+
+# Log message
+string message
+
+# Process or node name
+string name
+
+# Filename
+string file
+
+# Line number in the file
+uint32 line

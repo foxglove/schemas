@@ -16,7 +16,7 @@ async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write("done\n");
 }
 
-async function main({ outDir }: { outDir: string }) {
+async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }) {
   await logProgress("Removing any existing output directory", async () => {
     await promisify(rimraf)(outDir);
   });
@@ -33,27 +33,27 @@ async function main({ outDir }: { outDir: string }) {
 
   await logProgress("Generating ROS 1 msg files", async () => {
     await fs.mkdir(path.join(outDir, "ros1"), { recursive: true });
+    await fs.mkdir(path.join(rosOutDir, "ros1"), { recursive: true });
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       if (schema.rosEquivalent != undefined) {
         continue;
       }
-      await fs.writeFile(
-        path.join(outDir, "ros1", `${schema.name}.msg`),
-        generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 1 })),
-      );
+      const msg = generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 1 }));
+      await fs.writeFile(path.join(outDir, "ros1", `${schema.name}.msg`), msg);
+      await fs.writeFile(path.join(rosOutDir, "ros1", `${schema.name}.msg`), msg);
     }
   });
 
   await logProgress("Generating ROS 2 msg files", async () => {
     await fs.mkdir(path.join(outDir, "ros2"), { recursive: true });
+    await fs.mkdir(path.join(rosOutDir, "ros2"), { recursive: true });
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       if (schema.rosEquivalent != undefined) {
         continue;
       }
-      await fs.writeFile(
-        path.join(outDir, "ros2", `${schema.name}.msg`),
-        generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 2 })),
-      );
+      const msg = generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 2 }));
+      await fs.writeFile(path.join(outDir, "ros2", `${schema.name}.msg`), msg);
+      await fs.writeFile(path.join(rosOutDir, "ros2", `${schema.name}.msg`), msg);
     }
   });
 
@@ -98,6 +98,9 @@ async function main({ outDir }: { outDir: string }) {
   });
 }
 
-program.requiredOption("-o, --out-dir <dir>", "output directory").action(main);
+program
+  .requiredOption("-o, --out-dir <dir>", "output directory")
+  .requiredOption("--ros-out-dir <dir>", "output directory for additional copies of ROS msgs")
+  .action(main);
 
 program.parseAsync().catch(console.error);

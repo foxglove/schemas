@@ -72,13 +72,13 @@ elseif(${ROS_VERSION} EQUAL 2)
     ImageMarkerArray.msg
     DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/msg"
   )
-  
+
   file(GLOB _all_msg_files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" msg/*)
   message(STATUS "Using msg files: ${_all_msg_files}")
   if(NOT _all_msg_files)
     message(FATAL_ERROR "No msg files found")
   endif()
-  
+
   rosidl_generate_interfaces(${PROJECT_NAME}
     ${_all_msg_files}
     DEPENDENCIES visualization_msgs geometry_msgs

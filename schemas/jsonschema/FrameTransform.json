@@ -28,71 +28,47 @@
       "type": "string",
       "description": "Name of the child frame"
     },
-    "transform": {
-      "$comment": "Generated from Transform by @foxglove/schemas",
-      "title": "Transform",
-      "description": "Transform from parent frame to child frame",
+    "translation": {
+      "$comment": "Generated from Vector3 by @foxglove/schemas",
+      "title": "Vector3",
+      "description": "Translation component of the transform",
       "type": "object",
       "properties": {
-        "timestamp": {
-          "type": "object",
-          "title": "time",
-          "properties": {
-            "sec": {
-              "type": "integer",
-              "minimum": 0
-            },
-            "nsec": {
-              "type": "integer",
-              "minimum": 0,
-              "maximum": 999999999
-            }
-          },
-          "description": "Transform time"
+        "x": {
+          "type": "number",
+          "description": "x coordinate length"
         },
-        "translation": {
-          "$comment": "Generated from Vector3 by @foxglove/schemas",
-          "title": "Vector3",
-          "description": "Translation component of the transform",
-          "type": "object",
-          "properties": {
-            "x": {
-              "type": "number",
-              "description": "x coordinate length"
-            },
-            "y": {
-              "type": "number",
-              "description": "y coordinate length"
-            },
-            "z": {
-              "type": "number",
-              "description": "z coordinate length"
-            }
-          }
+        "y": {
+          "type": "number",
+          "description": "y coordinate length"
         },
-        "rotation": {
-          "$comment": "Generated from Quaternion by @foxglove/schemas",
-          "title": "Quaternion",
-          "description": "Rotation component of the transform",
-          "type": "object",
-          "properties": {
-            "x": {
-              "type": "number",
-              "description": "x value"
-            },
-            "y": {
-              "type": "number",
-              "description": "y value"
-            },
-            "z": {
-              "type": "number",
-              "description": "z value"
-            },
-            "w": {
-              "type": "number",
-              "description": "w value"
-            }
-          }
+        "z": {
+          "type": "number",
+          "description": "z coordinate length"
+        }
+      }
+    },
+    "rotation": {
+      "$comment": "Generated from Quaternion by @foxglove/schemas",
+      "title": "Quaternion",
+      "description": "Rotation component of the transform",
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number",
+          "description": "x value"
+        },
+        "y": {
+          "type": "number",
+          "description": "y value"
+        },
+        "z": {
+          "type": "number",
+          "description": "z value"
+        },
+        "w": {
+          "type": "number",
+          "description": "w value"
         }
       }
     }

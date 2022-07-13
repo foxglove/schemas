@@ -2,7 +2,8 @@
 
 syntax = "proto3";
 
-import "foxglove/Transform.proto";
+import "foxglove/Quaternion.proto";
+import "foxglove/Vector3.proto";
 import "google/protobuf/timestamp.proto";
 
 package foxglove;
@@ -18,6 +19,9 @@ message FrameTransform {
   // Name of the child frame
   string child_frame_id = 3;
 
-  // Transform from parent frame to child frame
-  foxglove.Transform transform = 4;
+  // Translation component of the transform
+  foxglove.Vector3 translation = 4;
+
+  // Rotation component of the transform
+  foxglove.Quaternion rotation = 5;
 }

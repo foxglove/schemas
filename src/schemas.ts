@@ -311,29 +311,6 @@ const foxglove_RawImage: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_Transform: FoxgloveMessageSchema = {
-  type: "message",
-  name: "Transform",
-  description: "A transform in 3D space",
-  fields: [
-    {
-      name: "timestamp",
-      type: { type: "primitive", name: "time" },
-      description: "Transform time",
-    },
-    {
-      name: "translation",
-      type: { type: "nested", schema: foxglove_Vector3 },
-      description: "Translation component of the transform",
-    },
-    {
-      name: "rotation",
-      type: { type: "nested", schema: foxglove_Quaternion },
-      description: "Rotation component of the transform",
-    },
-  ],
-};
-
 const foxglove_FrameTransform: FoxgloveMessageSchema = {
   type: "message",
   name: "FrameTransform",
@@ -355,9 +332,14 @@ const foxglove_FrameTransform: FoxgloveMessageSchema = {
       description: "Name of the child frame",
     },
     {
-      name: "transform",
-      type: { type: "nested", schema: foxglove_Transform },
-      description: "Transform from parent frame to child frame",
+      name: "translation",
+      type: { type: "nested", schema: foxglove_Vector3 },
+      description: "Translation component of the transform",
+    },
+    {
+      name: "rotation",
+      type: { type: "nested", schema: foxglove_Quaternion },
+      description: "Rotation component of the transform",
     },
   ],
 };
@@ -840,7 +822,6 @@ export const foxgloveMessageSchemas = {
   PosesInFrame: foxglove_PosesInFrame,
   Quaternion: foxglove_Quaternion,
   RawImage: foxglove_RawImage,
-  Transform: foxglove_Transform,
   Vector2: foxglove_Vector2,
   Vector3: foxglove_Vector3,
 };

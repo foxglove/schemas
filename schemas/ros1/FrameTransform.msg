@@ -9,5 +9,8 @@ string parent_frame_id
 # Name of the child frame
 string child_frame_id
 
-# Transform from parent frame to child frame
-foxglove_msgs/Transform transform
+# Translation component of the transform
+geometry_msgs/Vector3 translation
+
+# Rotation component of the transform
+geometry_msgs/Quaternion rotation

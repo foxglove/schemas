@@ -23,6 +23,5 @@ export * from "./PosesInFrame";
 export * from "./PositionCovarianceType";
 export * from "./Quaternion";
 export * from "./RawImage";
-export * from "./Transform";
 export * from "./Vector2";
 export * from "./Vector3";

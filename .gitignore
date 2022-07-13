@@ -1,6 +1,7 @@
-.DS_Store
-node_modules
 .catkin_tools
+.DS_Store
 build
+dist
 install
 log
+node_modules

@@ -51,6 +51,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - docker_image: rostooling/setup-ros-docker:ubuntu-bionic-ros-melodic-ros-base-latest
+            ros_distribution: melodic
+            ros_version: 1
           - docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-noetic-ros-base-latest
             ros_distribution: noetic
             ros_version: 1

@@ -20,11 +20,22 @@ The schema definitions are in [src/schemas.ts](src/schemas.ts).
 
 After editing the schemas, re-generate the language-specific definitions by running `yarn update-generated-files`.
 
-### Releasing
+### Releasing to NPM
 
 1. Run `yarn version --[major|minor|patch]` to bump version
 2. Run `git push && git push --tags` to push new tag
 3. GitHub Actions will take care of the rest
+
+### Releasing foxglove_msgs for ROS
+
+For first-time setup, follow the guides for [installing bloom](http://ros-infrastructure.github.io/bloom/) and [authenticating with GitHub](https://wiki.ros.org/bloom/Tutorials/GithubManualAuthorization).
+
+The following is a modified version of [bloom release instructions](https://wiki.ros.org/bloom/Tutorials/ReleaseCatkinPackage) (because catkin_generate_changelog and catkin_prepare_release can't handle our custom tag format of `ros-vX.Y.Z`).
+
+1. Manually update `package.xml` and `CHANGELOG.rst` with new version info
+2. Manually create a tag named `ros-vX.Y.Z` for the new version
+3. Push the newly created commit and tag
+4. Run `bloom-release foxglove_msgs --ros-distro humble`, for each distro you want to publish the release to. Follow the prompts which will make a PR to the ros/rosdistro repo.
 
 ## Stay in touch
 

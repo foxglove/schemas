@@ -12,436 +12,438 @@ describe("generateRosMsgDefinition", () => {
   it("generates msg definition description for ROS 1", () => {
     expect(generateRosMsgDefinition(exampleMessageWithoutArrayOfBytes, { rosVersion: 1 }))
       .toMatchInlineSnapshot(`
-    Object {
-      "fields": Array [
-        Object {
-          "arrayLength": undefined,
-          "description": "duration field",
-          "isArray": false,
-          "isComplex": false,
-          "name": "field_duration",
-          "type": "duration",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "time field",
-          "isArray": false,
-          "isComplex": false,
-          "name": "field_time",
-          "type": "time",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "boolean field",
-          "isArray": false,
-          "isComplex": false,
-          "name": "field_boolean",
-          "type": "bool",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "bytes field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_bytes",
-          "type": "uint8",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "float64 field",
-          "isArray": false,
-          "isComplex": false,
-          "name": "field_float64",
-          "type": "float64",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "uint32 field",
-          "isArray": false,
-          "isComplex": false,
-          "name": "field_uint32",
-          "type": "uint32",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "string field",
-          "isArray": false,
-          "isComplex": false,
-          "name": "field_string",
-          "type": "string",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "duration array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_duration_array",
-          "type": "duration",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "time array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_time_array",
-          "type": "time",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "boolean array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_boolean_array",
-          "type": "bool",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "float64 array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_float64_array",
-          "type": "float64",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "uint32 array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_uint32_array",
-          "type": "uint32",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "string array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_string_array",
-          "type": "string",
-        },
-        Object {
-          "arrayLength": 3,
-          "description": "duration fixed-length array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_duration_fixed_array",
-          "type": "duration",
-        },
-        Object {
-          "arrayLength": 3,
-          "description": "time fixed-length array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_time_fixed_array",
-          "type": "time",
-        },
-        Object {
-          "arrayLength": 3,
-          "description": "boolean fixed-length array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_boolean_fixed_array",
-          "type": "bool",
-        },
-        Object {
-          "arrayLength": 3,
-          "description": "float64 fixed-length array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_float64_fixed_array",
-          "type": "float64",
-        },
-        Object {
-          "arrayLength": 3,
-          "description": "uint32 fixed-length array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_uint32_fixed_array",
-          "type": "uint32",
-        },
-        Object {
-          "arrayLength": 3,
-          "description": "string fixed-length array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_string_fixed_array",
-          "type": "string",
-        },
-        Object {
-          "description": "Value A",
-          "isConstant": true,
-          "name": "A",
-          "type": "uint8",
-          "value": 1,
-          "valueText": "1",
-        },
-        Object {
-          "description": "Value B",
-          "isConstant": true,
-          "name": "B",
-          "type": "uint8",
-          "value": 2,
-          "valueText": "2",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "An enum field",
-          "isArray": false,
-          "isComplex": false,
-          "name": "field_enum",
-          "type": "uint8",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "An enum array field",
-          "isArray": true,
-          "isComplex": false,
-          "name": "field_enum_array",
-          "type": "uint8",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "A nested field",
-          "isArray": false,
-          "isComplex": true,
-          "name": "field_nested",
-          "type": "foxglove_msgs/NestedMessage",
-        },
-        Object {
-          "arrayLength": undefined,
-          "description": "A nested array field
-    With
-    a
-    very
-    long
-    description",
-          "isArray": true,
-          "isComplex": true,
-          "name": "field_nested_array",
-          "type": "foxglove_msgs/NestedMessage",
-        },
-      ],
-      "originalName": "ExampleMessage",
-      "rosFullInterfaceName": "foxglove_msgs/ExampleMessage",
-      "rosMsgInterfaceName": "foxglove_msgs/ExampleMessage",
-    }
-  `);
+      Object {
+        "description": "An example type",
+        "fields": Array [
+          Object {
+            "arrayLength": undefined,
+            "description": "duration field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_duration",
+            "type": "duration",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "time field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_time",
+            "type": "time",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "boolean field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_boolean",
+            "type": "bool",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "bytes field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_bytes",
+            "type": "uint8",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "float64 field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_float64",
+            "type": "float64",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "uint32 field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_uint32",
+            "type": "uint32",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "string field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_string",
+            "type": "string",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "duration array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_duration_array",
+            "type": "duration",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "time array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_time_array",
+            "type": "time",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "boolean array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_boolean_array",
+            "type": "bool",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "float64 array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_float64_array",
+            "type": "float64",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "uint32 array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_uint32_array",
+            "type": "uint32",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "string array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_string_array",
+            "type": "string",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "duration fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_duration_fixed_array",
+            "type": "duration",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "time fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_time_fixed_array",
+            "type": "time",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "boolean fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_boolean_fixed_array",
+            "type": "bool",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "float64 fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_float64_fixed_array",
+            "type": "float64",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "uint32 fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_uint32_fixed_array",
+            "type": "uint32",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "string fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_string_fixed_array",
+            "type": "string",
+          },
+          Object {
+            "description": "Value A",
+            "isConstant": true,
+            "name": "A",
+            "type": "uint8",
+            "value": 1,
+            "valueText": "1",
+          },
+          Object {
+            "description": "Value B",
+            "isConstant": true,
+            "name": "B",
+            "type": "uint8",
+            "value": 2,
+            "valueText": "2",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "An enum field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_enum",
+            "type": "uint8",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "An enum array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_enum_array",
+            "type": "uint8",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "A nested field",
+            "isArray": false,
+            "isComplex": true,
+            "name": "field_nested",
+            "type": "foxglove_msgs/NestedMessage",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "A nested array field
+      With
+      a
+      very
+      long
+      description",
+            "isArray": true,
+            "isComplex": true,
+            "name": "field_nested_array",
+            "type": "foxglove_msgs/NestedMessage",
+          },
+        ],
+        "originalName": "ExampleMessage",
+        "rosFullInterfaceName": "foxglove_msgs/ExampleMessage",
+        "rosMsgInterfaceName": "foxglove_msgs/ExampleMessage",
+      }
+    `);
   });
   it("generates msg definition description for ROS 2", () => {
     expect(generateRosMsgDefinition(exampleMessageWithoutArrayOfBytes, { rosVersion: 2 }))
       .toMatchInlineSnapshot(`
-  Object {
-    "fields": Array [
       Object {
-        "arrayLength": undefined,
-        "description": "duration field",
-        "isArray": false,
-        "isComplex": false,
-        "name": "field_duration",
-        "type": "builtin_interfaces/Duration",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "time field",
-        "isArray": false,
-        "isComplex": false,
-        "name": "field_time",
-        "type": "builtin_interfaces/Time",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "boolean field",
-        "isArray": false,
-        "isComplex": false,
-        "name": "field_boolean",
-        "type": "bool",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "bytes field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_bytes",
-        "type": "uint8",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "float64 field",
-        "isArray": false,
-        "isComplex": false,
-        "name": "field_float64",
-        "type": "float64",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "uint32 field",
-        "isArray": false,
-        "isComplex": false,
-        "name": "field_uint32",
-        "type": "uint32",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "string field",
-        "isArray": false,
-        "isComplex": false,
-        "name": "field_string",
-        "type": "string",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "duration array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_duration_array",
-        "type": "builtin_interfaces/Duration",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "time array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_time_array",
-        "type": "builtin_interfaces/Time",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "boolean array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_boolean_array",
-        "type": "bool",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "float64 array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_float64_array",
-        "type": "float64",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "uint32 array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_uint32_array",
-        "type": "uint32",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "string array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_string_array",
-        "type": "string",
-      },
-      Object {
-        "arrayLength": 3,
-        "description": "duration fixed-length array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_duration_fixed_array",
-        "type": "builtin_interfaces/Duration",
-      },
-      Object {
-        "arrayLength": 3,
-        "description": "time fixed-length array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_time_fixed_array",
-        "type": "builtin_interfaces/Time",
-      },
-      Object {
-        "arrayLength": 3,
-        "description": "boolean fixed-length array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_boolean_fixed_array",
-        "type": "bool",
-      },
-      Object {
-        "arrayLength": 3,
-        "description": "float64 fixed-length array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_float64_fixed_array",
-        "type": "float64",
-      },
-      Object {
-        "arrayLength": 3,
-        "description": "uint32 fixed-length array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_uint32_fixed_array",
-        "type": "uint32",
-      },
-      Object {
-        "arrayLength": 3,
-        "description": "string fixed-length array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_string_fixed_array",
-        "type": "string",
-      },
-      Object {
-        "description": "Value A",
-        "isConstant": true,
-        "name": "A",
-        "type": "uint8",
-        "value": 1,
-        "valueText": "1",
-      },
-      Object {
-        "description": "Value B",
-        "isConstant": true,
-        "name": "B",
-        "type": "uint8",
-        "value": 2,
-        "valueText": "2",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "An enum field",
-        "isArray": false,
-        "isComplex": false,
-        "name": "field_enum",
-        "type": "uint8",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "An enum array field",
-        "isArray": true,
-        "isComplex": false,
-        "name": "field_enum_array",
-        "type": "uint8",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "A nested field",
-        "isArray": false,
-        "isComplex": true,
-        "name": "field_nested",
-        "type": "foxglove_msgs/NestedMessage",
-      },
-      Object {
-        "arrayLength": undefined,
-        "description": "A nested array field
-  With
-  a
-  very
-  long
-  description",
-        "isArray": true,
-        "isComplex": true,
-        "name": "field_nested_array",
-        "type": "foxglove_msgs/NestedMessage",
-      },
-    ],
-    "originalName": "ExampleMessage",
-    "rosFullInterfaceName": "foxglove_msgs/msg/ExampleMessage",
-    "rosMsgInterfaceName": "foxglove_msgs/ExampleMessage",
-  }
-`);
+        "description": "An example type",
+        "fields": Array [
+          Object {
+            "arrayLength": undefined,
+            "description": "duration field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_duration",
+            "type": "builtin_interfaces/Duration",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "time field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_time",
+            "type": "builtin_interfaces/Time",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "boolean field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_boolean",
+            "type": "bool",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "bytes field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_bytes",
+            "type": "uint8",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "float64 field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_float64",
+            "type": "float64",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "uint32 field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_uint32",
+            "type": "uint32",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "string field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_string",
+            "type": "string",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "duration array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_duration_array",
+            "type": "builtin_interfaces/Duration",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "time array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_time_array",
+            "type": "builtin_interfaces/Time",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "boolean array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_boolean_array",
+            "type": "bool",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "float64 array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_float64_array",
+            "type": "float64",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "uint32 array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_uint32_array",
+            "type": "uint32",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "string array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_string_array",
+            "type": "string",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "duration fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_duration_fixed_array",
+            "type": "builtin_interfaces/Duration",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "time fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_time_fixed_array",
+            "type": "builtin_interfaces/Time",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "boolean fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_boolean_fixed_array",
+            "type": "bool",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "float64 fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_float64_fixed_array",
+            "type": "float64",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "uint32 fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_uint32_fixed_array",
+            "type": "uint32",
+          },
+          Object {
+            "arrayLength": 3,
+            "description": "string fixed-length array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_string_fixed_array",
+            "type": "string",
+          },
+          Object {
+            "description": "Value A",
+            "isConstant": true,
+            "name": "A",
+            "type": "uint8",
+            "value": 1,
+            "valueText": "1",
+          },
+          Object {
+            "description": "Value B",
+            "isConstant": true,
+            "name": "B",
+            "type": "uint8",
+            "value": 2,
+            "valueText": "2",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "An enum field",
+            "isArray": false,
+            "isComplex": false,
+            "name": "field_enum",
+            "type": "uint8",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "An enum array field",
+            "isArray": true,
+            "isComplex": false,
+            "name": "field_enum_array",
+            "type": "uint8",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "A nested field",
+            "isArray": false,
+            "isComplex": true,
+            "name": "field_nested",
+            "type": "foxglove_msgs/NestedMessage",
+          },
+          Object {
+            "arrayLength": undefined,
+            "description": "A nested array field
+      With
+      a
+      very
+      long
+      description",
+            "isArray": true,
+            "isComplex": true,
+            "name": "field_nested_array",
+            "type": "foxglove_msgs/NestedMessage",
+          },
+        ],
+        "originalName": "ExampleMessage",
+        "rosFullInterfaceName": "foxglove_msgs/msg/ExampleMessage",
+        "rosMsgInterfaceName": "foxglove_msgs/ExampleMessage",
+      }
+    `);
   });
 });
 
@@ -454,7 +456,10 @@ describe("generateRosMsg", () => {
         }),
       ),
     ).toMatchInlineSnapshot(`
-      "# Generated from ExampleMessage by @foxglove/schemas
+      "# foxglove_msgs/ExampleMessage
+      # An example type
+
+      # Generated by https://github.com/foxglove/schemas
 
       # duration field
       duration field_duration
@@ -547,7 +552,10 @@ describe("generateRosMsg", () => {
         }),
       ),
     ).toMatchInlineSnapshot(`
-      "# Generated from ExampleMessage by @foxglove/schemas
+      "# foxglove_msgs/msg/ExampleMessage
+      # An example type
+
+      # Generated by https://github.com/foxglove/schemas
 
       # duration field
       builtin_interfaces/Duration field_duration
@@ -639,7 +647,10 @@ describe("generateRosMsgMergedSchema", () => {
       rosVersion: 1,
     });
     expect(mergedSchema).toMatchInlineSnapshot(`
-      "# Generated from ExampleMessage by @foxglove/schemas
+      "# foxglove_msgs/ExampleMessage
+      # An example type
+
+      # Generated by https://github.com/foxglove/schemas
 
       # duration field
       duration field_duration
@@ -722,7 +733,10 @@ describe("generateRosMsgMergedSchema", () => {
       foxglove_msgs/NestedMessage[] field_nested_array
       ================================================================================
       MSG: foxglove_msgs/NestedMessage
-      # Generated from NestedMessage by @foxglove/schemas
+      # foxglove_msgs/NestedMessage
+      # An example nested message
+
+      # Generated by https://github.com/foxglove/schemas
 
       # An enum field
       uint32 field_enum
@@ -913,7 +927,10 @@ describe("generateRosMsgMergedSchema", () => {
       rosVersion: 2,
     });
     expect(mergedSchema).toMatchInlineSnapshot(`
-      "# Generated from ExampleMessage by @foxglove/schemas
+      "# foxglove_msgs/msg/ExampleMessage
+      # An example type
+
+      # Generated by https://github.com/foxglove/schemas
 
       # duration field
       builtin_interfaces/Duration field_duration
@@ -996,7 +1013,10 @@ describe("generateRosMsgMergedSchema", () => {
       foxglove_msgs/NestedMessage[] field_nested_array
       ================================================================================
       MSG: foxglove_msgs/NestedMessage
-      # Generated from NestedMessage by @foxglove/schemas
+      # foxglove_msgs/msg/NestedMessage
+      # An example nested message
+
+      # Generated by https://github.com/foxglove/schemas
 
       # An enum field
       uint32 field_enum

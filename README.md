@@ -2,7 +2,35 @@
 
 > [Message schemas](https://foxglove.dev/docs/studio/messages/introduction) supported by [Foxglove Studio](https://studio.foxglove.dev)
 
-[![npm version](https://img.shields.io/npm/v/@foxglove/schemas.svg?style=flat)](https://www.npmjs.com/package/@foxglove/schemas)
+<table>
+<tr><td>
+
+`@foxglove/schemas`
+
+</td>
+<td>
+
+[![npm version](https://img.shields.io/npm/v/@foxglove/schemas)](https://www.npmjs.com/package/@foxglove/schemas)
+
+</td></tr>
+<tr><td>
+
+`foxglove_msgs`
+
+</td>
+<td>
+
+<!-- Not yet released in Melodic -->
+<!-- [![ROS Melodic version](https://img.shields.io/ros/v/melodic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#melodic)   -->
+
+[![ROS Noetic version](https://img.shields.io/ros/v/noetic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#noetic)  
+[![ROS Foxy version](https://img.shields.io/ros/v/foxy/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#foxy)  
+[![ROS Galactic version](https://img.shields.io/ros/v/galactic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#galactic)  
+[![ROS Humble version](https://img.shields.io/ros/v/humble/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#humble)  
+[![ROS Rolling version](https://img.shields.io/ros/v/rolling/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#rolling)
+
+</td></tr>
+</table>
 
 ## Introduction
 

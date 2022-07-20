@@ -51,6 +51,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - docker_image: rostooling/setup-ros-docker:ubuntu-bionic-ros-melodic-ros-base-latest
+            ros_distribution: melodic
+            ros_version: 1
           - docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-noetic-ros-base-latest
             ros_distribution: noetic
             ros_version: 1
@@ -60,7 +63,10 @@ jobs:
           - docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
             ros_distribution: galactic
             ros_version: 2
-          - docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-rolling-ros-base-latest
+          - docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-humble-ros-base-latest
+            ros_distribution: humble
+            ros_version: 2
+          - docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-rolling-ros-base-latest
             ros_distribution: rolling
             ros_version: 2
     name: "ROS ${{ matrix.ros_distribution }}"

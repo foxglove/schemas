@@ -2,6 +2,16 @@
 Changelog for package foxglove_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.0 (2022-07-15)
+------------------
+* Consolidate Transform and FrameTransform
+* Contributors: Adrian Macneil
+
+1.2.2 (2022-06-13)
+------------------
+* Fix CMake build accessing parent directory
+* Contributors: Jacob Bandes-Storch
+
 1.2.1 (2022-06-03)
 ------------------
 * Fix CMake install share directory

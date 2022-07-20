@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>foxglove_msgs</name>
-  <version>1.2.1</version>
+  <version>2.0.0</version>
   <description>
     foxglove_msgs provides visualization messages that are supported by Foxglove Studio.
   </description>
@@ -25,6 +25,7 @@
   <exec_depend condition="$ROS_VERSION == 1">message_runtime</exec_depend>
   <exec_depend condition="$ROS_VERSION == 2">rosidl_default_runtime</exec_depend>
 
+  <test_depend condition="$ROS_VERSION == 2">ament_cmake_pytest</test_depend>
   <test_depend condition="$ROS_VERSION == 2">ament_lint_auto</test_depend>
   <test_depend condition="$ROS_VERSION == 2">ament_lint_common</test_depend>
 

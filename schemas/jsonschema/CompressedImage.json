@@ -27,7 +27,7 @@
     },
     "format": {
       "type": "string",
-      "description": "Image format"
+      "description": "Image format (webp, jpeg, png)"
     }
   }
 }

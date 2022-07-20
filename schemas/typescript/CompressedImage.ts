@@ -10,6 +10,6 @@ export type CompressedImage = {
   /** Compressed image data */
   data: Uint8Array;
 
-  /** Image format */
+  /** Image format (webp, jpeg, png) */
   format: string;
 };

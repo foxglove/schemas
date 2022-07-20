@@ -9,10 +9,7 @@ builtin_interfaces/Time timestamp
 # Frame of reference
 string frame_id
 
-# Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.
-string namespace
-
-# Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.
+# Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`.
 string id
 
 # Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.

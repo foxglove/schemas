@@ -14,10 +14,7 @@ export type TextMarker = {
   /** Frame of reference */
   frame_id: string;
 
-  /** Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`. */
-  namespace: string;
-
-  /** Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`. */
+  /** Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`. */
   id: string;
 
   /** Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted. */

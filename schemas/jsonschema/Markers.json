@@ -32,26 +32,18 @@
             "description": "Type of deletion action to perform",
             "oneOf": [
               {
-                "title": "MATCHING_NAMESPACE_AND_ID",
+                "title": "MATCHING_ID",
                 "const": 0
               },
               {
-                "title": "MATCHING_NAMESPACE",
-                "const": 1
-              },
-              {
                 "title": "ALL",
-                "const": 2
+                "const": 1
               }
             ]
           },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`."
-          },
           "id": {
             "type": "string",
-            "description": "Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`."
+            "description": "Numeric identifier which must match if `kind` is `MATCHING_ID`."
           }
         }
       },
@@ -84,13 +76,9 @@
             "type": "string",
             "description": "Frame of reference"
           },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
-          },
           "id": {
             "type": "string",
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
+            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`."
           },
           "lifetime": {
             "type": "object",
@@ -249,13 +237,9 @@
             "type": "string",
             "description": "Frame of reference"
           },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
-          },
           "id": {
             "type": "string",
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
+            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`."
           },
           "lifetime": {
             "type": "object",
@@ -417,13 +401,9 @@
             "type": "string",
             "description": "Frame of reference"
           },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
-          },
           "id": {
             "type": "string",
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
+            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`."
           },
           "lifetime": {
             "type": "object",
@@ -585,13 +565,9 @@
             "type": "string",
             "description": "Frame of reference"
           },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
-          },
           "id": {
             "type": "string",
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
+            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`."
           },
           "lifetime": {
             "type": "object",
@@ -746,13 +722,9 @@
             "type": "string",
             "description": "Frame of reference"
           },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
-          },
           "id": {
             "type": "string",
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
+            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`."
           },
           "lifetime": {
             "type": "object",
@@ -982,13 +954,9 @@
             "type": "string",
             "description": "Frame of reference"
           },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
-          },
           "id": {
             "type": "string",
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
+            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`."
           },
           "lifetime": {
             "type": "object",
@@ -1189,13 +1157,9 @@
             "type": "string",
             "description": "Frame of reference"
           },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
-          },
           "id": {
             "type": "string",
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
+            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`."
           },
           "lifetime": {
             "type": "object",
@@ -1354,13 +1318,9 @@
             "type": "string",
             "description": "Frame of reference"
           },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
-          },
           "id": {
             "type": "string",
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
+            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`."
           },
           "lifetime": {
             "type": "object",

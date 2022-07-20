@@ -24,13 +24,9 @@
       "type": "string",
       "description": "Frame of reference"
     },
-    "namespace": {
-      "type": "string",
-      "description": "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
-    },
     "id": {
       "type": "string",
-      "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`."
+      "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`."
     },
     "lifetime": {
       "type": "object",

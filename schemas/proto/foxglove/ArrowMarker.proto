@@ -18,36 +18,33 @@ message ArrowMarker {
   // Frame of reference
   string frame_id = 2;
 
-  // Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.
-  string namespace = 3;
-
-  // Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.
-  string id = 4;
+  // Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`.
+  string id = 3;
 
   // Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.
-  google.protobuf.Duration lifetime = 5;
+  google.protobuf.Duration lifetime = 4;
 
   // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
-  bool frame_locked = 6;
+  bool frame_locked = 5;
 
   // Additional user-provided metadata associated with the marker. Keys must be unique.
-  repeated foxglove.KeyValuePair metadata = 7;
+  repeated foxglove.KeyValuePair metadata = 6;
 
   // Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.
-  foxglove.Pose pose = 8;
+  foxglove.Pose pose = 7;
 
   // Length of the arrow
-  double length = 9;
+  double length = 8;
 
   // Diameter of the arrow shaft
-  double shaft_diameter = 10;
+  double shaft_diameter = 9;
 
   // Diameter of the arrow head
-  double head_diameter = 11;
+  double head_diameter = 10;
 
   // Length of the arrow head
-  double head_length = 12;
+  double head_length = 11;
 
   // Color of the arrow
-  foxglove.Color color = 13;
+  foxglove.Color color = 12;
 }

@@ -6,15 +6,11 @@
 # Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.
 time timestamp
 
-uint8 MATCHING_NAMESPACE_AND_ID=0
-uint8 MATCHING_NAMESPACE=1
-uint8 ALL=2
+uint8 MATCHING_ID=0
+uint8 ALL=1
 
 # Type of deletion action to perform
 uint8 type
 
-# Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`.
-string namespace
-
-# Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`.
+# Numeric identifier which must match if `kind` is `MATCHING_ID`.
 string id

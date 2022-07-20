@@ -10,11 +10,9 @@ package foxglove;
 message MarkerDeletion {
   // An enumeration indicating which markers should match a MarkerDeletion command
   enum Type {
-    MATCHING_NAMESPACE_AND_ID = 0;
+    MATCHING_ID = 0;
 
-    MATCHING_NAMESPACE = 1;
-
-    ALL = 2;
+    ALL = 1;
   }
   // Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.
   google.protobuf.Timestamp timestamp = 1;
@@ -22,9 +20,6 @@ message MarkerDeletion {
   // Type of deletion action to perform
   Type type = 2;
 
-  // Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`.
-  string namespace = 3;
-
-  // Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`.
-  string id = 4;
+  // Numeric identifier which must match if `kind` is `MATCHING_ID`.
+  string id = 3;
 }

@@ -18,36 +18,33 @@ message TextMarker {
   // Frame of reference
   string frame_id = 2;
 
-  // Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.
-  string namespace = 3;
-
-  // Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.
-  string id = 4;
+  // Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`.
+  string id = 3;
 
   // Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.
-  google.protobuf.Duration lifetime = 5;
+  google.protobuf.Duration lifetime = 4;
 
   // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
-  bool frame_locked = 6;
+  bool frame_locked = 5;
 
   // Additional user-provided metadata associated with the marker. Keys must be unique.
-  repeated foxglove.KeyValuePair metadata = 7;
+  repeated foxglove.KeyValuePair metadata = 6;
 
   // Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x.
-  foxglove.Pose pose = 8;
+  foxglove.Pose pose = 7;
 
   // Whether the text should respect `pose.orientation` (false) or always face the camera (true)
-  bool billboard = 9;
+  bool billboard = 8;
 
   // Font size (height of one line of text)
-  double font_size = 10;
+  double font_size = 9;
 
   // Indicates whether `font_size` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
-  bool scale_invariant = 11;
+  bool scale_invariant = 10;
 
   // Color of the text
-  foxglove.Color color = 12;
+  foxglove.Color color = 11;
 
   // Text
-  string text = 13;
+  string text = 12;
 }

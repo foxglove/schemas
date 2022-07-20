@@ -191,16 +191,10 @@ const commonMarkerFields: FoxgloveMessageSchema["fields"] = [
     description: "Frame of reference",
   },
   {
-    name: "namespace",
-    type: { type: "primitive", name: "string" },
-    description:
-      "Namespace into which the marker should be grouped. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
-  },
-  {
     name: "id",
     type: { type: "primitive", name: "string" },
     description:
-      "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `namespace` and `id`.",
+      "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`.",
   },
   {
     name: "lifetime",
@@ -230,9 +224,8 @@ const foxglove_MarkerDeletionType: FoxgloveEnumSchema = {
   protobufEnumName: "Type",
   description: "An enumeration indicating which markers should match a MarkerDeletion command",
   values: [
-    { value: 0, name: "MATCHING_NAMESPACE_AND_ID" },
-    { value: 1, name: "MATCHING_NAMESPACE" },
-    { value: 2, name: "ALL" },
+    { value: 0, name: "MATCHING_ID" },
+    { value: 1, name: "ALL" },
   ],
 };
 
@@ -253,15 +246,9 @@ const foxglove_MarkerDeletion: FoxgloveMessageSchema = {
       description: "Type of deletion action to perform",
     },
     {
-      name: "namespace",
-      type: { type: "primitive", name: "string" },
-      description:
-        "Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`.",
-    },
-    {
       name: "id",
       type: { type: "primitive", name: "string" },
-      description: "Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`.",
+      description: "Numeric identifier which must match if `kind` is `MATCHING_ID`.",
     },
   ],
 };

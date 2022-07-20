@@ -11,9 +11,6 @@ export type MarkerDeletion = {
   /** Type of deletion action to perform */
   type: MarkerDeletionType;
 
-  /** Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`. */
-  namespace: string;
-
-  /** Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`. */
+  /** Numeric identifier which must match if `kind` is `MATCHING_ID`. */
   id: string;
 };

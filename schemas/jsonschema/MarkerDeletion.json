@@ -25,26 +25,18 @@
       "description": "Type of deletion action to perform",
       "oneOf": [
         {
-          "title": "MATCHING_NAMESPACE_AND_ID",
+          "title": "MATCHING_ID",
           "const": 0
         },
         {
-          "title": "MATCHING_NAMESPACE",
-          "const": 1
-        },
-        {
           "title": "ALL",
-          "const": 2
+          "const": 1
         }
       ]
     },
-    "namespace": {
-      "type": "string",
-      "description": "Namespace which must match if `kind` is `MATCHING_NAMESPACE_AND_ID` or `MATCHING_NAMESPACE`."
-    },
     "id": {
       "type": "string",
-      "description": "Numeric identifier which must match if `kind` is `MATCHING_NAMESPACE_AND_ID`."
+      "description": "Numeric identifier which must match if `kind` is `MATCHING_ID`."
     }
   }
 }

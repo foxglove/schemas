@@ -6,6 +6,7 @@ import { promisify } from "util";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../src";
 import { generateJsonSchema } from "../src/generateJsonSchema";
+import { generateMarkdown } from "../src/generateMarkdown";
 import { generateProto } from "../src/generateProto";
 import { generateTypeScript, DURATION_TS, TIME_TS } from "../src/generateTypeScript";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../src/schemas";
@@ -95,6 +96,13 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
       indexTS += `export * from "./${schema.name}";\n`;
     }
     await fs.writeFile(path.join(outDir, "typescript", `index.ts`), indexTS);
+  });
+
+  await logProgress("Generating SCHEMAS.md", async () => {
+    await fs.writeFile(
+      path.join(outDir, "SCHEMAS.md"),
+      generateMarkdown(Object.values(foxgloveMessageSchemas), Object.values(foxgloveEnumSchemas)),
+    );
   });
 }
 

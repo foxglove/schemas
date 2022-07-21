@@ -98,9 +98,9 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     await fs.writeFile(path.join(outDir, "typescript", `index.ts`), indexTS);
   });
 
-  await logProgress("Generating SCHEMAS.md", async () => {
+  await logProgress("Generating README.md", async () => {
     await fs.writeFile(
-      path.join(outDir, "SCHEMAS.md"),
+      path.join(outDir, "README.md"),
       generateMarkdown(Object.values(foxgloveMessageSchemas), Object.values(foxgloveEnumSchemas)),
     );
   });

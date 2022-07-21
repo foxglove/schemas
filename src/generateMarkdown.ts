@@ -28,7 +28,7 @@ ${enumSchema.description}
 name | value | description
 ---- | ----- | -----------
 ${enumSchema.values
-  .map((value) => `${value.name} | ${value.value} | ${value.description ?? ""}`)
+  .map((value) => `\`${value.name}\` | ${value.value} | ${value.description ?? ""}`)
   .join("\n")}
 
 `,
@@ -63,7 +63,7 @@ ${schema.fields
     }
     return `\
 <tr>
-<td>${field.name}</td>
+<td><code>${field.name}</code></td>
 <td>
 
 ${type}${arraySuffix}

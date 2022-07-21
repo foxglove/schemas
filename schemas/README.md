@@ -38,12 +38,12 @@ Log level
 
 name | value | description
 ---- | ----- | -----------
-UNKNOWN | 0 | 
-DEBUG | 1 | 
-INFO | 2 | 
-WARNING | 3 | 
-ERROR | 4 | 
-FATAL | 5 | 
+`UNKNOWN` | 0 | 
+`DEBUG` | 1 | 
+`INFO` | 2 | 
+`WARNING` | 3 | 
+`ERROR` | 4 | 
+`FATAL` | 5 | 
 
 
 
@@ -53,15 +53,15 @@ Numeric type
 
 name | value | description
 ---- | ----- | -----------
-UNKNOWN | 0 | 
-UINT8 | 1 | 
-INT8 | 2 | 
-UINT16 | 3 | 
-INT16 | 4 | 
-UINT32 | 5 | 
-INT32 | 6 | 
-FLOAT32 | 7 | 
-FLOAT64 | 8 | 
+`UNKNOWN` | 0 | 
+`UINT8` | 1 | 
+`INT8` | 2 | 
+`UINT16` | 3 | 
+`INT16` | 4 | 
+`UINT32` | 5 | 
+`INT32` | 6 | 
+`FLOAT32` | 7 | 
+`FLOAT64` | 8 | 
 
 
 
@@ -71,11 +71,11 @@ Type of points annotation
 
 name | value | description
 ---- | ----- | -----------
-UNKNOWN | 0 | 
-POINTS | 1 | 
-LINE_LOOP | 2 | 
-LINE_STRIP | 3 | 
-LINE_LIST | 4 | 
+`UNKNOWN` | 0 | 
+`POINTS` | 1 | 
+`LINE_LOOP` | 2 | 
+`LINE_STRIP` | 3 | 
+`LINE_LIST` | 4 | 
 
 
 
@@ -85,10 +85,10 @@ Type of position covariance
 
 name | value | description
 ---- | ----- | -----------
-UNKNOWN | 0 | 
-APPROXIMATED | 1 | 
-DIAGONAL_KNOWN | 2 | 
-KNOWN | 3 | 
+`UNKNOWN` | 0 | 
+`APPROXIMATED` | 1 | 
+`DIAGONAL_KNOWN` | 2 | 
+`KNOWN` | 3 | 
 
 
 
@@ -103,7 +103,7 @@ Camera calibration parameters
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -116,7 +116,7 @@ Timestamp of calibration data
 </td>
 </tr>
 <tr>
-<td>width</td>
+<td><code>width</code></td>
 <td>
 
 uint32
@@ -129,7 +129,7 @@ Image width
 </td>
 </tr>
 <tr>
-<td>height</td>
+<td><code>height</code></td>
 <td>
 
 uint32
@@ -142,7 +142,7 @@ Image height
 </td>
 </tr>
 <tr>
-<td>distortion_model</td>
+<td><code>distortion_model</code></td>
 <td>
 
 string
@@ -155,7 +155,7 @@ Name of distortion model
 </td>
 </tr>
 <tr>
-<td>D</td>
+<td><code>D</code></td>
 <td>
 
 float64[]
@@ -168,7 +168,7 @@ Distortion parameters
 </td>
 </tr>
 <tr>
-<td>K</td>
+<td><code>K</code></td>
 <td>
 
 float64[9]
@@ -192,7 +192,7 @@ K = [ 0 fy cy]
 </td>
 </tr>
 <tr>
-<td>R</td>
+<td><code>R</code></td>
 <td>
 
 float64[9]
@@ -207,7 +207,7 @@ A rotation matrix aligning the camera coordinate system to the ideal stereo imag
 </td>
 </tr>
 <tr>
-<td>P</td>
+<td><code>P</code></td>
 <td>
 
 float64[12]
@@ -257,7 +257,7 @@ A circle annotation on a 2D image
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -270,7 +270,7 @@ Timestamp of circle
 </td>
 </tr>
 <tr>
-<td>position</td>
+<td><code>position</code></td>
 <td>
 
 [Point2](#point2)
@@ -283,7 +283,7 @@ Center of the circle in 2D image coordinates
 </td>
 </tr>
 <tr>
-<td>diameter</td>
+<td><code>diameter</code></td>
 <td>
 
 float64
@@ -296,7 +296,7 @@ Circle diameter
 </td>
 </tr>
 <tr>
-<td>thickness</td>
+<td><code>thickness</code></td>
 <td>
 
 float64
@@ -309,7 +309,7 @@ Line thickness
 </td>
 </tr>
 <tr>
-<td>fill_color</td>
+<td><code>fill_color</code></td>
 <td>
 
 [Color](#color)
@@ -322,7 +322,7 @@ Fill color
 </td>
 </tr>
 <tr>
-<td>outline_color</td>
+<td><code>outline_color</code></td>
 <td>
 
 [Color](#color)
@@ -347,7 +347,7 @@ A color in RGBA format
     <th>description</th>
   </tr>
 <tr>
-<td>r</td>
+<td><code>r</code></td>
 <td>
 
 float64
@@ -360,7 +360,7 @@ Red value between 0 and 1
 </td>
 </tr>
 <tr>
-<td>g</td>
+<td><code>g</code></td>
 <td>
 
 float64
@@ -373,7 +373,7 @@ Green value between 0 and 1
 </td>
 </tr>
 <tr>
-<td>b</td>
+<td><code>b</code></td>
 <td>
 
 float64
@@ -386,7 +386,7 @@ Blue value between 0 and 1
 </td>
 </tr>
 <tr>
-<td>a</td>
+<td><code>a</code></td>
 <td>
 
 float64
@@ -411,7 +411,7 @@ A compressed image
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -424,7 +424,7 @@ Timestamp of image
 </td>
 </tr>
 <tr>
-<td>data</td>
+<td><code>data</code></td>
 <td>
 
 bytes
@@ -437,7 +437,7 @@ Compressed image data
 </td>
 </tr>
 <tr>
-<td>format</td>
+<td><code>format</code></td>
 <td>
 
 string
@@ -462,7 +462,7 @@ A transform between two reference frames in 3D space
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -475,7 +475,7 @@ Timestamp of transform
 </td>
 </tr>
 <tr>
-<td>parent_frame_id</td>
+<td><code>parent_frame_id</code></td>
 <td>
 
 string
@@ -488,7 +488,7 @@ Name of the parent frame
 </td>
 </tr>
 <tr>
-<td>child_frame_id</td>
+<td><code>child_frame_id</code></td>
 <td>
 
 string
@@ -501,7 +501,7 @@ Name of the child frame
 </td>
 </tr>
 <tr>
-<td>translation</td>
+<td><code>translation</code></td>
 <td>
 
 [Vector3](#vector3)
@@ -514,7 +514,7 @@ Translation component of the transform
 </td>
 </tr>
 <tr>
-<td>rotation</td>
+<td><code>rotation</code></td>
 <td>
 
 [Quaternion](#quaternion)
@@ -539,7 +539,7 @@ GeoJSON data for annotating maps
     <th>description</th>
   </tr>
 <tr>
-<td>geojson</td>
+<td><code>geojson</code></td>
 <td>
 
 string
@@ -564,7 +564,7 @@ A 2D grid of data
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -577,7 +577,7 @@ Timestamp of grid
 </td>
 </tr>
 <tr>
-<td>frame_id</td>
+<td><code>frame_id</code></td>
 <td>
 
 string
@@ -590,7 +590,7 @@ Frame of reference
 </td>
 </tr>
 <tr>
-<td>pose</td>
+<td><code>pose</code></td>
 <td>
 
 [Pose](#pose)
@@ -603,7 +603,7 @@ Origin of grid's corner relative to frame of reference; grid is positioned in th
 </td>
 </tr>
 <tr>
-<td>column_count</td>
+<td><code>column_count</code></td>
 <td>
 
 uint32
@@ -616,7 +616,7 @@ Number of grid columns
 </td>
 </tr>
 <tr>
-<td>cell_size</td>
+<td><code>cell_size</code></td>
 <td>
 
 [Vector2](#vector2)
@@ -629,7 +629,7 @@ Size of single grid cell along x and y axes, relative to `pose`
 </td>
 </tr>
 <tr>
-<td>row_stride</td>
+<td><code>row_stride</code></td>
 <td>
 
 uint32
@@ -642,7 +642,7 @@ Number of bytes between rows in `data`
 </td>
 </tr>
 <tr>
-<td>cell_stride</td>
+<td><code>cell_stride</code></td>
 <td>
 
 uint32
@@ -655,7 +655,7 @@ Number of bytes between cells within a row in `data`
 </td>
 </tr>
 <tr>
-<td>fields</td>
+<td><code>fields</code></td>
 <td>
 
 [PackedElementField](#packedelementfield)[]
@@ -668,7 +668,7 @@ Fields in `data`
 </td>
 </tr>
 <tr>
-<td>data</td>
+<td><code>data</code></td>
 <td>
 
 bytes
@@ -693,7 +693,7 @@ Array of annotations for a 2D image
     <th>description</th>
   </tr>
 <tr>
-<td>circles</td>
+<td><code>circles</code></td>
 <td>
 
 [CircleAnnotation](#circleannotation)[]
@@ -706,7 +706,7 @@ Circle annotations
 </td>
 </tr>
 <tr>
-<td>points</td>
+<td><code>points</code></td>
 <td>
 
 [PointsAnnotation](#pointsannotation)[]
@@ -731,7 +731,7 @@ A single scan from a planar laser range-finder
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -744,7 +744,7 @@ Timestamp of scan
 </td>
 </tr>
 <tr>
-<td>frame_id</td>
+<td><code>frame_id</code></td>
 <td>
 
 string
@@ -757,7 +757,7 @@ Frame of reference
 </td>
 </tr>
 <tr>
-<td>pose</td>
+<td><code>pose</code></td>
 <td>
 
 [Pose](#pose)
@@ -770,7 +770,7 @@ Origin of scan relative to frame of reference; points are positioned in the x-y 
 </td>
 </tr>
 <tr>
-<td>start_angle</td>
+<td><code>start_angle</code></td>
 <td>
 
 float64
@@ -783,7 +783,7 @@ Bearing of first point, in radians
 </td>
 </tr>
 <tr>
-<td>end_angle</td>
+<td><code>end_angle</code></td>
 <td>
 
 float64
@@ -796,7 +796,7 @@ Bearing of last point, in radians
 </td>
 </tr>
 <tr>
-<td>ranges</td>
+<td><code>ranges</code></td>
 <td>
 
 float64[]
@@ -809,7 +809,7 @@ Distance of detections from origin; assumed to be at equally-spaced angles betwe
 </td>
 </tr>
 <tr>
-<td>intensities</td>
+<td><code>intensities</code></td>
 <td>
 
 float64[]
@@ -834,7 +834,7 @@ A navigation satellite fix for any Global Navigation Satellite System
     <th>description</th>
   </tr>
 <tr>
-<td>latitude</td>
+<td><code>latitude</code></td>
 <td>
 
 float64
@@ -847,7 +847,7 @@ Latitude in degrees
 </td>
 </tr>
 <tr>
-<td>longitude</td>
+<td><code>longitude</code></td>
 <td>
 
 float64
@@ -860,7 +860,7 @@ Longitude in degrees
 </td>
 </tr>
 <tr>
-<td>altitude</td>
+<td><code>altitude</code></td>
 <td>
 
 float64
@@ -873,7 +873,7 @@ Altitude in meters
 </td>
 </tr>
 <tr>
-<td>position_covariance</td>
+<td><code>position_covariance</code></td>
 <td>
 
 float64[9]
@@ -886,7 +886,7 @@ Position covariance (m^2) defined relative to a tangential plane through the rep
 </td>
 </tr>
 <tr>
-<td>position_covariance_type</td>
+<td><code>position_covariance_type</code></td>
 <td>
 
 [enum PositionCovarianceType](#enum-positioncovariancetype)
@@ -911,7 +911,7 @@ A log message
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -924,7 +924,7 @@ Timestamp of log message
 </td>
 </tr>
 <tr>
-<td>level</td>
+<td><code>level</code></td>
 <td>
 
 [enum LogLevel](#enum-loglevel)
@@ -937,7 +937,7 @@ Log level
 </td>
 </tr>
 <tr>
-<td>message</td>
+<td><code>message</code></td>
 <td>
 
 string
@@ -950,7 +950,7 @@ Log message
 </td>
 </tr>
 <tr>
-<td>name</td>
+<td><code>name</code></td>
 <td>
 
 string
@@ -963,7 +963,7 @@ Process or node name
 </td>
 </tr>
 <tr>
-<td>file</td>
+<td><code>file</code></td>
 <td>
 
 string
@@ -976,7 +976,7 @@ Filename
 </td>
 </tr>
 <tr>
-<td>line</td>
+<td><code>line</code></td>
 <td>
 
 uint32
@@ -1001,7 +1001,7 @@ A field present within each element in a byte array of packed elements.
     <th>description</th>
   </tr>
 <tr>
-<td>name</td>
+<td><code>name</code></td>
 <td>
 
 string
@@ -1014,7 +1014,7 @@ Name of the field
 </td>
 </tr>
 <tr>
-<td>offset</td>
+<td><code>offset</code></td>
 <td>
 
 uint32
@@ -1027,7 +1027,7 @@ Byte offset from start of data buffer
 </td>
 </tr>
 <tr>
-<td>type</td>
+<td><code>type</code></td>
 <td>
 
 [enum NumericType](#enum-numerictype)
@@ -1052,7 +1052,7 @@ A point representing a position in 2D space
     <th>description</th>
   </tr>
 <tr>
-<td>x</td>
+<td><code>x</code></td>
 <td>
 
 float64
@@ -1065,7 +1065,7 @@ x coordinate position
 </td>
 </tr>
 <tr>
-<td>y</td>
+<td><code>y</code></td>
 <td>
 
 float64
@@ -1090,7 +1090,7 @@ A point representing a position in 3D space
     <th>description</th>
   </tr>
 <tr>
-<td>x</td>
+<td><code>x</code></td>
 <td>
 
 float64
@@ -1103,7 +1103,7 @@ x coordinate position
 </td>
 </tr>
 <tr>
-<td>y</td>
+<td><code>y</code></td>
 <td>
 
 float64
@@ -1116,7 +1116,7 @@ y coordinate position
 </td>
 </tr>
 <tr>
-<td>z</td>
+<td><code>z</code></td>
 <td>
 
 float64
@@ -1141,7 +1141,7 @@ A collection of N-dimensional points, which may contain additional fields with i
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -1154,7 +1154,7 @@ Timestamp of point cloud
 </td>
 </tr>
 <tr>
-<td>frame_id</td>
+<td><code>frame_id</code></td>
 <td>
 
 string
@@ -1167,7 +1167,7 @@ Frame of reference
 </td>
 </tr>
 <tr>
-<td>pose</td>
+<td><code>pose</code></td>
 <td>
 
 [Pose](#pose)
@@ -1180,7 +1180,7 @@ The origin of the point cloud relative to the frame of reference
 </td>
 </tr>
 <tr>
-<td>point_stride</td>
+<td><code>point_stride</code></td>
 <td>
 
 uint32
@@ -1193,7 +1193,7 @@ Number of bytes between points in the `data`
 </td>
 </tr>
 <tr>
-<td>fields</td>
+<td><code>fields</code></td>
 <td>
 
 [PackedElementField](#packedelementfield)[]
@@ -1206,7 +1206,7 @@ Fields in the `data`
 </td>
 </tr>
 <tr>
-<td>data</td>
+<td><code>data</code></td>
 <td>
 
 bytes
@@ -1231,7 +1231,7 @@ An array of points on a 2D image
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -1244,7 +1244,7 @@ Timestamp of annotation
 </td>
 </tr>
 <tr>
-<td>type</td>
+<td><code>type</code></td>
 <td>
 
 [enum PointsAnnotationType](#enum-pointsannotationtype)
@@ -1257,7 +1257,7 @@ Type of points annotation to draw
 </td>
 </tr>
 <tr>
-<td>points</td>
+<td><code>points</code></td>
 <td>
 
 [Point2](#point2)[]
@@ -1270,7 +1270,7 @@ Points in 2D image coordinates
 </td>
 </tr>
 <tr>
-<td>outline_colors</td>
+<td><code>outline_colors</code></td>
 <td>
 
 [Color](#color)[]
@@ -1283,7 +1283,7 @@ Outline colors
 </td>
 </tr>
 <tr>
-<td>fill_color</td>
+<td><code>fill_color</code></td>
 <td>
 
 [Color](#color)
@@ -1308,7 +1308,7 @@ A position and orientation for an object or reference frame in 3D space
     <th>description</th>
   </tr>
 <tr>
-<td>position</td>
+<td><code>position</code></td>
 <td>
 
 [Vector3](#vector3)
@@ -1321,7 +1321,7 @@ Point denoting position in 3D space
 </td>
 </tr>
 <tr>
-<td>orientation</td>
+<td><code>orientation</code></td>
 <td>
 
 [Quaternion](#quaternion)
@@ -1346,7 +1346,7 @@ A timestamped pose for an object or reference frame in 3D space
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -1359,7 +1359,7 @@ Timestamp of pose
 </td>
 </tr>
 <tr>
-<td>frame_id</td>
+<td><code>frame_id</code></td>
 <td>
 
 string
@@ -1372,7 +1372,7 @@ Frame of reference for pose position and orientation
 </td>
 </tr>
 <tr>
-<td>pose</td>
+<td><code>pose</code></td>
 <td>
 
 [Pose](#pose)
@@ -1397,7 +1397,7 @@ An array of timestamped poses for an object or reference frame in 3D space
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -1410,7 +1410,7 @@ Timestamp of pose
 </td>
 </tr>
 <tr>
-<td>frame_id</td>
+<td><code>frame_id</code></td>
 <td>
 
 string
@@ -1423,7 +1423,7 @@ Frame of reference for pose position and orientation
 </td>
 </tr>
 <tr>
-<td>poses</td>
+<td><code>poses</code></td>
 <td>
 
 [Pose](#pose)[]
@@ -1448,7 +1448,7 @@ A [quaternion](https://eater.net/quaternions) representing a rotation in 3D spac
     <th>description</th>
   </tr>
 <tr>
-<td>x</td>
+<td><code>x</code></td>
 <td>
 
 float64
@@ -1461,7 +1461,7 @@ x value
 </td>
 </tr>
 <tr>
-<td>y</td>
+<td><code>y</code></td>
 <td>
 
 float64
@@ -1474,7 +1474,7 @@ y value
 </td>
 </tr>
 <tr>
-<td>z</td>
+<td><code>z</code></td>
 <td>
 
 float64
@@ -1487,7 +1487,7 @@ z value
 </td>
 </tr>
 <tr>
-<td>w</td>
+<td><code>w</code></td>
 <td>
 
 float64
@@ -1512,7 +1512,7 @@ A raw image
     <th>description</th>
   </tr>
 <tr>
-<td>timestamp</td>
+<td><code>timestamp</code></td>
 <td>
 
 time
@@ -1525,7 +1525,7 @@ Timestamp of image
 </td>
 </tr>
 <tr>
-<td>width</td>
+<td><code>width</code></td>
 <td>
 
 uint32
@@ -1538,7 +1538,7 @@ Image width
 </td>
 </tr>
 <tr>
-<td>height</td>
+<td><code>height</code></td>
 <td>
 
 uint32
@@ -1551,7 +1551,7 @@ Image height
 </td>
 </tr>
 <tr>
-<td>encoding</td>
+<td><code>encoding</code></td>
 <td>
 
 string
@@ -1564,7 +1564,7 @@ Encoding of the raw image data
 </td>
 </tr>
 <tr>
-<td>step</td>
+<td><code>step</code></td>
 <td>
 
 uint32
@@ -1577,7 +1577,7 @@ Byte length of a single row
 </td>
 </tr>
 <tr>
-<td>data</td>
+<td><code>data</code></td>
 <td>
 
 bytes
@@ -1602,7 +1602,7 @@ A vector in 2D space that represents a direction only
     <th>description</th>
   </tr>
 <tr>
-<td>x</td>
+<td><code>x</code></td>
 <td>
 
 float64
@@ -1615,7 +1615,7 @@ x coordinate length
 </td>
 </tr>
 <tr>
-<td>y</td>
+<td><code>y</code></td>
 <td>
 
 float64
@@ -1640,7 +1640,7 @@ A vector in 3D space that represents a direction only
     <th>description</th>
   </tr>
 <tr>
-<td>x</td>
+<td><code>x</code></td>
 <td>
 
 float64
@@ -1653,7 +1653,7 @@ x coordinate length
 </td>
 </tr>
 <tr>
-<td>y</td>
+<td><code>y</code></td>
 <td>
 
 float64
@@ -1666,7 +1666,7 @@ y coordinate length
 </td>
 </tr>
 <tr>
-<td>z</td>
+<td><code>z</code></td>
 <td>
 
 float64

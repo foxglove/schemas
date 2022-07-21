@@ -1,6 +1,6 @@
 import { FoxgloveEnumSchema, FoxgloveMessageSchema } from "./types";
 
-const foxglove_Color: FoxgloveMessageSchema = {
+const Color: FoxgloveMessageSchema = {
   type: "message",
   name: "Color",
   description: "A color in RGBA format",
@@ -28,7 +28,7 @@ const foxglove_Color: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_Vector2: FoxgloveMessageSchema = {
+const Vector2: FoxgloveMessageSchema = {
   type: "message",
   name: "Vector2",
   description: "A vector in 2D space that represents a direction only",
@@ -46,7 +46,7 @@ const foxglove_Vector2: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_Vector3: FoxgloveMessageSchema = {
+const Vector3: FoxgloveMessageSchema = {
   type: "message",
   name: "Vector3",
   description: "A vector in 3D space that represents a direction only",
@@ -70,7 +70,7 @@ const foxglove_Vector3: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_Point2: FoxgloveMessageSchema = {
+const Point2: FoxgloveMessageSchema = {
   type: "message",
   name: "Point2",
   description: "A point representing a position in 2D space",
@@ -88,7 +88,7 @@ const foxglove_Point2: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_Point3: FoxgloveMessageSchema = {
+const Point3: FoxgloveMessageSchema = {
   type: "message",
   name: "Point3",
   description: "A point representing a position in 3D space",
@@ -112,7 +112,7 @@ const foxglove_Point3: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_Quaternion: FoxgloveMessageSchema = {
+const Quaternion: FoxgloveMessageSchema = {
   type: "message",
   name: "Quaternion",
   description: "A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space",
@@ -141,7 +141,7 @@ const foxglove_Quaternion: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_Pose: FoxgloveMessageSchema = {
+const Pose: FoxgloveMessageSchema = {
   type: "message",
   name: "Pose",
   description: "A position and orientation for an object or reference frame in 3D space",
@@ -149,18 +149,18 @@ const foxglove_Pose: FoxgloveMessageSchema = {
   fields: [
     {
       name: "position",
-      type: { type: "nested", schema: foxglove_Vector3 },
+      type: { type: "nested", schema: Vector3 },
       description: "Point denoting position in 3D space",
     },
     {
       name: "orientation",
-      type: { type: "nested", schema: foxglove_Quaternion },
+      type: { type: "nested", schema: Quaternion },
       description: "Quaternion denoting orientation in 3D space",
     },
   ],
 };
 
-const foxglove_KeyVauePair: FoxgloveMessageSchema = {
+const KeyValuePair: FoxgloveMessageSchema = {
   type: "message",
   name: "KeyValuePair",
   description: "A key with its associated value",
@@ -210,14 +210,14 @@ const commonMarkerFields: FoxgloveMessageSchema["fields"] = [
   },
   {
     name: "metadata",
-    type: { type: "nested", schema: foxglove_KeyVauePair },
+    type: { type: "nested", schema: KeyValuePair },
     array: true,
     description:
       "Additional user-provided metadata associated with the marker. Keys must be unique.",
   },
 ];
 
-const foxglove_MarkerDeletionType: FoxgloveEnumSchema = {
+const MarkerDeletionType: FoxgloveEnumSchema = {
   type: "enum",
   name: "MarkerDeletionType",
   protobufParentMessageName: "MarkerDeletion",
@@ -229,7 +229,7 @@ const foxglove_MarkerDeletionType: FoxgloveEnumSchema = {
   ],
 };
 
-const foxglove_MarkerDeletion: FoxgloveMessageSchema = {
+const MarkerDeletion: FoxgloveMessageSchema = {
   type: "message",
   name: "MarkerDeletion",
   description: "Command to remove previously published markers",
@@ -242,7 +242,7 @@ const foxglove_MarkerDeletion: FoxgloveMessageSchema = {
     },
     {
       name: "type",
-      type: { type: "enum", enum: foxglove_MarkerDeletionType },
+      type: { type: "enum", enum: MarkerDeletionType },
       description: "Type of deletion action to perform",
     },
     {
@@ -253,7 +253,7 @@ const foxglove_MarkerDeletion: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_ArrowMarker: FoxgloveMessageSchema = {
+const ArrowMarker: FoxgloveMessageSchema = {
   type: "message",
   name: "ArrowMarker",
   description: "A marker representing an arrow",
@@ -261,7 +261,7 @@ const foxglove_ArrowMarker: FoxgloveMessageSchema = {
     ...commonMarkerFields,
     {
       name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description:
         "Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.",
     },
@@ -287,96 +287,142 @@ const foxglove_ArrowMarker: FoxgloveMessageSchema = {
     },
     {
       name: "color",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       description: "Color of the arrow",
     },
   ],
 };
 
-const foxglove_CubeMarker: FoxgloveMessageSchema = {
+const CubeAttributes: FoxgloveMessageSchema = {
   type: "message",
-  name: "CubeMarker",
-  description: "A marker representing a cube or rectangular prism",
+  name: "CubeAttributes",
+  description: "Data specifying the visual appearance of a cube or rectangular prism",
   fields: [
-    ...commonMarkerFields,
     {
       name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description: "Position of the center of the cube and orientation of the cube",
     },
     {
       name: "size",
-      type: { type: "nested", schema: foxglove_Vector3 },
+      type: { type: "nested", schema: Vector3 },
       description: "Size of the cube along each axis",
     },
     {
       name: "color",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       description: "Color of the arrow",
     },
   ],
 };
 
-const foxglove_SphereMarker: FoxgloveMessageSchema = {
+const CubeListMarker: FoxgloveMessageSchema = {
   type: "message",
-  name: "SphereMarker",
-  description: "A marker representing a sphere or ellipsoid",
+  name: "CubeListMarker",
+  description: "A marker representing a list of cubes or rectangular prisms",
   fields: [
     ...commonMarkerFields,
     {
+      name: "attributes",
+      type: { type: "nested", schema: CubeAttributes },
+      array: true,
+      description: "Attributes of each cube",
+    },
+  ],
+};
+
+const SphereAttributes: FoxgloveMessageSchema = {
+  type: "message",
+  name: "SphereAttributes",
+  description: "Data specifying the visual appearance of a sphere or ellipsoid",
+  fields: [
+    {
       name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description: "Position of the center of the sphere and orientation of the sphere",
     },
     {
       name: "size",
-      type: { type: "nested", schema: foxglove_Vector3 },
+      type: { type: "nested", schema: Vector3 },
       description: "Size (diameter) of the sphere along each axis",
     },
     {
       name: "color",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       description: "Color of the sphere",
     },
   ],
 };
 
-const foxglove_CylinderMarker: FoxgloveMessageSchema = {
+const SphereListMarker: FoxgloveMessageSchema = {
   type: "message",
-  name: "CylinderMarker",
-  description: "A marker representing a cylinder or elliptic cylinder",
+  name: "SphereListMarker",
+  description: "A marker representing a list of spheres or ellipsoids",
   fields: [
     ...commonMarkerFields,
     {
-      name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
-      description:
-        "Position of the center of the cylinder and orientation of the cylinder. The cylinder's flat faces are perpendicular to the z-axis.",
-    },
-    {
-      name: "bottom_radius",
-      type: { type: "primitive", name: "float64" },
-      description: "Radius of the cylinder at min z",
-    },
-    {
-      name: "top_radius",
-      type: { type: "primitive", name: "float64" },
-      description: "Radius of the cylinder at max z",
-    },
-    {
-      name: "height",
-      type: { type: "primitive", name: "float64" },
-      description: "Height of the cylinder along the z axis",
-    },
-    {
-      name: "color",
-      type: { type: "nested", schema: foxglove_Color },
-      description: "Color of the sphere",
+      name: "attributes",
+      type: { type: "nested", schema: SphereAttributes },
+      array: true,
+      description: "Attributes of each sphere",
     },
   ],
 };
 
-const foxglove_LineType: FoxgloveEnumSchema = {
+const ConeAttributes: FoxgloveMessageSchema = {
+  type: "message",
+  name: "ConeAttributes",
+  description:
+    "Data specifying the visual appearance of a possibly truncated, possibly elliptic cone or cylinder",
+  fields: [
+    {
+      name: "pose",
+      type: { type: "nested", schema: Pose },
+      description:
+        "Position of the center of the cone and orientation of the cone. The flat face(s) are perpendicular to the z-axis.",
+    },
+    {
+      name: "size",
+      type: { type: "nested", schema: Vector3 },
+      description: "Size of the cone's bounding box",
+    },
+    {
+      name: "bottom_scale",
+      type: { type: "primitive", name: "float64" },
+      description:
+        "0-1, size of the cone's bottom face (min z) relative to the bottom of the bounding box",
+    },
+    {
+      name: "top_scale",
+      type: { type: "primitive", name: "float64" },
+      description:
+        "0-1, size of the cone's top face (max z) relative to the top of the bounding box",
+    },
+    {
+      name: "color",
+      type: { type: "nested", schema: Color },
+      description: "Color of the cone",
+    },
+  ],
+};
+
+const ConeListMarker: FoxgloveMessageSchema = {
+  type: "message",
+  name: "ConeListMarker",
+  description:
+    "A marker representing a list of possibly truncated, possibly elliptic cones or cylinders",
+  fields: [
+    ...commonMarkerFields,
+    {
+      name: "attributes",
+      type: { type: "nested", schema: ConeAttributes },
+      array: true,
+      description: "Attributes of each cone",
+    },
+  ],
+};
+
+const LineType: FoxgloveEnumSchema = {
   type: "enum",
   name: "LineType",
   protobufParentMessageName: "LineMarker",
@@ -389,7 +435,7 @@ const foxglove_LineType: FoxgloveEnumSchema = {
   ],
 };
 
-const foxglove_LineMarker: FoxgloveMessageSchema = {
+const LineMarker: FoxgloveMessageSchema = {
   type: "message",
   name: "LineMarker",
   description: "A marker representing a series of points connected by lines",
@@ -397,12 +443,12 @@ const foxglove_LineMarker: FoxgloveMessageSchema = {
     ...commonMarkerFields,
     {
       name: "type",
-      type: { type: "enum", enum: foxglove_LineType },
+      type: { type: "enum", enum: LineType },
       description: "Drawing primitive to use for lines",
     },
     {
       name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description: "Origin of lines relative to reference frame",
     },
     {
@@ -418,19 +464,19 @@ const foxglove_LineMarker: FoxgloveMessageSchema = {
     },
     {
       name: "points",
-      type: { type: "nested", schema: foxglove_Point3 },
+      type: { type: "nested", schema: Point3 },
       array: true,
       description: "Points along the line",
     },
     {
       name: "color",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       description:
         "Solid color to use for the whole line. One of `color` or `colors` must be provided.",
     },
     {
       name: "colors",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       array: true,
       description:
         "Per-point colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.",
@@ -445,7 +491,7 @@ const foxglove_LineMarker: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_TextMarker: FoxgloveMessageSchema = {
+const TextMarker: FoxgloveMessageSchema = {
   type: "message",
   name: "TextMarker",
   description: "A marker representing a text label",
@@ -453,7 +499,7 @@ const foxglove_TextMarker: FoxgloveMessageSchema = {
     ...commonMarkerFields,
     {
       name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description:
         "Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x.",
     },
@@ -476,7 +522,7 @@ const foxglove_TextMarker: FoxgloveMessageSchema = {
     },
     {
       name: "color",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       description: "Color of the text",
     },
     {
@@ -487,36 +533,36 @@ const foxglove_TextMarker: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_TrianglesMarker: FoxgloveMessageSchema = {
+const TriangleListMarker: FoxgloveMessageSchema = {
   type: "message",
-  name: "TrianglesMarker",
+  name: "TriangleListMarker",
   description: "A marker representing a set of triangles or a surface tiled by triangles",
   fields: [
     ...commonMarkerFields,
     {
       name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description: "Origin of triangles relative to reference frame",
     },
     {
       name: "points",
-      type: { type: "nested", schema: foxglove_Point3 },
+      type: { type: "nested", schema: Point3 },
       array: true,
       description:
         "Vertices to use for triangles, interpreted as a list of triples (0-1-2, 3-4-5, ...)",
     },
     {
       name: "color",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       description:
         "Solid color to use for the whole shape. One of `color` or `colors` must be provided.",
     },
     {
       name: "colors",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       array: true,
       description:
-        "Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` should be provided.",
+        "Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.",
     },
     {
       name: "indices",
@@ -528,7 +574,7 @@ const foxglove_TrianglesMarker: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_ModelMarker: FoxgloveMessageSchema = {
+const ModelMarker: FoxgloveMessageSchema = {
   type: "message",
   name: "ModelMarker",
   description: "A marker representing a 3D model",
@@ -536,17 +582,17 @@ const foxglove_ModelMarker: FoxgloveMessageSchema = {
     ...commonMarkerFields,
     {
       name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description: "Origin of model relative to reference frame",
     },
     {
       name: "scale",
-      type: { type: "nested", schema: foxglove_Vector3 },
+      type: { type: "nested", schema: Vector3 },
       description: "Scale factor to apply to the model along each axis",
     },
     {
       name: "color",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       description:
         "Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.",
     },
@@ -575,69 +621,69 @@ const foxglove_ModelMarker: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_Markers: FoxgloveMessageSchema = {
+const Markers: FoxgloveMessageSchema = {
   type: "message",
   name: "Markers",
   description: "A list of any number or type of markers",
   fields: [
     {
       name: "deletions",
-      type: { type: "nested", schema: foxglove_MarkerDeletion },
+      type: { type: "nested", schema: MarkerDeletion },
       array: true,
       description: "Marker deletion actions",
     },
     {
       name: "arrows",
-      type: { type: "nested", schema: foxglove_ArrowMarker },
+      type: { type: "nested", schema: ArrowMarker },
       array: true,
       description: "Arrow markers",
     },
     {
       name: "cubes",
-      type: { type: "nested", schema: foxglove_CubeMarker },
+      type: { type: "nested", schema: CubeListMarker },
       array: true,
-      description: "Cube markers",
+      description: "Cube list markers",
     },
     {
       name: "spheres",
-      type: { type: "nested", schema: foxglove_SphereMarker },
+      type: { type: "nested", schema: SphereListMarker },
       array: true,
-      description: "Sphere markers",
+      description: "Sphere list markers",
     },
     {
-      name: "cylinders",
-      type: { type: "nested", schema: foxglove_CylinderMarker },
+      name: "cones",
+      type: { type: "nested", schema: ConeListMarker },
       array: true,
-      description: "Cylinder markers",
+      description: "Cone list markers",
     },
     {
       name: "lines",
-      type: { type: "nested", schema: foxglove_LineMarker },
+      type: { type: "nested", schema: LineMarker },
       array: true,
       description: "Line markers",
     },
     {
       name: "triangles",
-      type: { type: "nested", schema: foxglove_TrianglesMarker },
+      type: { type: "nested", schema: TriangleListMarker },
       array: true,
-      description: "Triangles markers",
+      description: "Triangle list markers",
     },
     {
       name: "texts",
-      type: { type: "nested", schema: foxglove_TextMarker },
+      type: { type: "nested", schema: TextMarker },
       array: true,
       description: "Text markers",
     },
     {
       name: "models",
-      type: { type: "nested", schema: foxglove_ModelMarker },
+      type: { type: "nested", schema: ModelMarker },
       array: true,
       description: "Model markers",
     },
   ],
 };
 
-const foxglove_CameraCalibration: FoxgloveMessageSchema = {
+const CameraCalibration: FoxgloveMessageSchema = {
   type: "message",
   name: "CameraCalibration",
   description: "Camera calibration parameters",
@@ -727,7 +773,7 @@ This holds for both images of a stereo pair.
   ],
 };
 
-const foxglove_CompressedImage: FoxgloveMessageSchema = {
+const CompressedImage: FoxgloveMessageSchema = {
   type: "message",
   name: "CompressedImage",
   description: "A compressed image",
@@ -750,7 +796,7 @@ const foxglove_CompressedImage: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_RawImage: FoxgloveMessageSchema = {
+const RawImage: FoxgloveMessageSchema = {
   type: "message",
   name: "RawImage",
   description: "A raw image",
@@ -788,7 +834,7 @@ const foxglove_RawImage: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_FrameTransform: FoxgloveMessageSchema = {
+const FrameTransform: FoxgloveMessageSchema = {
   type: "message",
   name: "FrameTransform",
   description: "A transform between two reference frames in 3D space",
@@ -810,18 +856,18 @@ const foxglove_FrameTransform: FoxgloveMessageSchema = {
     },
     {
       name: "translation",
-      type: { type: "nested", schema: foxglove_Vector3 },
+      type: { type: "nested", schema: Vector3 },
       description: "Translation component of the transform",
     },
     {
       name: "rotation",
-      type: { type: "nested", schema: foxglove_Quaternion },
+      type: { type: "nested", schema: Quaternion },
       description: "Rotation component of the transform",
     },
   ],
 };
 
-const foxglove_PoseInFrame: FoxgloveMessageSchema = {
+const PoseInFrame: FoxgloveMessageSchema = {
   type: "message",
   name: "PoseInFrame",
   description: "A timestamped pose for an object or reference frame in 3D space",
@@ -838,13 +884,13 @@ const foxglove_PoseInFrame: FoxgloveMessageSchema = {
     },
     {
       name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description: "Pose in 3D space",
     },
   ],
 };
 
-const foxglove_PosesInFrame: FoxgloveMessageSchema = {
+const PosesInFrame: FoxgloveMessageSchema = {
   type: "message",
   name: "PosesInFrame",
   description: "An array of timestamped poses for an object or reference frame in 3D space",
@@ -861,14 +907,14 @@ const foxglove_PosesInFrame: FoxgloveMessageSchema = {
     },
     {
       name: "poses",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description: "Poses in 3D space",
       array: true,
     },
   ],
 };
 
-const foxglove_GeoJSON: FoxgloveMessageSchema = {
+const GeoJSON: FoxgloveMessageSchema = {
   type: "message",
   name: "GeoJSON",
   description: "GeoJSON data for annotating maps",
@@ -881,7 +927,7 @@ const foxglove_GeoJSON: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_NumericType: FoxgloveEnumSchema = {
+const NumericType: FoxgloveEnumSchema = {
   type: "enum",
   name: "NumericType",
   description: "Numeric type",
@@ -900,7 +946,7 @@ const foxglove_NumericType: FoxgloveEnumSchema = {
   ],
 };
 
-const foxglove_PackedElementField: FoxgloveMessageSchema = {
+const PackedElementField: FoxgloveMessageSchema = {
   type: "message",
   name: "PackedElementField",
   description: "A field present within each element in a byte array of packed elements.",
@@ -917,13 +963,13 @@ const foxglove_PackedElementField: FoxgloveMessageSchema = {
     },
     {
       name: "type",
-      type: { type: "enum", enum: foxglove_NumericType },
+      type: { type: "enum", enum: NumericType },
       description: "Type of data in the field. Integers are stored using little-endian byte order.",
     },
   ],
 };
 
-const foxglove_Grid: FoxgloveMessageSchema = {
+const Grid: FoxgloveMessageSchema = {
   type: "message",
   name: "Grid",
   description: "A 2D grid of data",
@@ -940,7 +986,7 @@ const foxglove_Grid: FoxgloveMessageSchema = {
     },
     {
       name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description:
         "Origin of grid's corner relative to frame of reference; grid is positioned in the x-y plane relative to this origin",
     },
@@ -951,7 +997,7 @@ const foxglove_Grid: FoxgloveMessageSchema = {
     },
     {
       name: "cell_size",
-      type: { type: "nested", schema: foxglove_Vector2 },
+      type: { type: "nested", schema: Vector2 },
       description: "Size of single grid cell along x and y axes, relative to `pose`",
     },
     {
@@ -966,7 +1012,7 @@ const foxglove_Grid: FoxgloveMessageSchema = {
     },
     {
       name: "fields",
-      type: { type: "nested", schema: foxglove_PackedElementField },
+      type: { type: "nested", schema: PackedElementField },
       array: true,
       description: "Fields in `data`",
     },
@@ -978,7 +1024,7 @@ const foxglove_Grid: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_CircleAnnotation: FoxgloveMessageSchema = {
+const CircleAnnotation: FoxgloveMessageSchema = {
   type: "message",
   name: "CircleAnnotation",
   description: "A circle annotation on a 2D image",
@@ -990,7 +1036,7 @@ const foxglove_CircleAnnotation: FoxgloveMessageSchema = {
     },
     {
       name: "position",
-      type: { type: "nested", schema: foxglove_Point2 },
+      type: { type: "nested", schema: Point2 },
       description: "Center of the circle in 2D image coordinates",
     },
     {
@@ -1005,18 +1051,18 @@ const foxglove_CircleAnnotation: FoxgloveMessageSchema = {
     },
     {
       name: "fill_color",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       description: "Fill color",
     },
     {
       name: "outline_color",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       description: "Outline color",
     },
   ],
 };
 
-const foxglove_PointsAnnotationType: FoxgloveEnumSchema = {
+const PointsAnnotationType: FoxgloveEnumSchema = {
   type: "enum",
   name: "PointsAnnotationType",
   description: "Type of points annotation",
@@ -1031,7 +1077,7 @@ const foxglove_PointsAnnotationType: FoxgloveEnumSchema = {
   ],
 };
 
-const foxglove_PointsAnnotation: FoxgloveMessageSchema = {
+const PointsAnnotation: FoxgloveMessageSchema = {
   type: "message",
   name: "PointsAnnotation",
   description: "An array of points on a 2D image",
@@ -1043,50 +1089,50 @@ const foxglove_PointsAnnotation: FoxgloveMessageSchema = {
     },
     {
       name: "type",
-      type: { type: "enum", enum: foxglove_PointsAnnotationType },
+      type: { type: "enum", enum: PointsAnnotationType },
       description: "Type of points annotation to draw",
     },
     {
       name: "points",
-      type: { type: "nested", schema: foxglove_Point2 },
+      type: { type: "nested", schema: Point2 },
       description: "Points in 2D image coordinates",
       array: true,
     },
     {
       name: "outline_colors",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       description: "Outline colors",
       array: true,
     },
     {
       name: "fill_color",
-      type: { type: "nested", schema: foxglove_Color },
+      type: { type: "nested", schema: Color },
       description: "Fill color",
     },
   ],
 };
 
-const foxglove_ImageAnnotations: FoxgloveMessageSchema = {
+const ImageAnnotations: FoxgloveMessageSchema = {
   type: "message",
   name: "ImageAnnotations",
   description: "Array of annotations for a 2D image",
   fields: [
     {
       name: "circles",
-      type: { type: "nested", schema: foxglove_CircleAnnotation },
+      type: { type: "nested", schema: CircleAnnotation },
       description: "Circle annotations",
       array: true,
     },
     {
       name: "points",
-      type: { type: "nested", schema: foxglove_PointsAnnotation },
+      type: { type: "nested", schema: PointsAnnotation },
       description: "Points annotations",
       array: true,
     },
   ],
 };
 
-const foxglove_PositionCovarianceType: FoxgloveEnumSchema = {
+const PositionCovarianceType: FoxgloveEnumSchema = {
   type: "enum",
   name: "PositionCovarianceType",
   description: "Type of position covariance",
@@ -1100,7 +1146,7 @@ const foxglove_PositionCovarianceType: FoxgloveEnumSchema = {
   ],
 };
 
-const foxglove_LocationFix: FoxgloveMessageSchema = {
+const LocationFix: FoxgloveMessageSchema = {
   type: "message",
   name: "LocationFix",
   description: "A navigation satellite fix for any Global Navigation Satellite System",
@@ -1129,14 +1175,14 @@ const foxglove_LocationFix: FoxgloveMessageSchema = {
     },
     {
       name: "position_covariance_type",
-      type: { type: "enum", enum: foxglove_PositionCovarianceType },
+      type: { type: "enum", enum: PositionCovarianceType },
       description:
         "If `position_covariance` is available, `position_covariance_type` must be set to indicate the type of covariance.",
     },
   ],
 };
 
-const foxglove_LogLevel: FoxgloveEnumSchema = {
+const LogLevel: FoxgloveEnumSchema = {
   type: "enum",
   name: "LogLevel",
   description: "Log level",
@@ -1152,7 +1198,7 @@ const foxglove_LogLevel: FoxgloveEnumSchema = {
   ],
 };
 
-const foxglove_Log: FoxgloveMessageSchema = {
+const Log: FoxgloveMessageSchema = {
   type: "message",
   name: "Log",
   description: "A log message",
@@ -1164,7 +1210,7 @@ const foxglove_Log: FoxgloveMessageSchema = {
     },
     {
       name: "level",
-      type: { type: "enum", enum: foxglove_LogLevel },
+      type: { type: "enum", enum: LogLevel },
       description: "Log level",
     },
     {
@@ -1190,7 +1236,7 @@ const foxglove_Log: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_PointCloud: FoxgloveMessageSchema = {
+const PointCloud: FoxgloveMessageSchema = {
   type: "message",
   name: "PointCloud",
   description:
@@ -1208,7 +1254,7 @@ const foxglove_PointCloud: FoxgloveMessageSchema = {
     },
     {
       name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description: "The origin of the point cloud relative to the frame of reference",
     },
     {
@@ -1218,7 +1264,7 @@ const foxglove_PointCloud: FoxgloveMessageSchema = {
     },
     {
       name: "fields",
-      type: { type: "nested", schema: foxglove_PackedElementField },
+      type: { type: "nested", schema: PackedElementField },
       array: true,
       description: "Fields in the `data`",
     },
@@ -1230,7 +1276,7 @@ const foxglove_PointCloud: FoxgloveMessageSchema = {
   ],
 };
 
-const foxglove_LaserScan: FoxgloveMessageSchema = {
+const LaserScan: FoxgloveMessageSchema = {
   type: "message",
   name: "LaserScan",
   description: "A single scan from a planar laser range-finder",
@@ -1247,7 +1293,7 @@ const foxglove_LaserScan: FoxgloveMessageSchema = {
     },
     {
       name: "pose",
-      type: { type: "nested", schema: foxglove_Pose },
+      type: { type: "nested", schema: Pose },
       description:
         "Origin of scan relative to frame of reference; points are positioned in the x-y plane relative to this origin; angles are interpreted as counterclockwise rotations around the z axis with 0 rad being in the +x direction",
     },
@@ -1278,47 +1324,50 @@ const foxglove_LaserScan: FoxgloveMessageSchema = {
 };
 
 export const foxgloveMessageSchemas = {
-  ArrowMarker: foxglove_ArrowMarker,
-  CameraCalibration: foxglove_CameraCalibration,
-  CircleAnnotation: foxglove_CircleAnnotation,
-  Color: foxglove_Color,
-  CompressedImage: foxglove_CompressedImage,
-  CubeMarker: foxglove_CubeMarker,
-  CylinderMarker: foxglove_CylinderMarker,
-  PackedElementField: foxglove_PackedElementField,
-  FrameTransform: foxglove_FrameTransform,
-  GeoJSON: foxglove_GeoJSON,
-  Grid: foxglove_Grid,
-  ImageAnnotations: foxglove_ImageAnnotations,
-  KeyValuePair: foxglove_KeyVauePair,
-  LaserScan: foxglove_LaserScan,
-  LineMarker: foxglove_LineMarker,
-  LocationFix: foxglove_LocationFix,
-  Log: foxglove_Log,
-  MarkerDeletion: foxglove_MarkerDeletion,
-  Markers: foxglove_Markers,
-  ModelMarker: foxglove_ModelMarker,
-  Point2: foxglove_Point2,
-  Point3: foxglove_Point3,
-  PointCloud: foxglove_PointCloud,
-  PointsAnnotation: foxglove_PointsAnnotation,
-  Pose: foxglove_Pose,
-  PoseInFrame: foxglove_PoseInFrame,
-  PosesInFrame: foxglove_PosesInFrame,
-  Quaternion: foxglove_Quaternion,
-  RawImage: foxglove_RawImage,
-  SphereMarker: foxglove_SphereMarker,
-  TextMarker: foxglove_TextMarker,
-  TrianglesMarker: foxglove_TrianglesMarker,
-  Vector2: foxglove_Vector2,
-  Vector3: foxglove_Vector3,
+  ArrowMarker,
+  CameraCalibration,
+  CircleAnnotation,
+  Color,
+  CompressedImage,
+  ConeAttributes,
+  ConeListMarker,
+  CubeAttributes,
+  CubeListMarker,
+  FrameTransform,
+  GeoJSON,
+  Grid,
+  ImageAnnotations,
+  KeyValuePair,
+  LaserScan,
+  LineMarker,
+  LocationFix,
+  Log,
+  MarkerDeletion,
+  Markers,
+  ModelMarker,
+  PackedElementField,
+  Point2,
+  Point3,
+  PointCloud,
+  PointsAnnotation,
+  Pose,
+  PoseInFrame,
+  PosesInFrame,
+  Quaternion,
+  RawImage,
+  SphereAttributes,
+  SphereListMarker,
+  TextMarker,
+  TriangleListMarker,
+  Vector2,
+  Vector3,
 };
 
 export const foxgloveEnumSchemas = {
-  LineType: foxglove_LineType,
-  LogLevel: foxglove_LogLevel,
-  MarkerDeletionType: foxglove_MarkerDeletionType,
-  NumericType: foxglove_NumericType,
-  PointsAnnotationType: foxglove_PointsAnnotationType,
-  PositionCovarianceType: foxglove_PositionCovarianceType,
+  LineType,
+  LogLevel,
+  MarkerDeletionType,
+  NumericType,
+  PointsAnnotationType,
+  PositionCovarianceType,
 };

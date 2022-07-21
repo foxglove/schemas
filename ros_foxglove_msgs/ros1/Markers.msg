@@ -9,20 +9,20 @@ foxglove_msgs/MarkerDeletion[] deletions
 # Arrow markers
 foxglove_msgs/ArrowMarker[] arrows
 
-# Cube markers
-foxglove_msgs/CubeMarker[] cubes
+# Cube list markers
+foxglove_msgs/CubeListMarker[] cubes
 
-# Sphere markers
-foxglove_msgs/SphereMarker[] spheres
+# Sphere list markers
+foxglove_msgs/SphereListMarker[] spheres
 
-# Cylinder markers
-foxglove_msgs/CylinderMarker[] cylinders
+# Cone list markers
+foxglove_msgs/ConeListMarker[] cones
 
 # Line markers
 foxglove_msgs/LineMarker[] lines
 
-# Triangles markers
-foxglove_msgs/TrianglesMarker[] triangles
+# Triangle list markers
+foxglove_msgs/TriangleListMarker[] triangles
 
 # Text markers
 foxglove_msgs/TextMarker[] texts

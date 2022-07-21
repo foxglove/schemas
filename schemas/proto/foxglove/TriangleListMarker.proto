@@ -4,14 +4,15 @@ syntax = "proto3";
 
 import "foxglove/Color.proto";
 import "foxglove/KeyValuePair.proto";
+import "foxglove/Point3.proto";
 import "foxglove/Pose.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// A marker representing a cylinder or elliptic cylinder
-message CylinderMarker {
+// A marker representing a set of triangles or a surface tiled by triangles
+message TriangleListMarker {
   // Timestamp of the marker
   google.protobuf.Timestamp timestamp = 1;
 
@@ -30,18 +31,20 @@ message CylinderMarker {
   // Additional user-provided metadata associated with the marker. Keys must be unique.
   repeated foxglove.KeyValuePair metadata = 6;
 
-  // Position of the center of the cylinder and orientation of the cylinder. The cylinder's flat faces are perpendicular to the z-axis.
+  // Origin of triangles relative to reference frame
   foxglove.Pose pose = 7;
 
-  // Radius of the cylinder at min z
-  double bottom_radius = 8;
+  // Vertices to use for triangles, interpreted as a list of triples (0-1-2, 3-4-5, ...)
+  repeated foxglove.Point3 points = 8;
 
-  // Radius of the cylinder at max z
-  double top_radius = 9;
+  // Solid color to use for the whole shape. One of `color` or `colors` must be provided.
+  foxglove.Color color = 9;
 
-  // Height of the cylinder along the z axis
-  double height = 10;
+  // Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.
+  repeated foxglove.Color colors = 10;
 
-  // Color of the sphere
-  foxglove.Color color = 11;
+  // Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
+  // 
+  // If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
+  repeated fixed32 indices = 11;
 }

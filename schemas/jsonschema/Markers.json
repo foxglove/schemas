@@ -213,8 +213,8 @@
     "cubes": {
       "type": "array",
       "items": {
-        "title": "foxglove.CubeMarker",
-        "description": "A marker representing a cube or rectangular prism",
+        "title": "foxglove.CubeListMarker",
+        "description": "A marker representing a list of cubes or rectangular prisms",
         "type": "object",
         "properties": {
           "timestamp": {
@@ -279,106 +279,117 @@
             },
             "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
           },
-          "pose": {
-            "title": "foxglove.Pose",
-            "description": "Position of the center of the cube and orientation of the cube",
-            "type": "object",
-            "properties": {
-              "position": {
-                "title": "foxglove.Vector3",
-                "description": "Point denoting position in 3D space",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "type": "number",
-                    "description": "x coordinate length"
-                  },
-                  "y": {
-                    "type": "number",
-                    "description": "y coordinate length"
-                  },
-                  "z": {
-                    "type": "number",
-                    "description": "z coordinate length"
+          "attributes": {
+            "type": "array",
+            "items": {
+              "title": "foxglove.CubeAttributes",
+              "description": "Data specifying the visual appearance of a cube or rectangular prism",
+              "type": "object",
+              "properties": {
+                "pose": {
+                  "title": "foxglove.Pose",
+                  "description": "Position of the center of the cube and orientation of the cube",
+                  "type": "object",
+                  "properties": {
+                    "position": {
+                      "title": "foxglove.Vector3",
+                      "description": "Point denoting position in 3D space",
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number",
+                          "description": "x coordinate length"
+                        },
+                        "y": {
+                          "type": "number",
+                          "description": "y coordinate length"
+                        },
+                        "z": {
+                          "type": "number",
+                          "description": "z coordinate length"
+                        }
+                      }
+                    },
+                    "orientation": {
+                      "title": "foxglove.Quaternion",
+                      "description": "Quaternion denoting orientation in 3D space",
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number",
+                          "description": "x value"
+                        },
+                        "y": {
+                          "type": "number",
+                          "description": "y value"
+                        },
+                        "z": {
+                          "type": "number",
+                          "description": "z value"
+                        },
+                        "w": {
+                          "type": "number",
+                          "description": "w value"
+                        }
+                      }
+                    }
+                  }
+                },
+                "size": {
+                  "title": "foxglove.Vector3",
+                  "description": "Size of the cube along each axis",
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number",
+                      "description": "x coordinate length"
+                    },
+                    "y": {
+                      "type": "number",
+                      "description": "y coordinate length"
+                    },
+                    "z": {
+                      "type": "number",
+                      "description": "z coordinate length"
+                    }
+                  }
+                },
+                "color": {
+                  "title": "foxglove.Color",
+                  "description": "Color of the arrow",
+                  "type": "object",
+                  "properties": {
+                    "r": {
+                      "type": "number",
+                      "description": "Red value between 0 and 1"
+                    },
+                    "g": {
+                      "type": "number",
+                      "description": "Green value between 0 and 1"
+                    },
+                    "b": {
+                      "type": "number",
+                      "description": "Blue value between 0 and 1"
+                    },
+                    "a": {
+                      "type": "number",
+                      "description": "Alpha value between 0 and 1"
+                    }
                   }
                 }
-              },
-              "orientation": {
-                "title": "foxglove.Quaternion",
-                "description": "Quaternion denoting orientation in 3D space",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "type": "number",
-                    "description": "x value"
-                  },
-                  "y": {
-                    "type": "number",
-                    "description": "y value"
-                  },
-                  "z": {
-                    "type": "number",
-                    "description": "z value"
-                  },
-                  "w": {
-                    "type": "number",
-                    "description": "w value"
-                  }
-                }
               }
-            }
-          },
-          "size": {
-            "title": "foxglove.Vector3",
-            "description": "Size of the cube along each axis",
-            "type": "object",
-            "properties": {
-              "x": {
-                "type": "number",
-                "description": "x coordinate length"
-              },
-              "y": {
-                "type": "number",
-                "description": "y coordinate length"
-              },
-              "z": {
-                "type": "number",
-                "description": "z coordinate length"
-              }
-            }
-          },
-          "color": {
-            "title": "foxglove.Color",
-            "description": "Color of the arrow",
-            "type": "object",
-            "properties": {
-              "r": {
-                "type": "number",
-                "description": "Red value between 0 and 1"
-              },
-              "g": {
-                "type": "number",
-                "description": "Green value between 0 and 1"
-              },
-              "b": {
-                "type": "number",
-                "description": "Blue value between 0 and 1"
-              },
-              "a": {
-                "type": "number",
-                "description": "Alpha value between 0 and 1"
-              }
-            }
+            },
+            "description": "Attributes of each cube"
           }
         }
       },
-      "description": "Cube markers"
+      "description": "Cube list markers"
     },
     "spheres": {
       "type": "array",
       "items": {
-        "title": "foxglove.SphereMarker",
-        "description": "A marker representing a sphere or ellipsoid",
+        "title": "foxglove.SphereListMarker",
+        "description": "A marker representing a list of spheres or ellipsoids",
         "type": "object",
         "properties": {
           "timestamp": {
@@ -443,106 +454,117 @@
             },
             "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
           },
-          "pose": {
-            "title": "foxglove.Pose",
-            "description": "Position of the center of the sphere and orientation of the sphere",
-            "type": "object",
-            "properties": {
-              "position": {
-                "title": "foxglove.Vector3",
-                "description": "Point denoting position in 3D space",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "type": "number",
-                    "description": "x coordinate length"
-                  },
-                  "y": {
-                    "type": "number",
-                    "description": "y coordinate length"
-                  },
-                  "z": {
-                    "type": "number",
-                    "description": "z coordinate length"
+          "attributes": {
+            "type": "array",
+            "items": {
+              "title": "foxglove.SphereAttributes",
+              "description": "Data specifying the visual appearance of a sphere or ellipsoid",
+              "type": "object",
+              "properties": {
+                "pose": {
+                  "title": "foxglove.Pose",
+                  "description": "Position of the center of the sphere and orientation of the sphere",
+                  "type": "object",
+                  "properties": {
+                    "position": {
+                      "title": "foxglove.Vector3",
+                      "description": "Point denoting position in 3D space",
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number",
+                          "description": "x coordinate length"
+                        },
+                        "y": {
+                          "type": "number",
+                          "description": "y coordinate length"
+                        },
+                        "z": {
+                          "type": "number",
+                          "description": "z coordinate length"
+                        }
+                      }
+                    },
+                    "orientation": {
+                      "title": "foxglove.Quaternion",
+                      "description": "Quaternion denoting orientation in 3D space",
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number",
+                          "description": "x value"
+                        },
+                        "y": {
+                          "type": "number",
+                          "description": "y value"
+                        },
+                        "z": {
+                          "type": "number",
+                          "description": "z value"
+                        },
+                        "w": {
+                          "type": "number",
+                          "description": "w value"
+                        }
+                      }
+                    }
+                  }
+                },
+                "size": {
+                  "title": "foxglove.Vector3",
+                  "description": "Size (diameter) of the sphere along each axis",
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number",
+                      "description": "x coordinate length"
+                    },
+                    "y": {
+                      "type": "number",
+                      "description": "y coordinate length"
+                    },
+                    "z": {
+                      "type": "number",
+                      "description": "z coordinate length"
+                    }
+                  }
+                },
+                "color": {
+                  "title": "foxglove.Color",
+                  "description": "Color of the sphere",
+                  "type": "object",
+                  "properties": {
+                    "r": {
+                      "type": "number",
+                      "description": "Red value between 0 and 1"
+                    },
+                    "g": {
+                      "type": "number",
+                      "description": "Green value between 0 and 1"
+                    },
+                    "b": {
+                      "type": "number",
+                      "description": "Blue value between 0 and 1"
+                    },
+                    "a": {
+                      "type": "number",
+                      "description": "Alpha value between 0 and 1"
+                    }
                   }
                 }
-              },
-              "orientation": {
-                "title": "foxglove.Quaternion",
-                "description": "Quaternion denoting orientation in 3D space",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "type": "number",
-                    "description": "x value"
-                  },
-                  "y": {
-                    "type": "number",
-                    "description": "y value"
-                  },
-                  "z": {
-                    "type": "number",
-                    "description": "z value"
-                  },
-                  "w": {
-                    "type": "number",
-                    "description": "w value"
-                  }
-                }
               }
-            }
-          },
-          "size": {
-            "title": "foxglove.Vector3",
-            "description": "Size (diameter) of the sphere along each axis",
-            "type": "object",
-            "properties": {
-              "x": {
-                "type": "number",
-                "description": "x coordinate length"
-              },
-              "y": {
-                "type": "number",
-                "description": "y coordinate length"
-              },
-              "z": {
-                "type": "number",
-                "description": "z coordinate length"
-              }
-            }
-          },
-          "color": {
-            "title": "foxglove.Color",
-            "description": "Color of the sphere",
-            "type": "object",
-            "properties": {
-              "r": {
-                "type": "number",
-                "description": "Red value between 0 and 1"
-              },
-              "g": {
-                "type": "number",
-                "description": "Green value between 0 and 1"
-              },
-              "b": {
-                "type": "number",
-                "description": "Blue value between 0 and 1"
-              },
-              "a": {
-                "type": "number",
-                "description": "Alpha value between 0 and 1"
-              }
-            }
+            },
+            "description": "Attributes of each sphere"
           }
         }
       },
-      "description": "Sphere markers"
+      "description": "Sphere list markers"
     },
-    "cylinders": {
+    "cones": {
       "type": "array",
       "items": {
-        "title": "foxglove.CylinderMarker",
-        "description": "A marker representing a cylinder or elliptic cylinder",
+        "title": "foxglove.ConeListMarker",
+        "description": "A marker representing a list of possibly truncated, possibly elliptic cones or cylinders",
         "type": "object",
         "properties": {
           "timestamp": {
@@ -607,93 +629,119 @@
             },
             "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
           },
-          "pose": {
-            "title": "foxglove.Pose",
-            "description": "Position of the center of the cylinder and orientation of the cylinder. The cylinder's flat faces are perpendicular to the z-axis.",
-            "type": "object",
-            "properties": {
-              "position": {
-                "title": "foxglove.Vector3",
-                "description": "Point denoting position in 3D space",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "type": "number",
-                    "description": "x coordinate length"
-                  },
-                  "y": {
-                    "type": "number",
-                    "description": "y coordinate length"
-                  },
-                  "z": {
-                    "type": "number",
-                    "description": "z coordinate length"
+          "attributes": {
+            "type": "array",
+            "items": {
+              "title": "foxglove.ConeAttributes",
+              "description": "Data specifying the visual appearance of a possibly truncated, possibly elliptic cone or cylinder",
+              "type": "object",
+              "properties": {
+                "pose": {
+                  "title": "foxglove.Pose",
+                  "description": "Position of the center of the cone and orientation of the cone. The flat face(s) are perpendicular to the z-axis.",
+                  "type": "object",
+                  "properties": {
+                    "position": {
+                      "title": "foxglove.Vector3",
+                      "description": "Point denoting position in 3D space",
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number",
+                          "description": "x coordinate length"
+                        },
+                        "y": {
+                          "type": "number",
+                          "description": "y coordinate length"
+                        },
+                        "z": {
+                          "type": "number",
+                          "description": "z coordinate length"
+                        }
+                      }
+                    },
+                    "orientation": {
+                      "title": "foxglove.Quaternion",
+                      "description": "Quaternion denoting orientation in 3D space",
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number",
+                          "description": "x value"
+                        },
+                        "y": {
+                          "type": "number",
+                          "description": "y value"
+                        },
+                        "z": {
+                          "type": "number",
+                          "description": "z value"
+                        },
+                        "w": {
+                          "type": "number",
+                          "description": "w value"
+                        }
+                      }
+                    }
                   }
-                }
-              },
-              "orientation": {
-                "title": "foxglove.Quaternion",
-                "description": "Quaternion denoting orientation in 3D space",
-                "type": "object",
-                "properties": {
-                  "x": {
-                    "type": "number",
-                    "description": "x value"
-                  },
-                  "y": {
-                    "type": "number",
-                    "description": "y value"
-                  },
-                  "z": {
-                    "type": "number",
-                    "description": "z value"
-                  },
-                  "w": {
-                    "type": "number",
-                    "description": "w value"
+                },
+                "size": {
+                  "title": "foxglove.Vector3",
+                  "description": "Size of the cone's bounding box",
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number",
+                      "description": "x coordinate length"
+                    },
+                    "y": {
+                      "type": "number",
+                      "description": "y coordinate length"
+                    },
+                    "z": {
+                      "type": "number",
+                      "description": "z coordinate length"
+                    }
+                  }
+                },
+                "bottom_scale": {
+                  "type": "number",
+                  "description": "0-1, size of the cone's bottom face (min z) relative to the bottom of the bounding box"
+                },
+                "top_scale": {
+                  "type": "number",
+                  "description": "0-1, size of the cone's top face (max z) relative to the top of the bounding box"
+                },
+                "color": {
+                  "title": "foxglove.Color",
+                  "description": "Color of the cone",
+                  "type": "object",
+                  "properties": {
+                    "r": {
+                      "type": "number",
+                      "description": "Red value between 0 and 1"
+                    },
+                    "g": {
+                      "type": "number",
+                      "description": "Green value between 0 and 1"
+                    },
+                    "b": {
+                      "type": "number",
+                      "description": "Blue value between 0 and 1"
+                    },
+                    "a": {
+                      "type": "number",
+                      "description": "Alpha value between 0 and 1"
+                    }
                   }
                 }
               }
-            }
-          },
-          "bottom_radius": {
-            "type": "number",
-            "description": "Radius of the cylinder at min z"
-          },
-          "top_radius": {
-            "type": "number",
-            "description": "Radius of the cylinder at max z"
-          },
-          "height": {
-            "type": "number",
-            "description": "Height of the cylinder along the z axis"
-          },
-          "color": {
-            "title": "foxglove.Color",
-            "description": "Color of the sphere",
-            "type": "object",
-            "properties": {
-              "r": {
-                "type": "number",
-                "description": "Red value between 0 and 1"
-              },
-              "g": {
-                "type": "number",
-                "description": "Green value between 0 and 1"
-              },
-              "b": {
-                "type": "number",
-                "description": "Blue value between 0 and 1"
-              },
-              "a": {
-                "type": "number",
-                "description": "Alpha value between 0 and 1"
-              }
-            }
+            },
+            "description": "Attributes of each cone"
           }
         }
       },
-      "description": "Cylinder markers"
+      "description": "Cone list markers"
     },
     "lines": {
       "type": "array",
@@ -930,7 +978,7 @@
     "triangles": {
       "type": "array",
       "items": {
-        "title": "foxglove.TrianglesMarker",
+        "title": "foxglove.TriangleListMarker",
         "description": "A marker representing a set of triangles or a surface tiled by triangles",
         "type": "object",
         "properties": {
@@ -1116,7 +1164,7 @@
                 }
               }
             },
-            "description": "Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` should be provided."
+            "description": "Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided."
           },
           "indices": {
             "type": "array",
@@ -1128,7 +1176,7 @@
           }
         }
       },
-      "description": "Triangles markers"
+      "description": "Triangle list markers"
     },
     "texts": {
       "type": "array",

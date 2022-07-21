@@ -3,14 +3,14 @@
 syntax = "proto3";
 
 import "foxglove/ArrowMarker.proto";
-import "foxglove/CubeMarker.proto";
-import "foxglove/CylinderMarker.proto";
+import "foxglove/ConeListMarker.proto";
+import "foxglove/CubeListMarker.proto";
 import "foxglove/LineMarker.proto";
 import "foxglove/MarkerDeletion.proto";
 import "foxglove/ModelMarker.proto";
-import "foxglove/SphereMarker.proto";
+import "foxglove/SphereListMarker.proto";
 import "foxglove/TextMarker.proto";
-import "foxglove/TrianglesMarker.proto";
+import "foxglove/TriangleListMarker.proto";
 
 package foxglove;
 
@@ -22,20 +22,20 @@ message Markers {
   // Arrow markers
   repeated foxglove.ArrowMarker arrows = 2;
 
-  // Cube markers
-  repeated foxglove.CubeMarker cubes = 3;
+  // Cube list markers
+  repeated foxglove.CubeListMarker cubes = 3;
 
-  // Sphere markers
-  repeated foxglove.SphereMarker spheres = 4;
+  // Sphere list markers
+  repeated foxglove.SphereListMarker spheres = 4;
 
-  // Cylinder markers
-  repeated foxglove.CylinderMarker cylinders = 5;
+  // Cone list markers
+  repeated foxglove.ConeListMarker cones = 5;
 
   // Line markers
   repeated foxglove.LineMarker lines = 6;
 
-  // Triangles markers
-  repeated foxglove.TrianglesMarker triangles = 7;
+  // Triangle list markers
+  repeated foxglove.TriangleListMarker triangles = 7;
 
   // Text markers
   repeated foxglove.TextMarker texts = 8;

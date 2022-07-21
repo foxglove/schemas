@@ -3,12 +3,12 @@
 import { Color } from "./Color";
 import { Duration } from "./Duration";
 import { KeyValuePair } from "./KeyValuePair";
+import { Point3 } from "./Point3";
 import { Pose } from "./Pose";
 import { Time } from "./Time";
-import { Vector3 } from "./Vector3";
 
-/** A marker representing a cube or rectangular prism */
-export type CubeMarker = {
+/** A marker representing a set of triangles or a surface tiled by triangles */
+export type TriangleListMarker = {
   /** Timestamp of the marker */
   timestamp: Time;
 
@@ -27,12 +27,22 @@ export type CubeMarker = {
   /** Additional user-provided metadata associated with the marker. Keys must be unique. */
   metadata: KeyValuePair[];
 
-  /** Position of the center of the cube and orientation of the cube */
+  /** Origin of triangles relative to reference frame */
   pose: Pose;
 
-  /** Size of the cube along each axis */
-  size: Vector3;
+  /** Vertices to use for triangles, interpreted as a list of triples (0-1-2, 3-4-5, ...) */
+  points: Point3[];
 
-  /** Color of the arrow */
+  /** Solid color to use for the whole shape. One of `color` or `colors` must be provided. */
   color: Color;
+
+  /** Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided. */
+  colors: Color[];
+
+  /**
+   * Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
+   * 
+   * If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
+   */
+  indices: number[];
 };

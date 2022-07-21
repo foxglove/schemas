@@ -2,17 +2,15 @@
 
 syntax = "proto3";
 
-import "foxglove/Color.proto";
+import "foxglove/ConeAttributes.proto";
 import "foxglove/KeyValuePair.proto";
-import "foxglove/Pose.proto";
-import "foxglove/Vector3.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// A marker representing a sphere or ellipsoid
-message SphereMarker {
+// A marker representing a list of possibly truncated, possibly elliptic cones or cylinders
+message ConeListMarker {
   // Timestamp of the marker
   google.protobuf.Timestamp timestamp = 1;
 
@@ -31,12 +29,6 @@ message SphereMarker {
   // Additional user-provided metadata associated with the marker. Keys must be unique.
   repeated foxglove.KeyValuePair metadata = 6;
 
-  // Position of the center of the sphere and orientation of the sphere
-  foxglove.Pose pose = 7;
-
-  // Size (diameter) of the sphere along each axis
-  foxglove.Vector3 size = 8;
-
-  // Color of the sphere
-  foxglove.Color color = 9;
+  // Attributes of each cone
+  repeated foxglove.ConeAttributes attributes = 7;
 }

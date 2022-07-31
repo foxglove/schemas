@@ -2,6 +2,8 @@ export * from "./CameraCalibration";
 export * from "./CircleAnnotation";
 export * from "./Color";
 export * from "./CompressedImage";
+export * from "./Event";
+export * from "./EventKeyValue";
 export * from "./FrameTransform";
 export * from "./GeoJSON";
 export * from "./Grid";

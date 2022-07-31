@@ -800,6 +800,48 @@ const foxglove_LaserScan: FoxgloveMessageSchema = {
   ],
 };
 
+const foxglove_EventKeyValue: FoxgloveMessageSchema = {
+  type: "message",
+  name: "EventKeyValue",
+  description: "a single key-value pair of metadata for an event",
+  fields: [
+    {
+      name: "key",
+      type: { type: "primitive", name: "string" },
+      description: "key for this metadata",
+    },
+    {
+      name: "value",
+      type: { type: "primitive", name: "string" },
+      description: "value of the metadata",
+    },
+  ],
+};
+
+const foxglove_Event: FoxgloveMessageSchema = {
+  type: "message",
+  name: "Event",
+  description: "a message used to annotate some event of interest in the data",
+  fields: [
+    {
+      name: "timestamp",
+      type: { type: "primitive", name: "time" },
+      description: "time when the event occurred",
+    },
+    {
+      name: "duration",
+      type: { type: "primitive", name: "duration" },
+      description: "duration of event, starting at `timestamp`",
+    },
+    {
+      name: "metadata",
+      type: { type: "nested", schema: foxglove_EventKeyValue },
+      array: true,
+      description: "array of key-value metadata for this event",
+    },
+  ],
+};
+
 export const foxgloveMessageSchemas = {
   CameraCalibration: foxglove_CameraCalibration,
   CircleAnnotation: foxglove_CircleAnnotation,
@@ -824,6 +866,8 @@ export const foxgloveMessageSchemas = {
   RawImage: foxglove_RawImage,
   Vector2: foxglove_Vector2,
   Vector3: foxglove_Vector3,
+  Event: foxglove_Event,
+  EventKeyValue: foxglove_EventKeyValue,
 };
 
 export const foxgloveEnumSchemas = {

@@ -2,7 +2,7 @@
 
 syntax = "proto3";
 
-import "foxglove/MarkerDeletion.proto";
+import "foxglove/PrimitiveDeletion.proto";
 import "foxglove/SceneEntity.proto";
 
 package foxglove;
@@ -10,8 +10,8 @@ package foxglove;
 // An update to the entities displayed in a 3D scene
 message SceneEntityUpdate {
   // Scene entities to delete
-  repeated foxglove.MarkerDeletion deletions = 1;
+  repeated foxglove.PrimitiveDeletion deletions = 1;
 
-  // Scene entities to add or update
+  // Scene entities to add or replace
   repeated foxglove.SceneEntity entities = 2;
 }

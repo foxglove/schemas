@@ -178,21 +178,21 @@ const KeyValuePair: FoxgloveMessageSchema = {
   ],
 };
 
-const MarkerDeletionType: FoxgloveEnumSchema = {
+const PrimitiveDeletionType: FoxgloveEnumSchema = {
   type: "enum",
-  name: "MarkerDeletionType",
-  protobufParentMessageName: "MarkerDeletion",
+  name: "PrimitiveDeletionType",
+  protobufParentMessageName: "PrimitiveDeletion",
   protobufEnumName: "Type",
-  description: "An enumeration indicating which markers should match a MarkerDeletion command",
+  description: "An enumeration indicating which markers should match a PrimitiveDeletion command",
   values: [
     { value: 0, name: "MATCHING_ID" },
     { value: 1, name: "ALL" },
   ],
 };
 
-const MarkerDeletion: FoxgloveMessageSchema = {
+const PrimitiveDeletion: FoxgloveMessageSchema = {
   type: "message",
-  name: "MarkerDeletion",
+  name: "PrimitiveDeletion",
   description: "Command to remove previously published markers",
   fields: [
     {
@@ -203,7 +203,7 @@ const MarkerDeletion: FoxgloveMessageSchema = {
     },
     {
       name: "type",
-      type: { type: "enum", enum: MarkerDeletionType },
+      type: { type: "enum", enum: PrimitiveDeletionType },
       description: "Type of deletion action to perform",
     },
     {
@@ -214,10 +214,10 @@ const MarkerDeletion: FoxgloveMessageSchema = {
   ],
 };
 
-const ArrowMarker: FoxgloveMessageSchema = {
+const ArrowPrimitive: FoxgloveMessageSchema = {
   type: "message",
-  name: "ArrowMarker",
-  description: "A marker representing an arrow",
+  name: "ArrowPrimitive",
+  description: "A primitive representing an arrow",
   fields: [
     {
       name: "pose",
@@ -253,10 +253,10 @@ const ArrowMarker: FoxgloveMessageSchema = {
   ],
 };
 
-const CubeMarker: FoxgloveMessageSchema = {
+const CubePrimitive: FoxgloveMessageSchema = {
   type: "message",
-  name: "CubeMarker",
-  description: "A marker representing a cube or rectangular prism",
+  name: "CubePrimitive",
+  description: "A primitive representing a cube or rectangular prism",
   fields: [
     {
       name: "pose",
@@ -276,10 +276,10 @@ const CubeMarker: FoxgloveMessageSchema = {
   ],
 };
 
-const SphereMarker: FoxgloveMessageSchema = {
+const SpherePrimitive: FoxgloveMessageSchema = {
   type: "message",
-  name: "SphereMarker",
-  description: "A marker representing a sphere or ellipsoid",
+  name: "SpherePrimitive",
+  description: "A primitive representing a sphere or ellipsoid",
   fields: [
     {
       name: "pose",
@@ -299,10 +299,10 @@ const SphereMarker: FoxgloveMessageSchema = {
   ],
 };
 
-const ConeMarker: FoxgloveMessageSchema = {
+const ConePrimitive: FoxgloveMessageSchema = {
   type: "message",
-  name: "ConeMarker",
-  description: "A marker representing a possibly truncated, possibly elliptic cone or cylinder",
+  name: "ConePrimitive",
+  description: "A primitive representing a possibly truncated, possibly elliptic cone or cylinder",
   fields: [
     {
       name: "pose",
@@ -338,7 +338,7 @@ const ConeMarker: FoxgloveMessageSchema = {
 const LineType: FoxgloveEnumSchema = {
   type: "enum",
   name: "LineType",
-  protobufParentMessageName: "LineMarker",
+  protobufParentMessageName: "LinePrimitive",
   protobufEnumName: "Type",
   description: "An enumeration indicating how input points should be interpreted to create lines",
   values: [
@@ -348,10 +348,10 @@ const LineType: FoxgloveEnumSchema = {
   ],
 };
 
-const LineMarker: FoxgloveMessageSchema = {
+const LinePrimitive: FoxgloveMessageSchema = {
   type: "message",
-  name: "LineMarker",
-  description: "A marker representing a series of points connected by lines",
+  name: "LinePrimitive",
+  description: "A primitive representing a series of points connected by lines",
   fields: [
     {
       name: "type",
@@ -403,10 +403,10 @@ const LineMarker: FoxgloveMessageSchema = {
   ],
 };
 
-const TextMarker: FoxgloveMessageSchema = {
+const TextPrimitive: FoxgloveMessageSchema = {
   type: "message",
-  name: "TextMarker",
-  description: "A marker representing a text label",
+  name: "TextPrimitive",
+  description: "A primitive representing a text label",
   fields: [
     {
       name: "pose",
@@ -444,10 +444,10 @@ const TextMarker: FoxgloveMessageSchema = {
   ],
 };
 
-const TriangleListMarker: FoxgloveMessageSchema = {
+const TriangleListPrimitive: FoxgloveMessageSchema = {
   type: "message",
-  name: "TriangleListMarker",
-  description: "A marker representing a set of triangles or a surface tiled by triangles",
+  name: "TriangleListPrimitive",
+  description: "A primitive representing a set of triangles or a surface tiled by triangles",
   fields: [
     {
       name: "pose",
@@ -484,10 +484,10 @@ const TriangleListMarker: FoxgloveMessageSchema = {
   ],
 };
 
-const ModelMarker: FoxgloveMessageSchema = {
+const ModelPrimitive: FoxgloveMessageSchema = {
   type: "message",
-  name: "ModelMarker",
-  description: "A marker representing a 3D model",
+  name: "ModelPrimitive",
+  description: "A primitive representing a 3D model file loaded from an external URL",
   fields: [
     {
       name: "pose",
@@ -533,12 +533,13 @@ const ModelMarker: FoxgloveMessageSchema = {
 const SceneEntity: FoxgloveMessageSchema = {
   type: "message",
   name: "SceneEntity",
-  description: "A visual element in a 3D scene",
+  description:
+    "A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.",
   fields: [
     {
       name: "timestamp",
       type: { type: "primitive", name: "time" },
-      description: "Timestamp of the marker",
+      description: "Timestamp of the entity",
     },
     {
       name: "frame_id",
@@ -549,74 +550,74 @@ const SceneEntity: FoxgloveMessageSchema = {
       name: "id",
       type: { type: "primitive", name: "string" },
       description:
-        "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`.",
+        "Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`.",
     },
     {
       name: "lifetime",
       type: { type: "primitive", name: "duration" },
       description:
-        "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.",
+        "Length of time (relative to `timestamp`) after which the entity should be automatically removed. Zero value indicates the entity should remain visible until it is replaced or deleted.",
     },
     {
       name: "frame_locked",
       type: { type: "primitive", name: "boolean" },
       description:
-        "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
+        "Whether the entity should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)",
     },
     {
       name: "metadata",
       type: { type: "nested", schema: KeyValuePair },
       array: true,
       description:
-        "Additional user-provided metadata associated with the marker. Keys must be unique.",
+        "Additional user-provided metadata associated with the entity. Keys must be unique.",
     },
     {
       name: "arrows",
-      type: { type: "nested", schema: ArrowMarker },
+      type: { type: "nested", schema: ArrowPrimitive },
       array: true,
-      description: "Arrow markers",
+      description: "Arrow primitives",
     },
     {
       name: "cubes",
-      type: { type: "nested", schema: CubeMarker },
+      type: { type: "nested", schema: CubePrimitive },
       array: true,
-      description: "Cube list markers",
+      description: "Cube list primitives",
     },
     {
       name: "spheres",
-      type: { type: "nested", schema: SphereMarker },
+      type: { type: "nested", schema: SpherePrimitive },
       array: true,
-      description: "Sphere list markers",
+      description: "Sphere list primitives",
     },
     {
       name: "cones",
-      type: { type: "nested", schema: ConeMarker },
+      type: { type: "nested", schema: ConePrimitive },
       array: true,
-      description: "Cone list markers",
+      description: "Cone list primitives",
     },
     {
       name: "lines",
-      type: { type: "nested", schema: LineMarker },
+      type: { type: "nested", schema: LinePrimitive },
       array: true,
-      description: "Line markers",
+      description: "Line primitives",
     },
     {
       name: "triangles",
-      type: { type: "nested", schema: TriangleListMarker },
+      type: { type: "nested", schema: TriangleListPrimitive },
       array: true,
-      description: "Triangle list markers",
+      description: "Triangle list primitives",
     },
     {
       name: "texts",
-      type: { type: "nested", schema: TextMarker },
+      type: { type: "nested", schema: TextPrimitive },
       array: true,
-      description: "Text markers",
+      description: "Text primitives",
     },
     {
       name: "models",
-      type: { type: "nested", schema: ModelMarker },
+      type: { type: "nested", schema: ModelPrimitive },
       array: true,
-      description: "Model markers",
+      description: "Model primitives",
     },
   ],
 };
@@ -628,7 +629,7 @@ const SceneEntityUpdate: FoxgloveMessageSchema = {
   fields: [
     {
       name: "deletions",
-      type: { type: "nested", schema: MarkerDeletion },
+      type: { type: "nested", schema: PrimitiveDeletion },
       array: true,
       description: "Scene entities to delete",
     },
@@ -636,7 +637,7 @@ const SceneEntityUpdate: FoxgloveMessageSchema = {
       name: "entities",
       type: { type: "nested", schema: SceneEntity },
       array: true,
-      description: "Scene entities to add or update",
+      description: "Scene entities to add or replace",
     },
   ],
 };
@@ -1282,26 +1283,26 @@ const LaserScan: FoxgloveMessageSchema = {
 };
 
 export const foxgloveMessageSchemas = {
-  ArrowMarker,
+  ArrowPrimitive,
   CameraCalibration,
   CircleAnnotation,
   Color,
   CompressedImage,
-  ConeMarker,
-  CubeMarker,
+  ConePrimitive,
+  CubePrimitive,
   FrameTransform,
   GeoJSON,
   Grid,
   ImageAnnotations,
   KeyValuePair,
   LaserScan,
-  LineMarker,
+  LinePrimitive,
   LocationFix,
   Log,
-  MarkerDeletion,
+  PrimitiveDeletion,
   SceneEntity,
   SceneEntityUpdate,
-  ModelMarker,
+  ModelPrimitive,
   PackedElementField,
   Point2,
   Point3,
@@ -1312,9 +1313,9 @@ export const foxgloveMessageSchemas = {
   PosesInFrame,
   Quaternion,
   RawImage,
-  SphereMarker,
-  TextMarker,
-  TriangleListMarker,
+  SpherePrimitive,
+  TextPrimitive,
+  TriangleListPrimitive,
   Vector2,
   Vector3,
 };
@@ -1322,7 +1323,7 @@ export const foxgloveMessageSchemas = {
 export const foxgloveEnumSchemas = {
   LineType,
   LogLevel,
-  MarkerDeletionType,
+  PrimitiveDeletionType,
   NumericType,
   PointsAnnotationType,
   PositionCovarianceType,

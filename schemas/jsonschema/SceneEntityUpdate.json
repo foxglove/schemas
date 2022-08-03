@@ -7,7 +7,7 @@
     "deletions": {
       "type": "array",
       "items": {
-        "title": "foxglove.MarkerDeletion",
+        "title": "foxglove.PrimitiveDeletion",
         "description": "Command to remove previously published markers",
         "type": "object",
         "properties": {
@@ -28,7 +28,7 @@
             "description": "Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted."
           },
           "type": {
-            "title": "foxglove.MarkerDeletionType",
+            "title": "foxglove.PrimitiveDeletionType",
             "description": "Type of deletion action to perform",
             "oneOf": [
               {
@@ -53,7 +53,7 @@
       "type": "array",
       "items": {
         "title": "foxglove.SceneEntity",
-        "description": "A visual element in a 3D scene",
+        "description": "A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.",
         "type": "object",
         "properties": {
           "timestamp": {
@@ -70,7 +70,7 @@
                 "maximum": 999999999
               }
             },
-            "description": "Timestamp of the marker"
+            "description": "Timestamp of the entity"
           },
           "frame_id": {
             "type": "string",
@@ -78,7 +78,7 @@
           },
           "id": {
             "type": "string",
-            "description": "Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`."
+            "description": "Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`."
           },
           "lifetime": {
             "type": "object",
@@ -93,11 +93,11 @@
                 "maximum": 999999999
               }
             },
-            "description": "Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted."
+            "description": "Length of time (relative to `timestamp`) after which the entity should be automatically removed. Zero value indicates the entity should remain visible until it is replaced or deleted."
           },
           "frame_locked": {
             "type": "boolean",
-            "description": "Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)"
+            "description": "Whether the entity should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)"
           },
           "metadata": {
             "type": "array",
@@ -116,13 +116,13 @@
                 }
               }
             },
-            "description": "Additional user-provided metadata associated with the marker. Keys must be unique."
+            "description": "Additional user-provided metadata associated with the entity. Keys must be unique."
           },
           "arrows": {
             "type": "array",
             "items": {
-              "title": "foxglove.ArrowMarker",
-              "description": "A marker representing an arrow",
+              "title": "foxglove.ArrowPrimitive",
+              "description": "A primitive representing an arrow",
               "type": "object",
               "properties": {
                 "pose": {
@@ -215,13 +215,13 @@
                 }
               }
             },
-            "description": "Arrow markers"
+            "description": "Arrow primitives"
           },
           "cubes": {
             "type": "array",
             "items": {
-              "title": "foxglove.CubeMarker",
-              "description": "A marker representing a cube or rectangular prism",
+              "title": "foxglove.CubePrimitive",
+              "description": "A primitive representing a cube or rectangular prism",
               "type": "object",
               "properties": {
                 "pose": {
@@ -317,13 +317,13 @@
                 }
               }
             },
-            "description": "Cube list markers"
+            "description": "Cube list primitives"
           },
           "spheres": {
             "type": "array",
             "items": {
-              "title": "foxglove.SphereMarker",
-              "description": "A marker representing a sphere or ellipsoid",
+              "title": "foxglove.SpherePrimitive",
+              "description": "A primitive representing a sphere or ellipsoid",
               "type": "object",
               "properties": {
                 "pose": {
@@ -419,13 +419,13 @@
                 }
               }
             },
-            "description": "Sphere list markers"
+            "description": "Sphere list primitives"
           },
           "cones": {
             "type": "array",
             "items": {
-              "title": "foxglove.ConeMarker",
-              "description": "A marker representing a possibly truncated, possibly elliptic cone or cylinder",
+              "title": "foxglove.ConePrimitive",
+              "description": "A primitive representing a possibly truncated, possibly elliptic cone or cylinder",
               "type": "object",
               "properties": {
                 "pose": {
@@ -529,13 +529,13 @@
                 }
               }
             },
-            "description": "Cone list markers"
+            "description": "Cone list primitives"
           },
           "lines": {
             "type": "array",
             "items": {
-              "title": "foxglove.LineMarker",
-              "description": "A marker representing a series of points connected by lines",
+              "title": "foxglove.LinePrimitive",
+              "description": "A primitive representing a series of points connected by lines",
               "type": "object",
               "properties": {
                 "type": {
@@ -699,13 +699,13 @@
                 }
               }
             },
-            "description": "Line markers"
+            "description": "Line primitives"
           },
           "triangles": {
             "type": "array",
             "items": {
-              "title": "foxglove.TriangleListMarker",
-              "description": "A marker representing a set of triangles or a surface tiled by triangles",
+              "title": "foxglove.TriangleListPrimitive",
+              "description": "A primitive representing a set of triangles or a surface tiled by triangles",
               "type": "object",
               "properties": {
                 "pose": {
@@ -840,13 +840,13 @@
                 }
               }
             },
-            "description": "Triangle list markers"
+            "description": "Triangle list primitives"
           },
           "texts": {
             "type": "array",
             "items": {
-              "title": "foxglove.TextMarker",
-              "description": "A marker representing a text label",
+              "title": "foxglove.TextPrimitive",
+              "description": "A primitive representing a text label",
               "type": "object",
               "properties": {
                 "pose": {
@@ -939,13 +939,13 @@
                 }
               }
             },
-            "description": "Text markers"
+            "description": "Text primitives"
           },
           "models": {
             "type": "array",
             "items": {
-              "title": "foxglove.ModelMarker",
-              "description": "A marker representing a 3D model",
+              "title": "foxglove.ModelPrimitive",
+              "description": "A primitive representing a 3D model file loaded from an external URL",
               "type": "object",
               "properties": {
                 "pose": {
@@ -1058,11 +1058,11 @@
                 }
               }
             },
-            "description": "Model markers"
+            "description": "Model primitives"
           }
         }
       },
-      "description": "Scene entities to add or update"
+      "description": "Scene entities to add or replace"
     }
   }
 }

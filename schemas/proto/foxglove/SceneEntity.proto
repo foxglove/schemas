@@ -2,61 +2,61 @@
 
 syntax = "proto3";
 
-import "foxglove/ArrowMarker.proto";
-import "foxglove/ConeMarker.proto";
-import "foxglove/CubeMarker.proto";
+import "foxglove/ArrowPrimitive.proto";
+import "foxglove/ConePrimitive.proto";
+import "foxglove/CubePrimitive.proto";
 import "foxglove/KeyValuePair.proto";
-import "foxglove/LineMarker.proto";
-import "foxglove/ModelMarker.proto";
-import "foxglove/SphereMarker.proto";
-import "foxglove/TextMarker.proto";
-import "foxglove/TriangleListMarker.proto";
+import "foxglove/LinePrimitive.proto";
+import "foxglove/ModelPrimitive.proto";
+import "foxglove/SpherePrimitive.proto";
+import "foxglove/TextPrimitive.proto";
+import "foxglove/TriangleListPrimitive.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// A visual element in a 3D scene
+// A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
 message SceneEntity {
-  // Timestamp of the marker
+  // Timestamp of the entity
   google.protobuf.Timestamp timestamp = 1;
 
   // Frame of reference
   string frame_id = 2;
 
-  // Identifier for the marker. A marker will replace any prior marker on the same topic with the same `id`.
+  // Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`.
   string id = 3;
 
-  // Length of time (relative to `timestamp`) after which the marker should be automatically removed. Zero value indicates the marker should remain visible until it is replaced or deleted.
+  // Length of time (relative to `timestamp`) after which the entity should be automatically removed. Zero value indicates the entity should remain visible until it is replaced or deleted.
   google.protobuf.Duration lifetime = 4;
 
-  // Whether the marker should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
+  // Whether the entity should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
   bool frame_locked = 5;
 
-  // Additional user-provided metadata associated with the marker. Keys must be unique.
+  // Additional user-provided metadata associated with the entity. Keys must be unique.
   repeated foxglove.KeyValuePair metadata = 6;
 
-  // Arrow markers
-  repeated foxglove.ArrowMarker arrows = 7;
+  // Arrow primitives
+  repeated foxglove.ArrowPrimitive arrows = 7;
 
-  // Cube list markers
-  repeated foxglove.CubeMarker cubes = 8;
+  // Cube list primitives
+  repeated foxglove.CubePrimitive cubes = 8;
 
-  // Sphere list markers
-  repeated foxglove.SphereMarker spheres = 9;
+  // Sphere list primitives
+  repeated foxglove.SpherePrimitive spheres = 9;
 
-  // Cone list markers
-  repeated foxglove.ConeMarker cones = 10;
+  // Cone list primitives
+  repeated foxglove.ConePrimitive cones = 10;
 
-  // Line markers
-  repeated foxglove.LineMarker lines = 11;
+  // Line primitives
+  repeated foxglove.LinePrimitive lines = 11;
 
-  // Triangle list markers
-  repeated foxglove.TriangleListMarker triangles = 12;
+  // Triangle list primitives
+  repeated foxglove.TriangleListPrimitive triangles = 12;
 
-  // Text markers
-  repeated foxglove.TextMarker texts = 13;
+  // Text primitives
+  repeated foxglove.TextPrimitive texts = 13;
 
-  // Model markers
-  repeated foxglove.ModelMarker models = 14;
+  // Model primitives
+  repeated foxglove.ModelPrimitive models = 14;
 }

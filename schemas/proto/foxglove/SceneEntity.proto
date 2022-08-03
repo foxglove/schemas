@@ -39,13 +39,13 @@ message SceneEntity {
   // Arrow primitives
   repeated foxglove.ArrowPrimitive arrows = 7;
 
-  // Cube list primitives
+  // Cube primitives
   repeated foxglove.CubePrimitive cubes = 8;
 
-  // Sphere list primitives
+  // Sphere primitives
   repeated foxglove.SpherePrimitive spheres = 9;
 
-  // Cone list primitives
+  // Cone primitives
   repeated foxglove.ConePrimitive cones = 10;
 
   // Line primitives

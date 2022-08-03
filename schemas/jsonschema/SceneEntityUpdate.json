@@ -317,7 +317,7 @@
                 }
               }
             },
-            "description": "Cube list primitives"
+            "description": "Cube primitives"
           },
           "spheres": {
             "type": "array",
@@ -419,7 +419,7 @@
                 }
               }
             },
-            "description": "Sphere list primitives"
+            "description": "Sphere primitives"
           },
           "cones": {
             "type": "array",
@@ -529,7 +529,7 @@
                 }
               }
             },
-            "description": "Cone list primitives"
+            "description": "Cone primitives"
           },
           "lines": {
             "type": "array",

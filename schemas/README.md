@@ -2217,7 +2217,7 @@ Arrow primitives
 </td>
 <td>
 
-Cube list primitives
+Cube primitives
 
 </td>
 </tr>
@@ -2230,7 +2230,7 @@ Cube list primitives
 </td>
 <td>
 
-Sphere list primitives
+Sphere primitives
 
 </td>
 </tr>
@@ -2243,7 +2243,7 @@ Sphere list primitives
 </td>
 <td>
 
-Cone list primitives
+Cone primitives
 
 </td>
 </tr>

@@ -582,19 +582,19 @@ const SceneEntity: FoxgloveMessageSchema = {
       name: "cubes",
       type: { type: "nested", schema: CubePrimitive },
       array: true,
-      description: "Cube list primitives",
+      description: "Cube primitives",
     },
     {
       name: "spheres",
       type: { type: "nested", schema: SpherePrimitive },
       array: true,
-      description: "Sphere list primitives",
+      description: "Sphere primitives",
     },
     {
       name: "cones",
       type: { type: "nested", schema: ConePrimitive },
       array: true,
-      description: "Cone list primitives",
+      description: "Cone primitives",
     },
     {
       name: "lines",

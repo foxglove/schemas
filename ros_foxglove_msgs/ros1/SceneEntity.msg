@@ -24,13 +24,13 @@ foxglove_msgs/KeyValuePair[] metadata
 # Arrow primitives
 foxglove_msgs/ArrowPrimitive[] arrows
 
-# Cube list primitives
+# Cube primitives
 foxglove_msgs/CubePrimitive[] cubes
 
-# Sphere list primitives
+# Sphere primitives
 foxglove_msgs/SpherePrimitive[] spheres
 
-# Cone list primitives
+# Cone primitives
 foxglove_msgs/ConePrimitive[] cones
 
 # Line primitives

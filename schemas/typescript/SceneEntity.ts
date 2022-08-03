@@ -35,13 +35,13 @@ export type SceneEntity = {
   /** Arrow primitives */
   arrows: ArrowPrimitive[];
 
-  /** Cube list primitives */
+  /** Cube primitives */
   cubes: CubePrimitive[];
 
-  /** Sphere list primitives */
+  /** Sphere primitives */
   spheres: SpherePrimitive[];
 
-  /** Cone list primitives */
+  /** Cone primitives */
   cones: ConePrimitive[];
 
   /** Line primitives */

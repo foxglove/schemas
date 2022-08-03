@@ -6,15 +6,15 @@ import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// Command to remove previously published markers
-message PrimitiveDeletion {
-  // An enumeration indicating which markers should match a PrimitiveDeletion command
+// Command to remove previously published entities
+message SceneEntityDeletion {
+  // An enumeration indicating which entities should match a SceneEntityDeletion command
   enum Type {
     MATCHING_ID = 0;
 
     ALL = 1;
   }
-  // Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.
+  // Timestamp of the deletion. Only matching entities earlier than this timestamp will be deleted.
   google.protobuf.Timestamp timestamp = 1;
 
   // Type of deletion action to perform

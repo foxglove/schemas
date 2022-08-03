@@ -178,32 +178,33 @@ const KeyValuePair: FoxgloveMessageSchema = {
   ],
 };
 
-const PrimitiveDeletionType: FoxgloveEnumSchema = {
+const SceneEntityDeletionType: FoxgloveEnumSchema = {
   type: "enum",
-  name: "PrimitiveDeletionType",
-  protobufParentMessageName: "PrimitiveDeletion",
+  name: "SceneEntityDeletionType",
+  protobufParentMessageName: "SceneEntityDeletion",
   protobufEnumName: "Type",
-  description: "An enumeration indicating which markers should match a PrimitiveDeletion command",
+  description:
+    "An enumeration indicating which entities should match a SceneEntityDeletion command",
   values: [
     { value: 0, name: "MATCHING_ID" },
     { value: 1, name: "ALL" },
   ],
 };
 
-const PrimitiveDeletion: FoxgloveMessageSchema = {
+const SceneEntityDeletion: FoxgloveMessageSchema = {
   type: "message",
-  name: "PrimitiveDeletion",
-  description: "Command to remove previously published markers",
+  name: "SceneEntityDeletion",
+  description: "Command to remove previously published entities",
   fields: [
     {
       name: "timestamp",
       type: { type: "primitive", name: "time" },
       description:
-        "Timestamp of the marker. Only matching markers earlier than this timestamp will be deleted.",
+        "Timestamp of the deletion. Only matching entities earlier than this timestamp will be deleted.",
     },
     {
       name: "type",
-      type: { type: "enum", enum: PrimitiveDeletionType },
+      type: { type: "enum", enum: SceneEntityDeletionType },
       description: "Type of deletion action to perform",
     },
     {
@@ -629,7 +630,7 @@ const SceneEntityUpdate: FoxgloveMessageSchema = {
   fields: [
     {
       name: "deletions",
-      type: { type: "nested", schema: PrimitiveDeletion },
+      type: { type: "nested", schema: SceneEntityDeletion },
       array: true,
       description: "Scene entities to delete",
     },
@@ -1299,7 +1300,7 @@ export const foxgloveMessageSchemas = {
   LinePrimitive,
   LocationFix,
   Log,
-  PrimitiveDeletion,
+  SceneEntityDeletion,
   SceneEntity,
   SceneEntityUpdate,
   ModelPrimitive,
@@ -1323,7 +1324,7 @@ export const foxgloveMessageSchemas = {
 export const foxgloveEnumSchemas = {
   LineType,
   LogLevel,
-  PrimitiveDeletionType,
+  SceneEntityDeletionType,
   NumericType,
   PointsAnnotationType,
   PositionCovarianceType,

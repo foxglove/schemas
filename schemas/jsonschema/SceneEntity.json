@@ -160,6 +160,25 @@
                 "description": "Alpha value between 0 and 1"
               }
             }
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "title": "foxglove.KeyValuePair",
+              "description": "A key with its associated value",
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "Key"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value"
+                }
+              }
+            },
+            "description": "Additional user-provided metadata associated with the arrow. Keys must be unique."
           }
         }
       },
@@ -262,6 +281,25 @@
                 "description": "Alpha value between 0 and 1"
               }
             }
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "title": "foxglove.KeyValuePair",
+              "description": "A key with its associated value",
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "Key"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value"
+                }
+              }
+            },
+            "description": "Additional user-provided metadata associated with the cube. Keys must be unique."
           }
         }
       },
@@ -364,21 +402,40 @@
                 "description": "Alpha value between 0 and 1"
               }
             }
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "title": "foxglove.KeyValuePair",
+              "description": "A key with its associated value",
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "Key"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value"
+                }
+              }
+            },
+            "description": "Additional user-provided metadata associated with the sphere. Keys must be unique."
           }
         }
       },
       "description": "Sphere primitives"
     },
-    "cones": {
+    "cylinders": {
       "type": "array",
       "items": {
-        "title": "foxglove.ConePrimitive",
-        "description": "A primitive representing a possibly truncated, possibly elliptic cone or cylinder",
+        "title": "foxglove.CylinderPrimitive",
+        "description": "A primitive representing a cylinder, elliptic cylinder, or truncated cone",
         "type": "object",
         "properties": {
           "pose": {
             "title": "foxglove.Pose",
-            "description": "Position of the center of the cone and orientation of the cone. The flat face(s) are perpendicular to the z-axis.",
+            "description": "Position of the center of the cylinder and orientation of the cylinder. The flat face(s) are perpendicular to the z-axis.",
             "type": "object",
             "properties": {
               "position": {
@@ -427,7 +484,7 @@
           },
           "size": {
             "title": "foxglove.Vector3",
-            "description": "Size of the cone's bounding box",
+            "description": "Size of the cylinder's bounding box",
             "type": "object",
             "properties": {
               "x": {
@@ -446,15 +503,15 @@
           },
           "bottom_scale": {
             "type": "number",
-            "description": "0-1, size of the cone's bottom face (min z) relative to the bottom of the bounding box"
+            "description": "0-1, ratio of the diameter of the cylinder's bottom face (min z) to the bottom of the bounding box"
           },
           "top_scale": {
             "type": "number",
-            "description": "0-1, size of the cone's top face (max z) relative to the top of the bounding box"
+            "description": "0-1, ratio of the diameter of the cylinder's top face (max z) to the top of the bounding box"
           },
           "color": {
             "title": "foxglove.Color",
-            "description": "Color of the cone",
+            "description": "Color of the cylinder",
             "type": "object",
             "properties": {
               "r": {
@@ -474,10 +531,29 @@
                 "description": "Alpha value between 0 and 1"
               }
             }
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "title": "foxglove.KeyValuePair",
+              "description": "A key with its associated value",
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "Key"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value"
+                }
+              }
+            },
+            "description": "Additional user-provided metadata associated with the cylinder. Keys must be unique."
           }
         }
       },
-      "description": "Cone primitives"
+      "description": "Cylinder primitives"
     },
     "lines": {
       "type": "array",
@@ -644,6 +720,25 @@
               "minimum": 0
             },
             "description": "Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.\n\nIf omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided)."
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "title": "foxglove.KeyValuePair",
+              "description": "A key with its associated value",
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "Key"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value"
+                }
+              }
+            },
+            "description": "Additional user-provided metadata associated with the line. Keys must be unique."
           }
         }
       },
@@ -785,6 +880,25 @@
               "minimum": 0
             },
             "description": "Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.\n\nIf omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided)."
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "title": "foxglove.KeyValuePair",
+              "description": "A key with its associated value",
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "Key"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value"
+                }
+              }
+            },
+            "description": "Additional user-provided metadata associated with the triangles. Keys must be unique."
           }
         }
       },
@@ -884,6 +998,25 @@
           "text": {
             "type": "string",
             "description": "Text"
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "title": "foxglove.KeyValuePair",
+              "description": "A key with its associated value",
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "Key"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value"
+                }
+              }
+            },
+            "description": "Additional user-provided metadata associated with the text. Keys must be unique."
           }
         }
       },
@@ -1003,6 +1136,25 @@
             "type": "string",
             "contentEncoding": "base64",
             "description": "Embedded model. Either `url` or `mime_type` and `data` should be provided."
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "title": "foxglove.KeyValuePair",
+              "description": "A key with its associated value",
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "Key"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value"
+                }
+              }
+            },
+            "description": "Additional user-provided metadata associated with the model. Keys must be unique."
           }
         }
       },

@@ -20,3 +20,6 @@ float64 head_length
 
 # Color of the arrow
 foxglove_msgs/Color color
+
+# Additional user-provided metadata associated with the arrow. Keys must be unique.
+foxglove_msgs/KeyValuePair[] metadata

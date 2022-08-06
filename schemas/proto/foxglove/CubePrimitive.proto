@@ -3,6 +3,7 @@
 syntax = "proto3";
 
 import "foxglove/Color.proto";
+import "foxglove/KeyValuePair.proto";
 import "foxglove/Pose.proto";
 import "foxglove/Vector3.proto";
 
@@ -18,4 +19,7 @@ message CubePrimitive {
 
   // Color of the arrow
   foxglove.Color color = 3;
+
+  // Additional user-provided metadata associated with the cube. Keys must be unique.
+  repeated foxglove.KeyValuePair metadata = 4;
 }

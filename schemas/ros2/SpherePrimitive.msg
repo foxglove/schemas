@@ -11,3 +11,6 @@ geometry_msgs/Vector3 size
 
 # Color of the sphere
 foxglove_msgs/Color color
+
+# Additional user-provided metadata associated with the sphere. Keys must be unique.
+foxglove_msgs/KeyValuePair[] metadata

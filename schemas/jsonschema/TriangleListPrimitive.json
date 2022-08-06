@@ -133,6 +133,25 @@
         "minimum": 0
       },
       "description": "Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.\n\nIf omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided)."
+    },
+    "metadata": {
+      "type": "array",
+      "items": {
+        "title": "foxglove.KeyValuePair",
+        "description": "A key with its associated value",
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Key"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value"
+          }
+        }
+      },
+      "description": "Additional user-provided metadata associated with the triangles. Keys must be unique."
     }
   }
 }

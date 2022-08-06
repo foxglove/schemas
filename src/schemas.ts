@@ -251,6 +251,13 @@ const ArrowPrimitive: FoxgloveMessageSchema = {
       type: { type: "nested", schema: Color },
       description: "Color of the arrow",
     },
+    {
+      name: "metadata",
+      type: { type: "nested", schema: KeyValuePair },
+      array: true,
+      description:
+        "Additional user-provided metadata associated with the arrow. Keys must be unique.",
+    },
   ],
 };
 
@@ -273,6 +280,13 @@ const CubePrimitive: FoxgloveMessageSchema = {
       name: "color",
       type: { type: "nested", schema: Color },
       description: "Color of the arrow",
+    },
+    {
+      name: "metadata",
+      type: { type: "nested", schema: KeyValuePair },
+      array: true,
+      description:
+        "Additional user-provided metadata associated with the cube. Keys must be unique.",
     },
   ],
 };
@@ -297,41 +311,55 @@ const SpherePrimitive: FoxgloveMessageSchema = {
       type: { type: "nested", schema: Color },
       description: "Color of the sphere",
     },
+    {
+      name: "metadata",
+      type: { type: "nested", schema: KeyValuePair },
+      array: true,
+      description:
+        "Additional user-provided metadata associated with the sphere. Keys must be unique.",
+    },
   ],
 };
 
-const ConePrimitive: FoxgloveMessageSchema = {
+const CylinderPrimitive: FoxgloveMessageSchema = {
   type: "message",
-  name: "ConePrimitive",
-  description: "A primitive representing a possibly truncated, possibly elliptic cone or cylinder",
+  name: "CylinderPrimitive",
+  description: "A primitive representing a cylinder, elliptic cylinder, or truncated cone",
   fields: [
     {
       name: "pose",
       type: { type: "nested", schema: Pose },
       description:
-        "Position of the center of the cone and orientation of the cone. The flat face(s) are perpendicular to the z-axis.",
+        "Position of the center of the cylinder and orientation of the cylinder. The flat face(s) are perpendicular to the z-axis.",
     },
     {
       name: "size",
       type: { type: "nested", schema: Vector3 },
-      description: "Size of the cone's bounding box",
+      description: "Size of the cylinder's bounding box",
     },
     {
       name: "bottom_scale",
       type: { type: "primitive", name: "float64" },
       description:
-        "0-1, size of the cone's bottom face (min z) relative to the bottom of the bounding box",
+        "0-1, ratio of the diameter of the cylinder's bottom face (min z) to the bottom of the bounding box",
     },
     {
       name: "top_scale",
       type: { type: "primitive", name: "float64" },
       description:
-        "0-1, size of the cone's top face (max z) relative to the top of the bounding box",
+        "0-1, ratio of the diameter of the cylinder's top face (max z) to the top of the bounding box",
     },
     {
       name: "color",
       type: { type: "nested", schema: Color },
-      description: "Color of the cone",
+      description: "Color of the cylinder",
+    },
+    {
+      name: "metadata",
+      type: { type: "nested", schema: KeyValuePair },
+      array: true,
+      description:
+        "Additional user-provided metadata associated with the cylinder. Keys must be unique.",
     },
   ],
 };
@@ -401,6 +429,13 @@ const LinePrimitive: FoxgloveMessageSchema = {
       description:
         "Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.\n\nIf omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).",
     },
+    {
+      name: "metadata",
+      type: { type: "nested", schema: KeyValuePair },
+      array: true,
+      description:
+        "Additional user-provided metadata associated with the line. Keys must be unique.",
+    },
   ],
 };
 
@@ -442,6 +477,13 @@ const TextPrimitive: FoxgloveMessageSchema = {
       type: { type: "primitive", name: "string" },
       description: "Text",
     },
+    {
+      name: "metadata",
+      type: { type: "nested", schema: KeyValuePair },
+      array: true,
+      description:
+        "Additional user-provided metadata associated with the text. Keys must be unique.",
+    },
   ],
 };
 
@@ -481,6 +523,13 @@ const TriangleListPrimitive: FoxgloveMessageSchema = {
       array: true,
       description:
         "Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.\n\nIf omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).",
+    },
+    {
+      name: "metadata",
+      type: { type: "nested", schema: KeyValuePair },
+      array: true,
+      description:
+        "Additional user-provided metadata associated with the triangles. Keys must be unique.",
     },
   ],
 };
@@ -527,6 +576,13 @@ const ModelPrimitive: FoxgloveMessageSchema = {
       name: "data",
       type: { type: "primitive", name: "bytes" },
       description: "Embedded model. Either `url` or `mime_type` and `data` should be provided.",
+    },
+    {
+      name: "metadata",
+      type: { type: "nested", schema: KeyValuePair },
+      array: true,
+      description:
+        "Additional user-provided metadata associated with the model. Keys must be unique.",
     },
   ],
 };
@@ -591,10 +647,10 @@ const SceneEntity: FoxgloveMessageSchema = {
       description: "Sphere primitives",
     },
     {
-      name: "cones",
-      type: { type: "nested", schema: ConePrimitive },
+      name: "cylinders",
+      type: { type: "nested", schema: CylinderPrimitive },
       array: true,
-      description: "Cone primitives",
+      description: "Cylinder primitives",
     },
     {
       name: "lines",
@@ -1289,7 +1345,7 @@ export const foxgloveMessageSchemas = {
   CircleAnnotation,
   Color,
   CompressedImage,
-  ConePrimitive,
+  CylinderPrimitive,
   CubePrimitive,
   FrameTransform,
   GeoJSON,

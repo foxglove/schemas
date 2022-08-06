@@ -23,3 +23,6 @@ string mime_type
 
 # Embedded model. Either `url` or `mime_type` and `data` should be provided.
 uint8[] data
+
+# Additional user-provided metadata associated with the model. Keys must be unique.
+foxglove_msgs/KeyValuePair[] metadata

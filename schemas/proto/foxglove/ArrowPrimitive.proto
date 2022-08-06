@@ -3,6 +3,7 @@
 syntax = "proto3";
 
 import "foxglove/Color.proto";
+import "foxglove/KeyValuePair.proto";
 import "foxglove/Pose.proto";
 
 package foxglove;
@@ -26,4 +27,7 @@ message ArrowPrimitive {
 
   // Color of the arrow
   foxglove.Color color = 6;
+
+  // Additional user-provided metadata associated with the arrow. Keys must be unique.
+  repeated foxglove.KeyValuePair metadata = 7;
 }

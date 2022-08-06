@@ -91,6 +91,25 @@
     "text": {
       "type": "string",
       "description": "Text"
+    },
+    "metadata": {
+      "type": "array",
+      "items": {
+        "title": "foxglove.KeyValuePair",
+        "description": "A key with its associated value",
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Key"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value"
+          }
+        }
+      },
+      "description": "Additional user-provided metadata associated with the text. Keys must be unique."
     }
   }
 }

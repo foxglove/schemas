@@ -30,8 +30,8 @@ foxglove_msgs/CubePrimitive[] cubes
 # Sphere primitives
 foxglove_msgs/SpherePrimitive[] spheres
 
-# Cone primitives
-foxglove_msgs/ConePrimitive[] cones
+# Cylinder primitives
+foxglove_msgs/CylinderPrimitive[] cylinders
 
 # Line primitives
 foxglove_msgs/LinePrimitive[] lines

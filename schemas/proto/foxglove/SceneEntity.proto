@@ -3,8 +3,8 @@
 syntax = "proto3";
 
 import "foxglove/ArrowPrimitive.proto";
-import "foxglove/ConePrimitive.proto";
 import "foxglove/CubePrimitive.proto";
+import "foxglove/CylinderPrimitive.proto";
 import "foxglove/KeyValuePair.proto";
 import "foxglove/LinePrimitive.proto";
 import "foxglove/ModelPrimitive.proto";
@@ -45,8 +45,8 @@ message SceneEntity {
   // Sphere primitives
   repeated foxglove.SpherePrimitive spheres = 9;
 
-  // Cone primitives
-  repeated foxglove.ConePrimitive cones = 10;
+  // Cylinder primitives
+  repeated foxglove.CylinderPrimitive cylinders = 10;
 
   // Line primitives
   repeated foxglove.LinePrimitive lines = 11;

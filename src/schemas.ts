@@ -627,9 +627,9 @@ const SceneEntity: FoxgloveMessageSchema = {
   ],
 };
 
-const SceneEntityUpdate: FoxgloveMessageSchema = {
+const SceneEntities: FoxgloveMessageSchema = {
   type: "message",
-  name: "SceneEntityUpdate",
+  name: "SceneEntities",
   description: "An update to the entities displayed in a 3D scene",
   fields: [
     {
@@ -1306,7 +1306,7 @@ export const foxgloveMessageSchemas = {
   Log,
   SceneEntityDeletion,
   SceneEntity,
-  SceneEntityUpdate,
+  SceneEntities,
   ModelPrimitive,
   PackedElementField,
   Point2,

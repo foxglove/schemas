@@ -4,7 +4,7 @@ import { SceneEntity } from "./SceneEntity";
 import { SceneEntityDeletion } from "./SceneEntityDeletion";
 
 /** An update to the entities displayed in a 3D scene */
-export type SceneEntityUpdate = {
+export type SceneEntities = {
   /** Scene entities to delete */
   deletions: SceneEntityDeletion[];
 

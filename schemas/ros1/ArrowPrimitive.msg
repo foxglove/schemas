@@ -6,20 +6,17 @@
 # Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.
 geometry_msgs/Pose pose
 
-# Length of the arrow
-float64 length
+# Length of the arrow shaft
+float64 shaft_length
 
 # Diameter of the arrow shaft
 float64 shaft_diameter
 
-# Diameter of the arrow head
-float64 head_diameter
-
 # Length of the arrow head
 float64 head_length
 
+# Diameter of the arrow head
+float64 head_diameter
+
 # Color of the arrow
 foxglove_msgs/Color color
-
-# Additional user-provided metadata associated with the arrow. Keys must be unique.
-foxglove_msgs/KeyValuePair[] metadata

@@ -11,6 +11,6 @@ export type SceneEntityDeletion = {
   /** Type of deletion action to perform */
   type: SceneEntityDeletionType;
 
-  /** Numeric identifier which must match if `kind` is `MATCHING_ID`. */
+  /** Identifier which must match if `type` is `MATCHING_ID`. */
   id: string;
 };

@@ -11,6 +11,3 @@ geometry_msgs/Vector3 size
 
 # Color of the arrow
 foxglove_msgs/Color color
-
-# Additional user-provided metadata associated with the cube. Keys must be unique.
-foxglove_msgs/KeyValuePair[] metadata

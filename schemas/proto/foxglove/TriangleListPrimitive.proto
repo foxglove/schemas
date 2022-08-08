@@ -3,7 +3,6 @@
 syntax = "proto3";
 
 import "foxglove/Color.proto";
-import "foxglove/KeyValuePair.proto";
 import "foxglove/Point3.proto";
 import "foxglove/Pose.proto";
 
@@ -27,7 +26,4 @@ message TriangleListPrimitive {
   // 
   // If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
   repeated fixed32 indices = 5;
-
-  // Additional user-provided metadata associated with the triangles. Keys must be unique.
-  repeated foxglove.KeyValuePair metadata = 6;
 }

@@ -3,7 +3,6 @@
 syntax = "proto3";
 
 import "foxglove/Color.proto";
-import "foxglove/KeyValuePair.proto";
 import "foxglove/Pose.proto";
 import "foxglove/Vector3.proto";
 
@@ -17,21 +16,18 @@ message ModelPrimitive {
   // Scale factor to apply to the model along each axis
   foxglove.Vector3 scale = 2;
 
-  // Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.
+  // Solid color to use for the whole model. If `embedded_materials` is true, this color is blended on top of the embedded material color.
   foxglove.Color color = 3;
 
   // Whether to use materials embedded in the model, or only the `color`
-  bool use_embedded_materials = 4;
+  bool embedded_materials = 4;
 
-  // URL pointing to model file. Either `url` or `mime_type` and `data` should be provided.
+  // URL pointing to model file. One of `url` or `data` should be provided.
   string url = 5;
 
-  // MIME type of embedded model (e.g. `model/gltf-binary`). Either `url` or `mime_type` and `data` should be provided.
-  string mime_type = 6;
+  // [Media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of embedded model (e.g. `model/gltf-binary`). Required if `data` is provided instead of `url`. Overrides the inferred media type if `url` is provided.
+  string media_type = 6;
 
-  // Embedded model. Either `url` or `mime_type` and `data` should be provided.
+  // Embedded model. One of `url` or `data` should be provided. If `data` is provided, `media_type` must be set to indicate the type of the data.
   bytes data = 7;
-
-  // Additional user-provided metadata associated with the model. Keys must be unique.
-  repeated foxglove.KeyValuePair metadata = 8;
 }

@@ -37,6 +37,3 @@ foxglove_msgs/Color[] colors
 # 
 # If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
 uint32[] indices
-
-# Additional user-provided metadata associated with the line. Keys must be unique.
-foxglove_msgs/KeyValuePair[] metadata

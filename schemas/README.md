@@ -126,8 +126,8 @@ An enumeration indicating which entities should match a SceneEntityDeletion comm
 
 name | value | description
 ---- | ----- | -----------
-`MATCHING_ID` | 0 | 
-`ALL` | 1 | 
+`MATCHING_ID` | 0 | Delete the existing entity on the same topic that has the provided `id`
+`ALL` | 1 | Delete all existing entities on the same topic
 
 
 
@@ -155,7 +155,7 @@ Position of the arrow's tail and orientation of the arrow. Identity orientation 
 </td>
 </tr>
 <tr>
-<td><code>length</code></td>
+<td><code>shaft_length</code></td>
 <td>
 
 float64
@@ -163,7 +163,7 @@ float64
 </td>
 <td>
 
-Length of the arrow
+Length of the arrow shaft
 
 </td>
 </tr>
@@ -181,19 +181,6 @@ Diameter of the arrow shaft
 </td>
 </tr>
 <tr>
-<td><code>head_diameter</code></td>
-<td>
-
-float64
-
-</td>
-<td>
-
-Diameter of the arrow head
-
-</td>
-</tr>
-<tr>
 <td><code>head_length</code></td>
 <td>
 
@@ -207,6 +194,19 @@ Length of the arrow head
 </td>
 </tr>
 <tr>
+<td><code>head_diameter</code></td>
+<td>
+
+float64
+
+</td>
+<td>
+
+Diameter of the arrow head
+
+</td>
+</tr>
+<tr>
 <td><code>color</code></td>
 <td>
 
@@ -216,19 +216,6 @@ Length of the arrow head
 <td>
 
 Color of the arrow
-
-</td>
-</tr>
-<tr>
-<td><code>metadata</code></td>
-<td>
-
-[KeyValuePair](#keyvaluepair)[]
-
-</td>
-<td>
-
-Additional user-provided metadata associated with the arrow. Keys must be unique.
 
 </td>
 </tr>
@@ -642,19 +629,6 @@ Color of the arrow
 
 </td>
 </tr>
-<tr>
-<td><code>metadata</code></td>
-<td>
-
-[KeyValuePair](#keyvaluepair)[]
-
-</td>
-<td>
-
-Additional user-provided metadata associated with the cube. Keys must be unique.
-
-</td>
-</tr>
 </table>
 
 ## CylinderPrimitive
@@ -729,19 +703,6 @@ float64
 <td>
 
 Color of the cylinder
-
-</td>
-</tr>
-<tr>
-<td><code>metadata</code></td>
-<td>
-
-[KeyValuePair](#keyvaluepair)[]
-
-</td>
-<td>
-
-Additional user-provided metadata associated with the cylinder. Keys must be unique.
 
 </td>
 </tr>
@@ -1273,19 +1234,6 @@ If omitted or empty, indexing will not be used. This default behavior is equival
 
 </td>
 </tr>
-<tr>
-<td><code>metadata</code></td>
-<td>
-
-[KeyValuePair](#keyvaluepair)[]
-
-</td>
-<td>
-
-Additional user-provided metadata associated with the line. Keys must be unique.
-
-</td>
-</tr>
 </table>
 
 ## LocationFix
@@ -1500,12 +1448,12 @@ Scale factor to apply to the model along each axis
 </td>
 <td>
 
-Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.
+Solid color to use for the whole model. If `embedded_materials` is true, this color is blended on top of the embedded material color.
 
 </td>
 </tr>
 <tr>
-<td><code>use_embedded_materials</code></td>
+<td><code>embedded_materials</code></td>
 <td>
 
 boolean
@@ -1526,12 +1474,12 @@ string
 </td>
 <td>
 
-URL pointing to model file. Either `url` or `mime_type` and `data` should be provided.
+URL pointing to model file. One of `url` or `data` should be provided.
 
 </td>
 </tr>
 <tr>
-<td><code>mime_type</code></td>
+<td><code>media_type</code></td>
 <td>
 
 string
@@ -1539,7 +1487,7 @@ string
 </td>
 <td>
 
-MIME type of embedded model (e.g. `model/gltf-binary`). Either `url` or `mime_type` and `data` should be provided.
+[Media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of embedded model (e.g. `model/gltf-binary`). Required if `data` is provided instead of `url`. Overrides the inferred media type if `url` is provided.
 
 </td>
 </tr>
@@ -1552,20 +1500,7 @@ bytes
 </td>
 <td>
 
-Embedded model. Either `url` or `mime_type` and `data` should be provided.
-
-</td>
-</tr>
-<tr>
-<td><code>metadata</code></td>
-<td>
-
-[KeyValuePair](#keyvaluepair)[]
-
-</td>
-<td>
-
-Additional user-provided metadata associated with the model. Keys must be unique.
+Embedded model. One of `url` or `data` should be provided. If `data` is provided, `media_type` must be set to indicate the type of the data.
 
 </td>
 </tr>
@@ -2411,7 +2346,7 @@ string
 </td>
 <td>
 
-Numeric identifier which must match if `kind` is `MATCHING_ID`.
+Identifier which must match if `type` is `MATCHING_ID`.
 
 </td>
 </tr>
@@ -2501,19 +2436,6 @@ Size (diameter) of the sphere along each axis
 <td>
 
 Color of the sphere
-
-</td>
-</tr>
-<tr>
-<td><code>metadata</code></td>
-<td>
-
-[KeyValuePair](#keyvaluepair)[]
-
-</td>
-<td>
-
-Additional user-provided metadata associated with the sphere. Keys must be unique.
 
 </td>
 </tr>
@@ -2607,19 +2529,6 @@ Text
 
 </td>
 </tr>
-<tr>
-<td><code>metadata</code></td>
-<td>
-
-[KeyValuePair](#keyvaluepair)[]
-
-</td>
-<td>
-
-Additional user-provided metadata associated with the text. Keys must be unique.
-
-</td>
-</tr>
 </table>
 
 ## TriangleListPrimitive
@@ -2696,19 +2605,6 @@ uint32[]
 Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
 
 If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
-
-</td>
-</tr>
-<tr>
-<td><code>metadata</code></td>
-<td>
-
-[KeyValuePair](#keyvaluepair)[]
-
-</td>
-<td>
-
-Additional user-provided metadata associated with the triangles. Keys must be unique.
 
 </td>
 </tr>

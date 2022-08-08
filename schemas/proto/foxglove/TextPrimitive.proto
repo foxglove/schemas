@@ -3,7 +3,6 @@
 syntax = "proto3";
 
 import "foxglove/Color.proto";
-import "foxglove/KeyValuePair.proto";
 import "foxglove/Pose.proto";
 
 package foxglove;
@@ -27,7 +26,4 @@ message TextPrimitive {
 
   // Text
   string text = 6;
-
-  // Additional user-provided metadata associated with the text. Keys must be unique.
-  repeated foxglove.KeyValuePair metadata = 7;
 }

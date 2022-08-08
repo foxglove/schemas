@@ -53,21 +53,21 @@
         }
       }
     },
-    "length": {
+    "shaft_length": {
       "type": "number",
-      "description": "Length of the arrow"
+      "description": "Length of the arrow shaft"
     },
     "shaft_diameter": {
       "type": "number",
       "description": "Diameter of the arrow shaft"
     },
-    "head_diameter": {
-      "type": "number",
-      "description": "Diameter of the arrow head"
-    },
     "head_length": {
       "type": "number",
       "description": "Length of the arrow head"
+    },
+    "head_diameter": {
+      "type": "number",
+      "description": "Diameter of the arrow head"
     },
     "color": {
       "title": "foxglove.Color",
@@ -91,25 +91,6 @@
           "description": "Alpha value between 0 and 1"
         }
       }
-    },
-    "metadata": {
-      "type": "array",
-      "items": {
-        "title": "foxglove.KeyValuePair",
-        "description": "A key with its associated value",
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "Key"
-          },
-          "value": {
-            "type": "string",
-            "description": "Value"
-          }
-        }
-      },
-      "description": "Additional user-provided metadata associated with the arrow. Keys must be unique."
     }
   }
 }

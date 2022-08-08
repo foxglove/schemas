@@ -186,8 +186,12 @@ const SceneEntityDeletionType: FoxgloveEnumSchema = {
   description:
     "An enumeration indicating which entities should match a SceneEntityDeletion command",
   values: [
-    { value: 0, name: "MATCHING_ID" },
-    { value: 1, name: "ALL" },
+    {
+      value: 0,
+      name: "MATCHING_ID",
+      description: "Delete the existing entity on the same topic that has the provided `id`",
+    },
+    { value: 1, name: "ALL", description: "Delete all existing entities on the same topic" },
   ],
 };
 
@@ -210,7 +214,7 @@ const SceneEntityDeletion: FoxgloveMessageSchema = {
     {
       name: "id",
       type: { type: "primitive", name: "string" },
-      description: "Numeric identifier which must match if `kind` is `MATCHING_ID`.",
+      description: "Identifier which must match if `type` is `MATCHING_ID`.",
     },
   ],
 };
@@ -227,9 +231,9 @@ const ArrowPrimitive: FoxgloveMessageSchema = {
         "Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.",
     },
     {
-      name: "length",
+      name: "shaft_length",
       type: { type: "primitive", name: "float64" },
-      description: "Length of the arrow",
+      description: "Length of the arrow shaft",
     },
     {
       name: "shaft_diameter",
@@ -237,26 +241,19 @@ const ArrowPrimitive: FoxgloveMessageSchema = {
       description: "Diameter of the arrow shaft",
     },
     {
-      name: "head_diameter",
-      type: { type: "primitive", name: "float64" },
-      description: "Diameter of the arrow head",
-    },
-    {
       name: "head_length",
       type: { type: "primitive", name: "float64" },
       description: "Length of the arrow head",
     },
     {
+      name: "head_diameter",
+      type: { type: "primitive", name: "float64" },
+      description: "Diameter of the arrow head",
+    },
+    {
       name: "color",
       type: { type: "nested", schema: Color },
       description: "Color of the arrow",
-    },
-    {
-      name: "metadata",
-      type: { type: "nested", schema: KeyValuePair },
-      array: true,
-      description:
-        "Additional user-provided metadata associated with the arrow. Keys must be unique.",
     },
   ],
 };
@@ -281,13 +278,6 @@ const CubePrimitive: FoxgloveMessageSchema = {
       type: { type: "nested", schema: Color },
       description: "Color of the arrow",
     },
-    {
-      name: "metadata",
-      type: { type: "nested", schema: KeyValuePair },
-      array: true,
-      description:
-        "Additional user-provided metadata associated with the cube. Keys must be unique.",
-    },
   ],
 };
 
@@ -310,13 +300,6 @@ const SpherePrimitive: FoxgloveMessageSchema = {
       name: "color",
       type: { type: "nested", schema: Color },
       description: "Color of the sphere",
-    },
-    {
-      name: "metadata",
-      type: { type: "nested", schema: KeyValuePair },
-      array: true,
-      description:
-        "Additional user-provided metadata associated with the sphere. Keys must be unique.",
     },
   ],
 };
@@ -353,13 +336,6 @@ const CylinderPrimitive: FoxgloveMessageSchema = {
       name: "color",
       type: { type: "nested", schema: Color },
       description: "Color of the cylinder",
-    },
-    {
-      name: "metadata",
-      type: { type: "nested", schema: KeyValuePair },
-      array: true,
-      description:
-        "Additional user-provided metadata associated with the cylinder. Keys must be unique.",
     },
   ],
 };
@@ -429,13 +405,6 @@ const LinePrimitive: FoxgloveMessageSchema = {
       description:
         "Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.\n\nIf omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).",
     },
-    {
-      name: "metadata",
-      type: { type: "nested", schema: KeyValuePair },
-      array: true,
-      description:
-        "Additional user-provided metadata associated with the line. Keys must be unique.",
-    },
   ],
 };
 
@@ -477,13 +446,6 @@ const TextPrimitive: FoxgloveMessageSchema = {
       type: { type: "primitive", name: "string" },
       description: "Text",
     },
-    {
-      name: "metadata",
-      type: { type: "nested", schema: KeyValuePair },
-      array: true,
-      description:
-        "Additional user-provided metadata associated with the text. Keys must be unique.",
-    },
   ],
 };
 
@@ -524,13 +486,6 @@ const TriangleListPrimitive: FoxgloveMessageSchema = {
       description:
         "Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.\n\nIf omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).",
     },
-    {
-      name: "metadata",
-      type: { type: "nested", schema: KeyValuePair },
-      array: true,
-      description:
-        "Additional user-provided metadata associated with the triangles. Keys must be unique.",
-    },
   ],
 };
 
@@ -553,36 +508,29 @@ const ModelPrimitive: FoxgloveMessageSchema = {
       name: "color",
       type: { type: "nested", schema: Color },
       description:
-        "Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.",
+        "Solid color to use for the whole model. If `embedded_materials` is true, this color is blended on top of the embedded material color.",
     },
     {
-      name: "use_embedded_materials",
+      name: "embedded_materials",
       type: { type: "primitive", name: "boolean" },
       description: "Whether to use materials embedded in the model, or only the `color`",
     },
     {
       name: "url",
       type: { type: "primitive", name: "string" },
-      description:
-        "URL pointing to model file. Either `url` or `mime_type` and `data` should be provided.",
+      description: "URL pointing to model file. One of `url` or `data` should be provided.",
     },
     {
-      name: "mime_type",
+      name: "media_type",
       type: { type: "primitive", name: "string" },
       description:
-        "MIME type of embedded model (e.g. `model/gltf-binary`). Either `url` or `mime_type` and `data` should be provided.",
+        "[Media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of embedded model (e.g. `model/gltf-binary`). Required if `data` is provided instead of `url`. Overrides the inferred media type if `url` is provided.",
     },
     {
       name: "data",
       type: { type: "primitive", name: "bytes" },
-      description: "Embedded model. Either `url` or `mime_type` and `data` should be provided.",
-    },
-    {
-      name: "metadata",
-      type: { type: "nested", schema: KeyValuePair },
-      array: true,
       description:
-        "Additional user-provided metadata associated with the model. Keys must be unique.",
+        "Embedded model. One of `url` or `data` should be provided. If `data` is provided, `media_type` must be set to indicate the type of the data.",
     },
   ],
 };

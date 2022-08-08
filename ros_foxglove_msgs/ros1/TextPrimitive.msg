@@ -20,6 +20,3 @@ foxglove_msgs/Color color
 
 # Text
 string text
-
-# Additional user-provided metadata associated with the text. Keys must be unique.
-foxglove_msgs/KeyValuePair[] metadata

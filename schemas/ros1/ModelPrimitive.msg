@@ -9,20 +9,17 @@ geometry_msgs/Pose pose
 # Scale factor to apply to the model along each axis
 geometry_msgs/Vector3 scale
 
-# Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.
+# Solid color to use for the whole model. If `embedded_materials` is true, this color is blended on top of the embedded material color.
 foxglove_msgs/Color color
 
 # Whether to use materials embedded in the model, or only the `color`
-bool use_embedded_materials
+bool embedded_materials
 
-# URL pointing to model file. Either `url` or `mime_type` and `data` should be provided.
+# URL pointing to model file. One of `url` or `data` should be provided.
 string url
 
-# MIME type of embedded model (e.g. `model/gltf-binary`). Either `url` or `mime_type` and `data` should be provided.
-string mime_type
+# [Media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of embedded model (e.g. `model/gltf-binary`). Required if `data` is provided instead of `url`. Overrides the inferred media type if `url` is provided.
+string media_type
 
-# Embedded model. Either `url` or `mime_type` and `data` should be provided.
+# Embedded model. One of `url` or `data` should be provided. If `data` is provided, `media_type` must be set to indicate the type of the data.
 uint8[] data
-
-# Additional user-provided metadata associated with the model. Keys must be unique.
-foxglove_msgs/KeyValuePair[] metadata

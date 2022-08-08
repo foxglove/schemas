@@ -17,6 +17,3 @@ float64 top_scale
 
 # Color of the cylinder
 foxglove_msgs/Color color
-
-# Additional user-provided metadata associated with the cylinder. Keys must be unique.
-foxglove_msgs/KeyValuePair[] metadata

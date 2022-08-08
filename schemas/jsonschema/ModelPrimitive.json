@@ -74,7 +74,7 @@
     },
     "color": {
       "title": "foxglove.Color",
-      "description": "Solid color to use for the whole model. If `use_embedded_materials` is true, this color is blended on top of the embedded material color.",
+      "description": "Solid color to use for the whole model. If `embedded_materials` is true, this color is blended on top of the embedded material color.",
       "type": "object",
       "properties": {
         "r": {
@@ -95,41 +95,22 @@
         }
       }
     },
-    "use_embedded_materials": {
+    "embedded_materials": {
       "type": "boolean",
       "description": "Whether to use materials embedded in the model, or only the `color`"
     },
     "url": {
       "type": "string",
-      "description": "URL pointing to model file. Either `url` or `mime_type` and `data` should be provided."
+      "description": "URL pointing to model file. One of `url` or `data` should be provided."
     },
-    "mime_type": {
+    "media_type": {
       "type": "string",
-      "description": "MIME type of embedded model (e.g. `model/gltf-binary`). Either `url` or `mime_type` and `data` should be provided."
+      "description": "[Media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of embedded model (e.g. `model/gltf-binary`). Required if `data` is provided instead of `url`. Overrides the inferred media type if `url` is provided."
     },
     "data": {
       "type": "string",
       "contentEncoding": "base64",
-      "description": "Embedded model. Either `url` or `mime_type` and `data` should be provided."
-    },
-    "metadata": {
-      "type": "array",
-      "items": {
-        "title": "foxglove.KeyValuePair",
-        "description": "A key with its associated value",
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "Key"
-          },
-          "value": {
-            "type": "string",
-            "description": "Value"
-          }
-        }
-      },
-      "description": "Additional user-provided metadata associated with the model. Keys must be unique."
+      "description": "Embedded model. One of `url` or `data` should be provided. If `data` is provided, `media_type` must be set to indicate the type of the data."
     }
   }
 }

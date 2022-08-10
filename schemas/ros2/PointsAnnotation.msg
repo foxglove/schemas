@@ -18,14 +18,8 @@ uint8 type
 # Points in 2D image coordinates
 foxglove_msgs/Point2[] points
 
-# Outline color
-foxglove_msgs/Color outline_color
-
-# Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`.
+# Outline colors
 foxglove_msgs/Color[] outline_colors
 
 # Fill color
 foxglove_msgs/Color fill_color
-
-# Stroke thickness
-float64 thickness

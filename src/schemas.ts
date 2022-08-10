@@ -576,26 +576,15 @@ const foxglove_PointsAnnotation: FoxgloveMessageSchema = {
       array: true,
     },
     {
-      name: "outline_color",
-      type: { type: "nested", schema: foxglove_Color },
-      description: "Outline color",
-    },
-    {
       name: "outline_colors",
       type: { type: "nested", schema: foxglove_Color },
-      description:
-        "Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`.",
+      description: "Outline colors",
       array: true,
     },
     {
       name: "fill_color",
       type: { type: "nested", schema: foxglove_Color },
       description: "Fill color",
-    },
-    {
-      name: "thickness",
-      type: { type: "primitive", name: "float64" },
-      description: "Stroke thickness",
     },
   ],
 };

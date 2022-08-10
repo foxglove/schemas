@@ -65,6 +65,29 @@
       },
       "description": "Points in 2D image coordinates"
     },
+    "outline_color": {
+      "title": "foxglove.Color",
+      "description": "Outline color",
+      "type": "object",
+      "properties": {
+        "r": {
+          "type": "number",
+          "description": "Red value between 0 and 1"
+        },
+        "g": {
+          "type": "number",
+          "description": "Green value between 0 and 1"
+        },
+        "b": {
+          "type": "number",
+          "description": "Blue value between 0 and 1"
+        },
+        "a": {
+          "type": "number",
+          "description": "Alpha value between 0 and 1"
+        }
+      }
+    },
     "outline_colors": {
       "type": "array",
       "items": {
@@ -90,7 +113,7 @@
           }
         }
       },
-      "description": "Outline colors"
+      "description": "Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`."
     },
     "fill_color": {
       "title": "foxglove.Color",
@@ -114,6 +137,10 @@
           "description": "Alpha value between 0 and 1"
         }
       }
+    },
+    "thickness": {
+      "type": "number",
+      "description": "Stroke thickness"
     }
   }
 }

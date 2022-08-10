@@ -16,9 +16,15 @@ export type PointsAnnotation = {
   /** Points in 2D image coordinates */
   points: Point2[];
 
-  /** Outline colors */
+  /** Outline color */
+  outline_color: Color;
+
+  /** Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`. */
   outline_colors: Color[];
 
   /** Fill color */
   fill_color: Color;
+
+  /** Stroke thickness */
+  thickness: number;
 };

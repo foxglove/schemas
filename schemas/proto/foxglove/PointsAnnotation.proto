@@ -31,9 +31,15 @@ message PointsAnnotation {
   // Points in 2D image coordinates
   repeated foxglove.Point2 points = 3;
 
-  // Outline colors
-  repeated foxglove.Color outline_colors = 4;
+  // Outline color
+  foxglove.Color outline_color = 4;
+
+  // Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`.
+  repeated foxglove.Color outline_colors = 5;
 
   // Fill color
-  foxglove.Color fill_color = 5;
+  foxglove.Color fill_color = 6;
+
+  // Stroke thickness
+  double thickness = 7;
 }

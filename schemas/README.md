@@ -1274,6 +1274,19 @@ Points in 2D image coordinates
 </td>
 </tr>
 <tr>
+<td><code>outline_color</code></td>
+<td>
+
+[Color](#color)
+
+</td>
+<td>
+
+Outline color
+
+</td>
+</tr>
+<tr>
 <td><code>outline_colors</code></td>
 <td>
 
@@ -1282,7 +1295,7 @@ Points in 2D image coordinates
 </td>
 <td>
 
-Outline colors
+Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`.
 
 </td>
 </tr>
@@ -1296,6 +1309,19 @@ Outline colors
 <td>
 
 Fill color
+
+</td>
+</tr>
+<tr>
+<td><code>thickness</code></td>
+<td>
+
+float64
+
+</td>
+<td>
+
+Stroke thickness
 
 </td>
 </tr>

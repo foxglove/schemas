@@ -4,7 +4,7 @@ import { Color } from "./Color";
 import { Pose } from "./Pose";
 import { Vector3 } from "./Vector3";
 
-/** A primitive representing a 3D model file loaded from an external URL */
+/** A primitive representing a 3D model file loaded from an external URL or embedded data */
 export type ModelPrimitive = {
   /** Origin of model relative to reference frame */
   pose: Pose;
@@ -12,11 +12,11 @@ export type ModelPrimitive = {
   /** Scale factor to apply to the model along each axis */
   scale: Vector3;
 
-  /** Solid color to use for the whole model. If `embedded_materials` is true, this color is blended on top of the embedded material color. */
+  /** Solid color to use for the whole model if `override_color` is true. */
   color: Color;
 
-  /** Whether to use materials embedded in the model, or only the `color` */
-  embedded_materials: boolean;
+  /** Whether to use the color specified in `color` instead of any materials embedded in the original model. */
+  override_color: boolean;
 
   /** URL pointing to model file. One of `url` or `data` should be provided. */
   url: string;

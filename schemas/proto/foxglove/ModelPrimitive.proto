@@ -8,7 +8,7 @@ import "foxglove/Vector3.proto";
 
 package foxglove;
 
-// A primitive representing a 3D model file loaded from an external URL
+// A primitive representing a 3D model file loaded from an external URL or embedded data
 message ModelPrimitive {
   // Origin of model relative to reference frame
   foxglove.Pose pose = 1;
@@ -16,11 +16,11 @@ message ModelPrimitive {
   // Scale factor to apply to the model along each axis
   foxglove.Vector3 scale = 2;
 
-  // Solid color to use for the whole model. If `embedded_materials` is true, this color is blended on top of the embedded material color.
+  // Solid color to use for the whole model if `override_color` is true.
   foxglove.Color color = 3;
 
-  // Whether to use materials embedded in the model, or only the `color`
-  bool embedded_materials = 4;
+  // Whether to use the color specified in `color` instead of any materials embedded in the original model.
+  bool override_color = 4;
 
   // URL pointing to model file. One of `url` or `data` should be provided.
   string url = 5;

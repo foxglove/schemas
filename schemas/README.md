@@ -1407,7 +1407,7 @@ Line number in the file
 
 ## ModelPrimitive
 
-A primitive representing a 3D model file loaded from an external URL
+A primitive representing a 3D model file loaded from an external URL or embedded data
 
 <table>
   <tr>
@@ -1450,12 +1450,12 @@ Scale factor to apply to the model along each axis
 </td>
 <td>
 
-Solid color to use for the whole model. If `embedded_materials` is true, this color is blended on top of the embedded material color.
+Solid color to use for the whole model if `override_color` is true.
 
 </td>
 </tr>
 <tr>
-<td><code>embedded_materials</code></td>
+<td><code>override_color</code></td>
 <td>
 
 boolean
@@ -1463,7 +1463,7 @@ boolean
 </td>
 <td>
 
-Whether to use materials embedded in the model, or only the `color`
+Whether to use the color specified in `color` instead of any materials embedded in the original model.
 
 </td>
 </tr>

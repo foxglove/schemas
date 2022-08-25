@@ -492,7 +492,8 @@ const TriangleListPrimitive: FoxgloveMessageSchema = {
 const ModelPrimitive: FoxgloveMessageSchema = {
   type: "message",
   name: "ModelPrimitive",
-  description: "A primitive representing a 3D model file loaded from an external URL",
+  description:
+    "A primitive representing a 3D model file loaded from an external URL or embedded data",
   fields: [
     {
       name: "pose",
@@ -507,13 +508,13 @@ const ModelPrimitive: FoxgloveMessageSchema = {
     {
       name: "color",
       type: { type: "nested", schema: Color },
-      description:
-        "Solid color to use for the whole model. If `embedded_materials` is true, this color is blended on top of the embedded material color.",
+      description: "Solid color to use for the whole model if `override_color` is true.",
     },
     {
-      name: "embedded_materials",
+      name: "override_color",
       type: { type: "primitive", name: "boolean" },
-      description: "Whether to use materials embedded in the model, or only the `color`",
+      description:
+        "Whether to use the color specified in `color` instead of any materials embedded in the original model.",
     },
     {
       name: "url",

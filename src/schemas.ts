@@ -374,12 +374,6 @@ const LinePrimitive: FoxgloveMessageSchema = {
       description: "Line thickness",
     },
     {
-      name: "scale_invariant",
-      type: { type: "primitive", name: "boolean" },
-      description:
-        "Indicates whether `thickness` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)",
-    },
-    {
       name: "points",
       type: { type: "nested", schema: Point3 },
       array: true,

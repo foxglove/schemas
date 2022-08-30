@@ -154,7 +154,7 @@ string
 </td>
 <td>
 
-Name of distortion model
+<a href="https://foxglove.dev/docs/studio/panels/image#cameracalibration">Name of distortion model</a>
 
 </td>
 </tr>
@@ -449,7 +449,7 @@ string
 </td>
 <td>
 
-Image format
+<a href="https://foxglove.dev/docs/studio/panels/image#supported-encoding-formats">Image format</a>
 
 </td>
 </tr>
@@ -1589,7 +1589,7 @@ string
 </td>
 <td>
 
-Encoding of the raw image data
+<a href="https://foxglove.dev/docs/studio/panels/image#supported-encoding-formats">Encoding of the raw image data</a>
 
 </td>
 </tr>

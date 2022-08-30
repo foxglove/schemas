@@ -270,6 +270,7 @@ const foxglove_CompressedImage: FoxgloveMessageSchema = {
       name: "format",
       type: { type: "primitive", name: "string" },
       description: "Image format",
+      docsLink: "https://foxglove.dev/docs/studio/panels/image#supported-encoding-formats",
     },
   ],
 };
@@ -298,6 +299,7 @@ const foxglove_RawImage: FoxgloveMessageSchema = {
       name: "encoding",
       type: { type: "primitive", name: "string" },
       description: "Encoding of the raw image data",
+      docsLink: "https://foxglove.dev/docs/studio/panels/image#supported-encoding-formats",
     },
     {
       name: "step",

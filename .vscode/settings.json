@@ -14,7 +14,7 @@
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.options": {
-    "reportUnusedDisableDirectives": true
+    "reportUnusedDisableDirectives": "error"
   },
   "jest.jestCommandLine": "yarn test"
 }

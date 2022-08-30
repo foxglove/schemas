@@ -6,21 +6,29 @@ All schemas are generated from [schemas.ts](/src/schemas.ts).
 
 ## Contents
 
+- [enum LineType](#enum-linetype)
 - [enum LogLevel](#enum-loglevel)
 - [enum NumericType](#enum-numerictype)
 - [enum PointsAnnotationType](#enum-pointsannotationtype)
 - [enum PositionCovarianceType](#enum-positioncovariancetype)
+- [enum SceneEntityDeletionType](#enum-sceneentitydeletiontype)
+- [ArrowPrimitive](#arrowprimitive)
 - [CameraCalibration](#cameracalibration)
 - [CircleAnnotation](#circleannotation)
 - [Color](#color)
 - [CompressedImage](#compressedimage)
+- [CubePrimitive](#cubeprimitive)
+- [CylinderPrimitive](#cylinderprimitive)
 - [FrameTransform](#frametransform)
 - [GeoJSON](#geojson)
 - [Grid](#grid)
 - [ImageAnnotations](#imageannotations)
+- [KeyValuePair](#keyvaluepair)
 - [LaserScan](#laserscan)
+- [LinePrimitive](#lineprimitive)
 - [LocationFix](#locationfix)
 - [Log](#log)
+- [ModelPrimitive](#modelprimitive)
 - [PackedElementField](#packedelementfield)
 - [Point2](#point2)
 - [Point3](#point3)
@@ -31,10 +39,28 @@ All schemas are generated from [schemas.ts](/src/schemas.ts).
 - [PosesInFrame](#posesinframe)
 - [Quaternion](#quaternion)
 - [RawImage](#rawimage)
+- [SceneEntity](#sceneentity)
+- [SceneEntityDeletion](#sceneentitydeletion)
+- [SceneUpdate](#sceneupdate)
+- [SpherePrimitive](#sphereprimitive)
+- [TextPrimitive](#textprimitive)
+- [TriangleListPrimitive](#trianglelistprimitive)
 - [Vector2](#vector2)
 - [Vector3](#vector3)
 
 ----
+
+## enum LineType
+
+(Experimental, subject to change) An enumeration indicating how input points should be interpreted to create lines
+
+name | value | description
+---- | ----- | -----------
+`LINE_STRIP` | 0 | 0-1, 1-2, ..., (n-1)-n
+`LINE_LOOP` | 1 | 0-1, 1-2, ..., (n-1)-n, n-0
+`LINE_LIST` | 2 | 0-1, 2-3, 4-5, ...
+
+
 
 ## enum LogLevel
 
@@ -95,6 +121,107 @@ name | value | description
 `KNOWN` | 3 | 
 
 
+
+## enum SceneEntityDeletionType
+
+(Experimental, subject to change) An enumeration indicating which entities should match a SceneEntityDeletion command
+
+name | value | description
+---- | ----- | -----------
+`MATCHING_ID` | 0 | Delete the existing entity on the same topic that has the provided `id`
+`ALL` | 1 | Delete all existing entities on the same topic
+
+
+
+## ArrowPrimitive
+
+(Experimental, subject to change) A primitive representing an arrow
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>pose</code></td>
+<td>
+
+[Pose](#pose)
+
+</td>
+<td>
+
+Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.
+
+</td>
+</tr>
+<tr>
+<td><code>shaft_length</code></td>
+<td>
+
+float64
+
+</td>
+<td>
+
+Length of the arrow shaft
+
+</td>
+</tr>
+<tr>
+<td><code>shaft_diameter</code></td>
+<td>
+
+float64
+
+</td>
+<td>
+
+Diameter of the arrow shaft
+
+</td>
+</tr>
+<tr>
+<td><code>head_length</code></td>
+<td>
+
+float64
+
+</td>
+<td>
+
+Length of the arrow head
+
+</td>
+</tr>
+<tr>
+<td><code>head_diameter</code></td>
+<td>
+
+float64
+
+</td>
+<td>
+
+Diameter of the arrow head
+
+</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>
+
+[Color](#color)
+
+</td>
+<td>
+
+Color of the arrow
+
+</td>
+</tr>
+</table>
 
 ## CameraCalibration
 
@@ -455,6 +582,134 @@ Image format
 </tr>
 </table>
 
+## CubePrimitive
+
+(Experimental, subject to change) A primitive representing a cube or rectangular prism
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>pose</code></td>
+<td>
+
+[Pose](#pose)
+
+</td>
+<td>
+
+Position of the center of the cube and orientation of the cube
+
+</td>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td>
+
+[Vector3](#vector3)
+
+</td>
+<td>
+
+Size of the cube along each axis
+
+</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>
+
+[Color](#color)
+
+</td>
+<td>
+
+Color of the arrow
+
+</td>
+</tr>
+</table>
+
+## CylinderPrimitive
+
+(Experimental, subject to change) A primitive representing a cylinder, elliptic cylinder, or truncated cone
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>pose</code></td>
+<td>
+
+[Pose](#pose)
+
+</td>
+<td>
+
+Position of the center of the cylinder and orientation of the cylinder. The flat face(s) are perpendicular to the z-axis.
+
+</td>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td>
+
+[Vector3](#vector3)
+
+</td>
+<td>
+
+Size of the cylinder's bounding box
+
+</td>
+</tr>
+<tr>
+<td><code>bottom_scale</code></td>
+<td>
+
+float64
+
+</td>
+<td>
+
+0-1, ratio of the diameter of the cylinder's bottom face (min z) to the bottom of the bounding box
+
+</td>
+</tr>
+<tr>
+<td><code>top_scale</code></td>
+<td>
+
+float64
+
+</td>
+<td>
+
+0-1, ratio of the diameter of the cylinder's top face (max z) to the top of the bounding box
+
+</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>
+
+[Color](#color)
+
+</td>
+<td>
+
+Color of the cylinder
+
+</td>
+</tr>
+</table>
+
 ## FrameTransform
 
 A transform between two reference frames in 3D space
@@ -724,6 +979,44 @@ Points annotations
 </tr>
 </table>
 
+## KeyValuePair
+
+(Experimental, subject to change) A key with its associated value
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>key</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Key
+
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Value
+
+</td>
+</tr>
+</table>
+
 ## LaserScan
 
 A single scan from a planar laser range-finder
@@ -822,6 +1115,124 @@ float64[]
 <td>
 
 Intensity of detections
+
+</td>
+</tr>
+</table>
+
+## LinePrimitive
+
+(Experimental, subject to change) A primitive representing a series of points connected by lines
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>type</code></td>
+<td>
+
+[enum LineType](#enum-linetype)
+
+</td>
+<td>
+
+Drawing primitive to use for lines
+
+</td>
+</tr>
+<tr>
+<td><code>pose</code></td>
+<td>
+
+[Pose](#pose)
+
+</td>
+<td>
+
+Origin of lines relative to reference frame
+
+</td>
+</tr>
+<tr>
+<td><code>thickness</code></td>
+<td>
+
+float64
+
+</td>
+<td>
+
+Line thickness
+
+</td>
+</tr>
+<tr>
+<td><code>scale_invariant</code></td>
+<td>
+
+boolean
+
+</td>
+<td>
+
+Indicates whether `thickness` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
+
+</td>
+</tr>
+<tr>
+<td><code>points</code></td>
+<td>
+
+[Point3](#point3)[]
+
+</td>
+<td>
+
+Points along the line
+
+</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>
+
+[Color](#color)
+
+</td>
+<td>
+
+Solid color to use for the whole line. One of `color` or `colors` must be provided.
+
+</td>
+</tr>
+<tr>
+<td><code>colors</code></td>
+<td>
+
+[Color](#color)[]
+
+</td>
+<td>
+
+Per-point colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.
+
+</td>
+</tr>
+<tr>
+<td><code>indices</code></td>
+<td>
+
+uint32[]
+
+</td>
+<td>
+
+Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
+
+If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
 
 </td>
 </tr>
@@ -989,6 +1400,109 @@ uint32
 <td>
 
 Line number in the file
+
+</td>
+</tr>
+</table>
+
+## ModelPrimitive
+
+(Experimental, subject to change) A primitive representing a 3D model file loaded from an external URL or embedded data
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>pose</code></td>
+<td>
+
+[Pose](#pose)
+
+</td>
+<td>
+
+Origin of model relative to reference frame
+
+</td>
+</tr>
+<tr>
+<td><code>scale</code></td>
+<td>
+
+[Vector3](#vector3)
+
+</td>
+<td>
+
+Scale factor to apply to the model along each axis
+
+</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>
+
+[Color](#color)
+
+</td>
+<td>
+
+Solid color to use for the whole model if `override_color` is true.
+
+</td>
+</tr>
+<tr>
+<td><code>override_color</code></td>
+<td>
+
+boolean
+
+</td>
+<td>
+
+Whether to use the color specified in `color` instead of any materials embedded in the original model.
+
+</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+URL pointing to model file. One of `url` or `data` should be provided.
+
+</td>
+</tr>
+<tr>
+<td><code>media_type</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+[Media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of embedded model (e.g. `model/gltf-binary`). Required if `data` is provided instead of `url`. Overrides the inferred media type if `url` is provided.
+
+</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>
+
+bytes
+
+</td>
+<td>
+
+Embedded model. One of `url` or `data` should be provided. If `data` is provided, `media_type` must be set to indicate the type of the data.
 
 </td>
 </tr>
@@ -1616,6 +2130,509 @@ bytes
 <td>
 
 Raw image data
+
+</td>
+</tr>
+</table>
+
+## SceneEntity
+
+(Experimental, subject to change) A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>
+
+time
+
+</td>
+<td>
+
+Timestamp of the entity
+
+</td>
+</tr>
+<tr>
+<td><code>frame_id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Frame of reference
+
+</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`.
+
+</td>
+</tr>
+<tr>
+<td><code>lifetime</code></td>
+<td>
+
+duration
+
+</td>
+<td>
+
+Length of time (relative to `timestamp`) after which the entity should be automatically removed. Zero value indicates the entity should remain visible until it is replaced or deleted.
+
+</td>
+</tr>
+<tr>
+<td><code>frame_locked</code></td>
+<td>
+
+boolean
+
+</td>
+<td>
+
+Whether the entity should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
+
+</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>
+
+[KeyValuePair](#keyvaluepair)[]
+
+</td>
+<td>
+
+Additional user-provided metadata associated with the entity. Keys must be unique.
+
+</td>
+</tr>
+<tr>
+<td><code>arrows</code></td>
+<td>
+
+[ArrowPrimitive](#arrowprimitive)[]
+
+</td>
+<td>
+
+Arrow primitives
+
+</td>
+</tr>
+<tr>
+<td><code>cubes</code></td>
+<td>
+
+[CubePrimitive](#cubeprimitive)[]
+
+</td>
+<td>
+
+Cube primitives
+
+</td>
+</tr>
+<tr>
+<td><code>spheres</code></td>
+<td>
+
+[SpherePrimitive](#sphereprimitive)[]
+
+</td>
+<td>
+
+Sphere primitives
+
+</td>
+</tr>
+<tr>
+<td><code>cylinders</code></td>
+<td>
+
+[CylinderPrimitive](#cylinderprimitive)[]
+
+</td>
+<td>
+
+Cylinder primitives
+
+</td>
+</tr>
+<tr>
+<td><code>lines</code></td>
+<td>
+
+[LinePrimitive](#lineprimitive)[]
+
+</td>
+<td>
+
+Line primitives
+
+</td>
+</tr>
+<tr>
+<td><code>triangles</code></td>
+<td>
+
+[TriangleListPrimitive](#trianglelistprimitive)[]
+
+</td>
+<td>
+
+Triangle list primitives
+
+</td>
+</tr>
+<tr>
+<td><code>texts</code></td>
+<td>
+
+[TextPrimitive](#textprimitive)[]
+
+</td>
+<td>
+
+Text primitives
+
+</td>
+</tr>
+<tr>
+<td><code>models</code></td>
+<td>
+
+[ModelPrimitive](#modelprimitive)[]
+
+</td>
+<td>
+
+Model primitives
+
+</td>
+</tr>
+</table>
+
+## SceneEntityDeletion
+
+(Experimental, subject to change) Command to remove previously published entities
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>
+
+time
+
+</td>
+<td>
+
+Timestamp of the deletion. Only matching entities earlier than this timestamp will be deleted.
+
+</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>
+
+[enum SceneEntityDeletionType](#enum-sceneentitydeletiontype)
+
+</td>
+<td>
+
+Type of deletion action to perform
+
+</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Identifier which must match if `type` is `MATCHING_ID`.
+
+</td>
+</tr>
+</table>
+
+## SceneUpdate
+
+(Experimental, subject to change) An update to the entities displayed in a 3D scene
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>deletions</code></td>
+<td>
+
+[SceneEntityDeletion](#sceneentitydeletion)[]
+
+</td>
+<td>
+
+Scene entities to delete
+
+</td>
+</tr>
+<tr>
+<td><code>entities</code></td>
+<td>
+
+[SceneEntity](#sceneentity)[]
+
+</td>
+<td>
+
+Scene entities to add or replace
+
+</td>
+</tr>
+</table>
+
+## SpherePrimitive
+
+(Experimental, subject to change) A primitive representing a sphere or ellipsoid
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>pose</code></td>
+<td>
+
+[Pose](#pose)
+
+</td>
+<td>
+
+Position of the center of the sphere and orientation of the sphere
+
+</td>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td>
+
+[Vector3](#vector3)
+
+</td>
+<td>
+
+Size (diameter) of the sphere along each axis
+
+</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>
+
+[Color](#color)
+
+</td>
+<td>
+
+Color of the sphere
+
+</td>
+</tr>
+</table>
+
+## TextPrimitive
+
+(Experimental, subject to change) A primitive representing a text label
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>pose</code></td>
+<td>
+
+[Pose](#pose)
+
+</td>
+<td>
+
+Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x.
+
+</td>
+</tr>
+<tr>
+<td><code>billboard</code></td>
+<td>
+
+boolean
+
+</td>
+<td>
+
+Whether the text should respect `pose.orientation` (false) or always face the camera (true)
+
+</td>
+</tr>
+<tr>
+<td><code>font_size</code></td>
+<td>
+
+float64
+
+</td>
+<td>
+
+Font size (height of one line of text)
+
+</td>
+</tr>
+<tr>
+<td><code>scale_invariant</code></td>
+<td>
+
+boolean
+
+</td>
+<td>
+
+Indicates whether `font_size` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
+
+</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>
+
+[Color](#color)
+
+</td>
+<td>
+
+Color of the text
+
+</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Text
+
+</td>
+</tr>
+</table>
+
+## TriangleListPrimitive
+
+(Experimental, subject to change) A primitive representing a set of triangles or a surface tiled by triangles
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>pose</code></td>
+<td>
+
+[Pose](#pose)
+
+</td>
+<td>
+
+Origin of triangles relative to reference frame
+
+</td>
+</tr>
+<tr>
+<td><code>points</code></td>
+<td>
+
+[Point3](#point3)[]
+
+</td>
+<td>
+
+Vertices to use for triangles, interpreted as a list of triples (0-1-2, 3-4-5, ...)
+
+</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>
+
+[Color](#color)
+
+</td>
+<td>
+
+Solid color to use for the whole shape. One of `color` or `colors` must be provided.
+
+</td>
+</tr>
+<tr>
+<td><code>colors</code></td>
+<td>
+
+[Color](#color)[]
+
+</td>
+<td>
+
+Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.
+
+</td>
+</tr>
+<tr>
+<td><code>indices</code></td>
+<td>
+
+uint32[]
+
+</td>
+<td>
+
+Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
+
+If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
 
 </td>
 </tr>

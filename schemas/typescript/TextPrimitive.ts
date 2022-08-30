@@ -3,7 +3,7 @@
 import { Color } from "./Color";
 import { Pose } from "./Pose";
 
-/** A primitive representing a text label */
+/** (Experimental, subject to change) A primitive representing a text label */
 export type TextPrimitive = {
   /** Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x. */
   pose: Pose;

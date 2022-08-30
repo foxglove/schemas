@@ -4,7 +4,7 @@ import { Color } from "./Color";
 import { Pose } from "./Pose";
 import { Vector3 } from "./Vector3";
 
-/** A primitive representing a 3D model file loaded from an external URL or embedded data */
+/** (Experimental, subject to change) A primitive representing a 3D model file loaded from an external URL or embedded data */
 export type ModelPrimitive = {
   /** Origin of model relative to reference frame */
   pose: Pose;

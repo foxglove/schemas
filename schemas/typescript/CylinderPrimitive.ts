@@ -4,7 +4,7 @@ import { Color } from "./Color";
 import { Pose } from "./Pose";
 import { Vector3 } from "./Vector3";
 
-/** A primitive representing a cylinder, elliptic cylinder, or truncated cone */
+/** (Experimental, subject to change) A primitive representing a cylinder, elliptic cylinder, or truncated cone */
 export type CylinderPrimitive = {
   /** Position of the center of the cylinder and orientation of the cylinder. The flat face(s) are perpendicular to the z-axis. */
   pose: Pose;

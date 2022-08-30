@@ -3,7 +3,7 @@
 import { SceneEntity } from "./SceneEntity";
 import { SceneEntityDeletion } from "./SceneEntityDeletion";
 
-/** An update to the entities displayed in a 3D scene */
+/** (Experimental, subject to change) An update to the entities displayed in a 3D scene */
 export type SceneUpdate = {
   /** Scene entities to delete */
   deletions: SceneEntityDeletion[];

@@ -8,7 +8,7 @@ import "foxglove/Vector3.proto";
 
 package foxglove;
 
-// A primitive representing a cube or rectangular prism
+// (Experimental, subject to change) A primitive representing a cube or rectangular prism
 message CubePrimitive {
   // Position of the center of the cube and orientation of the cube
   foxglove.Pose pose = 1;

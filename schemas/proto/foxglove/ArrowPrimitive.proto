@@ -7,7 +7,7 @@ import "foxglove/Pose.proto";
 
 package foxglove;
 
-// A primitive representing an arrow
+// (Experimental, subject to change) A primitive representing an arrow
 message ArrowPrimitive {
   // Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.
   foxglove.Pose pose = 1;

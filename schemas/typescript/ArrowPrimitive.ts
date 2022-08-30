@@ -3,7 +3,7 @@
 import { Color } from "./Color";
 import { Pose } from "./Pose";
 
-/** A primitive representing an arrow */
+/** (Experimental, subject to change) A primitive representing an arrow */
 export type ArrowPrimitive = {
   /** Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction. */
   pose: Pose;

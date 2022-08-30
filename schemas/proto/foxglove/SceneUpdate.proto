@@ -7,7 +7,7 @@ import "foxglove/SceneEntityDeletion.proto";
 
 package foxglove;
 
-// An update to the entities displayed in a 3D scene
+// (Experimental, subject to change) An update to the entities displayed in a 3D scene
 message SceneUpdate {
   // Scene entities to delete
   repeated foxglove.SceneEntityDeletion deletions = 1;

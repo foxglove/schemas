@@ -5,7 +5,7 @@ import { LineType } from "./LineType";
 import { Point3 } from "./Point3";
 import { Pose } from "./Pose";
 
-/** A primitive representing a series of points connected by lines */
+/** (Experimental, subject to change) A primitive representing a series of points connected by lines */
 export type LinePrimitive = {
   /** Drawing primitive to use for lines */
   type: LineType;

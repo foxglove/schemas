@@ -6,9 +6,9 @@ import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// Command to remove previously published entities
+// (Experimental, subject to change) Command to remove previously published entities
 message SceneEntityDeletion {
-  // An enumeration indicating which entities should match a SceneEntityDeletion command
+  // (Experimental, subject to change) An enumeration indicating which entities should match a SceneEntityDeletion command
   enum Type {
     // Delete the existing entity on the same topic that has the provided `id`
     MATCHING_ID = 0;

@@ -74,7 +74,7 @@ ${type}${arraySuffix}
 </td>
 <td>
 
-${field.description}
+${field.docsLink ? `<a href="${field.docsLink}">${field.description}</a>` : field.description}
 
 </td>
 </tr>`;

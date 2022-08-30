@@ -184,6 +184,7 @@ const foxglove_CameraCalibration: FoxgloveMessageSchema = {
       name: "distortion_model",
       type: { type: "primitive", name: "string" },
       description: "Name of distortion model",
+      docsLink: "https://foxglove.dev/docs/studio/panels/image#cameracalibration",
     },
     {
       name: "D",

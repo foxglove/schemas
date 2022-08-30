@@ -34,6 +34,7 @@ export type FoxgloveMessageSchema = {
     array?: true | number;
     required?: true;
     description: string;
+    docsLink?: string;
   }>;
 };
 

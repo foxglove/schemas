@@ -62,3 +62,6 @@ float64[9] r
 # 
 # This holds for both images of a stereo pair.
 float64[12] p
+
+# Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
+string frame_id

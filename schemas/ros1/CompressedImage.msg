@@ -11,3 +11,6 @@ uint8[] data
 
 # Image format
 string format
+
+# Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
+string frame_id

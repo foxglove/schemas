@@ -660,6 +660,13 @@ const CameraCalibration: FoxgloveMessageSchema = {
   description: "Camera calibration parameters",
   fields: [
     {
+      name: "frame_id",
+      type: { type: "primitive", name: "string" },
+      description:
+        "Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
+      protobufFieldNumber: 9,
+    },
+    {
       name: "timestamp",
       type: { type: "primitive", name: "time" },
       description: "Timestamp of calibration data",
@@ -741,12 +748,6 @@ Given a 3D point [X Y Z]', the projection (x, y) of the point onto the rectified
 This holds for both images of a stereo pair.
 `,
     },
-    {
-      name: "frame_id",
-      type: { type: "primitive", name: "string" },
-      description:
-        "Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
-    },
   ],
 };
 
@@ -761,6 +762,13 @@ const CompressedImage: FoxgloveMessageSchema = {
       description: "Timestamp of image",
     },
     {
+      name: "frame_id",
+      type: { type: "primitive", name: "string" },
+      description:
+        "Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
+      protobufFieldNumber: 4,
+    },
+    {
       name: "data",
       type: { type: "primitive", name: "bytes" },
       description: "Compressed image data",
@@ -769,12 +777,6 @@ const CompressedImage: FoxgloveMessageSchema = {
       name: "format",
       type: { type: "primitive", name: "string" },
       description: "Image format",
-    },
-    {
-      name: "frame_id",
-      type: { type: "primitive", name: "string" },
-      description:
-        "Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
     },
   ],
 };
@@ -788,6 +790,13 @@ const RawImage: FoxgloveMessageSchema = {
       name: "timestamp",
       type: { type: "primitive", name: "time" },
       description: "Timestamp of image",
+    },
+    {
+      name: "frame_id",
+      type: { type: "primitive", name: "string" },
+      description:
+        "Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
+      protobufFieldNumber: 7,
     },
     {
       name: "width",
@@ -813,12 +822,6 @@ const RawImage: FoxgloveMessageSchema = {
       name: "data",
       type: { type: "primitive", name: "bytes" },
       description: "Raw image data",
-    },
-    {
-      name: "frame_id",
-      type: { type: "primitive", name: "string" },
-      description:
-        "Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
     },
   ],
 };

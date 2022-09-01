@@ -234,6 +234,19 @@ Camera calibration parameters
     <th>description</th>
   </tr>
 <tr>
+<td><code>frame_id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
+
+</td>
+</tr>
+<tr>
 <td><code>timestamp</code></td>
 <td>
 
@@ -372,19 +385,6 @@ Given a 3D point [X Y Z]', the projection (x, y) of the point onto the rectified
 
 This holds for both images of a stereo pair.
 
-
-</td>
-</tr>
-<tr>
-<td><code>frame_id</code></td>
-<td>
-
-string
-
-</td>
-<td>
-
-Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
 
 </td>
 </tr>
@@ -568,6 +568,19 @@ Timestamp of image
 </td>
 </tr>
 <tr>
+<td><code>frame_id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
+
+</td>
+</tr>
+<tr>
 <td><code>data</code></td>
 <td>
 
@@ -590,19 +603,6 @@ string
 <td>
 
 Image format
-
-</td>
-</tr>
-<tr>
-<td><code>frame_id</code></td>
-<td>
-
-string
-
-</td>
-<td>
-
-Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
 
 </td>
 </tr>
@@ -2095,6 +2095,19 @@ Timestamp of image
 </td>
 </tr>
 <tr>
+<td><code>frame_id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
+
+</td>
+</tr>
+<tr>
 <td><code>width</code></td>
 <td>
 
@@ -2156,19 +2169,6 @@ bytes
 <td>
 
 Raw image data
-
-</td>
-</tr>
-<tr>
-<td><code>frame_id</code></td>
-<td>
-
-string
-
-</td>
-<td>
-
-Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
 
 </td>
 </tr>

@@ -37,67 +37,67 @@ describe("generateProto", () => {
         bool field_boolean = 3;
 
         // bytes field
-        bytes field_bytes = 4;
+        bytes field_bytes = 5;
 
         // float64 field
-        double field_float64 = 5;
+        double field_float64 = 6;
 
         // uint32 field
-        fixed32 field_uint32 = 6;
+        fixed32 field_uint32 = 7;
 
         // string field
-        string field_string = 7;
+        string field_string = 8;
 
         // duration array field
-        repeated google.protobuf.Duration field_duration_array = 8;
+        repeated google.protobuf.Duration field_duration_array = 9;
 
         // time array field
-        repeated google.protobuf.Timestamp field_time_array = 9;
+        repeated google.protobuf.Timestamp field_time_array = 10;
 
         // boolean array field
-        repeated bool field_boolean_array = 10;
+        repeated bool field_boolean_array = 11;
 
         // bytes array field
-        repeated bytes field_bytes_array = 11;
+        repeated bytes field_bytes_array = 12;
 
         // float64 array field
-        repeated double field_float64_array = 12;
+        repeated double field_float64_array = 13;
 
         // uint32 array field
-        repeated fixed32 field_uint32_array = 13;
+        repeated fixed32 field_uint32_array = 14;
 
         // string array field
-        repeated string field_string_array = 14;
+        repeated string field_string_array = 15;
 
         // duration fixed-length array field
-        repeated google.protobuf.Duration field_duration_fixed_array = 15; // length 3
+        repeated google.protobuf.Duration field_duration_fixed_array = 16; // length 3
 
         // time fixed-length array field
-        repeated google.protobuf.Timestamp field_time_fixed_array = 16; // length 3
+        repeated google.protobuf.Timestamp field_time_fixed_array = 17; // length 3
 
         // boolean fixed-length array field
-        repeated bool field_boolean_fixed_array = 17; // length 3
+        repeated bool field_boolean_fixed_array = 18; // length 3
 
         // bytes fixed-length array field
-        repeated bytes field_bytes_fixed_array = 18; // length 3
+        repeated bytes field_bytes_fixed_array = 19; // length 3
 
         // float64 fixed-length array field
-        repeated double field_float64_fixed_array = 19; // length 3
+        repeated double field_float64_fixed_array = 20; // length 3
 
         // uint32 fixed-length array field
-        repeated fixed32 field_uint32_fixed_array = 20; // length 3
+        repeated fixed32 field_uint32_fixed_array = 21; // length 3
 
         // string fixed-length array field
-        repeated string field_string_fixed_array = 21; // length 3
+        repeated string field_string_fixed_array = 22; // length 3
 
         // An enum field
-        ExampleProtoEnum field_enum = 22;
+        ExampleProtoEnum field_enum = 23;
 
         // An enum array field
-        repeated ExampleProtoEnum field_enum_array = 23;
+        repeated ExampleProtoEnum field_enum_array = 24;
 
         // A nested field
-        foxglove.NestedMessage field_nested = 24;
+        foxglove.NestedMessage field_nested = 25;
 
         // A nested array field
         // With
@@ -105,7 +105,7 @@ describe("generateProto", () => {
         // very
         // long
         // description
-        repeated foxglove.NestedMessage field_nested_array = 25;
+        repeated foxglove.NestedMessage field_nested_array = 4;
       }
       "
     `);

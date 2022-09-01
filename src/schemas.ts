@@ -660,16 +660,16 @@ const CameraCalibration: FoxgloveMessageSchema = {
   description: "Camera calibration parameters",
   fields: [
     {
+      name: "timestamp",
+      type: { type: "primitive", name: "time" },
+      description: "Timestamp of calibration data",
+    },
+    {
       name: "frame_id",
       type: { type: "primitive", name: "string" },
       description:
         "Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
       protobufFieldNumber: 9,
-    },
-    {
-      name: "timestamp",
-      type: { type: "primitive", name: "time" },
-      description: "Timestamp of calibration data",
     },
     {
       name: "width",

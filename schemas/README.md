@@ -234,19 +234,6 @@ Camera calibration parameters
     <th>description</th>
   </tr>
 <tr>
-<td><code>frame_id</code></td>
-<td>
-
-string
-
-</td>
-<td>
-
-Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
-
-</td>
-</tr>
-<tr>
 <td><code>timestamp</code></td>
 <td>
 
@@ -256,6 +243,19 @@ time
 <td>
 
 Timestamp of calibration data
+
+</td>
+</tr>
+<tr>
+<td><code>frame_id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
 
 </td>
 </tr>

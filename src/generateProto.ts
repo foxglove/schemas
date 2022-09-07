@@ -1,4 +1,9 @@
-import { FoxgloveEnumSchema, FoxgloveMessageSchema, FoxglovePrimitive } from "./types";
+import {
+  FoxgloveEnumSchema,
+  FoxgloveMessageField,
+  FoxgloveMessageSchema,
+  FoxglovePrimitive,
+} from "./types";
 
 function primitiveToProto(type: Exclude<FoxglovePrimitive, "time" | "duration">) {
   switch (type) {
@@ -35,9 +40,33 @@ export function generateProto(
     );
   }
 
-  let fieldNumber = 1;
+  const explicitFieldNumbers = new Set<number>();
+  for (const field of schema.fields) {
+    if (field.protobufFieldNumber != undefined) {
+      if (explicitFieldNumbers.has(field.protobufFieldNumber)) {
+        throw new Error(
+          `More than one field with protobufFieldNumber ${field.protobufFieldNumber}`,
+        );
+      }
+      explicitFieldNumbers.add(field.protobufFieldNumber);
+    }
+  }
+
+  let nextFieldNumber = 1;
+  const numberedFields = schema.fields.map(
+    (field): FoxgloveMessageField & { protobufFieldNumber: number } => {
+      if (field.protobufFieldNumber != undefined) {
+        return { ...field, protobufFieldNumber: field.protobufFieldNumber };
+      }
+      while (explicitFieldNumbers.has(nextFieldNumber)) {
+        ++nextFieldNumber;
+      }
+      return { ...field, protobufFieldNumber: nextFieldNumber++ };
+    },
+  );
+
   const imports = new Set<string>();
-  const fields = schema.fields.map((field) => {
+  const fields = numberedFields.map((field) => {
     const lineComments: string[] = [];
     const qualifiers: string[] = [];
     if (field.array != undefined) {
@@ -70,7 +99,7 @@ export function generateProto(
       .trim()
       .split("\n")
       .map((line) => `  // ${line}\n`)
-      .join("")}  ${qualifiers.join(" ")} ${field.name} = ${fieldNumber++};${
+      .join("")}  ${qualifiers.join(" ")} ${field.name} = ${field.protobufFieldNumber};${
       lineComments.length > 0 ? " // " + lineComments.join(", ") : ""
     }`;
   });

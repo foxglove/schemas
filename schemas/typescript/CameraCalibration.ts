@@ -7,6 +7,9 @@ export type CameraCalibration = {
   /** Timestamp of calibration data */
   timestamp: Time;
 
+  /** Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image. */
+  frame_id: string;
+
   /** Image width */
   width: number;
 

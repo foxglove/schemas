@@ -78,6 +78,7 @@ export const exampleMessage: FoxgloveMessageSchema = {
       description: "A nested array field\nWith\na\nvery\nlong\ndescription",
       type: { type: "nested", schema: exampleNestedMessage },
       array: true,
+      protobufFieldNumber: 4,
     },
   ],
 };

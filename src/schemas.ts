@@ -665,6 +665,13 @@ const CameraCalibration: FoxgloveMessageSchema = {
       description: "Timestamp of calibration data",
     },
     {
+      name: "frame_id",
+      type: { type: "primitive", name: "string" },
+      description:
+        "Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
+      protobufFieldNumber: 9,
+    },
+    {
       name: "width",
       type: { type: "primitive", name: "uint32" },
       description: "Image width",
@@ -755,6 +762,13 @@ const CompressedImage: FoxgloveMessageSchema = {
       description: "Timestamp of image",
     },
     {
+      name: "frame_id",
+      type: { type: "primitive", name: "string" },
+      description:
+        "Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
+      protobufFieldNumber: 4,
+    },
+    {
       name: "data",
       type: { type: "primitive", name: "bytes" },
       description: "Compressed image data",
@@ -776,6 +790,13 @@ const RawImage: FoxgloveMessageSchema = {
       name: "timestamp",
       type: { type: "primitive", name: "time" },
       description: "Timestamp of image",
+    },
+    {
+      name: "frame_id",
+      type: { type: "primitive", name: "string" },
+      description:
+        "Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
+      protobufFieldNumber: 7,
     },
     {
       name: "width",

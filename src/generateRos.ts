@@ -1,5 +1,5 @@
 import type { RosMsgDefinition, RosMsgField } from "@foxglove/rosmsg";
-import { definitions as rosCommonDefs } from "@foxglove/rosmsg-msgs-common";
+import { ros1 } from "@foxglove/rosmsg-msgs-common";
 
 import { FoxgloveMessageSchema, FoxglovePrimitive } from "./types";
 
@@ -71,7 +71,7 @@ export function generateRosMsg(def: RosMsgDefinitionWithDescription): string {
 }
 
 type Dependency =
-  | { type: "ros"; name: keyof typeof rosCommonDefs }
+  | { type: "ros"; name: keyof typeof ros1 }
   | { type: "foxglove"; schema: FoxgloveMessageSchema };
 
 function dependenciesEqual(a: Dependency, b: Dependency) {
@@ -86,7 +86,7 @@ function* getSchemaDependencies(schema: FoxgloveMessageSchema): Iterable<Depende
     if (field.type.type === "nested") {
       if (field.type.schema.rosEquivalent != undefined) {
         yield { type: "ros", name: field.type.schema.rosEquivalent };
-        yield* getRosDependencies(rosCommonDefs[field.type.schema.rosEquivalent]);
+        yield* getRosDependencies(ros1[field.type.schema.rosEquivalent]);
       } else {
         yield { type: "foxglove", schema: field.type.schema };
         yield* getSchemaDependencies(field.type.schema);
@@ -97,8 +97,8 @@ function* getSchemaDependencies(schema: FoxgloveMessageSchema): Iterable<Depende
 function* getRosDependencies(schema: RosMsgDefinition): Iterable<Dependency> {
   for (const field of schema.definitions) {
     if (field.isComplex === true) {
-      yield { type: "ros", name: field.type as keyof typeof rosCommonDefs };
-      yield* getRosDependencies(rosCommonDefs[field.type as keyof typeof rosCommonDefs]!);
+      yield { type: "ros", name: field.type as keyof typeof ros1 };
+      yield* getRosDependencies(ros1[field.type as keyof typeof ros1]!);
     }
   }
 }
@@ -215,7 +215,7 @@ export function generateRosMsgMergedSchema(
         originalName: dep.name,
         rosMsgInterfaceName: dep.name,
         rosFullInterfaceName: dep.name,
-        fields: rosCommonDefs[dep.name].definitions,
+        fields: ros1[dep.name].definitions,
       });
     } else {
       const definition = generateRosMsgDefinition(dep.schema, { rosVersion });

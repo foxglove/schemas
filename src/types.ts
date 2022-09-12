@@ -36,7 +36,7 @@ export type FoxgloveMessageSchema = {
   type: "message";
   name: string;
   description: string;
-  rosEquivalent?: keyof typeof import("@foxglove/rosmsg-msgs-common").definitions;
+  rosEquivalent?: keyof typeof import("@foxglove/rosmsg-msgs-common").ros1;
   fields: ReadonlyArray<FoxgloveMessageField>;
 };
 

@@ -11,6 +11,9 @@
     "name": "Foxglove Technologies",
     "email": "support@foxglove.dev"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "exports": {
     ".": {
       "import": "./dist/esm/schemas/typescript/index.js",

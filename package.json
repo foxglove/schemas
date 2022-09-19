@@ -11,9 +11,20 @@
     "name": "Foxglove Technologies",
     "email": "support@foxglove.dev"
   },
-  "module": "dist/esm/src/index.js",
-  "main": "dist/cjs/src/index.js",
-  "typings": "dist/esm/src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/schemas/typescript/index.js",
+      "require": "./dist/cjs/schemas/typescript/index.js"
+    },
+    "./jsonschema": {
+      "import": "./dist/esm/schemas/jsonschema/index.js",
+      "require": "./dist/cjs/schemas/jsonschema/index.js"
+    },
+    "./internal": {
+      "import": "./dist/esm/src/index.js",
+      "require": "./dist/cjs/src/index.js"
+    }
+  },
   "scripts": {
     "prepack": "tsc -b tsconfig.json tsconfig.cjs.json && yarn update-generated-files",
     "typecheck": "tsc -p tsconfig.json --noEmit",

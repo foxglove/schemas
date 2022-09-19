@@ -42,7 +42,7 @@ These schemas can be used in [MCAP](https://github.com/foxglove/mcap) files or [
 
 ## Development
 
-The schema definitions are in [src/schemas.ts](src/schemas.ts).
+The schema definitions are in [internal/schemas.ts](internal/schemas.ts).
 
 After editing the schemas, re-generate the language-specific definitions by running `yarn update-generated-files`.
 

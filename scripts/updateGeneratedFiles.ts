@@ -4,12 +4,12 @@ import path from "path";
 import rimraf from "rimraf";
 import { promisify } from "util";
 
-import { generateRosMsg, generateRosMsgDefinition } from "../src";
-import { generateJsonSchema } from "../src/generateJsonSchema";
-import { generateMarkdown } from "../src/generateMarkdown";
-import { generateProto } from "../src/generateProto";
-import { generateTypeScript, DURATION_TS, TIME_TS } from "../src/generateTypeScript";
-import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../src/schemas";
+import { generateRosMsg, generateRosMsgDefinition } from "../internal";
+import { generateJsonSchema } from "../internal/generateJsonSchema";
+import { generateMarkdown } from "../internal/generateMarkdown";
+import { generateProto } from "../internal/generateProto";
+import { generateTypeScript, DURATION_TS, TIME_TS } from "../internal/generateTypeScript";
+import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../internal/schemas";
 
 async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write(`${message}... `);

@@ -2,7 +2,7 @@
 
 See [Foxglove Schemas documentation](https://foxglove.dev/docs/studio/messages).
 
-All schemas are generated from [schemas.ts](/src/schemas.ts).
+All schemas are generated from [schemas.ts](/internal/schemas.ts).
 
 ## Contents
 

@@ -3,7 +3,7 @@
   "include": ["./**/*"],
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "./dist/esm",
+    "module": "commonjs",
     "lib": ["es2020", "dom"]
   }
 }

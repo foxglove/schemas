@@ -8,7 +8,7 @@ import "foxglove/Pose.proto";
 
 package foxglove;
 
-// (Experimental, subject to change) A primitive representing a set of triangles or a surface tiled by triangles
+// A primitive representing a set of triangles or a surface tiled by triangles
 message TriangleListPrimitive {
   // Origin of triangles relative to reference frame
   foxglove.Pose pose = 1;

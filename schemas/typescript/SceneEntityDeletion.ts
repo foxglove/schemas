@@ -3,7 +3,7 @@
 import { SceneEntityDeletionType } from "./SceneEntityDeletionType";
 import { Time } from "./Time";
 
-/** (Experimental, subject to change) Command to remove previously published entities */
+/** Command to remove previously published entities */
 export type SceneEntityDeletion = {
   /** Timestamp of the deletion. Only matching entities earlier than this timestamp will be deleted. */
   timestamp: Time;

@@ -4,7 +4,7 @@ import { Color } from "./Color";
 import { Pose } from "./Pose";
 import { Vector3 } from "./Vector3";
 
-/** (Experimental, subject to change) A primitive representing a cube or rectangular prism */
+/** A primitive representing a cube or rectangular prism */
 export type CubePrimitive = {
   /** Position of the center of the cube and orientation of the cube */
   pose: Pose;

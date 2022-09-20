@@ -12,7 +12,7 @@ import { TextPrimitive } from "./TextPrimitive";
 import { Time } from "./Time";
 import { TriangleListPrimitive } from "./TriangleListPrimitive";
 
-/** (Experimental, subject to change) A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference. */
+/** A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference. */
 export type SceneEntity = {
   /** Timestamp of the entity */
   timestamp: Time;

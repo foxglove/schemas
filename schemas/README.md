@@ -52,7 +52,7 @@ All schemas are generated from [schemas.ts](/internal/schemas.ts).
 
 ## enum LineType
 
-(Experimental, subject to change) An enumeration indicating how input points should be interpreted to create lines
+An enumeration indicating how input points should be interpreted to create lines
 
 name | value | description
 ---- | ----- | -----------
@@ -124,7 +124,7 @@ name | value | description
 
 ## enum SceneEntityDeletionType
 
-(Experimental, subject to change) An enumeration indicating which entities should match a SceneEntityDeletion command
+An enumeration indicating which entities should match a SceneEntityDeletion command
 
 name | value | description
 ---- | ----- | -----------
@@ -135,7 +135,7 @@ name | value | description
 
 ## ArrowPrimitive
 
-(Experimental, subject to change) A primitive representing an arrow
+A primitive representing an arrow
 
 <table>
   <tr>
@@ -610,7 +610,7 @@ Image format
 
 ## CubePrimitive
 
-(Experimental, subject to change) A primitive representing a cube or rectangular prism
+A primitive representing a cube or rectangular prism
 
 <table>
   <tr>
@@ -661,7 +661,7 @@ Color of the arrow
 
 ## CylinderPrimitive
 
-(Experimental, subject to change) A primitive representing a cylinder, elliptic cylinder, or truncated cone
+A primitive representing a cylinder, elliptic cylinder, or truncated cone
 
 <table>
   <tr>
@@ -1007,7 +1007,7 @@ Points annotations
 
 ## KeyValuePair
 
-(Experimental, subject to change) A key with its associated value
+A key with its associated value
 
 <table>
   <tr>
@@ -1148,7 +1148,7 @@ Intensity of detections
 
 ## LinePrimitive
 
-(Experimental, subject to change) A primitive representing a series of points connected by lines
+A primitive representing a series of points connected by lines
 
 <table>
   <tr>
@@ -1433,7 +1433,7 @@ Line number in the file
 
 ## ModelPrimitive
 
-(Experimental, subject to change) A primitive representing a 3D model file loaded from an external URL or embedded data
+A primitive representing a 3D model file loaded from an external URL or embedded data
 
 <table>
   <tr>
@@ -2176,7 +2176,7 @@ Raw image data
 
 ## SceneEntity
 
-(Experimental, subject to change) A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
+A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
 
 <table>
   <tr>
@@ -2370,7 +2370,7 @@ Model primitives
 
 ## SceneEntityDeletion
 
-(Experimental, subject to change) Command to remove previously published entities
+Command to remove previously published entities
 
 <table>
   <tr>
@@ -2421,7 +2421,7 @@ Identifier which must match if `type` is `MATCHING_ID`.
 
 ## SceneUpdate
 
-(Experimental, subject to change) An update to the entities displayed in a 3D scene
+An update to the entities displayed in a 3D scene
 
 <table>
   <tr>
@@ -2459,7 +2459,7 @@ Scene entities to add or replace
 
 ## SpherePrimitive
 
-(Experimental, subject to change) A primitive representing a sphere or ellipsoid
+A primitive representing a sphere or ellipsoid
 
 <table>
   <tr>
@@ -2510,7 +2510,7 @@ Color of the sphere
 
 ## TextPrimitive
 
-(Experimental, subject to change) A primitive representing a text label
+A primitive representing a text label
 
 <table>
   <tr>
@@ -2600,7 +2600,7 @@ Text
 
 ## TriangleListPrimitive
 
-(Experimental, subject to change) A primitive representing a set of triangles or a surface tiled by triangles
+A primitive representing a set of triangles or a surface tiled by triangles
 
 <table>
   <tr>

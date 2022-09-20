@@ -16,7 +16,7 @@ import "google/protobuf/timestamp.proto";
 
 package foxglove;
 
-// (Experimental, subject to change) A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
+// A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
 message SceneEntity {
   // Timestamp of the entity
   google.protobuf.Timestamp timestamp = 1;

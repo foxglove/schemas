@@ -163,7 +163,7 @@ const Pose: FoxgloveMessageSchema = {
 const KeyValuePair: FoxgloveMessageSchema = {
   type: "message",
   name: "KeyValuePair",
-  description: "(Experimental, subject to change) A key with its associated value",
+  description: "A key with its associated value",
   fields: [
     {
       name: "key",
@@ -184,7 +184,7 @@ const SceneEntityDeletionType: FoxgloveEnumSchema = {
   protobufParentMessageName: "SceneEntityDeletion",
   protobufEnumName: "Type",
   description:
-    "(Experimental, subject to change) An enumeration indicating which entities should match a SceneEntityDeletion command",
+    "An enumeration indicating which entities should match a SceneEntityDeletion command",
   values: [
     {
       value: 0,
@@ -198,7 +198,7 @@ const SceneEntityDeletionType: FoxgloveEnumSchema = {
 const SceneEntityDeletion: FoxgloveMessageSchema = {
   type: "message",
   name: "SceneEntityDeletion",
-  description: "(Experimental, subject to change) Command to remove previously published entities",
+  description: "Command to remove previously published entities",
   fields: [
     {
       name: "timestamp",
@@ -222,7 +222,7 @@ const SceneEntityDeletion: FoxgloveMessageSchema = {
 const ArrowPrimitive: FoxgloveMessageSchema = {
   type: "message",
   name: "ArrowPrimitive",
-  description: "(Experimental, subject to change) A primitive representing an arrow",
+  description: "A primitive representing an arrow",
   fields: [
     {
       name: "pose",
@@ -261,8 +261,7 @@ const ArrowPrimitive: FoxgloveMessageSchema = {
 const CubePrimitive: FoxgloveMessageSchema = {
   type: "message",
   name: "CubePrimitive",
-  description:
-    "(Experimental, subject to change) A primitive representing a cube or rectangular prism",
+  description: "A primitive representing a cube or rectangular prism",
   fields: [
     {
       name: "pose",
@@ -285,7 +284,7 @@ const CubePrimitive: FoxgloveMessageSchema = {
 const SpherePrimitive: FoxgloveMessageSchema = {
   type: "message",
   name: "SpherePrimitive",
-  description: "(Experimental, subject to change) A primitive representing a sphere or ellipsoid",
+  description: "A primitive representing a sphere or ellipsoid",
   fields: [
     {
       name: "pose",
@@ -308,8 +307,7 @@ const SpherePrimitive: FoxgloveMessageSchema = {
 const CylinderPrimitive: FoxgloveMessageSchema = {
   type: "message",
   name: "CylinderPrimitive",
-  description:
-    "(Experimental, subject to change) A primitive representing a cylinder, elliptic cylinder, or truncated cone",
+  description: "A primitive representing a cylinder, elliptic cylinder, or truncated cone",
   fields: [
     {
       name: "pose",
@@ -347,8 +345,7 @@ const LineType: FoxgloveEnumSchema = {
   name: "LineType",
   protobufParentMessageName: "LinePrimitive",
   protobufEnumName: "Type",
-  description:
-    "(Experimental, subject to change) An enumeration indicating how input points should be interpreted to create lines",
+  description: "An enumeration indicating how input points should be interpreted to create lines",
   values: [
     { value: 0, name: "LINE_STRIP", description: "0-1, 1-2, ..., (n-1)-n" },
     { value: 1, name: "LINE_LOOP", description: "0-1, 1-2, ..., (n-1)-n, n-0" },
@@ -359,8 +356,7 @@ const LineType: FoxgloveEnumSchema = {
 const LinePrimitive: FoxgloveMessageSchema = {
   type: "message",
   name: "LinePrimitive",
-  description:
-    "(Experimental, subject to change) A primitive representing a series of points connected by lines",
+  description: "A primitive representing a series of points connected by lines",
   fields: [
     {
       name: "type",
@@ -415,7 +411,7 @@ const LinePrimitive: FoxgloveMessageSchema = {
 const TextPrimitive: FoxgloveMessageSchema = {
   type: "message",
   name: "TextPrimitive",
-  description: "(Experimental, subject to change) A primitive representing a text label",
+  description: "A primitive representing a text label",
   fields: [
     {
       name: "pose",
@@ -456,8 +452,7 @@ const TextPrimitive: FoxgloveMessageSchema = {
 const TriangleListPrimitive: FoxgloveMessageSchema = {
   type: "message",
   name: "TriangleListPrimitive",
-  description:
-    "(Experimental, subject to change) A primitive representing a set of triangles or a surface tiled by triangles",
+  description: "A primitive representing a set of triangles or a surface tiled by triangles",
   fields: [
     {
       name: "pose",
@@ -498,7 +493,7 @@ const ModelPrimitive: FoxgloveMessageSchema = {
   type: "message",
   name: "ModelPrimitive",
   description:
-    "(Experimental, subject to change) A primitive representing a 3D model file loaded from an external URL or embedded data",
+    "A primitive representing a 3D model file loaded from an external URL or embedded data",
   fields: [
     {
       name: "pose",
@@ -545,7 +540,7 @@ const SceneEntity: FoxgloveMessageSchema = {
   type: "message",
   name: "SceneEntity",
   description:
-    "(Experimental, subject to change) A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.",
+    "A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.",
   fields: [
     {
       name: "timestamp",
@@ -636,8 +631,7 @@ const SceneEntity: FoxgloveMessageSchema = {
 const SceneUpdate: FoxgloveMessageSchema = {
   type: "message",
   name: "SceneUpdate",
-  description:
-    "(Experimental, subject to change) An update to the entities displayed in a 3D scene",
+  description: "An update to the entities displayed in a 3D scene",
   fields: [
     {
       name: "deletions",

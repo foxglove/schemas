@@ -1,5 +1,5 @@
 {
-  "testMatch": ["<rootDir>/src/**/*.test.ts"],
+  "testMatch": ["<rootDir>/**/*.test.ts"],
   "transform": {
     "^.+\\.ts$": [
       "ts-jest",

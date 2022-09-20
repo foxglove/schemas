@@ -11,16 +11,18 @@
     "name": "Foxglove Technologies",
     "email": "support@foxglove.dev"
   },
-  "module": "dist/esm/src/index.js",
-  "main": "dist/cjs/src/index.js",
-  "typings": "dist/esm/src/index.d.ts",
+  "engines": {
+    "node": ">=16"
+  },
+  "main": "schemas/typescript/index.js",
+  "typings": "schemas/typescript/index.d.ts",
   "scripts": {
-    "prepack": "tsc -b tsconfig.json tsconfig.cjs.json && yarn update-generated-files",
+    "prepack": "yarn update-generated-files && tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint:ci": "eslint --report-unused-disable-directives .",
     "lint": "eslint --report-unused-disable-directives --fix .",
     "test": "jest",
-    "update-generated-files": "ts-node --files --project tsconfig.cjs.json scripts/updateGeneratedFiles --out-dir schemas --ros-out-dir ros_foxglove_msgs"
+    "update-generated-files": "ts-node --files --project tsconfig.json scripts/updateGeneratedFiles --out-dir schemas --ros-out-dir ros_foxglove_msgs"
   },
   "devDependencies": {
     "@foxglove/eslint-plugin": "0.20.0",

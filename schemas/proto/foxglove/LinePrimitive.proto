@@ -8,9 +8,9 @@ import "foxglove/Pose.proto";
 
 package foxglove;
 
-// (Experimental, subject to change) A primitive representing a series of points connected by lines
+// A primitive representing a series of points connected by lines
 message LinePrimitive {
-  // (Experimental, subject to change) An enumeration indicating how input points should be interpreted to create lines
+  // An enumeration indicating how input points should be interpreted to create lines
   enum Type {
     // 0-1, 1-2, ..., (n-1)-n
     LINE_STRIP = 0;

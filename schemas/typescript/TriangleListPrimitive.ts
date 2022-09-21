@@ -4,7 +4,7 @@ import { Color } from "./Color";
 import { Point3 } from "./Point3";
 import { Pose } from "./Pose";
 
-/** (Experimental, subject to change) A primitive representing a set of triangles or a surface tiled by triangles */
+/** A primitive representing a set of triangles or a surface tiled by triangles */
 export type TriangleListPrimitive = {
   /** Origin of triangles relative to reference frame */
   pose: Pose;

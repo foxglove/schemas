@@ -7,7 +7,7 @@ import "foxglove/Pose.proto";
 
 package foxglove;
 
-// (Experimental, subject to change) A primitive representing a text label
+// A primitive representing a text label
 message TextPrimitive {
   // Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x.
   foxglove.Pose pose = 1;

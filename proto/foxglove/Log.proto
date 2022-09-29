@@ -8,6 +8,7 @@ message Log {
   uint64 timestamp = 1;
 
   enum LogLevel {
+    UNKNOWN = 0;
     DEBUG = 1;
     INFO = 2;
     WARN = 3;

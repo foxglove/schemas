@@ -1,0 +1,15 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "builtins_proto",
+    srcs = ["builtins.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "builtins_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":builtins_proto"],
+)

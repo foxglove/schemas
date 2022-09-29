@@ -1,0 +1,58 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "MeshTriangle_proto",
+    srcs = ["MeshTriangle.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "MeshTriangle_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":MeshTriangle_proto"],
+)
+
+proto_library(
+    name = "Mesh_proto",
+    srcs = ["Mesh.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":MeshTriangle_proto",
+        "//proto/ros/geometry_msgs:Point_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "Mesh_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Mesh_proto"],
+)
+
+proto_library(
+    name = "Plane_proto",
+    srcs = ["Plane.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Plane_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Plane_proto"],
+)
+
+proto_library(
+    name = "SolidPrimitive_proto",
+    srcs = ["SolidPrimitive.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "SolidPrimitive_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":SolidPrimitive_proto"],
+)

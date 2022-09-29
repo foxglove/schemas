@@ -1,0 +1,71 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "MapMetaData_proto",
+    srcs = ["MapMetaData.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/ros:builtins_proto",
+        "//proto/ros/geometry_msgs:Pose_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "MapMetaData_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":MapMetaData_proto"],
+)
+
+proto_library(
+    name = "OccupancyGrid_proto",
+    srcs = ["OccupancyGrid.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":MapMetaData_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "OccupancyGrid_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":OccupancyGrid_proto"],
+)
+
+proto_library(
+    name = "Odometry_proto",
+    srcs = ["Odometry.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/ros/geometry_msgs:PoseWithCovariance_proto",
+        "//proto/ros/geometry_msgs:TwistWithCovariance_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "Odometry_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Odometry_proto"],
+)
+
+proto_library(
+    name = "Path_proto",
+    srcs = ["Path.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/ros/geometry_msgs:PoseStamped_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "Path_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Path_proto"],
+)

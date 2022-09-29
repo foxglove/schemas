@@ -1,0 +1,374 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "BatteryState_proto",
+    srcs = ["BatteryState.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "BatteryState_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":BatteryState_proto"],
+)
+
+proto_library(
+    name = "CameraInfo_proto",
+    srcs = ["CameraInfo.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":RegionOfInterest_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "CameraInfo_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":CameraInfo_proto"],
+)
+
+proto_library(
+    name = "CompressedImage_proto",
+    srcs = ["CompressedImage.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "CompressedImage_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":CompressedImage_proto"],
+)
+
+proto_library(
+    name = "FluidPressure_proto",
+    srcs = ["FluidPressure.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "FluidPressure_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":FluidPressure_proto"],
+)
+
+proto_library(
+    name = "Illuminance_proto",
+    srcs = ["Illuminance.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "Illuminance_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Illuminance_proto"],
+)
+
+proto_library(
+    name = "Image_proto",
+    srcs = ["Image.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "Image_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Image_proto"],
+)
+
+proto_library(
+    name = "Imu_proto",
+    srcs = ["Imu.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/ros/geometry_msgs:Quaternion_proto",
+        "//proto/ros/geometry_msgs:Vector3_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "Imu_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Imu_proto"],
+)
+
+proto_library(
+    name = "JointState_proto",
+    srcs = ["JointState.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "JointState_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":JointState_proto"],
+)
+
+proto_library(
+    name = "JoyFeedbackArray_proto",
+    srcs = ["JoyFeedbackArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":JoyFeedback_proto"],
+)
+
+cc_proto_library(
+    name = "JoyFeedbackArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":JoyFeedbackArray_proto"],
+)
+
+proto_library(
+    name = "JoyFeedback_proto",
+    srcs = ["JoyFeedback.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "JoyFeedback_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":JoyFeedback_proto"],
+)
+
+proto_library(
+    name = "Joy_proto",
+    srcs = ["Joy.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "Joy_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Joy_proto"],
+)
+
+proto_library(
+    name = "LaserEcho_proto",
+    srcs = ["LaserEcho.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "LaserEcho_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":LaserEcho_proto"],
+)
+
+proto_library(
+    name = "LaserScan_proto",
+    srcs = ["LaserScan.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "LaserScan_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":LaserScan_proto"],
+)
+
+proto_library(
+    name = "MagneticField_proto",
+    srcs = ["MagneticField.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/ros/geometry_msgs:Vector3_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "MagneticField_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":MagneticField_proto"],
+)
+
+proto_library(
+    name = "MultiDOFJointState_proto",
+    srcs = ["MultiDOFJointState.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/ros/geometry_msgs:Transform_proto",
+        "//proto/ros/geometry_msgs:Twist_proto",
+        "//proto/ros/geometry_msgs:Wrench_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "MultiDOFJointState_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiDOFJointState_proto"],
+)
+
+proto_library(
+    name = "MultiEchoLaserScan_proto",
+    srcs = ["MultiEchoLaserScan.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":LaserEcho_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "MultiEchoLaserScan_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiEchoLaserScan_proto"],
+)
+
+proto_library(
+    name = "NavSatFix_proto",
+    srcs = ["NavSatFix.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":NavSatStatus_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "NavSatFix_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":NavSatFix_proto"],
+)
+
+proto_library(
+    name = "NavSatStatus_proto",
+    srcs = ["NavSatStatus.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "NavSatStatus_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":NavSatStatus_proto"],
+)
+
+proto_library(
+    name = "PointCloud2_proto",
+    srcs = ["PointCloud2.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":PointField_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "PointCloud2_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":PointCloud2_proto"],
+)
+
+proto_library(
+    name = "PointField_proto",
+    srcs = ["PointField.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "PointField_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":PointField_proto"],
+)
+
+proto_library(
+    name = "Range_proto",
+    srcs = ["Range.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "Range_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Range_proto"],
+)
+
+proto_library(
+    name = "RegionOfInterest_proto",
+    srcs = ["RegionOfInterest.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "RegionOfInterest_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":RegionOfInterest_proto"],
+)
+
+proto_library(
+    name = "RelativeHumidity_proto",
+    srcs = ["RelativeHumidity.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "RelativeHumidity_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":RelativeHumidity_proto"],
+)
+
+proto_library(
+    name = "Temperature_proto",
+    srcs = ["Temperature.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "Temperature_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Temperature_proto"],
+)
+
+proto_library(
+    name = "TimeReference_proto",
+    srcs = ["TimeReference.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/ros:builtins_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "TimeReference_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":TimeReference_proto"],
+)

@@ -1,0 +1,20 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "DisparityImage_proto",
+    srcs = ["DisparityImage.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/ros/sensor_msgs:Image_proto",
+        "//proto/ros/sensor_msgs:RegionOfInterest_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "DisparityImage_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":DisparityImage_proto"],
+)

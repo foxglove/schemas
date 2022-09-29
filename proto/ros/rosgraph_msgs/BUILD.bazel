@@ -1,0 +1,44 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "Clock_proto",
+    srcs = ["Clock.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros:builtins_proto"],
+)
+
+cc_proto_library(
+    name = "Clock_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Clock_proto"],
+)
+
+proto_library(
+    name = "Log_proto",
+    srcs = ["Log.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/std_msgs:Header_proto"],
+)
+
+cc_proto_library(
+    name = "Log_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Log_proto"],
+)
+
+proto_library(
+    name = "TopicStatistics_proto",
+    srcs = ["TopicStatistics.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros:builtins_proto"],
+)
+
+cc_proto_library(
+    name = "TopicStatistics_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":TopicStatistics_proto"],
+)

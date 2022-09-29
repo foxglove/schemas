@@ -1,0 +1,438 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "AccelStamped_proto",
+    srcs = ["AccelStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Accel_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "AccelStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":AccelStamped_proto"],
+)
+
+proto_library(
+    name = "AccelWithCovarianceStamped_proto",
+    srcs = ["AccelWithCovarianceStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":AccelWithCovariance_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "AccelWithCovarianceStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":AccelWithCovarianceStamped_proto"],
+)
+
+proto_library(
+    name = "AccelWithCovariance_proto",
+    srcs = ["AccelWithCovariance.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":Accel_proto"],
+)
+
+cc_proto_library(
+    name = "AccelWithCovariance_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":AccelWithCovariance_proto"],
+)
+
+proto_library(
+    name = "Accel_proto",
+    srcs = ["Accel.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":Vector3_proto"],
+)
+
+cc_proto_library(
+    name = "Accel_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Accel_proto"],
+)
+
+proto_library(
+    name = "InertiaStamped_proto",
+    srcs = ["InertiaStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Inertia_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "InertiaStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":InertiaStamped_proto"],
+)
+
+proto_library(
+    name = "Inertia_proto",
+    srcs = ["Inertia.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":Vector3_proto"],
+)
+
+cc_proto_library(
+    name = "Inertia_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Inertia_proto"],
+)
+
+proto_library(
+    name = "Point32_proto",
+    srcs = ["Point32.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Point32_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Point32_proto"],
+)
+
+proto_library(
+    name = "PointStamped_proto",
+    srcs = ["PointStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Point_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "PointStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":PointStamped_proto"],
+)
+
+proto_library(
+    name = "Point_proto",
+    srcs = ["Point.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Point_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Point_proto"],
+)
+
+proto_library(
+    name = "PolygonStamped_proto",
+    srcs = ["PolygonStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Polygon_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "PolygonStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":PolygonStamped_proto"],
+)
+
+proto_library(
+    name = "Polygon_proto",
+    srcs = ["Polygon.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":Point32_proto"],
+)
+
+cc_proto_library(
+    name = "Polygon_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Polygon_proto"],
+)
+
+proto_library(
+    name = "PoseArray_proto",
+    srcs = ["PoseArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Pose_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "PoseArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":PoseArray_proto"],
+)
+
+proto_library(
+    name = "PoseStamped_proto",
+    srcs = ["PoseStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Pose_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "PoseStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":PoseStamped_proto"],
+)
+
+proto_library(
+    name = "PoseWithCovarianceStamped_proto",
+    srcs = ["PoseWithCovarianceStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":PoseWithCovariance_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "PoseWithCovarianceStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":PoseWithCovarianceStamped_proto"],
+)
+
+proto_library(
+    name = "PoseWithCovariance_proto",
+    srcs = ["PoseWithCovariance.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":Pose_proto"],
+)
+
+cc_proto_library(
+    name = "PoseWithCovariance_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":PoseWithCovariance_proto"],
+)
+
+proto_library(
+    name = "Pose_proto",
+    srcs = ["Pose.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Point_proto",
+        ":Quaternion_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "Pose_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Pose_proto"],
+)
+
+proto_library(
+    name = "QuaternionStamped_proto",
+    srcs = ["QuaternionStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Quaternion_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "QuaternionStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":QuaternionStamped_proto"],
+)
+
+proto_library(
+    name = "Quaternion_proto",
+    srcs = ["Quaternion.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Quaternion_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Quaternion_proto"],
+)
+
+proto_library(
+    name = "TransformStamped_proto",
+    srcs = ["TransformStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Transform_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "TransformStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":TransformStamped_proto"],
+)
+
+proto_library(
+    name = "Transform_proto",
+    srcs = ["Transform.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Quaternion_proto",
+        ":Vector3_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "Transform_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Transform_proto"],
+)
+
+proto_library(
+    name = "TwistStamped_proto",
+    srcs = ["TwistStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Twist_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "TwistStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":TwistStamped_proto"],
+)
+
+proto_library(
+    name = "TwistWithCovarianceStamped_proto",
+    srcs = ["TwistWithCovarianceStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":TwistWithCovariance_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "TwistWithCovarianceStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":TwistWithCovarianceStamped_proto"],
+)
+
+proto_library(
+    name = "TwistWithCovariance_proto",
+    srcs = ["TwistWithCovariance.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":Twist_proto"],
+)
+
+cc_proto_library(
+    name = "TwistWithCovariance_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":TwistWithCovariance_proto"],
+)
+
+proto_library(
+    name = "Twist_proto",
+    srcs = ["Twist.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":Vector3_proto"],
+)
+
+cc_proto_library(
+    name = "Twist_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Twist_proto"],
+)
+
+proto_library(
+    name = "Vector3Stamped_proto",
+    srcs = ["Vector3Stamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Vector3_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "Vector3Stamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Vector3Stamped_proto"],
+)
+
+proto_library(
+    name = "Vector3_proto",
+    srcs = ["Vector3.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Vector3_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Vector3_proto"],
+)
+
+proto_library(
+    name = "WrenchStamped_proto",
+    srcs = ["WrenchStamped.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Wrench_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "WrenchStamped_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":WrenchStamped_proto"],
+)
+
+proto_library(
+    name = "Wrench_proto",
+    srcs = ["Wrench.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":Vector3_proto"],
+)
+
+cc_proto_library(
+    name = "Wrench_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Wrench_proto"],
+)

@@ -1,0 +1,16 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "TFMessage_proto",
+    srcs = ["TFMessage.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros/geometry_msgs:TransformStamped_proto"],
+)
+
+cc_proto_library(
+    name = "TFMessage_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":TFMessage_proto"],
+)

@@ -1,0 +1,68 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "JointTrajectoryPoint_proto",
+    srcs = ["JointTrajectoryPoint.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros:builtins_proto"],
+)
+
+cc_proto_library(
+    name = "JointTrajectoryPoint_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":JointTrajectoryPoint_proto"],
+)
+
+proto_library(
+    name = "JointTrajectory_proto",
+    srcs = ["JointTrajectory.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":JointTrajectoryPoint_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "JointTrajectory_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":JointTrajectory_proto"],
+)
+
+proto_library(
+    name = "MultiDOFJointTrajectoryPoint_proto",
+    srcs = ["MultiDOFJointTrajectoryPoint.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/ros:builtins_proto",
+        "//proto/ros/geometry_msgs:Transform_proto",
+        "//proto/ros/geometry_msgs:Twist_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "MultiDOFJointTrajectoryPoint_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiDOFJointTrajectoryPoint_proto"],
+)
+
+proto_library(
+    name = "MultiDOFJointTrajectory_proto",
+    srcs = ["MultiDOFJointTrajectory.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":MultiDOFJointTrajectoryPoint_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "MultiDOFJointTrajectory_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiDOFJointTrajectory_proto"],
+)

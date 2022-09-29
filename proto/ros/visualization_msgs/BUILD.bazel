@@ -1,0 +1,105 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "ImageMarker_proto",
+    srcs = ["ImageMarker.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/ros:builtins_proto",
+        "//proto/ros/geometry_msgs:Point_proto",
+        "//proto/ros/std_msgs:ColorRGBA_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "ImageMarker_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":ImageMarker_proto"],
+)
+
+proto_library(
+    name = "InteractiveMarkerControl_proto",
+    srcs = ["InteractiveMarkerControl.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":Marker_proto",
+        "//proto/ros/geometry_msgs:Quaternion_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "InteractiveMarkerControl_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":InteractiveMarkerControl_proto"],
+)
+
+proto_library(
+    name = "InteractiveMarker_proto",
+    srcs = ["InteractiveMarker.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":InteractiveMarkerControl_proto",
+        ":MenuEntry_proto",
+        "//proto/ros/geometry_msgs:Pose_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "InteractiveMarker_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":InteractiveMarker_proto"],
+)
+
+proto_library(
+    name = "MarkerArray_proto",
+    srcs = ["MarkerArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":Marker_proto"],
+)
+
+cc_proto_library(
+    name = "MarkerArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":MarkerArray_proto"],
+)
+
+proto_library(
+    name = "Marker_proto",
+    srcs = ["Marker.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/ros:builtins_proto",
+        "//proto/ros/geometry_msgs:Point_proto",
+        "//proto/ros/geometry_msgs:Pose_proto",
+        "//proto/ros/geometry_msgs:Vector3_proto",
+        "//proto/ros/std_msgs:ColorRGBA_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "Marker_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Marker_proto"],
+)
+
+proto_library(
+    name = "MenuEntry_proto",
+    srcs = ["MenuEntry.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "MenuEntry_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":MenuEntry_proto"],
+)

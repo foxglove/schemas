@@ -1,0 +1,419 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "Bool_proto",
+    srcs = ["Bool.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Bool_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Bool_proto"],
+)
+
+proto_library(
+    name = "ByteMultiArray_proto",
+    srcs = ["ByteMultiArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayLayout_proto"],
+)
+
+cc_proto_library(
+    name = "ByteMultiArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":ByteMultiArray_proto"],
+)
+
+proto_library(
+    name = "Byte_proto",
+    srcs = ["Byte.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Byte_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Byte_proto"],
+)
+
+proto_library(
+    name = "Char_proto",
+    srcs = ["Char.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Char_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Char_proto"],
+)
+
+proto_library(
+    name = "ColorRGBA_proto",
+    srcs = ["ColorRGBA.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "ColorRGBA_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":ColorRGBA_proto"],
+)
+
+proto_library(
+    name = "Duration_proto",
+    srcs = ["Duration.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros:builtins_proto"],
+)
+
+cc_proto_library(
+    name = "Duration_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Duration_proto"],
+)
+
+proto_library(
+    name = "Empty_proto",
+    srcs = ["Empty.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Empty_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Empty_proto"],
+)
+
+proto_library(
+    name = "Float32MultiArray_proto",
+    srcs = ["Float32MultiArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayLayout_proto"],
+)
+
+cc_proto_library(
+    name = "Float32MultiArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Float32MultiArray_proto"],
+)
+
+proto_library(
+    name = "Float32_proto",
+    srcs = ["Float32.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Float32_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Float32_proto"],
+)
+
+proto_library(
+    name = "Float64MultiArray_proto",
+    srcs = ["Float64MultiArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayLayout_proto"],
+)
+
+cc_proto_library(
+    name = "Float64MultiArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Float64MultiArray_proto"],
+)
+
+proto_library(
+    name = "Float64_proto",
+    srcs = ["Float64.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Float64_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Float64_proto"],
+)
+
+proto_library(
+    name = "Header_proto",
+    srcs = ["Header.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros:builtins_proto"],
+)
+
+cc_proto_library(
+    name = "Header_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Header_proto"],
+)
+
+proto_library(
+    name = "Int16MultiArray_proto",
+    srcs = ["Int16MultiArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayLayout_proto"],
+)
+
+cc_proto_library(
+    name = "Int16MultiArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Int16MultiArray_proto"],
+)
+
+proto_library(
+    name = "Int16_proto",
+    srcs = ["Int16.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Int16_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Int16_proto"],
+)
+
+proto_library(
+    name = "Int32MultiArray_proto",
+    srcs = ["Int32MultiArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayLayout_proto"],
+)
+
+cc_proto_library(
+    name = "Int32MultiArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Int32MultiArray_proto"],
+)
+
+proto_library(
+    name = "Int32_proto",
+    srcs = ["Int32.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Int32_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Int32_proto"],
+)
+
+proto_library(
+    name = "Int64MultiArray_proto",
+    srcs = ["Int64MultiArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayLayout_proto"],
+)
+
+cc_proto_library(
+    name = "Int64MultiArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Int64MultiArray_proto"],
+)
+
+proto_library(
+    name = "Int64_proto",
+    srcs = ["Int64.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Int64_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Int64_proto"],
+)
+
+proto_library(
+    name = "Int8MultiArray_proto",
+    srcs = ["Int8MultiArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayLayout_proto"],
+)
+
+cc_proto_library(
+    name = "Int8MultiArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Int8MultiArray_proto"],
+)
+
+proto_library(
+    name = "Int8_proto",
+    srcs = ["Int8.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "Int8_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Int8_proto"],
+)
+
+proto_library(
+    name = "MultiArrayDimension_proto",
+    srcs = ["MultiArrayDimension.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "MultiArrayDimension_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayDimension_proto"],
+)
+
+proto_library(
+    name = "MultiArrayLayout_proto",
+    srcs = ["MultiArrayLayout.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayDimension_proto"],
+)
+
+cc_proto_library(
+    name = "MultiArrayLayout_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayLayout_proto"],
+)
+
+proto_library(
+    name = "String_proto",
+    srcs = ["String.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "String_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":String_proto"],
+)
+
+proto_library(
+    name = "Time_proto",
+    srcs = ["Time.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros:builtins_proto"],
+)
+
+cc_proto_library(
+    name = "Time_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":Time_proto"],
+)
+
+proto_library(
+    name = "UInt16MultiArray_proto",
+    srcs = ["UInt16MultiArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayLayout_proto"],
+)
+
+cc_proto_library(
+    name = "UInt16MultiArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":UInt16MultiArray_proto"],
+)
+
+proto_library(
+    name = "UInt16_proto",
+    srcs = ["UInt16.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "UInt16_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":UInt16_proto"],
+)
+
+proto_library(
+    name = "UInt32MultiArray_proto",
+    srcs = ["UInt32MultiArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayLayout_proto"],
+)
+
+cc_proto_library(
+    name = "UInt32MultiArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":UInt32MultiArray_proto"],
+)
+
+proto_library(
+    name = "UInt32_proto",
+    srcs = ["UInt32.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "UInt32_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":UInt32_proto"],
+)
+
+proto_library(
+    name = "UInt64MultiArray_proto",
+    srcs = ["UInt64MultiArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":MultiArrayLayout_proto"],
+)
+
+cc_proto_library(
+    name = "UInt64MultiArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":UInt64MultiArray_proto"],
+)
+
+proto_library(
+    name = "UInt64_proto",
+    srcs = ["UInt64.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "UInt64_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":UInt64_proto"],
+)
+
+proto_library(
+    name = "UInt8_proto",
+    srcs = ["UInt8.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "UInt8_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":UInt8_proto"],
+)

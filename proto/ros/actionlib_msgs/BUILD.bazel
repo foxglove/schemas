@@ -1,0 +1,47 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "GoalID_proto",
+    srcs = ["GoalID.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = ["//proto/ros:builtins_proto"],
+)
+
+cc_proto_library(
+    name = "GoalID_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":GoalID_proto"],
+)
+
+proto_library(
+    name = "GoalStatusArray_proto",
+    srcs = ["GoalStatusArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":GoalStatus_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "GoalStatusArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":GoalStatusArray_proto"],
+)
+
+proto_library(
+    name = "GoalStatus_proto",
+    srcs = ["GoalStatus.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":GoalID_proto"],
+)
+
+cc_proto_library(
+    name = "GoalStatus_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":GoalStatus_proto"],
+)

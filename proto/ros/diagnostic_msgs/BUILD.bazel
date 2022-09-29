@@ -1,0 +1,46 @@
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "DiagnosticArray_proto",
+    srcs = ["DiagnosticArray.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":DiagnosticStatus_proto",
+        "//proto/ros/std_msgs:Header_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "DiagnosticArray_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":DiagnosticArray_proto"],
+)
+
+proto_library(
+    name = "DiagnosticStatus_proto",
+    srcs = ["DiagnosticStatus.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+    deps = [":KeyValue_proto"],
+)
+
+cc_proto_library(
+    name = "DiagnosticStatus_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":DiagnosticStatus_proto"],
+)
+
+proto_library(
+    name = "KeyValue_proto",
+    srcs = ["KeyValue.proto"],
+    strip_import_prefix = "/proto",
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "KeyValue_cc_proto",
+    visibility = ["//visibility:public"],
+    deps = [":KeyValue_proto"],
+)

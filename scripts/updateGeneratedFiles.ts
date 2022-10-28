@@ -28,7 +28,7 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       const json = JSON.stringify(generateJsonSchema(schema), undefined, 2);
       await fs.writeFile(path.join(outDir, "jsonschema", `${schema.name}.json`), json + "\n");
-      indexTS += `export const ${schema.name}: unknown = ${json};\n\n`;
+      indexTS += `export const ${schema.name} = ${json};\n\n`;
     }
     await fs.writeFile(path.join(outDir, "jsonschema", `index.ts`), indexTS);
   });

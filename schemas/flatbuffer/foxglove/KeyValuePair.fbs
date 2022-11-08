@@ -2,7 +2,6 @@
 
 namespace foxglove;
 
-
 /// A key with its associated value
 table KeyValuePair {
   /// Key

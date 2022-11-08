@@ -6,7 +6,6 @@ include "Time.fbs";
 
 namespace foxglove;
 
-
 /// A collection of N-dimensional points, which may contain additional fields with information like normals, intensity, etc.
 table PointCloud {
   /// Timestamp of point cloud

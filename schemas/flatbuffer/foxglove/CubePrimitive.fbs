@@ -6,7 +6,6 @@ include "Vector3.fbs";
 
 namespace foxglove;
 
-
 /// A primitive representing a cube or rectangular prism
 table CubePrimitive {
   /// Position of the center of the cube and orientation of the cube

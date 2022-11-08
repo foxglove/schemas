@@ -14,7 +14,6 @@ include "TriangleListPrimitive.fbs";
 
 namespace foxglove;
 
-
 /// A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
 table SceneEntity {
   /// Timestamp of the entity

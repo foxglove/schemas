@@ -2,7 +2,6 @@
 
 namespace foxglove;
 
-
 /// A vector in 3D space that represents a direction only
 table Vector3 {
   /// x coordinate length

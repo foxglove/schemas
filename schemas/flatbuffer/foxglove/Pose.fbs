@@ -5,7 +5,6 @@ include "Vector3.fbs";
 
 namespace foxglove;
 
-
 /// A position and orientation for an object or reference frame in 3D space
 table Pose {
   /// Point denoting position in 3D space

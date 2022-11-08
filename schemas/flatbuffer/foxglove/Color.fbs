@@ -2,7 +2,6 @@
 
 namespace foxglove;
 
-
 /// A color in RGBA format
 table Color {
   /// Red value between 0 and 1

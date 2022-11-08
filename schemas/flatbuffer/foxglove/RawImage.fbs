@@ -4,7 +4,6 @@ include "Time.fbs";
 
 namespace foxglove;
 
-
 /// A raw image
 table RawImage {
   /// Timestamp of image

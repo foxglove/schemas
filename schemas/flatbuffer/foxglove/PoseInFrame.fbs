@@ -5,7 +5,6 @@ include "Time.fbs";
 
 namespace foxglove;
 
-
 /// A timestamped pose for an object or reference frame in 3D space
 table PoseInFrame {
   /// Timestamp of pose

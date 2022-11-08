@@ -4,7 +4,6 @@ include "Time.fbs";
 
 namespace foxglove;
 
-
 /// Camera calibration parameters
 table CameraCalibration {
   /// Timestamp of calibration data

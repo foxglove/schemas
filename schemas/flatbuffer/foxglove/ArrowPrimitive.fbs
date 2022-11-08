@@ -5,7 +5,6 @@ include "Pose.fbs";
 
 namespace foxglove;
 
-
 /// A primitive representing an arrow
 table ArrowPrimitive {
   /// Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.

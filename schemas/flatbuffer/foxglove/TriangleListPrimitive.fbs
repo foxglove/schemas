@@ -6,7 +6,6 @@ include "Pose.fbs";
 
 namespace foxglove;
 
-
 /// A primitive representing a set of triangles or a surface tiled by triangles
 table TriangleListPrimitive {
   /// Origin of triangles relative to reference frame

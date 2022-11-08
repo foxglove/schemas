@@ -5,7 +5,6 @@ include "SceneEntityDeletion.fbs";
 
 namespace foxglove;
 
-
 /// An update to the entities displayed in a 3D scene
 table SceneUpdate {
   /// Scene entities to delete

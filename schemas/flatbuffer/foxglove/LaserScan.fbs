@@ -5,7 +5,6 @@ include "Time.fbs";
 
 namespace foxglove;
 
-
 /// A single scan from a planar laser range-finder
 table LaserScan {
   /// Timestamp of scan

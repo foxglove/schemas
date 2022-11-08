@@ -6,7 +6,6 @@ include "Vector3.fbs";
 
 namespace foxglove;
 
-
 /// A primitive representing a 3D model file loaded from an external URL or embedded data
 table ModelPrimitive {
   /// Origin of model relative to reference frame

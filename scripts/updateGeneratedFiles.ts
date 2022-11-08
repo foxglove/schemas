@@ -78,12 +78,15 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     await fs.writeFile(path.join(outDir, "flatbuffer/foxglove", "Time.fbs"), TIME_FB);
     await fs.writeFile(path.join(outDir, "flatbuffer/foxglove", "Duration.fbs"), DURATION_FB);
     for (const schema of Object.values(foxgloveMessageSchemas)) {
-      const enums = Object.values(foxgloveEnumSchemas).filter(
-        (enumSchema) => enumSchema.protobufParentMessageName === schema.name,
-      );
       await fs.writeFile(
         path.join(outDir, "flatbuffer", "foxglove", `${schema.name}.fbs`),
-        generateFlatbuffer(schema, enums),
+        generateFlatbuffer(schema),
+      );
+    }
+    for (const schema of Object.values(foxgloveEnumSchemas)) {
+      await fs.writeFile(
+        path.join(outDir, "flatbuffer", "foxglove", `${schema.name}.fbs`),
+        generateFlatbuffer(schema),
       );
     }
   });

@@ -5,7 +5,6 @@ include "PointsAnnotation.fbs";
 
 namespace foxglove;
 
-
 /// Array of annotations for a 2D image
 table ImageAnnotations {
   /// Circle annotations

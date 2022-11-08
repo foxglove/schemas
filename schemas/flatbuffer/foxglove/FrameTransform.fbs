@@ -6,7 +6,6 @@ include "Vector3.fbs";
 
 namespace foxglove;
 
-
 /// A transform between two reference frames in 3D space
 table FrameTransform {
   /// Timestamp of transform

@@ -7,7 +7,6 @@ include "Vector2.fbs";
 
 namespace foxglove;
 
-
 /// A 2D grid of data
 table Grid {
   /// Timestamp of grid

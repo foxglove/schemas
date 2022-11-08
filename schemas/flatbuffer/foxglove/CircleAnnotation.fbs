@@ -6,7 +6,6 @@ include "Time.fbs";
 
 namespace foxglove;
 
-
 /// A circle annotation on a 2D image
 table CircleAnnotation {
   /// Timestamp of circle

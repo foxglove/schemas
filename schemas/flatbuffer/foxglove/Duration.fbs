@@ -1,0 +1,4 @@
+struct Duration {
+  sec:uint;
+  nsec:uint;
+}

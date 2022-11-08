@@ -5,6 +5,7 @@ import rimraf from "rimraf";
 import { promisify } from "util";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../internal";
+import { DURATION_FB, generateFlatbuffer, TIME_FB } from "../internal/generateFlatbuffer";
 import { generateJsonSchema } from "../internal/generateJsonSchema";
 import { generateMarkdown } from "../internal/generateMarkdown";
 import { generateProto } from "../internal/generateProto";
@@ -68,6 +69,21 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
       await fs.writeFile(
         path.join(outDir, "proto", "foxglove", `${schema.name}.proto`),
         generateProto(schema, enums),
+      );
+    }
+  });
+
+  await logProgress("Generating FlatBuffer definitions", async () => {
+    await fs.mkdir(path.join(outDir, "flatbuffer", "foxglove"), { recursive: true });
+    await fs.writeFile(path.join(outDir, "flatbuffer/foxglove", "Time.fbs"), TIME_FB);
+    await fs.writeFile(path.join(outDir, "flatbuffer/foxglove", "Duration.fbs"), DURATION_FB);
+    for (const schema of Object.values(foxgloveMessageSchemas)) {
+      const enums = Object.values(foxgloveEnumSchemas).filter(
+        (enumSchema) => enumSchema.protobufParentMessageName === schema.name,
+      );
+      await fs.writeFile(
+        path.join(outDir, "flatbuffer", "foxglove", `${schema.name}.fbs`),
+        generateFlatbuffer(schema, enums),
       );
     }
   });

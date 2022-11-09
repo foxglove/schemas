@@ -5,7 +5,12 @@ import rimraf from "rimraf";
 import { promisify } from "util";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../internal";
-import { DURATION_FB, generateFlatbuffer, TIME_FB } from "../internal/generateFlatbuffer";
+import {
+  BYTE_VECTOR_FB,
+  DURATION_FB,
+  generateFlatbuffer,
+  TIME_FB,
+} from "../internal/generateFlatbuffer";
 import { generateJsonSchema } from "../internal/generateJsonSchema";
 import { generateMarkdown } from "../internal/generateMarkdown";
 import { generateProto } from "../internal/generateProto";
@@ -75,6 +80,10 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
 
   await logProgress("Generating FlatBuffer definitions", async () => {
     await fs.mkdir(path.join(outDir, "flatbuffer", "foxglove"), { recursive: true });
+    await fs.writeFile(
+      path.join(outDir, "flatbuffer/foxglove", "ByteVectorForNesting.fbs"),
+      BYTE_VECTOR_FB,
+    );
     await fs.writeFile(path.join(outDir, "flatbuffer/foxglove", "Time.fbs"), TIME_FB);
     await fs.writeFile(path.join(outDir, "flatbuffer/foxglove", "Duration.fbs"), DURATION_FB);
     for (const schema of Object.values(foxgloveMessageSchemas)) {

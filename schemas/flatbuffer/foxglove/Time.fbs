@@ -1,4 +1,4 @@
 struct Time {
-  sec:uint;
-  nsec:uint;
+  sec:long;
+  nsec:int;
 }

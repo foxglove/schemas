@@ -1,14 +1,23 @@
 import { FoxglovePrimitive, FoxgloveSchema } from "./types";
 
+// Flatbuffer only supports nested vectors via table
+export const BYTE_VECTOR_FB = `table ByteVectorForNesting {
+  data:[byte];
+}
+
+root_type ByteVectorForNesting;
+`;
+
+// Same as protobuf wellknown types
 export const TIME_FB = `struct Time {
-  sec:uint;
-  nsec:uint;
+  sec:long;
+  nsec:int;
 }
 `;
 
 export const DURATION_FB = `struct Duration {
-  sec:uint;
-  nsec:uint;
+  sec:long;
+  nsec:int;
 }
 `;
 
@@ -67,6 +76,9 @@ export function generateFlatbuffer(schema: FoxgloveSchema): string {
             } else if (field.type.name === "duration") {
               type = "Duration";
               imports.add(`Duration`);
+            } else if (field.type.name === "bytes" && isArray) {
+              type = "ByteVectorForNesting";
+              imports.add("ByteVectorForNesting");
             } else {
               type = primitiveToFlatbuffer(field.type.name);
             }
@@ -75,13 +87,14 @@ export function generateFlatbuffer(schema: FoxgloveSchema): string {
         let lengthComment;
 
         if (typeof field.array === "number") {
-          // can't have inline comments
+          // can't specify length of vector outside of struct, all of these are tables
           lengthComment = `  /// length ${field.array}\n`;
         }
         return `${field.description
           .trim()
           .split("\n")
           .map((line) => `  /// ${line}\n`)
+          // can't have inline comments, so the lengthComment needs to be above
           .join("")}${lengthComment ?? ""}  ${field.name}:${isArray ? `[${type}]` : type};`;
       });
 

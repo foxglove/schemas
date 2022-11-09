@@ -22,7 +22,7 @@ table CameraCalibration {
   distortion_model:string;
 
   /// Distortion parameters
-  D:[double];
+  d:[double];
 
   /// Intrinsic camera matrix (3x3 row-major matrix)
   /// 
@@ -36,13 +36,13 @@ table CameraCalibration {
   ///     [ 0  0  1]
   /// ```
   /// length 9
-  K:[double];
+  k:[double];
 
   /// Rectification matrix (3x3 row-major matrix)
   /// 
   /// A rotation matrix aligning the camera coordinate system to the ideal stereo image plane so that epipolar lines in both stereo images are parallel.
   /// length 9
-  R:[double];
+  r:[double];
 
   /// Projection/camera matrix (3x4 row-major matrix)
   /// 
@@ -70,7 +70,7 @@ table CameraCalibration {
   /// 
   /// This holds for both images of a stereo pair.
   /// length 12
-  P:[double];
+  p:[double];
 }
 
 root_type CameraCalibration;

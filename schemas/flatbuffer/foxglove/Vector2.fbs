@@ -5,10 +5,10 @@ namespace foxglove;
 /// A vector in 2D space that represents a direction only
 table Vector2 {
   /// x coordinate length
-  x:double;
+  x:double = 1.0;
 
   /// y coordinate length
-  y:double;
+  y:double = 1.0;
 }
 
 root_type Vector2;

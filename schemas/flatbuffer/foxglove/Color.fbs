@@ -5,16 +5,16 @@ namespace foxglove;
 /// A color in RGBA format
 table Color {
   /// Red value between 0 and 1
-  r:double;
+  r:double = 1.0;
 
   /// Green value between 0 and 1
-  g:double;
+  g:double = 1.0;
 
   /// Blue value between 0 and 1
-  b:double;
+  b:double = 1.0;
 
   /// Alpha value between 0 and 1
-  a:double;
+  a:double = 1.0;
 }
 
 root_type Color;

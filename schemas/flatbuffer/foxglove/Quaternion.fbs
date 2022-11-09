@@ -5,16 +5,16 @@ namespace foxglove;
 /// A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space
 table Quaternion {
   /// x value
-  x:double;
+  x:double = 1.0;
 
   /// y value
-  y:double;
+  y:double = 1.0;
 
   /// z value
-  z:double;
+  z:double = 1.0;
 
   /// w value
-  w:double;
+  w:double = 1.0;
 }
 
 root_type Quaternion;

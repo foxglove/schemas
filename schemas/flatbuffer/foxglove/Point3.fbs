@@ -5,13 +5,13 @@ namespace foxglove;
 /// A point representing a position in 3D space
 table Point3 {
   /// x coordinate position
-  x:double;
+  x:double = 1.0;
 
   /// y coordinate position
-  y:double;
+  y:double = 1.0;
 
   /// z coordinate position
-  z:double;
+  z:double = 1.0;
 }
 
 root_type Point3;

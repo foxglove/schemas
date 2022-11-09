@@ -1,4 +1,4 @@
-import { FoxglovePrimitive, FoxgloveSchema } from "./types";
+import { FoxgloveMessageField, FoxglovePrimitive, FoxgloveSchema } from "./types";
 
 // Flatbuffer only supports nested vectors via table
 export const BYTE_VECTOR_FB = `table ByteVectorForNesting {
@@ -20,6 +20,16 @@ export const DURATION_FB = `struct Duration {
   nsec:int;
 }
 `;
+
+// fields that would benefit from having a default of 1
+const defaultOneNumberFields = new Set(["x", "y", "z", "r", "g", "b", "a", "w"]);
+function isDefaultOneField(field: FoxgloveMessageField): boolean {
+  return (
+    field.type.type === "primitive" &&
+    field.type.name === "float64" &&
+    defaultOneNumberFields.has(field.name)
+  );
+}
 
 function primitiveToFlatbuffer(type: Exclude<FoxglovePrimitive, "time" | "duration">) {
   switch (type) {
@@ -94,8 +104,13 @@ export function generateFlatbuffer(schema: FoxgloveSchema): string {
           .trim()
           .split("\n")
           .map((line) => `  /// ${line}\n`)
+          .join("")}${
           // can't have inline comments, so the lengthComment needs to be above
-          .join("")}${lengthComment ?? ""}  ${field.name}:${isArray ? `[${type}]` : type};`;
+          lengthComment ?? ""
+          // convert field.name to lowercase for flatbuffer compilation compliance
+        }  ${field.name.toLowerCase()}:${isArray ? `[${type}]` : type}${
+          isDefaultOneField(field) ? ` = 1.0` : ""
+        };`;
       });
 
       definition = `/// ${schema.description}\ntable ${schema.name} {\n${fields.join(

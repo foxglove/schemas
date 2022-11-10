@@ -8,9 +8,9 @@ import { generateRosMsg, generateRosMsgDefinition } from "../internal";
 import {
   BYTE_VECTOR_FB,
   DURATION_FB,
-  generateFlatbuffer,
+  generateFlatbuffers,
   TIME_FB,
-} from "../internal/generateFlatbuffer";
+} from "../internal/generateFlatbuffers";
 import { generateJsonSchema } from "../internal/generateJsonSchema";
 import { generateMarkdown } from "../internal/generateMarkdown";
 import { generateProto } from "../internal/generateProto";
@@ -86,13 +86,13 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       await fs.writeFile(
         path.join(outDir, "flatbuffers", `${schema.name}.fbs`),
-        generateFlatbuffer(schema),
+        generateFlatbuffers(schema),
       );
     }
     for (const schema of Object.values(foxgloveEnumSchemas)) {
       await fs.writeFile(
         path.join(outDir, "flatbuffers", `${schema.name}.fbs`),
-        generateFlatbuffer(schema),
+        generateFlatbuffers(schema),
       );
     }
   });

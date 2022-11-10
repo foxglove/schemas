@@ -1,6 +1,6 @@
 import { FoxglovePrimitive, FoxgloveSchema } from "./types";
 
-// Flatbuffer only supports nested vectors via table
+// Flatbuffers only supports nested vectors via table
 export const BYTE_VECTOR_FB = `
 namespace foxglove;
 
@@ -35,7 +35,7 @@ struct Duration {
 }
 `;
 
-function primitiveToFlatbuffer(type: Exclude<FoxglovePrimitive, "time" | "duration">) {
+function primitiveToFlatbuffers(type: Exclude<FoxglovePrimitive, "time" | "duration">) {
   switch (type) {
     case "uint32":
       return "uint32";
@@ -50,7 +50,7 @@ function primitiveToFlatbuffer(type: Exclude<FoxglovePrimitive, "time" | "durati
   }
 }
 
-export function generateFlatbuffer(schema: FoxgloveSchema): string {
+export function generateFlatbuffers(schema: FoxgloveSchema): string {
   let definition;
   const imports = new Set<string>();
   switch (schema.type) {
@@ -94,7 +94,7 @@ export function generateFlatbuffer(schema: FoxgloveSchema): string {
               type = "ByteVector";
               imports.add("ByteVector");
             } else {
-              type = primitiveToFlatbuffer(field.type.name);
+              type = primitiveToFlatbuffers(field.type.name);
             }
             break;
         }

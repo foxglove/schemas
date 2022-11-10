@@ -1,7 +1,8 @@
 import { FoxglovePrimitive, FoxgloveSchema } from "./types";
 
 // Flatbuffer only supports nested vectors via table
-export const BYTE_VECTOR_FB = `namespace foxglove;
+export const BYTE_VECTOR_FB = `
+namespace foxglove;
 
 /// Used for nesting byte vectors
 table ByteVector {
@@ -11,7 +12,9 @@ root_type ByteVector;
 `;
 
 // Same as protobuf wellknown types
-export const TIME_FB = `namespace foxglove;
+export const TIME_FB = `
+namespace foxglove;
+
 struct Time {
   /// 	Represents seconds of UTC time since Unix epoch 1970-01-01T00:00:00Z
   sec:uint64;
@@ -20,7 +23,9 @@ struct Time {
 }
 `;
 
-export const DURATION_FB = `namespace foxglove;
+export const DURATION_FB = `
+namespace foxglove;
+
 struct Duration {
   /// Signed seconds of the span of time. Must be from -315,576,000,000 to +315,576,000,000 inclusive.
   sec:int64;

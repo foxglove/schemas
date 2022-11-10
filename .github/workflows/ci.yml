@@ -38,7 +38,7 @@ jobs:
 
       - name: Validate Flatbuffer definitions
         run: |
-          curl -LO https://github.com/google/flatbuffers/releases/download/v22.10.26/Linux.flatc.binary.clang++-12.zip && 
+          curl -LO https://github.com/google/flatbuffers/releases/download/v22.10.26/Linux.flatc.binary.clang++-12.zip 
           echo "0821af82a3a736b0ba9235c02219df24d1f042dd  Linux.flatc.binary.clang++-12.zip" | shasum -a 1 -c
           unzip Linux.flatc.binary.clang++-12.zip
           ./flatc --ts -o /dev/null schemas/flatbuffers/*.fbs

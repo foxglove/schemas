@@ -44,6 +44,7 @@ export const exampleMessage: FoxgloveMessageSchema = {
       name: `field_${name}`,
       description: `${name} field`,
       type: { type: "primitive", name },
+      defaultValue: name === "boolean" ? "true" : "1",
     })),
     ...allPrimitives.map((name): FoxgloveMessageSchema["fields"][0] => ({
       name: `field_${name}_array`,

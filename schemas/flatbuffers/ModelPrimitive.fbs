@@ -27,7 +27,7 @@ table ModelPrimitive {
   media_type:string;
 
   /// Embedded model. One of `url` or `data` should be provided. If `data` is provided, `media_type` must be set to indicate the type of the data.
-  data:[byte];
+  data:[uint8];
 }
 
 root_type ModelPrimitive;

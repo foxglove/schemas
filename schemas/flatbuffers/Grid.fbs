@@ -19,22 +19,22 @@ table Grid {
   pose:foxglove.Pose;
 
   /// Number of grid columns
-  column_count:uint;
+  column_count:uint32;
 
   /// Size of single grid cell along x and y axes, relative to `pose`
   cell_size:foxglove.Vector2;
 
   /// Number of bytes between rows in `data`
-  row_stride:uint;
+  row_stride:uint32;
 
   /// Number of bytes between cells within a row in `data`
-  cell_stride:uint;
+  cell_stride:uint32;
 
   /// Fields in `data`
   fields:[foxglove.PackedElementField];
 
   /// Grid cell data, interpreted using `fields`, in row-major (y-major) order
-  data:[byte];
+  data:[uint8];
 }
 
 root_type Grid;

@@ -3,7 +3,7 @@
 namespace foxglove;
 
 /// Type of position covariance
-enum PositionCovarianceType : byte {
+enum PositionCovarianceType : ubyte {
   UNKNOWN = 0,
 
   APPROXIMATED = 1,

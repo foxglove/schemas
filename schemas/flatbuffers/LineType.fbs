@@ -3,7 +3,7 @@
 namespace foxglove;
 
 /// An enumeration indicating how input points should be interpreted to create lines
-enum LineType : byte {
+enum LineType : ubyte {
   /// 0-1, 1-2, ..., (n-1)-n
   LINE_STRIP = 0,
 

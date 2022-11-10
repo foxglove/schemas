@@ -3,7 +3,7 @@
 namespace foxglove;
 
 /// Type of points annotation
-enum PointsAnnotationType : byte {
+enum PointsAnnotationType : ubyte {
   UNKNOWN = 0,
 
   POINTS = 1,

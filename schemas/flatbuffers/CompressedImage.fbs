@@ -4,28 +4,19 @@ include "Time.fbs";
 
 namespace foxglove;
 
-/// A raw image
-table RawImage {
+/// A compressed image
+table CompressedImage {
   /// Timestamp of image
   timestamp:Time;
 
   /// Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
   frame_id:string;
 
-  /// Image width
-  width:uint;
+  /// Compressed image data
+  data:[uint8];
 
-  /// Image height
-  height:uint;
-
-  /// Encoding of the raw image data
-  encoding:string;
-
-  /// Byte length of a single row
-  step:uint;
-
-  /// Raw image data
-  data:[byte];
+  /// Image format
+  format:string;
 }
 
-root_type RawImage;
+root_type CompressedImage;

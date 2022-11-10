@@ -30,6 +30,7 @@ export type FoxgloveMessageField = {
   required?: true;
   description: string;
   protobufFieldNumber?: number;
+  defaultValue?: string;
 };
 
 export type FoxgloveMessageSchema = {

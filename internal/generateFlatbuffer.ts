@@ -1,42 +1,41 @@
-import { FoxgloveMessageField, FoxglovePrimitive, FoxgloveSchema } from "./types";
+import { FoxglovePrimitive, FoxgloveSchema } from "./types";
 
 // Flatbuffer only supports nested vectors via table
-export const BYTE_VECTOR_FB = `table ByteVectorForNesting {
-  data:[byte];
-}
+export const BYTE_VECTOR_FB = `namespace foxglove;
 
-root_type ByteVectorForNesting;
+/// Used for nesting byte vectors
+table ByteVector {
+  data:[uint8];
+}
+root_type ByteVector;
 `;
 
 // Same as protobuf wellknown types
-export const TIME_FB = `struct Time {
-  sec:long;
-  nsec:int;
+export const TIME_FB = `namespace foxglove;
+struct Time {
+  /// 	Represents seconds of UTC time since Unix epoch 1970-01-01T00:00:00Z
+  sec:uint64;
+  /// Nano-second fractions from 0 to 999,999,999 inclusive
+  nsec:uint32;
 }
 `;
 
-export const DURATION_FB = `struct Duration {
-  sec:long;
-  nsec:int;
+export const DURATION_FB = `namespace foxglove;
+struct Duration {
+  /// Signed seconds of the span of time. Must be from -315,576,000,000 to +315,576,000,000 inclusive.
+  sec:int64;
+  /// if sec === 0 : -999,999,999 <= nsec <= +999,999,999 
+  /// otherwise sign of sec must match sign of nsec or be 0 and abs(nsec) <= 999,999,999
+  nsec:int32;
 }
 `;
-
-// fields that would benefit from having a default of 1
-const defaultOneNumberFields = new Set(["x", "y", "z", "r", "g", "b", "a", "w"]);
-function isDefaultOneField(field: FoxgloveMessageField): boolean {
-  return (
-    field.type.type === "primitive" &&
-    field.type.name === "float64" &&
-    defaultOneNumberFields.has(field.name)
-  );
-}
 
 function primitiveToFlatbuffer(type: Exclude<FoxglovePrimitive, "time" | "duration">) {
   switch (type) {
     case "uint32":
-      return "uint";
+      return "uint32";
     case "bytes":
-      return "[byte]";
+      return "[uint8]";
     case "string":
       return "string";
     case "boolean":
@@ -60,7 +59,7 @@ export function generateFlatbuffer(schema: FoxgloveSchema): string {
       });
 
       // `///` comments required to show up in compiled flatbuffer schemas
-      definition = `/// ${schema.description}\nenum ${schema.name} : byte {\n  ${fields.join(
+      definition = `/// ${schema.description}\nenum ${schema.name} : ubyte {\n  ${fields.join(
         "\n\n  ",
       )}\n}\n`;
       break;
@@ -87,8 +86,8 @@ export function generateFlatbuffer(schema: FoxgloveSchema): string {
               type = "Duration";
               imports.add(`Duration`);
             } else if (field.type.name === "bytes" && isArray) {
-              type = "ByteVectorForNesting";
-              imports.add("ByteVectorForNesting");
+              type = "ByteVector";
+              imports.add("ByteVector");
             } else {
               type = primitiveToFlatbuffer(field.type.name);
             }
@@ -100,6 +99,11 @@ export function generateFlatbuffer(schema: FoxgloveSchema): string {
           // can't specify length of vector outside of struct, all of these are tables
           lengthComment = `  /// length ${field.array}\n`;
         }
+        let defaultValue;
+        if (field.defaultValue != undefined) {
+          defaultValue = field.defaultValue;
+        }
+
         return `${field.description
           .trim()
           .split("\n")
@@ -109,7 +113,7 @@ export function generateFlatbuffer(schema: FoxgloveSchema): string {
           lengthComment ?? ""
           // convert field.name to lowercase for flatbuffer compilation compliance
         }  ${field.name.toLowerCase()}:${isArray ? `[${type}]` : type}${
-          isDefaultOneField(field) ? ` = 1.0` : ""
+          defaultValue ? ` = ${defaultValue}` : ""
         };`;
       });
 

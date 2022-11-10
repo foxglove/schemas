@@ -23,7 +23,7 @@ table Log {
   file:string;
 
   /// Line number in the file
-  line:uint;
+  line:uint32;
 }
 
 root_type Log;

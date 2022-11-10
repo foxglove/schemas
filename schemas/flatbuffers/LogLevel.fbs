@@ -3,7 +3,7 @@
 namespace foxglove;
 
 /// Log level
-enum LogLevel : byte {
+enum LogLevel : ubyte {
   UNKNOWN = 0,
 
   DEBUG = 1,

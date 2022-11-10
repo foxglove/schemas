@@ -18,13 +18,13 @@ table PointCloud {
   pose:foxglove.Pose;
 
   /// Number of bytes between points in the `data`
-  point_stride:uint;
+  point_stride:uint32;
 
   /// Fields in the `data`
   fields:[foxglove.PackedElementField];
 
   /// Point data, interpreted using `fields`
-  data:[byte];
+  data:[uint8];
 }
 
 root_type PointCloud;

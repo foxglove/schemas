@@ -3,7 +3,7 @@
 namespace foxglove;
 
 /// Numeric type
-enum NumericType : byte {
+enum NumericType : ubyte {
   UNKNOWN = 0,
 
   UINT8 = 1,

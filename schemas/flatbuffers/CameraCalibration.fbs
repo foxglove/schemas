@@ -13,10 +13,10 @@ table CameraCalibration {
   frame_id:string;
 
   /// Image width
-  width:uint;
+  width:uint32;
 
   /// Image height
-  height:uint;
+  height:uint32;
 
   /// Name of distortion model
   distortion_model:string;

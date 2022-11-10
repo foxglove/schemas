@@ -1,4 +1,0 @@
-struct Duration {
-  sec:long;
-  nsec:int;
-}

@@ -13,6 +13,10 @@ export type CompressedImage = {
   /** Compressed image data */
   data: Uint8Array;
 
-  /** Image format */
+  /**
+   * Image format
+   * 
+   * Values supported by Foxglove Studio: `webp`, `jpeg`, `png`
+   */
   format: string;
 };

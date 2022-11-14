@@ -16,6 +16,8 @@ uint32 width
 uint32 height
 
 # Name of distortion model
+# 
+# Values supported by Foxglove Studio: `plumb_bob` and `rational_polynomial`
 string distortion_model
 
 # Distortion parameters

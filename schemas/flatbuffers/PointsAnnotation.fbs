@@ -2,11 +2,22 @@
 
 include "Color.fbs";
 include "Point2.fbs";
-include "PointsAnnotationType.fbs";
 include "Time.fbs";
 
 namespace foxglove;
 
+/// Type of points annotation
+enum PointsAnnotationType : ubyte {
+  UNKNOWN = 0,
+
+  POINTS = 1,
+
+  LINE_LOOP = 2,
+
+  LINE_STRIP = 3,
+
+  LINE_LIST = 4,
+}
 /// An array of points on a 2D image
 table PointsAnnotation {
   /// Timestamp of annotation

@@ -1,4 +1,4 @@
-import { FoxglovePrimitive, FoxgloveSchema } from "./types";
+import { FoxgloveEnumSchema, FoxglovePrimitive, FoxgloveSchema } from "./types";
 
 // Flatbuffers only supports nested vectors via table
 export const BYTE_VECTOR_FB = `
@@ -50,7 +50,27 @@ function primitiveToFlatbuffers(type: Exclude<FoxglovePrimitive, "time" | "durat
   }
 }
 
-export function generateFlatbuffers(schema: FoxgloveSchema): string {
+export function generateFlatbuffers(
+  schema: FoxgloveSchema,
+  nestedEnums: FoxgloveEnumSchema[],
+): string {
+  const enumDefinitions: string[] = [];
+  for (const enumSchema of nestedEnums) {
+    const fields = enumSchema.values.map(({ name, value, description }) => {
+      if (description != undefined) {
+        return `/// ${description}\n  ${name} = ${value},`;
+      } else {
+        return `${name} = ${value},`;
+      }
+    });
+    enumDefinitions.push(
+      // `///` comments required to show up in compiled flatbuffer schemas
+      `/// ${enumSchema.description}\nenum ${enumSchema.name} : ubyte {\n  ${fields.join(
+        "\n\n  ",
+      )}\n}\n`,
+    );
+  }
+
   let definition;
   const imports = new Set<string>();
   switch (schema.type) {
@@ -77,7 +97,6 @@ export function generateFlatbuffers(schema: FoxgloveSchema): string {
         switch (field.type.type) {
           case "enum":
             type = field.type.enum.name;
-            imports.add(field.type.enum.name);
             break;
           case "nested":
             type = `foxglove.${field.type.schema.name}`;
@@ -122,9 +141,9 @@ export function generateFlatbuffers(schema: FoxgloveSchema): string {
         };`;
       });
 
-      definition = `/// ${schema.description}\ntable ${schema.name} {\n${fields.join(
-        "\n\n",
-      )}\n}\n\nroot_type ${schema.name};`;
+      definition = `${enumDefinitions.join("\n\n")}/// ${schema.description}\ntable ${
+        schema.name
+      } {\n${fields.join("\n\n")}\n}\n\nroot_type ${schema.name};`;
       break;
     }
   }

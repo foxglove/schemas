@@ -83,16 +83,15 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     await fs.writeFile(path.join(outDir, "flatbuffers", "ByteVector.fbs"), BYTE_VECTOR_FB);
     await fs.writeFile(path.join(outDir, "flatbuffers", "Time.fbs"), TIME_FB);
     await fs.writeFile(path.join(outDir, "flatbuffers", "Duration.fbs"), DURATION_FB);
+
     for (const schema of Object.values(foxgloveMessageSchemas)) {
-      await fs.writeFile(
-        path.join(outDir, "flatbuffers", `${schema.name}.fbs`),
-        generateFlatbuffers(schema),
+      // want enums with their corresponding parent tables for usage
+      const enums = Object.values(foxgloveEnumSchemas).filter(
+        (enumSchema) => enumSchema.protobufParentMessageName === schema.name,
       );
-    }
-    for (const schema of Object.values(foxgloveEnumSchemas)) {
       await fs.writeFile(
         path.join(outDir, "flatbuffers", `${schema.name}.fbs`),
-        generateFlatbuffers(schema),
+        generateFlatbuffers(schema, enums),
       );
     }
   });

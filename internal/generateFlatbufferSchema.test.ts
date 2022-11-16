@@ -1,4 +1,4 @@
-import { generateFlatbuffers } from "./generateFlatbuffers";
+import { generateFlatbuffers } from "./generateFlatbufferSchema";
 import { exampleEnum, exampleMessage } from "./testFixtures";
 
 describe("generateFlatBuffer", () => {

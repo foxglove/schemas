@@ -10,7 +10,7 @@ import {
   DURATION_FB,
   generateFlatbuffers,
   TIME_FB,
-} from "../internal/generateFlatbuffers";
+} from "../internal/generateFlatbufferSchema";
 import { generateJsonSchema } from "../internal/generateJsonSchema";
 import { generateMarkdown } from "../internal/generateMarkdown";
 import { generateProto } from "../internal/generateProto";
@@ -79,10 +79,10 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
   });
 
   await logProgress("Generating FlatBuffer definitions", async () => {
-    await fs.mkdir(path.join(outDir, "flatbuffers"), { recursive: true });
-    await fs.writeFile(path.join(outDir, "flatbuffers", "ByteVector.fbs"), BYTE_VECTOR_FB);
-    await fs.writeFile(path.join(outDir, "flatbuffers", "Time.fbs"), TIME_FB);
-    await fs.writeFile(path.join(outDir, "flatbuffers", "Duration.fbs"), DURATION_FB);
+    await fs.mkdir(path.join(outDir, "flatbuffer"), { recursive: true });
+    await fs.writeFile(path.join(outDir, "flatbuffer", "ByteVector.fbs"), BYTE_VECTOR_FB);
+    await fs.writeFile(path.join(outDir, "flatbuffer", "Time.fbs"), TIME_FB);
+    await fs.writeFile(path.join(outDir, "flatbuffer", "Duration.fbs"), DURATION_FB);
 
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       // want enums with their corresponding parent tables for usage
@@ -90,7 +90,7 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
         (enumSchema) => enumSchema.protobufParentMessageName === schema.name,
       );
       await fs.writeFile(
-        path.join(outDir, "flatbuffers", `${schema.name}.fbs`),
+        path.join(outDir, "flatbuffer", `${schema.name}.fbs`),
         generateFlatbuffers(schema, enums),
       );
     }

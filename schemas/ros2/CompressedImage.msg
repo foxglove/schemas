@@ -14,5 +14,5 @@ uint8[] data
 
 # Image format
 # 
-# Values supported by Foxglove Studio: `webp`, `jpeg`, `png`
+# Supported values: `webp`, `jpeg`, `png`
 string format

@@ -19,7 +19,7 @@ export type CameraCalibration = {
   /**
    * Name of distortion model
    * 
-   * Values supported by Foxglove Studio: `plumb_bob` and `rational_polynomial`
+   * Supported values: `plumb_bob` and `rational_polynomial`
    */
   distortion_model: string;
 

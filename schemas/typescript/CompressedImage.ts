@@ -16,7 +16,7 @@ export type CompressedImage = {
   /**
    * Image format
    * 
-   * Values supported by Foxglove Studio: `webp`, `jpeg`, `png`
+   * Supported values: `webp`, `jpeg`, `png`
    */
   format: string;
 };

@@ -19,6 +19,6 @@ message CompressedImage {
 
   // Image format
   // 
-  // Values supported by Foxglove Studio: `webp`, `jpeg`, `png`
+  // Supported values: `webp`, `jpeg`, `png`
   string format = 3;
 }

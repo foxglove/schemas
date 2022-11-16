@@ -18,5 +18,7 @@ message CompressedImage {
   bytes data = 2;
 
   // Image format
+  // 
+  // Supported values: `webp`, `jpeg`, `png`
   string format = 3;
 }

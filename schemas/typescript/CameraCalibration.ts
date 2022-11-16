@@ -16,7 +16,11 @@ export type CameraCalibration = {
   /** Image height */
   height: number;
 
-  /** Name of distortion model */
+  /**
+   * Name of distortion model
+   * 
+   * Supported values: `plumb_bob` and `rational_polynomial`
+   */
   distortion_model: string;
 
   /** Distortion parameters */

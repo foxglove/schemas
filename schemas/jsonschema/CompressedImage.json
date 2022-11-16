@@ -31,7 +31,7 @@
     },
     "format": {
       "type": "string",
-      "description": "Image format"
+      "description": "Image format\n\nSupported values: `webp`, `jpeg`, `png`"
     }
   }
 }

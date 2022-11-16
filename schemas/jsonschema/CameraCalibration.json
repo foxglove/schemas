@@ -36,7 +36,7 @@
     },
     "distortion_model": {
       "type": "string",
-      "description": "Name of distortion model"
+      "description": "Name of distortion model\n\nSupported values: `plumb_bob` and `rational_polynomial`"
     },
     "D": {
       "type": "array",

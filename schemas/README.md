@@ -296,6 +296,8 @@ string
 
 Name of distortion model
 
+Supported values: `plumb_bob` and `rational_polynomial`
+
 </td>
 </tr>
 <tr>
@@ -603,6 +605,8 @@ string
 <td>
 
 Image format
+
+Supported values: `webp`, `jpeg`, `png`
 
 </td>
 </tr>
@@ -2143,6 +2147,8 @@ string
 <td>
 
 Encoding of the raw image data
+
+Supported values: `8UC1`, `8UC3`, `16UC1`, `32FC1`, `bayer_bggr8`, `bayer_gbrg8`, `bayer_grbg8`, `bayer_rggb8`, `bgr8`, `bgra8`, `mono8`, `mono16`, `rgb8`, `rgba8`, `yuv422`
 
 </td>
 </tr>

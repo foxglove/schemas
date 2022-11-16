@@ -13,4 +13,6 @@ string frame_id
 uint8[] data
 
 # Image format
+# 
+# Supported values: `webp`, `jpeg`, `png`
 string format

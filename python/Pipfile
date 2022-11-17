@@ -11,6 +11,7 @@ foxglove-schemas-protobuf = {editable = true, path = "./foxglove-schemas-protobu
 black = "*"
 build = "*"
 flake8 = "*"
+mypy-protobuf = "*"
 pipenv = "*"
 pytest = "*"
 pyright = "*"

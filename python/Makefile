@@ -5,7 +5,7 @@ pipenv:
 .PHONY: generate-protobuf
 generate-protobuf:
 	rm -rf foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2*
-	protoc \
+	pipenv run protoc \
 		--python_out=foxglove-schemas-protobuf/foxglove_schemas_protobuf \
 		--mypy_out=foxglove-schemas-protobuf/foxglove_schemas_protobuf \
 		--proto_path ../schemas/proto \

@@ -8,7 +8,7 @@ protobuf = "*"
 foxglove-schemas-protobuf = {editable = true, path = "./foxglove-schemas-protobuf"}
 
 [dev-packages]
-black = "*"
+black = ">=22.1.0"
 build = "*"
 flake8 = "*"
 pipenv = "*"

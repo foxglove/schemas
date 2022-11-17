@@ -15,7 +15,7 @@ pipenv install foxglove-schemas-protobuf
 Import types from the `foxglove` module as follows:
 
 ```py
-from foxglove.CompressedImage_pb2 import CompressedImage
+from foxglove_schemas_protobuf.CompressedImage_pb2 import CompressedImage
 ```
 
 ## Stay in touch

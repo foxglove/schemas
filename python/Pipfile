@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+protobuf = "*"
+foxglove-schemas-protobuf = {editable = true, path = "./foxglove-schemas-protobuf"}
+
+[dev-packages]
+build = "*"
+mypy-protobuf = "*"
+pipenv = "*"
+pytest = "*"
+
+[requires]
+python_version = "3"

@@ -25,7 +25,7 @@ test: pipenv generate-protobuf
 	pipenv run python -m pytest foxglove-schemas-protobuf
 
 .PHONY: lint
-lint: pipenv
+lint: pipenv generate-protobuf
 	pipenv run python -m flake8
 	pipenv run black --check --diff --color foxglove-schemas-protobuf
 	pipenv run black --check --diff --color foxglove-schemas-protobuf

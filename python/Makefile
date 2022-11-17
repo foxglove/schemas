@@ -2,6 +2,12 @@
 pipenv:
 	SETUPTOOLS_ENABLE_FEATURES="legacy-editable" pipenv install --dev --deploy
 
+ifeq ($(shell uname),Darwin)
+SED_ARGS = -i ''
+else
+SED_ARGS = -i
+endif
+
 .PHONY: generate-protobuf
 generate-protobuf:
 	rm -rf foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2*
@@ -12,9 +18,9 @@ generate-protobuf:
 		../schemas/proto/foxglove/*.proto
 	mv foxglove-schemas-protobuf/foxglove_schemas_protobuf/foxglove/* foxglove-schemas-protobuf/foxglove_schemas_protobuf
 	rmdir foxglove-schemas-protobuf/foxglove_schemas_protobuf/foxglove
-	sed -E -i '' 's/from foxglove import/from . import/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.py
-	sed -E -i '' 's/import foxglove\.(.+)$$/from . import \1 as foxglove_\1/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.pyi
-	sed -E -i '' 's/foxglove\./foxglove_/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.pyi
+	sed -E $(SED_ARGS) 's/from foxglove import/from . import/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.py
+	sed -E $(SED_ARGS) 's/import foxglove\.(.+)$$/from . import \1 as foxglove_\1/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.pyi
+	sed -E $(SED_ARGS) 's/foxglove\./foxglove_/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.pyi
 
 .PHONY: build
 build: pipenv generate-protobuf

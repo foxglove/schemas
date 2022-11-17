@@ -8,14 +8,10 @@ protobuf = "*"
 foxglove-schemas-protobuf = {editable = true, path = "./foxglove-schemas-protobuf"}
 
 [dev-packages]
-black = "*"
 build = "*"
-flake8 = "*"
 mypy-protobuf = "*"
 pipenv = "*"
 pytest = "*"
-pyright = "*"
-typing_extensions = "*"
 
 [requires]
 python_version = "3"

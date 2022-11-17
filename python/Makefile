@@ -30,13 +30,6 @@ build: pipenv generate-protobuf
 test: pipenv generate-protobuf
 	pipenv run python -m pytest foxglove-schemas-protobuf
 
-.PHONY: lint
-lint: pipenv generate-protobuf
-	pipenv run python -m flake8
-	pipenv run black --check --diff --color foxglove-schemas-protobuf
-	pipenv run black --check --diff --color foxglove-schemas-protobuf
-	cd foxglove-schemas-protobuf && pipenv run pyright
-
 .PHONY: clean
 clean:
 	rm -rf dist

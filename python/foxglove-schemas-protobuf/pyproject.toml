@@ -5,12 +5,6 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
-[tool.black]
-exclude = ".*_pb2.*"
-
-[tool.pyright]
-exclude = ["**/*_pb2*"]
-
 [tool.pytest.ini_options]
 addopts = "-vv --color=yes"
 log_cli = true

@@ -16,6 +16,8 @@ table CompressedImage {
   data:[uint8];
 
   /// Image format
+  /// 
+  /// Supported values: `webp`, `jpeg`, `png`
   format:string;
 }
 

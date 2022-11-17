@@ -1,0 +1,40 @@
+.PHONY: pipenv
+pipenv:
+	SETUPTOOLS_ENABLE_FEATURES="legacy-editable" pipenv install --dev --deploy
+
+.PHONY: generate-protobuf
+generate-protobuf:
+	rm -rf foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2*
+	protoc \
+		--python_out=foxglove-schemas-protobuf/foxglove_schemas_protobuf \
+		--mypy_out=foxglove-schemas-protobuf/foxglove_schemas_protobuf \
+		--proto_path ../schemas/proto \
+		../schemas/proto/foxglove/*.proto
+	mv foxglove-schemas-protobuf/foxglove_schemas_protobuf/foxglove/* foxglove-schemas-protobuf/foxglove_schemas_protobuf
+	rmdir foxglove-schemas-protobuf/foxglove_schemas_protobuf/foxglove
+	sed -E -i '' 's/from foxglove import/from . import/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.py
+	sed -E -i '' 's/import foxglove\.(.+)$$/from . import \1 as foxglove_\1/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.pyi
+	sed -E -i '' 's/foxglove\./foxglove_/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.pyi
+
+.PHONY: build
+build: pipenv generate-protobuf
+	pipenv run python -m build foxglove-schemas-protobuf
+
+.PHONY: test
+test: pipenv generate-protobuf
+	pipenv run python -m pytest foxglove-schemas-protobuf
+
+.PHONY: lint
+lint: pipenv
+	pipenv run python -m flake8
+	pipenv run black --check --diff --color foxglove-schemas-protobuf
+	pipenv run black --check --diff --color foxglove-schemas-protobuf
+	cd foxglove-schemas-protobuf && pipenv run pyright
+
+.PHONY: clean
+clean:
+	rm -rf dist
+	find . -name "build" -type d -exec rm -rf {} +
+	find . -name "dist" -type d -exec rm -rf {} +
+	find . -name "*.egg-info" -type d -exec rm -rf {} +
+	find . -name "*_pb2*" -delete

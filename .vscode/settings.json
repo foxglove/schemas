@@ -16,5 +16,14 @@
   "eslint.options": {
     "reportUnusedDisableDirectives": "error"
   },
-  "jest.jestCommandLine": "yarn test"
+  "jest.jestCommandLine": "yarn test",
+
+  "python.formatting.provider": "black",
+  "python.analysis.typeCheckingMode": "strict",
+  "python.linting.flake8Enabled": true,
+  "python.linting.enabled": true,
+  "python.linting.flake8Args": ["--config", "python/.flake8"],
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  }
 }

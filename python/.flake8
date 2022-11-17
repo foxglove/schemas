@@ -1,0 +1,7 @@
+[flake8]
+max-line-length = 100
+exclude =
+  **/build/**,
+  **/*pb2*,
+# E203 is not PEP8 compliant, W503/Q000 conflict with black formatting
+extend-ignore = E203 W503 Q000

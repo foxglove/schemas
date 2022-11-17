@@ -160,7 +160,7 @@ export const CameraCalibration = {
       },
       "minItems": 9,
       "maxItems": 9,
-      "description": "Rectification matrix (3x3 row-major matrix)\n\nA rotation matrix aligning the camera coordinate system to the ideal stereo image plane so that epipolar lines in both stereo images are parallel."
+      "description": "Rectification matrix (stereo cameras only, 3x3 row-major matrix)\n\nA rotation matrix aligning the camera coordinate system to the ideal stereo image plane so that epipolar lines in both stereo images are parallel."
     },
     "P": {
       "type": "array",

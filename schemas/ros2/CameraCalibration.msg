@@ -36,7 +36,7 @@ float64[] d
 # ```
 float64[9] k
 
-# Rectification matrix (3x3 row-major matrix)
+# Rectification matrix (stereo cameras only, 3x3 row-major matrix)
 # 
 # A rotation matrix aligning the camera coordinate system to the ideal stereo image plane so that epipolar lines in both stereo images are parallel.
 float64[9] r

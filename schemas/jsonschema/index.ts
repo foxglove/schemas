@@ -135,7 +135,7 @@ export const CameraCalibration = {
     },
     "distortion_model": {
       "type": "string",
-      "description": "Name of distortion model"
+      "description": "Name of distortion model\n\nSupported values: `plumb_bob` and `rational_polynomial`"
     },
     "D": {
       "type": "array",
@@ -160,7 +160,7 @@ export const CameraCalibration = {
       },
       "minItems": 9,
       "maxItems": 9,
-      "description": "Rectification matrix (3x3 row-major matrix)\n\nA rotation matrix aligning the camera coordinate system to the ideal stereo image plane so that epipolar lines in both stereo images are parallel."
+      "description": "Rectification matrix (stereo cameras only, 3x3 row-major matrix)\n\nA rotation matrix aligning the camera coordinate system to the ideal stereo image plane so that epipolar lines in both stereo images are parallel."
     },
     "P": {
       "type": "array",
@@ -326,7 +326,7 @@ export const CompressedImage = {
     },
     "format": {
       "type": "string",
-      "description": "Image format"
+      "description": "Image format\n\nSupported values: `webp`, `jpeg`, `png`"
     }
   }
 };
@@ -4380,7 +4380,7 @@ export const RawImage = {
     },
     "encoding": {
       "type": "string",
-      "description": "Encoding of the raw image data"
+      "description": "Encoding of the raw image data\n\nSupported values: `8UC1`, `8UC3`, `16UC1`, `32FC1`, `bayer_bggr8`, `bayer_gbrg8`, `bayer_grbg8`, `bayer_rggb8`, `bgr8`, `bgra8`, `mono8`, `mono16`, `rgb8`, `rgba8`, `yuv422`"
     },
     "step": {
       "type": "integer",

@@ -16,7 +16,11 @@ export type CameraCalibration = {
   /** Image height */
   height: number;
 
-  /** Name of distortion model */
+  /**
+   * Name of distortion model
+   * 
+   * Supported values: `plumb_bob` and `rational_polynomial`
+   */
   distortion_model: string;
 
   /** Distortion parameters */
@@ -38,7 +42,7 @@ export type CameraCalibration = {
   K: [number, number, number, number, number, number, number, number, number];
 
   /**
-   * Rectification matrix (3x3 row-major matrix)
+   * Rectification matrix (stereo cameras only, 3x3 row-major matrix)
    * 
    * A rotation matrix aligning the camera coordinate system to the ideal stereo image plane so that epipolar lines in both stereo images are parallel.
    */

@@ -2,31 +2,11 @@
 
 Message schemas supported by [Foxglove Studio](https://studio.foxglove.dev)
 
-<table>
-<tr><td>
-
-`@foxglove/schemas`
-
-</td>
-<td>
-
-[![npm version](https://img.shields.io/npm/v/@foxglove/schemas)](https://www.npmjs.com/package/@foxglove/schemas)
-
-</td></tr>
-<tr><td>
-
-`foxglove_msgs`
-
-</td>
-<td>
-
-<!-- Not yet released in Melodic -->
-<!-- [![ROS Melodic version](https://img.shields.io/ros/v/melodic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#melodic)   -->
-
-[![ROS Noetic version](https://img.shields.io/ros/v/noetic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#noetic) [![ROS Foxy version](https://img.shields.io/ros/v/foxy/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#foxy) [![ROS Galactic version](https://img.shields.io/ros/v/galactic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#galactic) [![ROS Humble version](https://img.shields.io/ros/v/humble/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#humble) [![ROS Rolling version](https://img.shields.io/ros/v/rolling/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#rolling)
-
-</td></tr>
-</table>
+| Language/Framework    | Package name                | Version                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| --------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| JavaScript/TypeScript | `@foxglove/schemas`         | [![npm version](https://img.shields.io/npm/v/@foxglove/schemas)](https://www.npmjs.com/package/@foxglove/schemas)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| Python + Protobuf     | `foxglove-schemas-protobuf` | [![pypi version](https://shields.io/pypi/v/foxglove-schemas-protobuf)](https://pypi.org/project/foxglove-schemas-protobuf/)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ROS                   | `foxglove_msgs`             | [![ROS Melodic version](https://img.shields.io/ros/v/melodic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#melodic) [![ROS Noetic version](https://img.shields.io/ros/v/noetic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#noetic) [![ROS Foxy version](https://img.shields.io/ros/v/foxy/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#foxy) [![ROS Galactic version](https://img.shields.io/ros/v/galactic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#galactic) [![ROS Humble version](https://img.shields.io/ros/v/humble/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#humble) [![ROS Rolling version](https://img.shields.io/ros/v/rolling/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#rolling) |
 
 ## Introduction
 

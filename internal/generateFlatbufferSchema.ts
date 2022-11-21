@@ -16,8 +16,8 @@ export const TIME_FB = `
 namespace foxglove;
 
 struct Time {
-  /// 	Represents seconds of UTC time since Unix epoch 1970-01-01T00:00:00Z
-  sec:uint64;
+  /// Represents seconds of UTC time since Unix epoch 1970-01-01T00:00:00Z
+  sec:uint32;
   /// Nano-second fractions from 0 to 999,999,999 inclusive
   nsec:uint32;
 }
@@ -28,7 +28,7 @@ namespace foxglove;
 
 struct Duration {
   /// Signed seconds of the span of time. Must be from -315,576,000,000 to +315,576,000,000 inclusive.
-  sec:int64;
+  sec:int32;
   /// if sec === 0 : -999,999,999 <= nsec <= +999,999,999 
   /// otherwise sign of sec must match sign of nsec or be 0 and abs(nsec) <= 999,999,999
   nsec:int32;
@@ -124,8 +124,32 @@ export function generateFlatbuffers(
           lengthComment = `  /// length ${field.array}\n`;
         }
         let defaultValue;
-        if (field.defaultValue != undefined) {
-          defaultValue = field.defaultValue;
+        if (field.defaultValue != undefined && !isArray) {
+          if (
+            field.type.type === "primitive" &&
+            !(field.type.name === "duration" || field.type.name === "time")
+          ) {
+            if (typeof field.defaultValue === "string") {
+              defaultValue = `"${field.defaultValue}"`;
+            } else if (typeof field.defaultValue === "number") {
+              if (Number.isInteger(field.defaultValue) && field.type.name === "float64") {
+                // if it is a floating point number that is an integer, we need to add a decimal point
+                defaultValue = `${field.defaultValue}.0`;
+              } else {
+                defaultValue = field.defaultValue.toString();
+              }
+            } else if (typeof field.defaultValue === "boolean") {
+              // uses same 'false'/'true' as js
+              defaultValue = field.defaultValue.toString();
+            }
+          } else if (field.type.type === "enum") {
+            // default enums are just the enum string of the enum and don't require other formatting
+            // ie: type numericType: NumericType = INT32;
+            defaultValue = field.defaultValue as string;
+          }
+        }
+        if (field.defaultValue != undefined && defaultValue == undefined) {
+          throw new Error("Flatbuffers does not support non-scalar default values");
         }
 
         return `${field.description

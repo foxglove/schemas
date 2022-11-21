@@ -8,7 +8,7 @@ describe("schemas", () => {
     }
     for (const [key, value] of Object.entries(foxgloveEnumSchemas)) {
       expect(key).toEqual(value.name);
-      expect(value.protobufParentMessageName in foxgloveMessageSchemas).toBe(true);
+      expect(value.parentSchemaName in foxgloveMessageSchemas).toBe(true);
     }
   });
 

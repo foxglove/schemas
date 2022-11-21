@@ -24,25 +24,25 @@ describe("generateFlatBuffer", () => {
       /// An example type
       table ExampleMessage {
         /// duration field
-        field_duration:Duration = 1;
+        field_duration:Duration;
 
         /// time field
-        field_time:Time = 1;
+        field_time:Time;
 
         /// boolean field
         field_boolean:bool = true;
 
         /// bytes field
-        field_bytes:[uint8] = 1;
+        field_bytes:[uint8];
 
         /// float64 field
-        field_float64:double = 1;
+        field_float64:double = 1.0;
 
         /// uint32 field
-        field_uint32:uint32 = 1;
+        field_uint32:uint32 = 5;
 
         /// string field
-        field_string:string = 1;
+        field_string:string = "string-type";
 
         /// duration array field
         field_duration_array:[Duration];

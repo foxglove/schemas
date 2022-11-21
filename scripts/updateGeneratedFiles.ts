@@ -69,7 +69,7 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     await fs.mkdir(path.join(outDir, "proto", "foxglove"), { recursive: true });
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       const enums = Object.values(foxgloveEnumSchemas).filter(
-        (enumSchema) => enumSchema.protobufParentMessageName === schema.name,
+        (enumSchema) => enumSchema.parentSchemaName === schema.name,
       );
       await fs.writeFile(
         path.join(outDir, "proto", "foxglove", `${schema.name}.proto`),
@@ -87,7 +87,7 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       // want enums with their corresponding parent tables for usage
       const enums = Object.values(foxgloveEnumSchemas).filter(
-        (enumSchema) => enumSchema.protobufParentMessageName === schema.name,
+        (enumSchema) => enumSchema.parentSchemaName === schema.name,
       );
       await fs.writeFile(
         path.join(outDir, "flatbuffer", `${schema.name}.fbs`),

@@ -117,7 +117,7 @@ describe("generateProto", () => {
     root.addJSON(protobufjs.common.get("google/protobuf/duration.proto")!.nested!);
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       const enums = Object.values(foxgloveEnumSchemas).filter(
-        (enumSchema) => enumSchema.protobufParentMessageName === schema.name,
+        (enumSchema) => enumSchema.parentSchemaName === schema.name,
       );
       root.add(protobufjs.parse(generateProto(schema, enums)).root);
     }

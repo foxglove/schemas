@@ -9,21 +9,25 @@ const Color: FoxgloveMessageSchema = {
       name: "r",
       type: { type: "primitive", name: "float64" },
       description: "Red value between 0 and 1",
+      defaultValue: 1.0,
     },
     {
       name: "g",
       type: { type: "primitive", name: "float64" },
       description: "Green value between 0 and 1",
+      defaultValue: 1.0,
     },
     {
       name: "b",
       type: { type: "primitive", name: "float64" },
       description: "Blue value between 0 and 1",
+      defaultValue: 1.0,
     },
     {
       name: "a",
       type: { type: "primitive", name: "float64" },
       description: "Alpha value between 0 and 1",
+      defaultValue: 1.0,
     },
   ],
 };
@@ -37,11 +41,13 @@ const Vector2: FoxgloveMessageSchema = {
       name: "x",
       type: { type: "primitive", name: "float64" },
       description: "x coordinate length",
+      defaultValue: 1.0,
     },
     {
       name: "y",
       type: { type: "primitive", name: "float64" },
       description: "y coordinate length",
+      defaultValue: 1.0,
     },
   ],
 };
@@ -56,16 +62,19 @@ const Vector3: FoxgloveMessageSchema = {
       name: "x",
       type: { type: "primitive", name: "float64" },
       description: "x coordinate length",
+      defaultValue: 1.0,
     },
     {
       name: "y",
       type: { type: "primitive", name: "float64" },
       description: "y coordinate length",
+      defaultValue: 1.0,
     },
     {
       name: "z",
       type: { type: "primitive", name: "float64" },
       description: "z coordinate length",
+      defaultValue: 1.0,
     },
   ],
 };
@@ -137,6 +146,7 @@ const Quaternion: FoxgloveMessageSchema = {
       name: "w",
       type: { type: "primitive", name: "float64" },
       description: "w value",
+      defaultValue: 1.0,
     },
   ],
 };
@@ -181,7 +191,7 @@ const KeyValuePair: FoxgloveMessageSchema = {
 const SceneEntityDeletionType: FoxgloveEnumSchema = {
   type: "enum",
   name: "SceneEntityDeletionType",
-  protobufParentMessageName: "SceneEntityDeletion",
+  parentSchemaName: "SceneEntityDeletion",
   protobufEnumName: "Type",
   description:
     "An enumeration indicating which entities should match a SceneEntityDeletion command",
@@ -343,7 +353,7 @@ const CylinderPrimitive: FoxgloveMessageSchema = {
 const LineType: FoxgloveEnumSchema = {
   type: "enum",
   name: "LineType",
-  protobufParentMessageName: "LinePrimitive",
+  parentSchemaName: "LinePrimitive",
   protobufEnumName: "Type",
   description: "An enumeration indicating how input points should be interpreted to create lines",
   values: [
@@ -919,7 +929,7 @@ const NumericType: FoxgloveEnumSchema = {
   type: "enum",
   name: "NumericType",
   description: "Numeric type",
-  protobufParentMessageName: "PackedElementField",
+  parentSchemaName: "PackedElementField",
   protobufEnumName: "NumericType",
   values: [
     { name: "UNKNOWN", value: 0 },
@@ -1054,7 +1064,7 @@ const PointsAnnotationType: FoxgloveEnumSchema = {
   type: "enum",
   name: "PointsAnnotationType",
   description: "Type of points annotation",
-  protobufParentMessageName: "PointsAnnotation",
+  parentSchemaName: "PointsAnnotation",
   protobufEnumName: "Type",
   values: [
     { name: "UNKNOWN", value: 0 },
@@ -1135,7 +1145,7 @@ const PositionCovarianceType: FoxgloveEnumSchema = {
   type: "enum",
   name: "PositionCovarianceType",
   description: "Type of position covariance",
-  protobufParentMessageName: "LocationFix",
+  parentSchemaName: "LocationFix",
   protobufEnumName: "PositionCovarianceType",
   values: [
     { name: "UNKNOWN", value: 0 },
@@ -1185,7 +1195,7 @@ const LogLevel: FoxgloveEnumSchema = {
   type: "enum",
   name: "LogLevel",
   description: "Log level",
-  protobufParentMessageName: "Log",
+  parentSchemaName: "Log",
   protobufEnumName: "Level",
   values: [
     { name: "UNKNOWN", value: 0 },

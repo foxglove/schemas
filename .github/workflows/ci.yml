@@ -36,6 +36,18 @@ jobs:
             echo "Generated schemas are up to date!"
           fi
 
+      - name: Validate Flatbuffer definitions
+        run: |
+          curl -LO https://github.com/google/flatbuffers/releases/download/v22.10.26/Linux.flatc.binary.clang++-12.zip 
+          echo "0821af82a3a736b0ba9235c02219df24d1f042dd  Linux.flatc.binary.clang++-12.zip" | shasum -a 1 -c
+          unzip Linux.flatc.binary.clang++-12.zip
+          output=$(./flatc --ts -o /dev/null ./schemas/flatbuffer/*.fbs)
+          if [ -n "$output" ]; then
+            echo "::error::Flatbuffer schema compilation had warnings or errors. Fix them to proceed:"
+            echo "$output"
+            exit 1
+          fi
+
       - name: Validate protobuf definitions
         run: protoc --proto_path=schemas/proto schemas/proto/**/*.proto --descriptor_set_out=/dev/null
 

@@ -1,0 +1,8 @@
+
+namespace foxglove;
+
+/// Used for nesting byte vectors
+table ByteVector {
+  data:[uint8];
+}
+root_type ByteVector;

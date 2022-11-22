@@ -14,7 +14,7 @@ export const exampleEnum: FoxgloveEnumSchema = {
   type: "enum",
   name: "ExampleEnum",
   protobufEnumName: "ExampleProtoEnum",
-  protobufParentMessageName: "ExampleMessage",
+  parentSchemaName: "ExampleMessage",
   description: "An example enum",
   values: [
     { name: "A", value: 1, description: "Value A" },
@@ -44,6 +44,17 @@ export const exampleMessage: FoxgloveMessageSchema = {
       name: `field_${name}`,
       description: `${name} field`,
       type: { type: "primitive", name },
+      defaultValue:
+        name === "boolean"
+          ? true
+          : name === "string"
+          ? "string-type"
+          : name === "uint32"
+          ? 5
+          : name === "float64"
+          ? 1.0
+          : // time and duration and bytes
+            undefined,
     })),
     ...allPrimitives.map((name): FoxgloveMessageSchema["fields"][0] => ({
       name: `field_${name}_array`,

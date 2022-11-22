@@ -11,7 +11,7 @@ export type FoxgloveEnumSchema = {
   type: "enum";
   name: string;
   description: string;
-  protobufParentMessageName: string;
+  parentSchemaName: string;
   protobufEnumName: string;
   values: ReadonlyArray<{
     value: number;
@@ -30,6 +30,7 @@ export type FoxgloveMessageField = {
   required?: true;
   description: string;
   protobufFieldNumber?: number;
+  defaultValue?: string | number | boolean;
 };
 
 export type FoxgloveMessageSchema = {

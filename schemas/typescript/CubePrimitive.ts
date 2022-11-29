@@ -12,6 +12,6 @@ export type CubePrimitive = {
   /** Size of the cube along each axis */
   size: Vector3;
 
-  /** Color of the arrow */
+  /** Color of the cube */
   color: Color;
 };

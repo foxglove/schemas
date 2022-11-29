@@ -74,7 +74,7 @@
     },
     "color": {
       "title": "foxglove.Color",
-      "description": "Color of the arrow",
+      "description": "Color of the cube",
       "type": "object",
       "properties": {
         "r": {

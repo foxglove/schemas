@@ -9,5 +9,5 @@ geometry_msgs/Pose pose
 # Size of the cube along each axis
 geometry_msgs/Vector3 size
 
-# Color of the arrow
+# Color of the cube
 foxglove_msgs/Color color

@@ -16,6 +16,6 @@ message CubePrimitive {
   // Size of the cube along each axis
   foxglove.Vector3 size = 2;
 
-  // Color of the arrow
+  // Color of the cube
   foxglove.Color color = 3;
 }

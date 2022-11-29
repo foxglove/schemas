@@ -515,7 +515,7 @@ export const CubePrimitive = {
     },
     "color": {
       "title": "foxglove.Color",
-      "description": "Color of the arrow",
+      "description": "Color of the cube",
       "type": "object",
       "properties": {
         "r": {
@@ -1754,7 +1754,7 @@ export const SceneEntity = {
           },
           "color": {
             "title": "foxglove.Color",
-            "description": "Color of the arrow",
+            "description": "Color of the cube",
             "type": "object",
             "properties": {
               "r": {
@@ -2821,7 +2821,7 @@ export const SceneUpdate = {
                 },
                 "color": {
                   "title": "foxglove.Color",
-                  "description": "Color of the arrow",
+                  "description": "Color of the cube",
                   "type": "object",
                   "properties": {
                     "r": {

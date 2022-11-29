@@ -286,7 +286,7 @@ const CubePrimitive: FoxgloveMessageSchema = {
     {
       name: "color",
       type: { type: "nested", schema: Color },
-      description: "Color of the arrow",
+      description: "Color of the cube",
     },
   ],
 };

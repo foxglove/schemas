@@ -657,7 +657,7 @@ Size of the cube along each axis
 </td>
 <td>
 
-Color of the arrow
+Color of the cube
 
 </td>
 </tr>

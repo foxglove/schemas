@@ -14,7 +14,7 @@ table CubePrimitive {
   /// Size of the cube along each axis
   size:foxglove.Vector3;
 
-  /// Color of the arrow
+  /// Color of the cube
   color:foxglove.Color;
 }
 

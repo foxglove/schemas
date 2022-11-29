@@ -2,6 +2,10 @@
 Changelog for package foxglove_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.1 (2022-11-18)
+------------------
+* Fix typo in CubePrimitive comments
+
 2.1.0 (2022-11-18)
 ------------------
 * Add frame_id to RawImage, CompressedImage, and CameraCalibration

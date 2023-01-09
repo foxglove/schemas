@@ -19,8 +19,6 @@ table CameraCalibration {
   height:uint32;
 
   /// Name of distortion model
-  /// 
-  /// Supported values: `plumb_bob` and `rational_polynomial`
   distortion_model:string;
 
   /// Distortion parameters

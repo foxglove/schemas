@@ -21,8 +21,6 @@ message CameraCalibration {
   fixed32 height = 3;
 
   // Name of distortion model
-  // 
-  // Supported values: `plumb_bob` and `rational_polynomial`
   string distortion_model = 4;
 
   // Distortion parameters

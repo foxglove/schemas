@@ -16,8 +16,6 @@ uint32 width
 uint32 height
 
 # Name of distortion model
-# 
-# Supported values: `plumb_bob` and `rational_polynomial`
 string distortion_model
 
 # Distortion parameters

@@ -688,8 +688,8 @@ const CameraCalibration: FoxgloveMessageSchema = {
     {
       name: "distortion_model",
       type: { type: "primitive", name: "string" },
-      description:
-        "Name of distortion model\n\nSupported values: `plumb_bob` and `rational_polynomial`",
+      description: "Name of distortion model",
+      docsLink: "https://foxglove.dev/docs/studio/panels/image#cameracalibration",
     },
     {
       name: "D",
@@ -782,6 +782,7 @@ const CompressedImage: FoxgloveMessageSchema = {
       name: "format",
       type: { type: "primitive", name: "string" },
       description: "Image format\n\nSupported values: `webp`, `jpeg`, `png`",
+      docsLink: "https://foxglove.dev/docs/studio/panels/image#supported-encoding-formats",
     },
   ],
 };
@@ -816,8 +817,8 @@ const RawImage: FoxgloveMessageSchema = {
     {
       name: "encoding",
       type: { type: "primitive", name: "string" },
-      description:
-        "Encoding of the raw image data\n\nSupported values: `8UC1`, `8UC3`, `16UC1`, `32FC1`, `bayer_bggr8`, `bayer_gbrg8`, `bayer_grbg8`, `bayer_rggb8`, `bgr8`, `bgra8`, `mono8`, `mono16`, `rgb8`, `rgba8`, `yuv422`",
+      description: "Encoding of the raw image data",
+      docsLink: "https://foxglove.dev/docs/studio/panels/image#supported-encoding-formats",
     },
     {
       name: "step",

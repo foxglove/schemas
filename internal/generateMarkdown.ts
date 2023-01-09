@@ -47,6 +47,7 @@ ${schema.description}
     <th>field</th>
     <th>type</th>
     <th>description</th>
+    <th>documentation</th>
   </tr>
 ${schema.fields
   .map((field) => {
@@ -75,6 +76,11 @@ ${type}${arraySuffix}
 <td>
 
 ${field.description}
+
+</td>
+<td>
+
+${field.docsLink != undefined ? `<a href="${field.docsLink}"><code>${field.name}</code></a>` : ""}
 
 </td>
 </tr>`;

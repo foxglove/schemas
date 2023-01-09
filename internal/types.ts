@@ -29,6 +29,7 @@ export type FoxgloveMessageField = {
   array?: true | number;
   required?: true;
   description: string;
+  docsLink?: string;
   protobufFieldNumber?: number;
   defaultValue?: string | number | boolean;
 };
@@ -37,6 +38,7 @@ export type FoxgloveMessageSchema = {
   type: "message";
   name: string;
   description: string;
+  docsLink?: string;
   rosEquivalent?: keyof typeof import("@foxglove/rosmsg-msgs-common").ros1;
   fields: ReadonlyArray<FoxgloveMessageField>;
 };

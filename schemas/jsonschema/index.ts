@@ -792,7 +792,7 @@ export const Grid = {
           }
         }
       },
-      "description": "Fields in `data`"
+      "description": "Fields in `data`. `red`, `green`, `blue`, and `alpha` are optional for customizing the grid's color."
     },
     "data": {
       "type": "string",
@@ -3949,7 +3949,7 @@ export const PointCloud = {
           }
         }
       },
-      "description": "Fields in the `data`"
+      "description": "Fields in `data`. At least 2 coordinate fields from `x`, `y`, and `z` (all `float64`s) are required for each point's position; `red`, `green`, `blue`, and `alpha` (all `float64`s) are optional for customizing each point's color."
     },
     "data": {
       "type": "string",

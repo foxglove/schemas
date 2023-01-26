@@ -952,7 +952,7 @@ Number of bytes between cells within a row in `data`
 </td>
 <td>
 
-Fields in `data`
+Fields in `data`. `red`, `green`, `blue`, and `alpha` are optional for customizing the grid's color.
 
 </td>
 </tr>
@@ -1749,7 +1749,7 @@ Number of bytes between points in the `data`
 </td>
 <td>
 
-Fields in the `data`
+Fields in `data`. At least 2 coordinate fields from `x`, `y`, and `z` (all `float64`s) are required for each point's position; `red`, `green`, `blue`, and `alpha` (all `float64`s) are optional for customizing each point's color.
 
 </td>
 </tr>

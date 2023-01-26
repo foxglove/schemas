@@ -163,7 +163,7 @@
           }
         }
       },
-      "description": "Fields in `data`"
+      "description": "Fields in `data`. `red`, `green`, `blue`, and `alpha` are optional for customizing the grid's color."
     },
     "data": {
       "type": "string",

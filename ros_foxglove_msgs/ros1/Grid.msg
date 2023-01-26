@@ -24,7 +24,7 @@ uint32 row_stride
 # Number of bytes between cells within a row in `data`
 uint32 cell_stride
 
-# Fields in `data`
+# Fields in `data`. `red`, `green`, `blue`, and `alpha` are optional for customizing the grid's color.
 foxglove_msgs/PackedElementField[] fields
 
 # Grid cell data, interpreted using `fields`, in row-major (y-major) order

@@ -357,9 +357,13 @@ const LineType: FoxgloveEnumSchema = {
   protobufEnumName: "Type",
   description: "An enumeration indicating how input points should be interpreted to create lines",
   values: [
-    { value: 0, name: "LINE_STRIP", description: "0-1, 1-2, ..., (n-1)-n" },
-    { value: 1, name: "LINE_LOOP", description: "0-1, 1-2, ..., (n-1)-n, n-0" },
-    { value: 2, name: "LINE_LIST", description: "0-1, 2-3, 4-5, ..." },
+    {
+      value: 0,
+      name: "LINE_STRIP",
+      description: "Connected line segments: 0-1, 1-2, ..., (n-1)-n",
+    },
+    { value: 1, name: "LINE_LOOP", description: "Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0" },
+    { value: 2, name: "LINE_LIST", description: "Individual line segments: 0-1, 2-3, 4-5, ..." },
   ],
 };
 
@@ -1069,10 +1073,14 @@ const PointsAnnotationType: FoxgloveEnumSchema = {
   protobufEnumName: "Type",
   values: [
     { name: "UNKNOWN", value: 0 },
-    { name: "POINTS", value: 1 },
-    { name: "LINE_LOOP", value: 2 },
-    { name: "LINE_STRIP", value: 3 },
-    { name: "LINE_LIST", value: 4 },
+    { name: "POINTS", value: 1, description: "Individual points: 0, 1, 2, ..." },
+    { name: "LINE_LOOP", value: 2, description: "Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0" },
+    {
+      name: "LINE_STRIP",
+      value: 3,
+      description: "Connected line segments: 0-1, 1-2, ..., (n-1)-n",
+    },
+    { name: "LINE_LIST", value: 4, description: "Individual line segments: 0-1, 2-3, 4-5, ..." },
   ],
 };
 

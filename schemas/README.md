@@ -56,9 +56,9 @@ An enumeration indicating how input points should be interpreted to create lines
 
 name | value | description
 ---- | ----- | -----------
-`LINE_STRIP` | 0 | 0-1, 1-2, ..., (n-1)-n
-`LINE_LOOP` | 1 | 0-1, 1-2, ..., (n-1)-n, n-0
-`LINE_LIST` | 2 | 0-1, 2-3, 4-5, ...
+`LINE_STRIP` | 0 | Connected line segments: 0-1, 1-2, ..., (n-1)-n
+`LINE_LOOP` | 1 | Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0
+`LINE_LIST` | 2 | Individual line segments: 0-1, 2-3, 4-5, ...
 
 
 
@@ -102,10 +102,10 @@ Type of points annotation
 name | value | description
 ---- | ----- | -----------
 `UNKNOWN` | 0 | 
-`POINTS` | 1 | 
-`LINE_LOOP` | 2 | 
-`LINE_STRIP` | 3 | 
-`LINE_LIST` | 4 | 
+`POINTS` | 1 | Individual points: 0, 1, 2, ...
+`LINE_LOOP` | 2 | Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0
+`LINE_STRIP` | 3 | Connected line segments: 0-1, 1-2, ..., (n-1)-n
+`LINE_LIST` | 4 | Individual line segments: 0-1, 2-3, 4-5, ...
 
 
 

@@ -547,17 +547,17 @@
                     {
                       "title": "LINE_STRIP",
                       "const": 0,
-                      "description": "0-1, 1-2, ..., (n-1)-n"
+                      "description": "Connected line segments: 0-1, 1-2, ..., (n-1)-n"
                     },
                     {
                       "title": "LINE_LOOP",
                       "const": 1,
-                      "description": "0-1, 1-2, ..., (n-1)-n, n-0"
+                      "description": "Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0"
                     },
                     {
                       "title": "LINE_LIST",
                       "const": 2,
-                      "description": "0-1, 2-3, 4-5, ..."
+                      "description": "Individual line segments: 0-1, 2-3, 4-5, ..."
                     }
                   ]
                 },

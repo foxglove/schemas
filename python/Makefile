@@ -10,11 +10,17 @@ endif
 
 .PHONY: generate-flatbuffer
 generate-flatbuffer:
-	rm -rf foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/*.py
+	find foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer ! -name '__init__.py' -type f -exec rm -f {} +
 	pipenv run flatc \
 		--python \
 		-o foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer \
 		../schemas/flatbuffer/*.fbs
+	pipenv run flatc \
+		-b \
+		--schema \
+		-o foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer \
+		../schemas/flatbuffer/*.fbs
+	rm foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/foxglove/__init__.py
 	mv foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/foxglove/* foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer
 	rmdir foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/foxglove
 	sed -E $(SED_ARGS) 's/from foxglove\./from \./g' foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/*.py

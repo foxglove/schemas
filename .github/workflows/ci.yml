@@ -14,9 +14,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Flatbuffer compiler
         run: |
-          curl -LO https://github.com/google/flatbuffers/releases/download/v22.10.26/Linux.flatc.binary.clang++-12.zip 
-          echo "0821af82a3a736b0ba9235c02219df24d1f042dd  Linux.flatc.binary.clang++-12.zip" | shasum -a 1 -c
+          curl -LO https://github.com/google/flatbuffers/releases/download/v23.1.21/Linux.flatc.binary.clang++-12.zip
+          echo "359dbbf56153cc1b022170a228adfde4199f67dc  Linux.flatc.binary.clang++-12.zip" | shasum -a 1 -c
           unzip Linux.flatc.binary.clang++-12.zip
+          rm Linux.flatc.binary.clang++-12.zip
           sudo mv flatc /usr/local/bin
       - uses: arduino/setup-protoc@v1
       - uses: actions/setup-node@v2
@@ -70,9 +71,10 @@ jobs:
       - uses: arduino/setup-protoc@v1
       - name: Install Flatbuffer compiler
         run: |
-          curl -LO https://github.com/google/flatbuffers/releases/download/v22.10.26/Linux.flatc.binary.clang++-12.zip 
-          echo "0821af82a3a736b0ba9235c02219df24d1f042dd  Linux.flatc.binary.clang++-12.zip" | shasum -a 1 -c
+          curl -LO https://github.com/google/flatbuffers/releases/download/v23.1.21/Linux.flatc.binary.clang++-12.zip
+          echo "359dbbf56153cc1b022170a228adfde4199f67dc  Linux.flatc.binary.clang++-12.zip" | shasum -a 1 -c
           unzip Linux.flatc.binary.clang++-12.zip
+          rm Linux.flatc.binary.clang++-12.zip
           sudo mv flatc /usr/local/bin
       - uses: actions/setup-python@v4
         with:

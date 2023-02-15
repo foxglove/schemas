@@ -15,7 +15,22 @@ pipenv install foxglove-schemas-flatbuffer
 Import types from the `foxglove` module as follows:
 
 ```py
-from foxglove_schemas_flatbuffer.CompressedImage import CompressedImage
+import flatbuffers
+import foxglove_schemas_flatbuffer.CompressedImage as CompressedImage
+from foxglove_schemas_flatbuffer import get_schema
+
+builder = flatbuffers.Builder(1024)
+png = builder.CreateString("png")
+CompressedImage.Start(builder)
+CompressedImage.AddFormat(builder, png)
+img = CompressedImage.End(builder)
+builder.Finish(img)
+
+# Serialized flatbuffer schema
+schema_data = get_schema("CompressedImage")
+
+# Serialized CompressedImage message
+msg_data = builder.Output()
 ```
 
 ## Stay in touch

@@ -4,7 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+flatbuffers = "*"
 protobuf = "*"
+foxglove-schemas-flatbuffers = {editable = true, path = "./foxglove-schemas-flatbuffer"}
 foxglove-schemas-protobuf = {editable = true, path = "./foxglove-schemas-protobuf"}
 
 [dev-packages]

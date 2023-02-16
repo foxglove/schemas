@@ -12,7 +12,7 @@ pipenv install foxglove-schemas-flatbuffer
 
 ## Usage
 
-Import types from the `foxglove` module as follows:
+Import types from the `foxglove_schemas_flatbuffer` module as follows:
 
 ```py
 import flatbuffers

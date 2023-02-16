@@ -28,8 +28,8 @@ After editing the schemas, re-generate the language-specific definitions by runn
 
 ### Releasing to NPM
 
-1. Run `yarn version --[major|minor|patch]` to bump version
-2. Run `git push && git push --tags` to push new tag
+1. Update the version number in package.json, make a PR, and merge to main
+2. Make a git tag of the form `releases/typescript/vX.Y.Z` on the squash-merged commit, and push the tag
 3. GitHub Actions will take care of the rest
 
 ### Releasing foxglove_msgs for ROS

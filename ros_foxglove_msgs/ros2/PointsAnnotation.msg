@@ -7,9 +7,17 @@
 builtin_interfaces/Time timestamp
 
 uint8 UNKNOWN=0
+
+# Individual points: 0, 1, 2, ...
 uint8 POINTS=1
+
+# Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0
 uint8 LINE_LOOP=2
+
+# Connected line segments: 0-1, 1-2, ..., (n-1)-n
 uint8 LINE_STRIP=3
+
+# Individual line segments: 0-1, 2-3, 4-5, ...
 uint8 LINE_LIST=4
 
 # Type of points annotation to draw

@@ -30,19 +30,23 @@
         },
         {
           "title": "POINTS",
-          "const": 1
+          "const": 1,
+          "description": "Individual points: 0, 1, 2, ..."
         },
         {
           "title": "LINE_LOOP",
-          "const": 2
+          "const": 2,
+          "description": "Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0"
         },
         {
           "title": "LINE_STRIP",
-          "const": 3
+          "const": 3,
+          "description": "Connected line segments: 0-1, 1-2, ..., (n-1)-n"
         },
         {
           "title": "LINE_LIST",
-          "const": 4
+          "const": 4,
+          "description": "Individual line segments: 0-1, 2-3, 4-5, ..."
         }
       ]
     },

@@ -937,19 +937,23 @@ export const ImageAnnotations = {
               },
               {
                 "title": "POINTS",
-                "const": 1
+                "const": 1,
+                "description": "Individual points: 0, 1, 2, ..."
               },
               {
                 "title": "LINE_LOOP",
-                "const": 2
+                "const": 2,
+                "description": "Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0"
               },
               {
                 "title": "LINE_STRIP",
-                "const": 3
+                "const": 3,
+                "description": "Connected line segments: 0-1, 1-2, ..., (n-1)-n"
               },
               {
                 "title": "LINE_LIST",
-                "const": 4
+                "const": 4,
+                "description": "Individual line segments: 0-1, 2-3, 4-5, ..."
               }
             ]
           },
@@ -1186,17 +1190,17 @@ export const LinePrimitive = {
         {
           "title": "LINE_STRIP",
           "const": 0,
-          "description": "0-1, 1-2, ..., (n-1)-n"
+          "description": "Connected line segments: 0-1, 1-2, ..., (n-1)-n"
         },
         {
           "title": "LINE_LOOP",
           "const": 1,
-          "description": "0-1, 1-2, ..., (n-1)-n, n-0"
+          "description": "Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0"
         },
         {
           "title": "LINE_LIST",
           "const": 2,
-          "description": "0-1, 2-3, 4-5, ..."
+          "description": "Individual line segments: 0-1, 2-3, 4-5, ..."
         }
       ]
     },
@@ -2005,17 +2009,17 @@ export const SceneEntity = {
               {
                 "title": "LINE_STRIP",
                 "const": 0,
-                "description": "0-1, 1-2, ..., (n-1)-n"
+                "description": "Connected line segments: 0-1, 1-2, ..., (n-1)-n"
               },
               {
                 "title": "LINE_LOOP",
                 "const": 1,
-                "description": "0-1, 1-2, ..., (n-1)-n, n-0"
+                "description": "Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0"
               },
               {
                 "title": "LINE_LIST",
                 "const": 2,
-                "description": "0-1, 2-3, 4-5, ..."
+                "description": "Individual line segments: 0-1, 2-3, 4-5, ..."
               }
             ]
           },
@@ -3072,17 +3076,17 @@ export const SceneUpdate = {
                     {
                       "title": "LINE_STRIP",
                       "const": 0,
-                      "description": "0-1, 1-2, ..., (n-1)-n"
+                      "description": "Connected line segments: 0-1, 1-2, ..., (n-1)-n"
                     },
                     {
                       "title": "LINE_LOOP",
                       "const": 1,
-                      "description": "0-1, 1-2, ..., (n-1)-n, n-0"
+                      "description": "Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0"
                     },
                     {
                       "title": "LINE_LIST",
                       "const": 2,
-                      "description": "0-1, 2-3, 4-5, ..."
+                      "description": "Individual line segments: 0-1, 2-3, 4-5, ..."
                     }
                   ]
                 },
@@ -3991,19 +3995,23 @@ export const PointsAnnotation = {
         },
         {
           "title": "POINTS",
-          "const": 1
+          "const": 1,
+          "description": "Individual points: 0, 1, 2, ..."
         },
         {
           "title": "LINE_LOOP",
-          "const": 2
+          "const": 2,
+          "description": "Closed polygon: 0-1, 1-2, ..., (n-1)-n, n-0"
         },
         {
           "title": "LINE_STRIP",
-          "const": 3
+          "const": 3,
+          "description": "Connected line segments: 0-1, 1-2, ..., (n-1)-n"
         },
         {
           "title": "LINE_LIST",
-          "const": 4
+          "const": 4,
+          "description": "Individual line segments: 0-1, 2-3, 4-5, ..."
         }
       ]
     },

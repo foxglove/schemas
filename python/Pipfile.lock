@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0977308fe2b87d61ab61ec8c80a37a085c04790c1d151f3492fb6c61f1acef60"
+            "sha256": "a1d616c262c4933be8f4bc82934ff47e24687239f76c1d5382c5ec41858233d7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -25,10 +25,6 @@
             "version": "==23.1.21"
         },
         "foxglove-schemas-flatbuffer": {
-            "editable": true,
-            "path": "./foxglove-schemas-flatbuffer"
-        },
-        "foxglove-schemas-flatbuffers": {
             "editable": true,
             "path": "./foxglove-schemas-flatbuffer"
         },

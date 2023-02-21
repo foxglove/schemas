@@ -785,7 +785,8 @@ const CompressedImage: FoxgloveMessageSchema = {
     {
       name: "format",
       type: { type: "primitive", name: "string" },
-      description: "Image format\n\nSupported values: `webp`, `jpeg`, `png`, `zfp`\n\nFor ZFP compression, only 2D fields are supported and the data must be prefixed with a full ZFP header (`ZFP_HEADER_FULL`).",
+      description:
+        "Image format\n\nSupported values: `webp`, `jpeg`, `png`, `zfp`\n\nFor ZFP compression, only 2D fields are supported and the data must be prefixed with a full ZFP header (`ZFP_HEADER_FULL`).",
     },
   ],
 };

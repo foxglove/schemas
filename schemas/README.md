@@ -606,7 +606,9 @@ string
 
 Image format
 
-Supported values: `webp`, `jpeg`, `png`
+Supported values: `webp`, `jpeg`, `png`, `zfp`
+
+For ZFP compression, only 2D fields are supported and the data must be prefixed with a full ZFP header (`ZFP_HEADER_FULL`).
 
 </td>
 </tr>

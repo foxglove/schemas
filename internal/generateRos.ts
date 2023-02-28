@@ -1,9 +1,9 @@
-import type { RosMsgDefinition, RosMsgField } from "@foxglove/rosmsg";
+import type { MessageDefinition, MessageDefinitionField } from "@foxglove/message-definition";
 import { ros1 } from "@foxglove/rosmsg-msgs-common";
 
 import { FoxgloveMessageSchema, FoxglovePrimitive } from "./types";
 
-type RosMsgFieldWithDescription = RosMsgField & {
+type RosMsgFieldWithDescription = MessageDefinitionField & {
   description?: string;
 };
 type RosMsgDefinitionWithDescription = {
@@ -94,7 +94,7 @@ function* getSchemaDependencies(schema: FoxgloveMessageSchema): Iterable<Depende
     }
   }
 }
-function* getRosDependencies(schema: RosMsgDefinition): Iterable<Dependency> {
+function* getRosDependencies(schema: MessageDefinition): Iterable<Dependency> {
   for (const field of schema.definitions) {
     if (field.isComplex === true) {
       yield { type: "ros", name: field.type as keyof typeof ros1 };

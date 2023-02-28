@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install Flatbuffer compiler
         run: |
           curl -LO https://github.com/google/flatbuffers/releases/download/v23.1.21/Linux.flatc.binary.clang++-12.zip
@@ -20,7 +20,7 @@ jobs:
           rm Linux.flatc.binary.clang++-12.zip
           sudo mv flatc /usr/local/bin
       - uses: arduino/setup-protoc@v1
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           cache: yarn
@@ -158,7 +158,7 @@ jobs:
       - name: setup directories
         run: mkdir -p ros_ws/src
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ros_ws/src
       - name: build and test ros1

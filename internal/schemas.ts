@@ -1040,7 +1040,7 @@ const CircleAnnotation: FoxgloveMessageSchema = {
     {
       name: "position",
       type: { type: "nested", schema: Point2 },
-      description: "Center of the circle in 2D image coordinates ([0,w] x [0,h] pixels)",
+      description: "Center of the circle in 2D image coordinates (pixels)",
     },
     {
       name: "diameter",
@@ -1102,7 +1102,7 @@ const PointsAnnotation: FoxgloveMessageSchema = {
     {
       name: "points",
       type: { type: "nested", schema: Point2 },
-      description: "Points in 2D image coordinates ([0,w] x [0,h] pixels)",
+      description: "Points in 2D image coordinates (pixels)",
       array: true,
     },
     {

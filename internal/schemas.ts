@@ -1040,17 +1040,17 @@ const CircleAnnotation: FoxgloveMessageSchema = {
     {
       name: "position",
       type: { type: "nested", schema: Point2 },
-      description: "Center of the circle in 2D image coordinates",
+      description: "Center of the circle in 2D image coordinates ([0,w] x [0,h] pixels)",
     },
     {
       name: "diameter",
       type: { type: "primitive", name: "float64" },
-      description: "Circle diameter",
+      description: "Circle diameter in pixels",
     },
     {
       name: "thickness",
       type: { type: "primitive", name: "float64" },
-      description: "Line thickness",
+      description: "Line thickness in pixels",
     },
     {
       name: "fill_color",
@@ -1102,7 +1102,7 @@ const PointsAnnotation: FoxgloveMessageSchema = {
     {
       name: "points",
       type: { type: "nested", schema: Point2 },
-      description: "Points in 2D image coordinates",
+      description: "Points in 2D image coordinates ([0,w] x [0,h] pixels)",
       array: true,
     },
     {
@@ -1125,7 +1125,7 @@ const PointsAnnotation: FoxgloveMessageSchema = {
     {
       name: "thickness",
       type: { type: "primitive", name: "float64" },
-      description: "Stroke thickness",
+      description: "Stroke thickness in pixels",
     },
   ],
 };

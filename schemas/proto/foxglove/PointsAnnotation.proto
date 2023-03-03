@@ -32,7 +32,7 @@ message PointsAnnotation {
   // Type of points annotation to draw
   Type type = 2;
 
-  // Points in 2D image coordinates
+  // Points in 2D image coordinates (pixels)
   repeated foxglove.Point2 points = 3;
 
   // Outline color
@@ -44,6 +44,6 @@ message PointsAnnotation {
   // Fill color
   foxglove.Color fill_color = 6;
 
-  // Stroke thickness
+  // Stroke thickness in pixels
   double thickness = 7;
 }

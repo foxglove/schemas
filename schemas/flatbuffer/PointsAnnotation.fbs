@@ -30,7 +30,7 @@ table PointsAnnotation {
   /// Type of points annotation to draw
   type:PointsAnnotationType;
 
-  /// Points in 2D image coordinates
+  /// Points in 2D image coordinates (pixels)
   points:[foxglove.Point2];
 
   /// Outline color
@@ -42,7 +42,7 @@ table PointsAnnotation {
   /// Fill color
   fill_color:foxglove.Color;
 
-  /// Stroke thickness
+  /// Stroke thickness in pixels
   thickness:double;
 }
 

@@ -22,7 +22,7 @@
     },
     "position": {
       "title": "foxglove.Point2",
-      "description": "Center of the circle in 2D image coordinates",
+      "description": "Center of the circle in 2D image coordinates (pixels)",
       "type": "object",
       "properties": {
         "x": {
@@ -37,11 +37,11 @@
     },
     "diameter": {
       "type": "number",
-      "description": "Circle diameter"
+      "description": "Circle diameter in pixels"
     },
     "thickness": {
       "type": "number",
-      "description": "Line thickness"
+      "description": "Line thickness in pixels"
     },
     "fill_color": {
       "title": "foxglove.Color",

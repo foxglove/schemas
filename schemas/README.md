@@ -424,7 +424,7 @@ Timestamp of circle
 </td>
 <td>
 
-Center of the circle in 2D image coordinates
+Center of the circle in 2D image coordinates (pixels)
 
 </td>
 </tr>
@@ -437,7 +437,7 @@ float64
 </td>
 <td>
 
-Circle diameter
+Circle diameter in pixels
 
 </td>
 </tr>
@@ -450,7 +450,7 @@ float64
 </td>
 <td>
 
-Line thickness
+Line thickness in pixels
 
 </td>
 </tr>
@@ -1813,7 +1813,7 @@ Type of points annotation to draw
 </td>
 <td>
 
-Points in 2D image coordinates
+Points in 2D image coordinates (pixels)
 
 </td>
 </tr>
@@ -1865,7 +1865,7 @@ float64
 </td>
 <td>
 
-Stroke thickness
+Stroke thickness in pixels
 
 </td>
 </tr>

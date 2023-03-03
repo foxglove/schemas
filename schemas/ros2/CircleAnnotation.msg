@@ -6,13 +6,13 @@
 # Timestamp of circle
 builtin_interfaces/Time timestamp
 
-# Center of the circle in 2D image coordinates
+# Center of the circle in 2D image coordinates (pixels)
 foxglove_msgs/Point2 position
 
-# Circle diameter
+# Circle diameter in pixels
 float64 diameter
 
-# Line thickness
+# Line thickness in pixels
 float64 thickness
 
 # Fill color

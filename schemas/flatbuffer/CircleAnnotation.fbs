@@ -11,13 +11,13 @@ table CircleAnnotation {
   /// Timestamp of circle
   timestamp:Time;
 
-  /// Center of the circle in 2D image coordinates
+  /// Center of the circle in 2D image coordinates (pixels)
   position:foxglove.Point2;
 
-  /// Circle diameter
+  /// Circle diameter in pixels
   diameter:double;
 
-  /// Line thickness
+  /// Line thickness in pixels
   thickness:double;
 
   /// Fill color

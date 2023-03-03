@@ -198,7 +198,7 @@ export const CircleAnnotation = {
     },
     "position": {
       "title": "foxglove.Point2",
-      "description": "Center of the circle in 2D image coordinates",
+      "description": "Center of the circle in 2D image coordinates (pixels)",
       "type": "object",
       "properties": {
         "x": {
@@ -213,11 +213,11 @@ export const CircleAnnotation = {
     },
     "diameter": {
       "type": "number",
-      "description": "Circle diameter"
+      "description": "Circle diameter in pixels"
     },
     "thickness": {
       "type": "number",
-      "description": "Line thickness"
+      "description": "Line thickness in pixels"
     },
     "fill_color": {
       "title": "foxglove.Color",
@@ -833,7 +833,7 @@ export const ImageAnnotations = {
           },
           "position": {
             "title": "foxglove.Point2",
-            "description": "Center of the circle in 2D image coordinates",
+            "description": "Center of the circle in 2D image coordinates (pixels)",
             "type": "object",
             "properties": {
               "x": {
@@ -848,11 +848,11 @@ export const ImageAnnotations = {
           },
           "diameter": {
             "type": "number",
-            "description": "Circle diameter"
+            "description": "Circle diameter in pixels"
           },
           "thickness": {
             "type": "number",
-            "description": "Line thickness"
+            "description": "Line thickness in pixels"
           },
           "fill_color": {
             "title": "foxglove.Color",
@@ -974,7 +974,7 @@ export const ImageAnnotations = {
                 }
               }
             },
-            "description": "Points in 2D image coordinates"
+            "description": "Points in 2D image coordinates (pixels)"
           },
           "outline_color": {
             "title": "foxglove.Color",
@@ -1051,7 +1051,7 @@ export const ImageAnnotations = {
           },
           "thickness": {
             "type": "number",
-            "description": "Stroke thickness"
+            "description": "Stroke thickness in pixels"
           }
         }
       },
@@ -4032,7 +4032,7 @@ export const PointsAnnotation = {
           }
         }
       },
-      "description": "Points in 2D image coordinates"
+      "description": "Points in 2D image coordinates (pixels)"
     },
     "outline_color": {
       "title": "foxglove.Color",
@@ -4109,7 +4109,7 @@ export const PointsAnnotation = {
     },
     "thickness": {
       "type": "number",
-      "description": "Stroke thickness"
+      "description": "Stroke thickness in pixels"
     }
   }
 };

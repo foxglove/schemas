@@ -67,7 +67,7 @@
           }
         }
       },
-      "description": "Points in 2D image coordinates"
+      "description": "Points in 2D image coordinates (pixels)"
     },
     "outline_color": {
       "title": "foxglove.Color",
@@ -144,7 +144,7 @@
     },
     "thickness": {
       "type": "number",
-      "description": "Stroke thickness"
+      "description": "Stroke thickness in pixels"
     }
   }
 }

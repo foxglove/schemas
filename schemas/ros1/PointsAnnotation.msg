@@ -23,7 +23,7 @@ uint8 LINE_LIST=4
 # Type of points annotation to draw
 uint8 type
 
-# Points in 2D image coordinates
+# Points in 2D image coordinates (pixels)
 foxglove_msgs/Point2[] points
 
 # Outline color
@@ -35,5 +35,5 @@ foxglove_msgs/Color[] outline_colors
 # Fill color
 foxglove_msgs/Color fill_color
 
-# Stroke thickness
+# Stroke thickness in pixels
 float64 thickness

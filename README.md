@@ -26,13 +26,21 @@ The schema definitions are in [internal/schemas.ts](internal/schemas.ts).
 
 After editing the schemas, re-generate the language-specific definitions by running `yarn update-generated-files`.
 
-### Releasing to NPM
+### Release instructions
 
-1. Update the version number in package.json, make a PR, and merge to main
+#### TypeScript
+
+1. Update the version number in `package.json`, make a PR, and merge to main
 2. Make a git tag of the form `releases/typescript/vX.Y.Z` on the squash-merged commit, and push the tag
 3. GitHub Actions will take care of the rest
 
-### Releasing foxglove_msgs for ROS
+#### Python
+
+1. Update the version number in `python/[package-name]/setup.cfg`, make a PR, and merge to main
+2. Make a git tag of the form `releases/python/[package-name]/vX.Y.Z` on the squash-merged commit, and push the tag
+3. GitHub Actions will take care of the rest
+
+#### ROS
 
 For first-time setup, follow the guides for [installing bloom](http://ros-infrastructure.github.io/bloom/) and [authenticating with GitHub](https://wiki.ros.org/bloom/Tutorials/GithubManualAuthorization).
 

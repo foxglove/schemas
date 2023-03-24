@@ -869,16 +869,16 @@ const FrameTransform: FoxgloveMessageSchema = {
   ],
 };
 
-const FrameTransformList: FoxgloveMessageSchema = {
+const FrameTransforms: FoxgloveMessageSchema = {
   type: "message",
-  name: "FrameTransformList",
-  description: "A list of FrameTransform messages",
+  name: "FrameTransforms",
+  description: "An array of FrameTransform messages",
   fields: [
     {
       name: "transforms",
       type: { type: "nested", schema: FrameTransform },
       array: true,
-      description: "List of transforms",
+      description: "Array of transforms",
     },
   ],
 };
@@ -1365,7 +1365,7 @@ export const foxgloveMessageSchemas = {
   CylinderPrimitive,
   CubePrimitive,
   FrameTransform,
-  FrameTransformList,
+  FrameTransforms,
   GeoJSON,
   Grid,
   ImageAnnotations,

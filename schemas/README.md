@@ -20,7 +20,7 @@ All schemas are generated from [schemas.ts](/internal/schemas.ts).
 - [CubePrimitive](#cubeprimitive)
 - [CylinderPrimitive](#cylinderprimitive)
 - [FrameTransform](#frametransform)
-- [FrameTransformList](#frametransformlist)
+- [FrameTransforms](#frametransforms)
 - [GeoJSON](#geojson)
 - [Grid](#grid)
 - [ImageAnnotations](#imageannotations)
@@ -818,9 +818,9 @@ Rotation component of the transform
 </tr>
 </table>
 
-## FrameTransformList
+## FrameTransforms
 
-A list of transforms between reference frames in 3D space
+An array of FrameTransform messages
 
 <table>
   <tr>
@@ -837,7 +837,7 @@ A list of transforms between reference frames in 3D space
 </td>
 <td>
 
-List of transforms
+Array of transforms
 
 </td>
 </tr>

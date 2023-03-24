@@ -2,8 +2,8 @@
 
 import { FrameTransform } from "./FrameTransform";
 
-/** A list of transforms between reference frames in 3D space */
-export type FrameTransformList = {
-  /** List of transforms */
+/** An array of FrameTransform messages */
+export type FrameTransforms = {
+  /** Array of transforms */
   transforms: FrameTransform[];
 };

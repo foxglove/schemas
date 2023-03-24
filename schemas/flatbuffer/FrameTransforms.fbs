@@ -4,10 +4,10 @@ include "FrameTransform.fbs";
 
 namespace foxglove;
 
-/// A list of transforms between reference frames in 3D space
-table FrameTransformList {
-  /// List of transforms
+/// An array of FrameTransform messages
+table FrameTransforms {
+  /// Array of transforms
   transforms:[foxglove.FrameTransform];
 }
 
-root_type FrameTransformList;
+root_type FrameTransforms;

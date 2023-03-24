@@ -6,7 +6,7 @@ export * from "./CompressedImage";
 export * from "./CubePrimitive";
 export * from "./CylinderPrimitive";
 export * from "./FrameTransform";
-export * from "./FrameTransformList";
+export * from "./FrameTransforms";
 export * from "./GeoJSON";
 export * from "./Grid";
 export * from "./ImageAnnotations";

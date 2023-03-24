@@ -6,8 +6,8 @@ import "foxglove/FrameTransform.proto";
 
 package foxglove;
 
-// A list of transforms between reference frames in 3D space
-message FrameTransformList {
-  // List of transforms
+// An array of FrameTransform messages
+message FrameTransforms {
+  // Array of transforms
   repeated foxglove.FrameTransform transforms = 1;
 }

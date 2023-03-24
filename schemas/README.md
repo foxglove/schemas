@@ -20,6 +20,7 @@ All schemas are generated from [schemas.ts](/internal/schemas.ts).
 - [CubePrimitive](#cubeprimitive)
 - [CylinderPrimitive](#cylinderprimitive)
 - [FrameTransform](#frametransform)
+- [FrameTransforms](#frametransforms)
 - [GeoJSON](#geojson)
 - [Grid](#grid)
 - [ImageAnnotations](#imageannotations)
@@ -812,6 +813,31 @@ Translation component of the transform
 <td>
 
 Rotation component of the transform
+
+</td>
+</tr>
+</table>
+
+## FrameTransforms
+
+An array of FrameTransform messages
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>transforms</code></td>
+<td>
+
+[FrameTransform](#frametransform)[]
+
+</td>
+<td>
+
+Array of transforms
 
 </td>
 </tr>

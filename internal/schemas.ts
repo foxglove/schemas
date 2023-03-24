@@ -872,7 +872,7 @@ const FrameTransform: FoxgloveMessageSchema = {
 const FrameTransformList: FoxgloveMessageSchema = {
   type: "message",
   name: "FrameTransformList",
-  description: "A list of transforms between reference frames in 3D space",
+  description: "A list of FrameTransform messages",
   fields: [
     {
       name: "transforms",

@@ -36,6 +36,7 @@ export * from "./SceneEntityDeletion";
 export * from "./SceneEntityDeletionType";
 export * from "./SceneUpdate";
 export * from "./SpherePrimitive";
+export * from "./TextAnnotation";
 export * from "./TextPrimitive";
 export * from "./TriangleListPrimitive";
 export * from "./Vector2";

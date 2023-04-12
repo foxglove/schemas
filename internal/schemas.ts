@@ -1157,7 +1157,7 @@ const TextAnnotation: FoxgloveMessageSchema = {
     {
       name: "position",
       type: { type: "nested", schema: Point2 },
-      description: "Center of the circle in 2D image coordinates (pixels)",
+      description: "Bottom-left origin of the text label in 2D image coordinates (pixels)",
     },
     {
       name: "text",

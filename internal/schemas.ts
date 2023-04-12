@@ -1201,7 +1201,7 @@ const ImageAnnotations: FoxgloveMessageSchema = {
       array: true,
     },
     {
-      name: "labels",
+      name: "texts",
       type: { type: "nested", schema: TextAnnotation },
       description: "Text annotations",
       array: true,

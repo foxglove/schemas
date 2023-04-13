@@ -1035,7 +1035,7 @@ Points annotations
 </td>
 </tr>
 <tr>
-<td><code>labels</code></td>
+<td><code>texts</code></td>
 <td>
 
 [TextAnnotation](#textannotation)[]
@@ -2586,7 +2586,7 @@ Timestamp of annotation
 </td>
 <td>
 
-Center of the circle in 2D image coordinates (pixels)
+Bottom-left origin of the text label in 2D image coordinates (pixels)
 
 </td>
 </tr>

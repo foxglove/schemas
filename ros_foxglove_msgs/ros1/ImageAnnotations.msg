@@ -10,4 +10,4 @@ foxglove_msgs/CircleAnnotation[] circles
 foxglove_msgs/PointsAnnotation[] points
 
 # Text annotations
-foxglove_msgs/TextAnnotation[] labels
+foxglove_msgs/TextAnnotation[] texts

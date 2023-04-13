@@ -17,5 +17,5 @@ message ImageAnnotations {
   repeated foxglove.PointsAnnotation points = 2;
 
   // Text annotations
-  repeated foxglove.TextAnnotation labels = 3;
+  repeated foxglove.TextAnnotation texts = 3;
 }

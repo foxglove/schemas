@@ -13,5 +13,5 @@ export type ImageAnnotations = {
   points: PointsAnnotation[];
 
   /** Text annotations */
-  labels: TextAnnotation[];
+  texts: TextAnnotation[];
 };

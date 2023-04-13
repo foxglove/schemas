@@ -9,7 +9,7 @@ export type TextAnnotation = {
   /** Timestamp of annotation */
   timestamp: Time;
 
-  /** Center of the circle in 2D image coordinates (pixels) */
+  /** Bottom-left origin of the text label in 2D image coordinates (pixels) */
   position: Point2;
 
   /** Text to display */

@@ -1143,7 +1143,7 @@ export const ImageAnnotations = {
       },
       "description": "Points annotations"
     },
-    "labels": {
+    "texts": {
       "type": "array",
       "items": {
         "title": "foxglove.TextAnnotation",
@@ -1168,7 +1168,7 @@ export const ImageAnnotations = {
           },
           "position": {
             "title": "foxglove.Point2",
-            "description": "Center of the circle in 2D image coordinates (pixels)",
+            "description": "Bottom-left origin of the text label in 2D image coordinates (pixels)",
             "type": "object",
             "properties": {
               "x": {
@@ -4709,7 +4709,7 @@ export const TextAnnotation = {
     },
     "position": {
       "title": "foxglove.Point2",
-      "description": "Center of the circle in 2D image coordinates (pixels)",
+      "description": "Bottom-left origin of the text label in 2D image coordinates (pixels)",
       "type": "object",
       "properties": {
         "x": {

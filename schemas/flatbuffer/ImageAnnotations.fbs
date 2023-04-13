@@ -15,7 +15,7 @@ table ImageAnnotations {
   points:[foxglove.PointsAnnotation];
 
   /// Text annotations
-  labels:[foxglove.TextAnnotation];
+  texts:[foxglove.TextAnnotation];
 }
 
 root_type ImageAnnotations;

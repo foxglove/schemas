@@ -6,7 +6,7 @@
 # Timestamp of annotation
 time timestamp
 
-# Center of the circle in 2D image coordinates (pixels)
+# Bottom-left origin of the text label in 2D image coordinates (pixels)
 foxglove_msgs/Point2 position
 
 # Text to display

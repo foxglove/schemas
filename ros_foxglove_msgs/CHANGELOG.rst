@@ -2,6 +2,15 @@
 Changelog for package foxglove_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.2.0 (2023-04-18)
+------------------
+* Add TextAnnotation
+* add FrameTransforms Message
+* Remove "all float64s" comment from PointCloud schema
+* Add units to PointsAnnotation and CircleAnnotation
+* Update descriptions for PointsAnnotationType and LineType
+* Elaborate on required fields for PointCloud and Grid messages
+
 2.1.1 (2022-11-18)
 ------------------
 * Fix typo in CubePrimitive comments

@@ -2,6 +2,7 @@
 
 include "CircleAnnotation.fbs";
 include "PointsAnnotation.fbs";
+include "TextAnnotation.fbs";
 
 namespace foxglove;
 
@@ -12,6 +13,9 @@ table ImageAnnotations {
 
   /// Points annotations
   points:[foxglove.PointsAnnotation];
+
+  /// Text annotations
+  texts:[foxglove.TextAnnotation];
 }
 
 root_type ImageAnnotations;

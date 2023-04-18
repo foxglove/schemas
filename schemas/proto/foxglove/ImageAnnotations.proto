@@ -4,6 +4,7 @@ syntax = "proto3";
 
 import "foxglove/CircleAnnotation.proto";
 import "foxglove/PointsAnnotation.proto";
+import "foxglove/TextAnnotation.proto";
 
 package foxglove;
 
@@ -14,4 +15,7 @@ message ImageAnnotations {
 
   // Points annotations
   repeated foxglove.PointsAnnotation points = 2;
+
+  // Text annotations
+  repeated foxglove.TextAnnotation texts = 3;
 }

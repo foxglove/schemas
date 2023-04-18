@@ -44,6 +44,7 @@ All schemas are generated from [schemas.ts](/internal/schemas.ts).
 - [SceneEntityDeletion](#sceneentitydeletion)
 - [SceneUpdate](#sceneupdate)
 - [SpherePrimitive](#sphereprimitive)
+- [TextAnnotation](#textannotation)
 - [TextPrimitive](#textprimitive)
 - [TriangleListPrimitive](#trianglelistprimitive)
 - [Vector2](#vector2)
@@ -1030,6 +1031,19 @@ Circle annotations
 <td>
 
 Points annotations
+
+</td>
+</tr>
+<tr>
+<td><code>texts</code></td>
+<td>
+
+[TextAnnotation](#textannotation)[]
+
+</td>
+<td>
+
+Text annotations
 
 </td>
 </tr>
@@ -2535,6 +2549,96 @@ Size (diameter) of the sphere along each axis
 <td>
 
 Color of the sphere
+
+</td>
+</tr>
+</table>
+
+## TextAnnotation
+
+A text label on a 2D image
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>
+
+time
+
+</td>
+<td>
+
+Timestamp of annotation
+
+</td>
+</tr>
+<tr>
+<td><code>position</code></td>
+<td>
+
+[Point2](#point2)
+
+</td>
+<td>
+
+Bottom-left origin of the text label in 2D image coordinates (pixels)
+
+</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Text to display
+
+</td>
+</tr>
+<tr>
+<td><code>font_size</code></td>
+<td>
+
+float64
+
+</td>
+<td>
+
+Font size in pixels
+
+</td>
+</tr>
+<tr>
+<td><code>text_color</code></td>
+<td>
+
+[Color](#color)
+
+</td>
+<td>
+
+Text color
+
+</td>
+</tr>
+<tr>
+<td><code>background_color</code></td>
+<td>
+
+[Color](#color)
+
+</td>
+<td>
+
+Background fill color
 
 </td>
 </tr>

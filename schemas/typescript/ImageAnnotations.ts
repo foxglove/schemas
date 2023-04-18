@@ -2,6 +2,7 @@
 
 import { CircleAnnotation } from "./CircleAnnotation";
 import { PointsAnnotation } from "./PointsAnnotation";
+import { TextAnnotation } from "./TextAnnotation";
 
 /** Array of annotations for a 2D image */
 export type ImageAnnotations = {
@@ -10,4 +11,7 @@ export type ImageAnnotations = {
 
   /** Points annotations */
   points: PointsAnnotation[];
+
+  /** Text annotations */
+  texts: TextAnnotation[];
 };

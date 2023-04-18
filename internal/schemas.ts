@@ -1144,6 +1144,45 @@ const PointsAnnotation: FoxgloveMessageSchema = {
   ],
 };
 
+const TextAnnotation: FoxgloveMessageSchema = {
+  type: "message",
+  name: "TextAnnotation",
+  description: "A text label on a 2D image",
+  fields: [
+    {
+      name: "timestamp",
+      type: { type: "primitive", name: "time" },
+      description: "Timestamp of annotation",
+    },
+    {
+      name: "position",
+      type: { type: "nested", schema: Point2 },
+      description: "Bottom-left origin of the text label in 2D image coordinates (pixels)",
+    },
+    {
+      name: "text",
+      type: { type: "primitive", name: "string" },
+      description: "Text to display",
+    },
+    {
+      name: "font_size",
+      type: { type: "primitive", name: "float64" },
+      description: "Font size in pixels",
+      defaultValue: 12.0,
+    },
+    {
+      name: "text_color",
+      type: { type: "nested", schema: Color },
+      description: "Text color",
+    },
+    {
+      name: "background_color",
+      type: { type: "nested", schema: Color },
+      description: "Background fill color",
+    },
+  ],
+};
+
 const ImageAnnotations: FoxgloveMessageSchema = {
   type: "message",
   name: "ImageAnnotations",
@@ -1159,6 +1198,12 @@ const ImageAnnotations: FoxgloveMessageSchema = {
       name: "points",
       type: { type: "nested", schema: PointsAnnotation },
       description: "Points annotations",
+      array: true,
+    },
+    {
+      name: "texts",
+      type: { type: "nested", schema: TextAnnotation },
+      description: "Text annotations",
       array: true,
     },
   ],
@@ -1389,6 +1434,7 @@ export const foxgloveMessageSchemas = {
   Quaternion,
   RawImage,
   SpherePrimitive,
+  TextAnnotation,
   TextPrimitive,
   TriangleListPrimitive,
   Vector2,

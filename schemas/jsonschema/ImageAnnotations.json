@@ -95,6 +95,10 @@
                 "description": "Alpha value between 0 and 1"
               }
             }
+          },
+          "object_id": {
+            "type": "string",
+            "description": "Id of circle"
           }
         }
       },
@@ -248,6 +252,10 @@
           "thickness": {
             "type": "number",
             "description": "Stroke thickness in pixels"
+          },
+          "object_id": {
+            "type": "string",
+            "description": "Id of group points"
           }
         }
       },

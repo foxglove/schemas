@@ -37,3 +37,6 @@ foxglove_msgs/Color fill_color
 
 # Stroke thickness in pixels
 float64 thickness
+
+# Id of group points
+string object_id

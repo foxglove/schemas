@@ -25,6 +25,9 @@ table CircleAnnotation {
 
   /// Outline color
   outline_color:foxglove.Color;
+
+  /// Id of circle
+  object_id:string;
 }
 
 root_type CircleAnnotation;

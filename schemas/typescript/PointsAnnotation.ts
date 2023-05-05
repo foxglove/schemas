@@ -27,4 +27,7 @@ export type PointsAnnotation = {
 
   /** Stroke thickness in pixels */
   thickness: number;
+
+  /** Id of group points */
+  object_id: string;
 };

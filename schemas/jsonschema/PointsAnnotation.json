@@ -145,6 +145,10 @@
     "thickness": {
       "type": "number",
       "description": "Stroke thickness in pixels"
+    },
+    "object_id": {
+      "type": "string",
+      "description": "Id of group points"
     }
   }
 }

@@ -1076,6 +1076,11 @@ const CircleAnnotation: FoxgloveMessageSchema = {
       type: { type: "nested", schema: Color },
       description: "Outline color",
     },
+    {
+      name: "object_id",
+      type: { type: "primitive", name: "string" },
+      description: "Id of circle",
+    },
   ],
 };
 
@@ -1140,6 +1145,11 @@ const PointsAnnotation: FoxgloveMessageSchema = {
       name: "thickness",
       type: { type: "primitive", name: "float64" },
       description: "Stroke thickness in pixels",
+    },
+    {
+      name: "object_id",
+      type: { type: "primitive", name: "string" },
+      description: "Id of group points",
     },
   ],
 };

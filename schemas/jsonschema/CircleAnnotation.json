@@ -88,6 +88,10 @@
           "description": "Alpha value between 0 and 1"
         }
       }
+    },
+    "object_id": {
+      "type": "string",
+      "description": "Id of circle"
     }
   }
 }

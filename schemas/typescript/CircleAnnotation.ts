@@ -23,4 +23,7 @@ export type CircleAnnotation = {
 
   /** Outline color */
   outline_color: Color;
+
+  /** Id of circle */
+  object_id: string;
 };

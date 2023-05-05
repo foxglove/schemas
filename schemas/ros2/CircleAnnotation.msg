@@ -20,3 +20,6 @@ foxglove_msgs/Color fill_color
 
 # Outline color
 foxglove_msgs/Color outline_color
+
+# Id of circle
+string object_id

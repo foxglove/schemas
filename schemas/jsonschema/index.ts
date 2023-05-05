@@ -264,6 +264,10 @@ export const CircleAnnotation = {
           "description": "Alpha value between 0 and 1"
         }
       }
+    },
+    "object_id": {
+      "type": "string",
+      "description": "Id of circle"
     }
   }
 };
@@ -985,6 +989,10 @@ export const ImageAnnotations = {
                 "description": "Alpha value between 0 and 1"
               }
             }
+          },
+          "object_id": {
+            "type": "string",
+            "description": "Id of circle"
           }
         }
       },
@@ -1138,6 +1146,10 @@ export const ImageAnnotations = {
           "thickness": {
             "type": "number",
             "description": "Stroke thickness in pixels"
+          },
+          "object_id": {
+            "type": "string",
+            "description": "Id of group points"
           }
         }
       },
@@ -4292,6 +4304,10 @@ export const PointsAnnotation = {
     "thickness": {
       "type": "number",
       "description": "Stroke thickness in pixels"
+    },
+    "object_id": {
+      "type": "string",
+      "description": "Id of group points"
     }
   }
 };

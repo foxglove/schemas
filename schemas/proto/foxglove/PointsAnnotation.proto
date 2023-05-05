@@ -46,4 +46,7 @@ message PointsAnnotation {
 
   // Stroke thickness in pixels
   double thickness = 7;
+
+  // Id of group points
+  string object_id = 8;
 }

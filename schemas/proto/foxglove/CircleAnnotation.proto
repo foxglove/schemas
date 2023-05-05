@@ -27,4 +27,7 @@ message CircleAnnotation {
 
   // Outline color
   foxglove.Color outline_color = 6;
+
+  // Id of circle
+  string object_id = 7;
 }

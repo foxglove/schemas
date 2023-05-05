@@ -482,6 +482,19 @@ Outline color
 
 </td>
 </tr>
+<tr>
+<td><code>object_id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Id of circle
+
+</td>
+</tr>
 </table>
 
 ## Color
@@ -1906,6 +1919,19 @@ float64
 <td>
 
 Stroke thickness in pixels
+
+</td>
+</tr>
+<tr>
+<td><code>object_id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Id of group points
 
 </td>
 </tr>

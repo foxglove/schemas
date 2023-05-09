@@ -1229,6 +1229,12 @@ const LocationFix: FoxgloveMessageSchema = {
   description: "A navigation satellite fix for any Global Navigation Satellite System",
   fields: [
     {
+      name: "frame_id",
+      type: { type: "primitive", name: "string" },
+      description:
+        "Frame for the sensor. Latitude and longitude readings are at the origin of the frame.",
+    },
+    {
       name: "latitude",
       type: { type: "primitive", name: "float64" },
       description: "Latitude in degrees",

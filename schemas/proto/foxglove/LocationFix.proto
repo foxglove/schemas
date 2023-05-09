@@ -16,18 +16,21 @@ message LocationFix {
 
     KNOWN = 3;
   }
+  // Frame for the sensor. Latitude and longitude readings are at the origin of the frame.
+  string frame_id = 1;
+
   // Latitude in degrees
-  double latitude = 1;
+  double latitude = 2;
 
   // Longitude in degrees
-  double longitude = 2;
+  double longitude = 3;
 
   // Altitude in meters
-  double altitude = 3;
+  double altitude = 4;
 
   // Position covariance (m^2) defined relative to a tangential plane through the reported position. The components are East, North, and Up (ENU), in row-major order.
-  repeated double position_covariance = 4; // length 9
+  repeated double position_covariance = 5; // length 9
 
   // If `position_covariance` is available, `position_covariance_type` must be set to indicate the type of covariance.
-  PositionCovarianceType position_covariance_type = 5;
+  PositionCovarianceType position_covariance_type = 6;
 }

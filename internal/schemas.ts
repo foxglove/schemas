@@ -1235,6 +1235,11 @@ const LocationFix: FoxgloveMessageSchema = {
         "Frame for the sensor. Latitude and longitude readings are at the origin of the frame.",
     },
     {
+      name: "timestamp",
+      type: { type: "primitive", name: "time" },
+      description: "Timestamp of the message",
+    },
+    {
       name: "latitude",
       type: { type: "primitive", name: "float64" },
       description: "Latitude in degrees",

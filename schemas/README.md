@@ -1332,6 +1332,19 @@ Frame for the sensor. Latitude and longitude readings are at the origin of the f
 </td>
 </tr>
 <tr>
+<td><code>timestamp</code></td>
+<td>
+
+time
+
+</td>
+<td>
+
+Timestamp of the message
+
+</td>
+</tr>
+<tr>
 <td><code>latitude</code></td>
 <td>
 

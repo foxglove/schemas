@@ -2,6 +2,8 @@
 
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 package foxglove;
 
 // A navigation satellite fix for any Global Navigation Satellite System
@@ -19,18 +21,21 @@ message LocationFix {
   // Frame for the sensor. Latitude and longitude readings are at the origin of the frame.
   string frame_id = 1;
 
+  // Timestamp of the message
+  google.protobuf.Timestamp timestamp = 2;
+
   // Latitude in degrees
-  double latitude = 2;
+  double latitude = 3;
 
   // Longitude in degrees
-  double longitude = 3;
+  double longitude = 4;
 
   // Altitude in meters
-  double altitude = 4;
+  double altitude = 5;
 
   // Position covariance (m^2) defined relative to a tangential plane through the reported position. The components are East, North, and Up (ENU), in row-major order.
-  repeated double position_covariance = 5; // length 9
+  repeated double position_covariance = 6; // length 9
 
   // If `position_covariance` is available, `position_covariance_type` must be set to indicate the type of covariance.
-  PositionCovarianceType position_covariance_type = 6;
+  PositionCovarianceType position_covariance_type = 7;
 }

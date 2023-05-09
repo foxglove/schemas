@@ -6,6 +6,9 @@
 # Frame for the sensor. Latitude and longitude readings are at the origin of the frame.
 string frame_id
 
+# Timestamp of the message
+builtin_interfaces/Time timestamp
+
 # Latitude in degrees
 float64 latitude
 

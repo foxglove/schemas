@@ -1537,6 +1537,22 @@ export const LocationFix = {
       "type": "string",
       "description": "Frame for the sensor. Latitude and longitude readings are at the origin of the frame."
     },
+    "timestamp": {
+      "type": "object",
+      "title": "time",
+      "properties": {
+        "sec": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nsec": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999999999
+        }
+      },
+      "description": "Timestamp of the message"
+    },
     "latitude": {
       "type": "number",
       "description": "Latitude in degrees"

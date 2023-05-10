@@ -18,24 +18,24 @@ message LocationFix {
 
     KNOWN = 3;
   }
-  // Frame for the sensor. Latitude and longitude readings are at the origin of the frame.
-  string frame_id = 1;
-
   // Timestamp of the message
-  google.protobuf.Timestamp timestamp = 2;
+  google.protobuf.Timestamp timestamp = 6;
+
+  // Frame for the sensor. Latitude and longitude readings are at the origin of the frame.
+  string frame_id = 7;
 
   // Latitude in degrees
-  double latitude = 3;
+  double latitude = 1;
 
   // Longitude in degrees
-  double longitude = 4;
+  double longitude = 2;
 
   // Altitude in meters
-  double altitude = 5;
+  double altitude = 3;
 
   // Position covariance (m^2) defined relative to a tangential plane through the reported position. The components are East, North, and Up (ENU), in row-major order.
-  repeated double position_covariance = 6; // length 9
+  repeated double position_covariance = 4; // length 9
 
   // If `position_covariance` is available, `position_covariance_type` must be set to indicate the type of covariance.
-  PositionCovarianceType position_covariance_type = 7;
+  PositionCovarianceType position_covariance_type = 5;
 }

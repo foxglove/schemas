@@ -5,11 +5,11 @@ import { Time } from "./Time";
 
 /** A navigation satellite fix for any Global Navigation Satellite System */
 export type LocationFix = {
-  /** Frame for the sensor. Latitude and longitude readings are at the origin of the frame. */
-  frame_id: string;
-
   /** Timestamp of the message */
   timestamp: Time;
+
+  /** Frame for the sensor. Latitude and longitude readings are at the origin of the frame. */
+  frame_id: string;
 
   /** Latitude in degrees */
   latitude: number;

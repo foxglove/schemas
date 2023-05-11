@@ -2,6 +2,8 @@
 
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 package foxglove;
 
 // A navigation satellite fix for any Global Navigation Satellite System
@@ -16,6 +18,12 @@ message LocationFix {
 
     KNOWN = 3;
   }
+  // Timestamp of the message
+  google.protobuf.Timestamp timestamp = 6;
+
+  // Frame for the sensor. Latitude and longitude readings are at the origin of the frame.
+  string frame_id = 7;
+
   // Latitude in degrees
   double latitude = 1;
 

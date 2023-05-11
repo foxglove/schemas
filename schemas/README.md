@@ -1319,6 +1319,32 @@ A navigation satellite fix for any Global Navigation Satellite System
     <th>description</th>
   </tr>
 <tr>
+<td><code>timestamp</code></td>
+<td>
+
+time
+
+</td>
+<td>
+
+Timestamp of the message
+
+</td>
+</tr>
+<tr>
+<td><code>frame_id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Frame for the sensor. Latitude and longitude readings are at the origin of the frame.
+
+</td>
+</tr>
+<tr>
 <td><code>latitude</code></td>
 <td>
 

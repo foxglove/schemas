@@ -1229,19 +1229,35 @@ const LocationFix: FoxgloveMessageSchema = {
   description: "A navigation satellite fix for any Global Navigation Satellite System",
   fields: [
     {
+      name: "timestamp",
+      type: { type: "primitive", name: "time" },
+      description: "Timestamp of the message",
+      protobufFieldNumber: 6,
+    },
+    {
+      name: "frame_id",
+      type: { type: "primitive", name: "string" },
+      description:
+        "Frame for the sensor. Latitude and longitude readings are at the origin of the frame.",
+      protobufFieldNumber: 7,
+    },
+    {
       name: "latitude",
       type: { type: "primitive", name: "float64" },
       description: "Latitude in degrees",
+      protobufFieldNumber: 1,
     },
     {
       name: "longitude",
       type: { type: "primitive", name: "float64" },
       description: "Longitude in degrees",
+      protobufFieldNumber: 2,
     },
     {
       name: "altitude",
       type: { type: "primitive", name: "float64" },
       description: "Altitude in meters",
+      protobufFieldNumber: 3,
     },
     {
       name: "position_covariance",
@@ -1249,12 +1265,14 @@ const LocationFix: FoxgloveMessageSchema = {
       description:
         "Position covariance (m^2) defined relative to a tangential plane through the reported position. The components are East, North, and Up (ENU), in row-major order.",
       array: 9,
+      protobufFieldNumber: 4,
     },
     {
       name: "position_covariance_type",
       type: { type: "enum", enum: PositionCovarianceType },
       description:
         "If `position_covariance` is available, `position_covariance_type` must be set to indicate the type of covariance.",
+      protobufFieldNumber: 5,
     },
   ],
 };

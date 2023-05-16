@@ -12,6 +12,12 @@ string frame_id
 # Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`.
 string id
 
+# id of object
+string object_id
+
+# Url of pictogram
+string pictogramurl
+
 # Length of time (relative to `timestamp`) after which the entity should be automatically removed. Zero value indicates the entity should remain visible until it is replaced or deleted.
 builtin_interfaces/Duration lifetime
 

@@ -1746,6 +1746,14 @@ export const SceneEntity = {
       "type": "string",
       "description": "Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`."
     },
+    "object_id": {
+      "type": "string",
+      "description": "id of object "
+    },
+    "pictogramUrl": {
+      "type": "string",
+      "description": "Url of pictogram"
+    },
     "lifetime": {
       "type": "object",
       "title": "duration",
@@ -2812,6 +2820,14 @@ export const SceneUpdate = {
           "id": {
             "type": "string",
             "description": "Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`."
+          },
+          "object_id": {
+            "type": "string",
+            "description": "id of object "
+          },
+          "pictogramUrl": {
+            "type": "string",
+            "description": "Url of pictogram"
           },
           "lifetime": {
             "type": "object",

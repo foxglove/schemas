@@ -2296,6 +2296,32 @@ Identifier for the entity. A entity will replace any prior entity on the same to
 </td>
 </tr>
 <tr>
+<td><code>object_id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+id of object 
+
+</td>
+</tr>
+<tr>
+<td><code>pictogramUrl</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Url of pictogram
+
+</td>
+</tr>
+<tr>
 <td><code>lifetime</code></td>
 <td>
 

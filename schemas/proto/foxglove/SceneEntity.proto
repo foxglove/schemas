@@ -27,36 +27,42 @@ message SceneEntity {
   // Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`.
   string id = 3;
 
+  // id of object
+  string object_id = 4;
+
+  // Url of pictogram
+  string pictogramUrl = 5;
+
   // Length of time (relative to `timestamp`) after which the entity should be automatically removed. Zero value indicates the entity should remain visible until it is replaced or deleted.
-  google.protobuf.Duration lifetime = 4;
+  google.protobuf.Duration lifetime = 6;
 
   // Whether the entity should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
-  bool frame_locked = 5;
+  bool frame_locked = 7;
 
   // Additional user-provided metadata associated with the entity. Keys must be unique.
-  repeated foxglove.KeyValuePair metadata = 6;
+  repeated foxglove.KeyValuePair metadata = 8;
 
   // Arrow primitives
-  repeated foxglove.ArrowPrimitive arrows = 7;
+  repeated foxglove.ArrowPrimitive arrows = 9;
 
   // Cube primitives
-  repeated foxglove.CubePrimitive cubes = 8;
+  repeated foxglove.CubePrimitive cubes = 10;
 
   // Sphere primitives
-  repeated foxglove.SpherePrimitive spheres = 9;
+  repeated foxglove.SpherePrimitive spheres = 11;
 
   // Cylinder primitives
-  repeated foxglove.CylinderPrimitive cylinders = 10;
+  repeated foxglove.CylinderPrimitive cylinders = 12;
 
   // Line primitives
-  repeated foxglove.LinePrimitive lines = 11;
+  repeated foxglove.LinePrimitive lines = 13;
 
   // Triangle list primitives
-  repeated foxglove.TriangleListPrimitive triangles = 12;
+  repeated foxglove.TriangleListPrimitive triangles = 14;
 
   // Text primitives
-  repeated foxglove.TextPrimitive texts = 13;
+  repeated foxglove.TextPrimitive texts = 15;
 
   // Model primitives
-  repeated foxglove.ModelPrimitive models = 14;
+  repeated foxglove.ModelPrimitive models = 16;
 }

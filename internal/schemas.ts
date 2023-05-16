@@ -573,6 +573,16 @@ const SceneEntity: FoxgloveMessageSchema = {
         "Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`.",
     },
     {
+      name: "object_id",
+      type: { type: "primitive", name: "string" },
+      description: "id of object ",
+    },
+    {
+      name: "pictogramUrl",
+      type: { type: "primitive", name: "string" },
+      description: "Url of pictogram",
+    },
+    {
       name: "lifetime",
       type: { type: "primitive", name: "duration" },
       description:

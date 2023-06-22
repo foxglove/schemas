@@ -20,10 +20,10 @@ export type CompressedVideo = {
   /**
    * Video metadata used to initialize a video decoder, expressed as an array of key-value pairs. This metadata must be present for every keyframe (when `keyframe` is true), and should be left empty for delta frames. This metadata is modeled after [WebCodecs VideoDecoderConfig](https://www.w3.org/TR/webcodecs/#video-decoder-config), although it can be used to initialize any video decoder. See the See the [WebCodecs Codec Registry](https://www.w3.org/TR/webcodecs-avc-codec-registration/) for more information on the interpretation of each field for a specific codec. The following keys are supported:
    * 
-   *       * `codec` - A fully qualified codec string describing the video codec. The format for this string is specific to each codec, and is described in the WebCodecs Codec Registry.
-   *       * `description` - Base64-encoded binary data that is specific to each codec. For H.264 this is an AVCDecoderConfigurationRecord (avcC data), and for H.265 this is a HEVCDecoderConfigurationRecord (hvcC data).
-   *       * `codedWidth` - Width of video frames in pixels, potentially including non-visible padding, and prior to considering potential ratio adjustments.
-   *       * `codedHeight` - Height of video frames in pixels, potentially including non-visible padding, and prior to considering potential ratio adjustments.
+   *       * `codec` - (Required) A fully qualified codec string describing the video codec. The format for this string is specific to each codec, and is described in the WebCodecs Codec Registry.
+   *       * `configuration` - (Optional or Required based on codec) Base64-encoded binary data that is specific to each codec. For H.264 this is an AVCDecoderConfigurationRecord (avcC data), and for H.265 this is a HEVCDecoderConfigurationRecord (hvcC data).
+   *       * `codedWidth` - (Required) Width of video frames in pixels, potentially including non-visible padding, and prior to considering potential ratio adjustments.
+   *       * `codedHeight` - (Required) Height of video frames in pixels, potentially including non-visible padding, and prior to considering potential ratio adjustments.
    *       * `displayAspectWidth` - (Optional) Horizontal dimension of the VideoFrame's aspect ratio when displayed.
    *       * `displayAspectHeight` - (Optional) Vertical dimension of the VideoFrame's aspect ratio when displayed.
    */

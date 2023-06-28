@@ -45,7 +45,9 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
       if (schema.rosEquivalent != undefined) {
         continue;
       }
-      const msg = generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 1 }));
+      const msg = generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 1 }), {
+        rosVersion: 1,
+      });
       await fs.writeFile(path.join(outDir, "ros1", `${schema.name}.msg`), msg);
       await fs.writeFile(path.join(rosOutDir, "ros1", `${schema.name}.msg`), msg);
     }
@@ -58,7 +60,9 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
       if (schema.rosEquivalent != undefined) {
         continue;
       }
-      const msg = generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 2 }));
+      const msg = generateRosMsg(generateRosMsgDefinition(schema, { rosVersion: 2 }), {
+        rosVersion: 2,
+      });
       await fs.writeFile(path.join(outDir, "ros2", `${schema.name}.msg`), msg);
       await fs.writeFile(path.join(rosOutDir, "ros2", `${schema.name}.msg`), msg);
     }

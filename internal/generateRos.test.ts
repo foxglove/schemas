@@ -239,7 +239,7 @@ describe("generateRosMsgDefinition", () => {
             "isArray": false,
             "isComplex": false,
             "name": "field_duration",
-            "type": "builtin_interfaces/Duration",
+            "type": "duration",
           },
           {
             "arrayLength": undefined,
@@ -247,7 +247,7 @@ describe("generateRosMsgDefinition", () => {
             "isArray": false,
             "isComplex": false,
             "name": "field_time",
-            "type": "builtin_interfaces/Time",
+            "type": "time",
           },
           {
             "arrayLength": undefined,
@@ -295,7 +295,7 @@ describe("generateRosMsgDefinition", () => {
             "isArray": true,
             "isComplex": false,
             "name": "field_duration_array",
-            "type": "builtin_interfaces/Duration",
+            "type": "duration",
           },
           {
             "arrayLength": undefined,
@@ -303,7 +303,7 @@ describe("generateRosMsgDefinition", () => {
             "isArray": true,
             "isComplex": false,
             "name": "field_time_array",
-            "type": "builtin_interfaces/Time",
+            "type": "time",
           },
           {
             "arrayLength": undefined,
@@ -343,7 +343,7 @@ describe("generateRosMsgDefinition", () => {
             "isArray": true,
             "isComplex": false,
             "name": "field_duration_fixed_array",
-            "type": "builtin_interfaces/Duration",
+            "type": "duration",
           },
           {
             "arrayLength": 3,
@@ -351,7 +351,7 @@ describe("generateRosMsgDefinition", () => {
             "isArray": true,
             "isComplex": false,
             "name": "field_time_fixed_array",
-            "type": "builtin_interfaces/Time",
+            "type": "time",
           },
           {
             "arrayLength": 3,
@@ -454,6 +454,7 @@ describe("generateRosMsg", () => {
         generateRosMsgDefinition(exampleMessageWithoutArrayOfBytes, {
           rosVersion: 1,
         }),
+        { rosVersion: 1 },
       ),
     ).toMatchInlineSnapshot(`
       "# foxglove_msgs/ExampleMessage
@@ -550,6 +551,7 @@ describe("generateRosMsg", () => {
         generateRosMsgDefinition(exampleMessageWithoutArrayOfBytes, {
           rosVersion: 2,
         }),
+        { rosVersion: 2 },
       ),
     ).toMatchInlineSnapshot(`
       "# foxglove_msgs/msg/ExampleMessage

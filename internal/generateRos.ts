@@ -70,7 +70,7 @@ export function generateRosMsg(
       constant = `=${field.valueText}`;
     }
     let type = field.type;
-    if (!(field.isComplex ?? false) && ("time" === type || "duration" === type)) {
+    if (type === "time" || type === "duration") {
       type = timeDurationToRos(type, { rosVersion });
     }
     source += `${type}${field.isArray === true ? `[${field.arrayLength ?? ""}]` : ""} ${

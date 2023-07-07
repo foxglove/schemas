@@ -1,4 +1,4 @@
-export * from "./exportTypescriptSchema";
+export * from "./exportTypescriptSchemata";
 export * from "./generateJsonSchema";
 export * from "./generateProto";
 export * from "./generateRos";

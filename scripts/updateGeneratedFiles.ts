@@ -4,7 +4,7 @@ import path from "path";
 import rimraf from "rimraf";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../internal";
-import { exportTypescriptSchema } from "../internal/exportTypescriptSchema";
+import { exportTypescriptSchemata } from "../internal/exportTypescriptSchemata";
 import {
   BYTE_VECTOR_FB,
   DURATION_FB,
@@ -101,7 +101,7 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
 
   await logProgress("Generating TypeScript definitions", async () => {
     await fs.mkdir(path.join(outDir, "typescript"), { recursive: true });
-    const schemas = exportTypescriptSchema();
+    const schemas = exportTypescriptSchemata();
     for (const [name, source] of Object.entries(schemas)) {
       await fs.writeFile(path.join(outDir, "typescript", `${name}.ts`), source);
     }

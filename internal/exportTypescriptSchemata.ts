@@ -6,7 +6,7 @@ import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "./schemas";
  *
  * @returns a record of schema name => schema source.
  */
-export function exportTypescriptSchema(): Record<string, string> {
+export function exportTypescriptSchemata(): Record<string, string> {
   const schemas: Record<string, string> = {};
 
   for (const schema of Object.values(foxgloveMessageSchemas)) {

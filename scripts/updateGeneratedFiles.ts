@@ -102,7 +102,7 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
   await logProgress("Generating TypeScript definitions", async () => {
     await fs.mkdir(path.join(outDir, "typescript"), { recursive: true });
     const schemas = exportTypeScriptSchemas();
-    for (const [name, source] of Object.entries(schemas)) {
+    for (const [name, source] of schemas.entries()) {
       await fs.writeFile(path.join(outDir, "typescript", `${name}.ts`), source);
     }
   });

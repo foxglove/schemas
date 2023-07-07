@@ -2,23 +2,23 @@ import { DURATION_TS, TIME_TS, generateTypeScript } from "./generateTypeScript";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "./schemas";
 
 /**
- * Export typescript schema as source, keyed by the schema name.
+ * Export schemas as TypeScript source code, keyed by the file base name (without `.ts` suffix).
  *
- * @returns a record of schema name => schema source.
+ * @returns a map of file base name => schema source.
  */
-export function exportTypescriptSchemata(): Record<string, string> {
-  const schemas: Record<string, string> = {};
+export function exportTypeScriptSchemas(): Map<string, string> {
+  const schemas = new Map<string, string>();
 
   for (const schema of Object.values(foxgloveMessageSchemas)) {
-    schemas[schema.name] = generateTypeScript(schema);
+    schemas.set(schema.name, generateTypeScript(schema));
   }
 
   for (const schema of Object.values(foxgloveEnumSchemas)) {
-    schemas[schema.name] = generateTypeScript(schema);
+    schemas.set(schema.name, generateTypeScript(schema));
   }
 
-  schemas["Duration"] = DURATION_TS;
-  schemas["Time"] = TIME_TS;
+  schemas.set("Duration", DURATION_TS);
+  schemas.set("Time", TIME_TS);
 
   const allSchemaNames = [
     ...Object.values(foxgloveMessageSchemas),
@@ -28,7 +28,7 @@ export function exportTypescriptSchemata(): Record<string, string> {
   for (const schema of allSchemaNames) {
     indexTS += `export * from "./${schema.name}";\n`;
   }
-  schemas["index"] = indexTS;
+  schemas.set("index", indexTS);
 
   return schemas;
 }

@@ -4,16 +4,16 @@ import path from "path";
 import rimraf from "rimraf";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../internal";
+import { exportTypescriptSchemata } from "../internal/exportTypescriptSchemata";
 import {
   BYTE_VECTOR_FB,
   DURATION_FB,
-  generateFlatbuffers,
   TIME_FB,
+  generateFlatbuffers,
 } from "../internal/generateFlatbufferSchema";
 import { generateJsonSchema } from "../internal/generateJsonSchema";
 import { generateMarkdown } from "../internal/generateMarkdown";
 import { generateProto } from "../internal/generateProto";
-import { generateTypeScript, DURATION_TS, TIME_TS } from "../internal/generateTypeScript";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../internal/schemas";
 
 async function logProgress(message: string, body: () => Promise<void>) {
@@ -101,29 +101,10 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
 
   await logProgress("Generating TypeScript definitions", async () => {
     await fs.mkdir(path.join(outDir, "typescript"), { recursive: true });
-    await fs.writeFile(path.join(outDir, "typescript", "Time.ts"), TIME_TS);
-    await fs.writeFile(path.join(outDir, "typescript", "Duration.ts"), DURATION_TS);
-    for (const schema of Object.values(foxgloveMessageSchemas)) {
-      await fs.writeFile(
-        path.join(outDir, "typescript", `${schema.name}.ts`),
-        generateTypeScript(schema),
-      );
+    const schemas = exportTypescriptSchemata();
+    for (const [name, source] of Object.entries(schemas)) {
+      await fs.writeFile(path.join(outDir, "typescript", `${name}.ts`), source);
     }
-    for (const schema of Object.values(foxgloveEnumSchemas)) {
-      await fs.writeFile(
-        path.join(outDir, "typescript", `${schema.name}.ts`),
-        generateTypeScript(schema),
-      );
-    }
-    const allSchemaNames = [
-      ...Object.values(foxgloveMessageSchemas),
-      ...Object.values(foxgloveEnumSchemas),
-    ].sort((a, b) => a.name.localeCompare(b.name));
-    let indexTS = "";
-    for (const schema of allSchemaNames) {
-      indexTS += `export * from "./${schema.name}";\n`;
-    }
-    await fs.writeFile(path.join(outDir, "typescript", `index.ts`), indexTS);
   });
 
   await logProgress("Generating README.md", async () => {

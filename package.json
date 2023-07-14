@@ -22,7 +22,7 @@
     "lint:ci": "eslint --report-unused-disable-directives .",
     "lint": "eslint --report-unused-disable-directives --fix .",
     "test": "jest",
-    "update-generated-files": "ts-node --files --project tsconfig.json scripts/updateGeneratedFiles --out-dir schemas --ros-out-dir ros_foxglove_msgs"
+    "update-generated-files": "yarn test --updateSnapshot && ts-node --files --project tsconfig.json scripts/updateGeneratedFiles --out-dir schemas --ros-out-dir ros_foxglove_msgs"
   },
   "devDependencies": {
     "@foxglove/eslint-plugin": "0.21.0",

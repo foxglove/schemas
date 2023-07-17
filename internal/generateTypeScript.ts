@@ -39,9 +39,9 @@ export function generateTypeScript(schema: FoxgloveSchema): string {
           return `${name} = ${value},`;
         }
       });
-      definition = `/** ${schema.description} */\nexport enum ${schema.name} {\n  ${fields.join(
-        "\n\n  ",
-      )}\n}`;
+      definition = `/** ${schema.description} */\nexport const enum ${
+        schema.name
+      } {\n  ${fields.join("\n\n  ")}\n}`;
       break;
     }
 

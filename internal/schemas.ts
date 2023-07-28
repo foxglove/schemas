@@ -805,7 +805,6 @@ const CompressedVideo: FoxgloveMessageSchema = {
       type: { type: "primitive", name: "string" },
       description:
         "Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
-      protobufFieldNumber: 4,
     },
     {
       name: "data",

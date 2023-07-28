@@ -17,6 +17,7 @@ All schemas are generated from [schemas.ts](/internal/schemas.ts).
 - [CircleAnnotation](#circleannotation)
 - [Color](#color)
 - [CompressedImage](#compressedimage)
+- [CompressedVideo](#compressedvideo)
 - [CubePrimitive](#cubeprimitive)
 - [CylinderPrimitive](#cylinderprimitive)
 - [FrameTransform](#frametransform)
@@ -609,6 +610,72 @@ string
 Image format
 
 Supported values: `webp`, `jpeg`, `png`
+
+</td>
+</tr>
+</table>
+
+## CompressedVideo
+
+A single frame of a compressed video bitstream
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>
+
+time
+
+</td>
+<td>
+
+Timestamp of image
+
+</td>
+</tr>
+<tr>
+<td><code>frame_id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
+
+</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>
+
+bytes
+
+</td>
+<td>
+
+Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame).
+
+</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Video format
+
+Supported values: `h264`
 
 </td>
 </tr>

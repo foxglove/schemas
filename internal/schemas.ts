@@ -790,6 +790,37 @@ const CompressedImage: FoxgloveMessageSchema = {
   ],
 };
 
+const CompressedVideo: FoxgloveMessageSchema = {
+  type: "message",
+  name: "CompressedVideo",
+  description: "A single frame of a compressed video bitstream",
+  fields: [
+    {
+      name: "timestamp",
+      type: { type: "primitive", name: "time" },
+      description: "Timestamp of image",
+    },
+    {
+      name: "frame_id",
+      type: { type: "primitive", name: "string" },
+      description:
+        "Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
+      protobufFieldNumber: 4,
+    },
+    {
+      name: "data",
+      type: { type: "primitive", name: "bytes" },
+      description:
+        "Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame).",
+    },
+    {
+      name: "format",
+      type: { type: "primitive", name: "string" },
+      description: "Video format\n\nSupported values: `h264`",
+    },
+  ],
+};
+
 const RawImage: FoxgloveMessageSchema = {
   type: "message",
   name: "RawImage",
@@ -1425,6 +1456,7 @@ export const foxgloveMessageSchemas = {
   CircleAnnotation,
   Color,
   CompressedImage,
+  CompressedVideo,
   CylinderPrimitive,
   CubePrimitive,
   FrameTransform,

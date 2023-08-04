@@ -3,6 +3,7 @@ export * from "./CameraCalibration";
 export * from "./CircleAnnotation";
 export * from "./Color";
 export * from "./CompressedImage";
+export * from "./CompressedVideo";
 export * from "./CubePrimitive";
 export * from "./CylinderPrimitive";
 export * from "./FrameTransform";

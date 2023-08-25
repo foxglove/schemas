@@ -99,7 +99,7 @@ export function generateOmgIdl(schema: FoxgloveSchema): string {
 
     Array.from(imports)
       .sort()
-      .map((name) => `#include <foxglove/${name}.idl>`)
+      .map((name) => `#include "foxglove/${name}.idl"`)
       .join("\n"),
 
     "module foxglove {",

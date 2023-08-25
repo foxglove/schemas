@@ -16,7 +16,7 @@ function primitiveToIdl(type: Exclude<FoxglovePrimitive, "time" | "duration">) {
 }
 
 export const TIME_IDL = `struct Time {
-  int32 sec;
+  uint32 sec;
   uint32 nsec;
 };
 `;

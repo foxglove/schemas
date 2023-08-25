@@ -109,14 +109,20 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
   });
 
   await logProgress("Generating OMG IDL definitions", async () => {
-    await fs.mkdir(path.join(outDir, "omgidl"), { recursive: true });
-    await fs.writeFile(path.join(outDir, "omgidl", "Time.idl"), TIME_IDL);
-    await fs.writeFile(path.join(outDir, "omgidl", "Duration.idl"), DURATION_IDL);
+    await fs.mkdir(path.join(outDir, "omgidl", "foxglove"), { recursive: true });
+    await fs.writeFile(path.join(outDir, "omgidl", "foxglove", "Time.idl"), TIME_IDL);
+    await fs.writeFile(path.join(outDir, "omgidl", "foxglove", "Duration.idl"), DURATION_IDL);
     for (const schema of Object.values(foxgloveMessageSchemas)) {
-      await fs.writeFile(path.join(outDir, "omgidl", `${schema.name}.idl`), generateOmgIdl(schema));
+      await fs.writeFile(
+        path.join(outDir, "omgidl", "foxglove", `${schema.name}.idl`),
+        generateOmgIdl(schema),
+      );
     }
     for (const schema of Object.values(foxgloveEnumSchemas)) {
-      await fs.writeFile(path.join(outDir, "omgidl", `${schema.name}.idl`), generateOmgIdl(schema));
+      await fs.writeFile(
+        path.join(outDir, "omgidl", "foxglove", `${schema.name}.idl`),
+        generateOmgIdl(schema),
+      );
     }
   });
 

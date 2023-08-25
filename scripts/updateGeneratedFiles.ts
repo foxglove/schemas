@@ -13,6 +13,7 @@ import {
 } from "../internal/generateFlatbufferSchema";
 import { generateJsonSchema } from "../internal/generateJsonSchema";
 import { generateMarkdown } from "../internal/generateMarkdown";
+import { DURATION_IDL, TIME_IDL, generateOmgIdl } from "../internal/generateOmgIdl";
 import { generateProto } from "../internal/generateProto";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../internal/schemas";
 
@@ -104,6 +105,18 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     const schemas = exportTypeScriptSchemas();
     for (const [name, source] of schemas.entries()) {
       await fs.writeFile(path.join(outDir, "typescript", `${name}.ts`), source);
+    }
+  });
+
+  await logProgress("Generating OMG IDL definitions", async () => {
+    await fs.mkdir(path.join(outDir, "omgidl"), { recursive: true });
+    await fs.writeFile(path.join(outDir, "omgidl", "Time.idl"), TIME_IDL);
+    await fs.writeFile(path.join(outDir, "omgidl", "Duration.idl"), DURATION_IDL);
+    for (const schema of Object.values(foxgloveMessageSchemas)) {
+      await fs.writeFile(path.join(outDir, "omgidl", `${schema.name}.idl`), generateOmgIdl(schema));
+    }
+    for (const schema of Object.values(foxgloveEnumSchemas)) {
+      await fs.writeFile(path.join(outDir, "omgidl", `${schema.name}.idl`), generateOmgIdl(schema));
     }
   });
 

@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@foxglove/eslint-plugin": "0.21.0",
+    "@foxglove/omgidl-parser": "^0.2.0",
     "@foxglove/rosmsg": "^4.0.0",
     "@foxglove/tsconfig": "1.1.0",
     "@types/jest": "29.4.0",

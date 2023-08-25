@@ -17,8 +17,8 @@ export const exampleEnum: FoxgloveEnumSchema = {
   parentSchemaName: "ExampleMessage",
   description: "An example enum",
   values: [
-    { name: "A", value: 1, description: "Value A" },
-    { name: "B", value: 2, description: "Value B" },
+    { name: "A", value: 0, description: "Value A" },
+    { name: "B", value: 1, description: "Value B" },
   ],
 };
 

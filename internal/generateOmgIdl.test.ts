@@ -150,4 +150,34 @@ describe("generateOmgIdl", () => {
     }
     expect(() => parseIdlToMessageDefinition(idl)).not.toThrow();
   });
+
+  it("refuses to generate enum with non-sequential values", () => {
+    expect(() =>
+      generateOmgIdl({
+        type: "enum",
+        name: "Foo",
+        description: "",
+        parentSchemaName: "Bar",
+        protobufEnumName: "Foo",
+        values: [{ name: "A", value: 1 }],
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Enum value Foo.A at index 0 has value 1; index and value must match for OMG IDL"`,
+    );
+    expect(() =>
+      generateOmgIdl({
+        type: "enum",
+        name: "Foo",
+        description: "",
+        parentSchemaName: "Bar",
+        protobufEnumName: "Foo",
+        values: [
+          { name: "A", value: 0 },
+          { name: "B", value: 3 },
+        ],
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Enum value Foo.B at index 1 has value 3; index and value must match for OMG IDL"`,
+    );
+  });
 });

@@ -16,10 +16,10 @@ describe("generateFlatbuffers", () => {
       /// An example enum
       enum ExampleEnum : ubyte {
         /// Value A
-        A = 1,
+        A = 0,
 
         /// Value B
-        B = 2,
+        B = 1,
       }
       /// An example type
       table ExampleMessage {

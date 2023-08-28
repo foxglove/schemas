@@ -1,0 +1,8 @@
+module foxglove {
+
+struct Duration {
+  int32 sec;
+  uint32 nsec;
+};
+
+};

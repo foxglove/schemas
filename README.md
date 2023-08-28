@@ -13,7 +13,7 @@ Message schemas supported by [Foxglove Studio](https://studio.foxglove.dev)
 
 See [Foxglove Schemas documentation](https://foxglove.dev/docs/studio/messages).
 
-The [schemas](./schemas) folder contains type definitions generated for ROS 1, ROS 2, Protobuf, JSON Schema, and TypeScript.
+The [schemas](./schemas) folder contains type definitions generated for ROS 1, ROS 2, Protobuf, JSON Schema, TypeScript, and OMG IDL.
 
 These schemas can be used in [MCAP](https://github.com/foxglove/mcap) files or [Foxglove WebSocket](https://github.com/foxglove/ws-protocol) servers to take advantage of Foxglove Studio's visualizations.
 

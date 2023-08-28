@@ -9,10 +9,10 @@ describe("generateTypeScript", () => {
       /** An example enum */
       export enum ExampleEnum {
         /** Value A */
-        A = 1,
+        A = 0,
 
         /** Value B */
-        B = 2,
+        B = 1,
       }
       "
     `);

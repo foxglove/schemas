@@ -111,12 +111,12 @@ describe("generateJsonSchema", () => {
             "description": "An enum field",
             "oneOf": [
               {
-                "const": 1,
+                "const": 0,
                 "description": "Value A",
                 "title": "A",
               },
               {
-                "const": 2,
+                "const": 1,
                 "description": "Value B",
                 "title": "B",
               },
@@ -129,12 +129,12 @@ describe("generateJsonSchema", () => {
               "description": "An enum array field",
               "oneOf": [
                 {
-                  "const": 1,
+                  "const": 0,
                   "description": "Value A",
                   "title": "A",
                 },
                 {
-                  "const": 2,
+                  "const": 1,
                   "description": "Value B",
                   "title": "B",
                 },

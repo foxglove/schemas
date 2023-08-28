@@ -1,4 +1,4 @@
-import { parseIdlToMessageDefinition } from "@foxglove/omgidl-parser";
+import { parseIdl } from "@foxglove/omgidl-parser";
 
 import { DURATION_IDL, TIME_IDL, generateOmgIdl } from "./generateOmgIdl";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "./schemas";
@@ -44,18 +44,22 @@ describe("generateOmgIdl", () => {
         Time field_time;
 
         // boolean field
+        @default(TRUE)
         boolean field_boolean;
 
         // bytes field
         sequence<uint8> field_bytes;
 
         // float64 field
+        @default(1.0)
         double field_float64;
 
         // uint32 field
+        @default(5)
         uint32 field_uint32;
 
         // string field
+        @default("string-type")
         string field_string;
 
         // duration array field
@@ -148,7 +152,7 @@ describe("generateOmgIdl", () => {
         return file;
       });
     }
-    expect(() => parseIdlToMessageDefinition(idl)).not.toThrow();
+    expect(() => parseIdl(idl)).not.toThrow();
   });
 
   it("refuses to generate enum with non-sequential values", () => {

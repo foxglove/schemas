@@ -15,15 +15,25 @@ function primitiveToIdl(type: Exclude<FoxglovePrimitive, "time" | "duration">) {
   }
 }
 
-export const TIME_IDL = `struct Time {
+export const TIME_IDL = `\
+module foxglove {
+
+struct Time {
   uint32 sec;
   uint32 nsec;
 };
+
+};
 `;
 
-export const DURATION_IDL = `struct Duration {
+export const DURATION_IDL = `\
+module foxglove {
+
+struct Duration {
   int32 sec;
   uint32 nsec;
+};
+
 };
 `;
 
@@ -84,7 +94,27 @@ export function generateOmgIdl(schema: FoxgloveSchema): string {
         }
         const descriptionLines = field.description.trim().split("\n");
         const comment = descriptionLines.map((line) => `// ${line}`).join("\n  ");
-        return `${comment}\n  ${fieldType} ${field.name}${arraySize};`;
+
+        let defaultAnnotation = "";
+        if (typeof field.defaultValue === "string") {
+          defaultAnnotation = `@default(${JSON.stringify(field.defaultValue)})\n  `;
+        } else if (typeof field.defaultValue === "number") {
+          // For floating-point fields with integer default values, ensure we output a number with
+          // at least one decimal place so it is interpreted as an IDL floating-point literal
+          if (
+            field.type.type === "primitive" &&
+            field.type.name === "float64" &&
+            Number.isInteger(field.defaultValue)
+          ) {
+            defaultAnnotation = `@default(${field.defaultValue.toFixed(1)})\n  `;
+          } else {
+            defaultAnnotation = `@default(${field.defaultValue})\n  `;
+          }
+        } else if (typeof field.defaultValue === "boolean") {
+          defaultAnnotation = `@default(${field.defaultValue ? "TRUE" : "FALSE"})\n  `;
+        }
+
+        return `${comment}\n  ${defaultAnnotation}${fieldType} ${field.name}${arraySize};`;
       });
 
       definition = `// ${schema.description}\nstruct ${schema.name} {\n  ${fields.join(

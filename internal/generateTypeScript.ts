@@ -42,7 +42,10 @@ export const DURATION_TS = `export type Duration = {
 `;
 
 export type GenerateTypeScriptOptions = {
-  /** Include TypedArray types on numeric array fields, e.g. `number[] | Uint32Array` */
+  /**
+   * Include TypedArray types on numeric array fields, e.g. `number[] | Uint32Array`. Used by
+   * foxglove/studio to accept TypedArrays for user script outputs.
+   */
   includeTypedArrays?: boolean;
 };
 

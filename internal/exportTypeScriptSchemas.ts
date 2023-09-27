@@ -1,4 +1,9 @@
-import { DURATION_TS, TIME_TS, generateTypeScript } from "./generateTypeScript";
+import {
+  DURATION_TS,
+  GenerateTypeScriptOptions,
+  TIME_TS,
+  generateTypeScript,
+} from "./generateTypeScript";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "./schemas";
 
 /**
@@ -6,15 +11,17 @@ import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "./schemas";
  *
  * @returns a map of file base name => schema source.
  */
-export function exportTypeScriptSchemas(): Map<string, string> {
+export function exportTypeScriptSchemas(
+  options: GenerateTypeScriptOptions = {},
+): Map<string, string> {
   const schemas = new Map<string, string>();
 
   for (const schema of Object.values(foxgloveMessageSchemas)) {
-    schemas.set(schema.name, generateTypeScript(schema));
+    schemas.set(schema.name, generateTypeScript(schema, options));
   }
 
   for (const schema of Object.values(foxgloveEnumSchemas)) {
-    schemas.set(schema.name, generateTypeScript(schema));
+    schemas.set(schema.name, generateTypeScript(schema, options));
   }
 
   schemas.set("Duration", DURATION_TS);

@@ -798,7 +798,7 @@ const CompressedVideo: FoxgloveMessageSchema = {
     {
       name: "timestamp",
       type: { type: "primitive", name: "time" },
-      description: "Timestamp of image",
+      description: "Timestamp of video frame",
     },
     {
       name: "frame_id",
@@ -810,7 +810,7 @@ const CompressedVideo: FoxgloveMessageSchema = {
       name: "data",
       type: { type: "primitive", name: "bytes" },
       description:
-        "Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame).",
+        "Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). NOTE: It is strongly recommended to _not_ write B frames/slices to the H264 stream and instead solely use I and P frames because this more closely mirrors live data sources.",
     },
     {
       name: "format",

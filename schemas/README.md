@@ -634,7 +634,7 @@ time
 </td>
 <td>
 
-Timestamp of image
+Timestamp of video frame
 
 </td>
 </tr>
@@ -647,7 +647,7 @@ string
 </td>
 <td>
 
-Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
+Frame of reference for the video. The origin of the frame is the optical center of the camera. +x points to the right in the video, +y points down, and +z points into the plane of the video.
 
 </td>
 </tr>
@@ -660,7 +660,7 @@ bytes
 </td>
 <td>
 
-Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame).
+Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). B frames should be avoided because of their inconsistency with recordings directly written from live sources.
 
 </td>
 </tr>

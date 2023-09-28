@@ -351,16 +351,16 @@ export const CompressedVideo = {
           "maximum": 999999999
         }
       },
-      "description": "Timestamp of image"
+      "description": "Timestamp of video frame"
     },
     "frame_id": {
       "type": "string",
-      "description": "Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image."
+      "description": "Frame of reference for the video. The origin of the frame is the optical center of the camera. +x points to the right in the video, +y points down, and +z points into the plane of the video."
     },
     "data": {
       "type": "string",
       "contentEncoding": "base64",
-      "description": "Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame)."
+      "description": "Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). B frames should be avoided because of their inconsistency with recordings directly written from live sources."
     },
     "format": {
       "type": "string",

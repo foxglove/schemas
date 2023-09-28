@@ -804,13 +804,13 @@ const CompressedVideo: FoxgloveMessageSchema = {
       name: "frame_id",
       type: { type: "primitive", name: "string" },
       description:
-        "Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.",
+        "Frame of reference for the video. The origin of the frame is the optical center of the camera. +x points to the right in the video, +y points down, and +z points into the plane of the video.",
     },
     {
       name: "data",
       type: { type: "primitive", name: "bytes" },
       description:
-        "Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). NOTE: It is strongly recommended to _not_ write B frames/slices to the H264 stream and instead solely use I and P frames because this more closely mirrors live data sources.",
+        "Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). B frames should be avoided because of their inconsistency with recordings directly written from live sources.",
     },
     {
       name: "format",

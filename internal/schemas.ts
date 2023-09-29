@@ -810,7 +810,7 @@ const CompressedVideo: FoxgloveMessageSchema = {
       name: "data",
       type: { type: "primitive", name: "bytes" },
       description:
-        "Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). B frames should be avoided because of their inconsistency with recordings directly written from live sources.",
+        "Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove Studio does not support video streams that include B frames because they require lookahead.",
     },
     {
       name: "format",

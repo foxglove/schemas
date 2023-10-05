@@ -39,6 +39,7 @@ export * from "./SceneUpdate";
 export * from "./SpherePrimitive";
 export * from "./TextAnnotation";
 export * from "./TextPrimitive";
+export * from "./Time";
 export * from "./TriangleListPrimitive";
 export * from "./Vector2";
 export * from "./Vector3";

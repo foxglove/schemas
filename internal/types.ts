@@ -12,7 +12,7 @@ export type FoxglovePrimitiveSchema = {
   name: string;
   description: string;
   fields: ReadonlyArray<FoxglovePrimitive>;
-}
+};
 
 export type FoxgloveEnumSchema = {
   type: "enum";

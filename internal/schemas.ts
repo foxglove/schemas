@@ -1,4 +1,4 @@
-import { FoxgloveEnumSchema, FoxgloveMessageSchema } from "./types";
+import { FoxgloveEnumSchema, FoxgloveMessageSchema, FoxglovePrimitiveSchema } from "./types";
 
 const Color: FoxgloveMessageSchema = {
   type: "message",
@@ -1464,8 +1464,8 @@ const Time: FoxglovePrimitiveSchema = {
       type: { type: "primitive", name: "float64" },
       description: "nanoseconds",
     },
-  ]
-}
+  ],
+};
 
 const Duration: FoxglovePrimitiveSchema = {
   type: "primitive",
@@ -1482,14 +1482,13 @@ const Duration: FoxglovePrimitiveSchema = {
       type: { type: "primitive", name: "float64" },
       description: "nanoseconds",
     },
-  ]
-}
-
-export const foxglovePrimitiveSchemas = {
-  time: Time,
-  duration: Duration,
+  ],
 };
 
+export const foxglovePrimitiveSchemas = {
+  Time,
+  Duration,
+};
 
 export const foxgloveMessageSchemas = {
   ArrowPrimitive,

@@ -57,6 +57,19 @@ export function generateTypeScript(
 
   let definition: string;
   switch (schema.type) {
+    case "primitive":
+      definition = "";
+      if (schema.name === "Time") {
+        definition = TIME_TS;
+      } else if (schema.name === "Duration") {
+        definition = DURATION_TS;
+      }
+      if (definition === "") {
+        throw new Error(
+          `TypeScriptGenerator encountered an unexpected primitive type ${schema.name}`,
+        );
+      }
+      return definition;
     case "enum": {
       const fields = schema.values.map(({ name, value, description }) => {
         if (description != undefined) {

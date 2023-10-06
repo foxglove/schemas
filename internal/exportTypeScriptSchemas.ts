@@ -1,9 +1,4 @@
-import {
-  DURATION_TS,
-  GenerateTypeScriptOptions,
-  TIME_TS,
-  generateTypeScript,
-} from "./generateTypeScript";
+import { GenerateTypeScriptOptions, generateTypeScript } from "./generateTypeScript";
 import { foxgloveEnumSchemas, foxgloveMessageSchemas, foxglovePrimitiveSchemas } from "./schemas";
 
 /**
@@ -24,8 +19,9 @@ export function exportTypeScriptSchemas(
     schemas.set(schema.name, generateTypeScript(schema, options));
   }
 
-  schemas.set("Duration", DURATION_TS);
-  schemas.set("Time", TIME_TS);
+  for (const schema of Object.values(foxglovePrimitiveSchemas)) {
+    schemas.set(schema.name, generateTypeScript(schema, options));
+  }
 
   const allSchemaNames = [
     ...Object.values(foxgloveMessageSchemas),

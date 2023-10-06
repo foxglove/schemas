@@ -7,6 +7,13 @@ export type FoxglovePrimitive =
   | "time"
   | "duration";
 
+export type FoxglovePrimitiveSchema = {
+  type: "primitive";
+  name: string;
+  description: string;
+  fields: ReadonlyArray<FoxglovePrimitive>;
+}
+
 export type FoxgloveEnumSchema = {
   type: "enum";
   name: string;
@@ -41,4 +48,4 @@ export type FoxgloveMessageSchema = {
   fields: ReadonlyArray<FoxgloveMessageField>;
 };
 
-export type FoxgloveSchema = FoxgloveMessageSchema | FoxgloveEnumSchema;
+export type FoxgloveSchema = FoxgloveMessageSchema | FoxgloveEnumSchema | FoxglovePrimitiveSchema;

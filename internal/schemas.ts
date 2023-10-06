@@ -1449,6 +1449,48 @@ const LaserScan: FoxgloveMessageSchema = {
   ],
 };
 
+const Time: FoxglovePrimitiveSchema = {
+  type: "primitive",
+  name: "time",
+  description: "Timestamp in the format of second and nanoseconds since epoch",
+  fields: [
+    {
+      name: "sec",
+      type: { type: "primitive", name: "float64" },
+      description: "Seconds since epoch",
+    },
+    {
+      name: "nsec",
+      type: { type: "primitive", name: "float64" },
+      description: "nanoseconds",
+    },
+  ]
+}
+
+const Duration: FoxglovePrimitiveSchema = {
+  type: "primitive",
+  name: "time",
+  description: "Difference between two timestamps",
+  fields: [
+    {
+      name: "sec",
+      type: { type: "primitive", name: "float64" },
+      description: "Seconds since epoch",
+    },
+    {
+      name: "nsec",
+      type: { type: "primitive", name: "float64" },
+      description: "nanoseconds",
+    },
+  ]
+}
+
+export const foxglovePrimitiveSchemas = {
+  time: Time,
+  duration: Duration,
+};
+
+
 export const foxgloveMessageSchemas = {
   ArrowPrimitive,
   CameraCalibration,

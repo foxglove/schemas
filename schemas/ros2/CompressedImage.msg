@@ -14,5 +14,5 @@ uint8[] data
 
 # Image format
 # 
-# Supported values: `webp`, `jpeg`, `png`
+# Chrome supported media types, such as `webp`, `jpeg`, `png`
 string format

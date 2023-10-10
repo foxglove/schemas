@@ -17,7 +17,7 @@ export type CompressedImage = {
   /**
    * Image format
    * 
-   * Chrome supported media types, such as `webp`, `jpeg`, `png`
+   * Supported values: image media types supported by Chrome, such as `webp`, `jpeg`, `png`
    */
   format: string;
 };

@@ -326,7 +326,7 @@ export const CompressedImage = {
     },
     "format": {
       "type": "string",
-      "description": "Image format\n\nChrome supported media types, such as `webp`, `jpeg`, `png`"
+      "description": "Image format\n\nSupported values: image media types supported by Chrome, such as `webp`, `jpeg`, `png`"
     }
   }
 };

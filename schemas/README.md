@@ -609,7 +609,7 @@ string
 
 Image format
 
-Supported values: `webp`, `jpeg`, `png`
+Supported values: image media types supported by Chrome, such as `webp`, `jpeg`, `png`
 
 </td>
 </tr>

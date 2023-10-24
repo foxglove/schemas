@@ -815,7 +815,7 @@ const CompressedVideo: FoxgloveMessageSchema = {
     {
       name: "format",
       type: { type: "primitive", name: "string" },
-      description: "Video format\n\nSupported values: `h264`",
+      description: "Video format\n\nSupported values: `h264` (Annex-B formatted data only)",
     },
   ],
 };

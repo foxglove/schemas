@@ -1148,7 +1148,7 @@ export const ImageAnnotations = {
                 }
               }
             },
-            "description": "Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`."
+            "description": "Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`, `LINE_STRIP` or `LINE_LOOP`."
           },
           "fill_color": {
             "title": "foxglove.Color",
@@ -4322,7 +4322,7 @@ export const PointsAnnotation = {
           }
         }
       },
-      "description": "Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`."
+      "description": "Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`, `LINE_STRIP` or `LINE_LOOP`."
     },
     "fill_color": {
       "title": "foxglove.Color",

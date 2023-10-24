@@ -29,7 +29,7 @@ foxglove_msgs/Point2[] points
 # Outline color
 foxglove_msgs/Color outline_color
 
-# Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`.
+# Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`, `LINE_STRIP` or `LINE_LOOP`.
 foxglove_msgs/Color[] outline_colors
 
 # Fill color

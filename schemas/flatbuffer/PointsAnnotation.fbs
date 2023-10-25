@@ -36,7 +36,7 @@ table PointsAnnotation {
   /// Outline color
   outline_color:foxglove.Color;
 
-  /// Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`.
+  /// Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`, `LINE_STRIP` or `LINE_LOOP`.
   outline_colors:[foxglove.Color];
 
   /// Fill color

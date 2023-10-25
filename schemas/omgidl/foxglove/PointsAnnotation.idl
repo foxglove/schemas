@@ -21,7 +21,7 @@ struct PointsAnnotation {
   // Outline color
   Color outline_color;
 
-  // Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`.
+  // Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`, `LINE_STRIP` or `LINE_LOOP`.
   sequence<Color> outline_colors;
 
   // Fill color

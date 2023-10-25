@@ -1159,7 +1159,7 @@ const PointsAnnotation: FoxgloveMessageSchema = {
       name: "outline_colors",
       type: { type: "nested", schema: Color },
       description:
-        "Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`.",
+        "Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`, `LINE_STRIP` or `LINE_LOOP`.",
       array: true,
     },
     {

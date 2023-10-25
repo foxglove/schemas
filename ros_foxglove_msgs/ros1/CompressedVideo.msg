@@ -14,5 +14,5 @@ uint8[] data
 
 # Video format
 # 
-# Supported values: `h264`
+# Supported values: `h264` (Annex-B formatted data only)
 string format

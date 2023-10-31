@@ -647,7 +647,9 @@ string
 </td>
 <td>
 
-Frame of reference for the video. The origin of the frame is the optical center of the camera. +x points to the right in the video, +y points down, and +z points into the plane of the video.
+Frame of reference for the video.
+
+The origin of the frame is the optical center of the camera. +x points to the right in the video, +y points down, and +z points into the plane of the video.
 
 </td>
 </tr>
@@ -660,7 +662,9 @@ bytes
 </td>
 <td>
 
-Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove Studio does not support video streams that include B frames because they require lookahead.
+Compressed video frame data.
+
+For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove Studio does not support video streams that include B frames because they require lookahead.
 
 </td>
 </tr>
@@ -673,9 +677,9 @@ string
 </td>
 <td>
 
-Video format
+Video format.
 
-Supported values: `h264` (Annex-B formatted data only)
+Supported values: `h264` (Annex B formatted data only)
 
 </td>
 </tr>

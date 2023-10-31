@@ -355,16 +355,16 @@ export const CompressedVideo = {
     },
     "frame_id": {
       "type": "string",
-      "description": "Frame of reference for the video. The origin of the frame is the optical center of the camera. +x points to the right in the video, +y points down, and +z points into the plane of the video."
+      "description": "Frame of reference for the video.\n\nThe origin of the frame is the optical center of the camera. +x points to the right in the video, +y points down, and +z points into the plane of the video."
     },
     "data": {
       "type": "string",
       "contentEncoding": "base64",
-      "description": "Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove Studio does not support video streams that include B frames because they require lookahead."
+      "description": "Compressed video frame data.\n\nFor packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove Studio does not support video streams that include B frames because they require lookahead."
     },
     "format": {
       "type": "string",
-      "description": "Video format\n\nSupported values: `h264` (Annex-B formatted data only)"
+      "description": "Video format.\n\nSupported values: `h264` (Annex B formatted data only)"
     }
   }
 };

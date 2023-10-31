@@ -673,9 +673,7 @@ string
 </td>
 <td>
 
-Video format
-
-Supported values: `h264` (Annex-B formatted data only)
+Video format. Supported values: `h264` (Annex B formatted data only)
 
 </td>
 </tr>

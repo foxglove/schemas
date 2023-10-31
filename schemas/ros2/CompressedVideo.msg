@@ -12,7 +12,5 @@ string frame_id
 # Compressed video frame data. For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove Studio does not support video streams that include B frames because they require lookahead.
 uint8[] data
 
-# Video format
-# 
-# Supported values: `h264` (Annex-B formatted data only)
+# Video format. Supported values: `h264` (Annex B formatted data only)
 string format

@@ -364,7 +364,7 @@ export const CompressedVideo = {
     },
     "format": {
       "type": "string",
-      "description": "Video format\n\nSupported values: `h264` (Annex-B formatted data only)"
+      "description": "Video format. Supported values: `h264` (Annex B formatted data only)"
     }
   }
 };

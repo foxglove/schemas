@@ -2,6 +2,12 @@
 Changelog for package foxglove_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.3.0 (2023-12-11)
+------------------
+* Update RawImage encodings
+* Add CompressedVideo schema
+* Improve doc on PointAnnotation field outline_color
+
 2.2.0 (2023-04-18)
 ------------------
 * Add TextAnnotation

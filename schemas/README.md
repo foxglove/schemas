@@ -17,6 +17,7 @@ All schemas are generated from [schemas.ts](/internal/schemas.ts).
 - [CircleAnnotation](#circleannotation)
 - [Color](#color)
 - [CompressedImage](#compressedimage)
+- [CompressedVideo](#compressedvideo)
 - [CubePrimitive](#cubeprimitive)
 - [CylinderPrimitive](#cylinderprimitive)
 - [FrameTransform](#frametransform)
@@ -608,7 +609,77 @@ string
 
 Image format
 
-Supported values: `webp`, `jpeg`, `png`
+Supported values: image media types supported by Chrome, such as `webp`, `jpeg`, `png`
+
+</td>
+</tr>
+</table>
+
+## CompressedVideo
+
+A single frame of a compressed video bitstream
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>
+
+time
+
+</td>
+<td>
+
+Timestamp of video frame
+
+</td>
+</tr>
+<tr>
+<td><code>frame_id</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Frame of reference for the video.
+
+The origin of the frame is the optical center of the camera. +x points to the right in the video, +y points down, and +z points into the plane of the video.
+
+</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>
+
+bytes
+
+</td>
+<td>
+
+Compressed video frame data.
+
+For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove Studio does not support video streams that include B frames because they require lookahead.
+
+</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Video format.
+
+Supported values: `h264` (Annex B formatted data only)
 
 </td>
 </tr>
@@ -1879,7 +1950,7 @@ Outline color
 </td>
 <td>
 
-Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`.
+Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`, `LINE_STRIP` or `LINE_LOOP`.
 
 </td>
 </tr>
@@ -2188,7 +2259,7 @@ string
 
 Encoding of the raw image data
 
-Supported values: `8UC1`, `8UC3`, `16UC1`, `32FC1`, `bayer_bggr8`, `bayer_gbrg8`, `bayer_grbg8`, `bayer_rggb8`, `bgr8`, `bgra8`, `mono8`, `mono16`, `rgb8`, `rgba8`, `yuv422`
+Supported values: `8UC1`, `8UC3`, `16UC1`, `32FC1`, `bayer_bggr8`, `bayer_gbrg8`, `bayer_grbg8`, `bayer_rggb8`, `bgr8`, `bgra8`, `mono8`, `mono16`, `rgb8`, `rgba8`, `uyvy` or `yuv422`, `yuyv` or `yuv422_yuy2`
 
 </td>
 </tr>

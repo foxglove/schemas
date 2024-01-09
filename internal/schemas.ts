@@ -693,7 +693,7 @@ const CameraCalibration: FoxgloveMessageSchema = {
       name: "distortion_model",
       type: { type: "primitive", name: "string" },
       description:
-        "Name of distortion model\n\nFoxglove supports `plumb_bob` (k1, k2, p1, p2, k3) and `rational_polynomial` (k1, k2, p1, p2, k3, k4, k5, k6) distortion based on [OpenCV's implementation](https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html) of the [Brown-Conrady pinhole camera model](https://en.wikipedia.org/wiki/Distortion_%28optics%29#Software_correction). This is the same [implementation used by ROS](http://docs.ros.org/en/diamondback/api/image_geometry/html/c++/pinhole__camera__model_8cpp_source.html)",
+        "Name of distortion model\n\nSupported parameters are `plumb_bob` (k1, k2, p1, p2, k3) and `rational_polynomial` (k1, k2, p1, p2, k3, k4, k5, k6) distortion based on [OpenCV's implementation](https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html) of the [Brown-Conrady pinhole camera model](https://en.wikipedia.org/wiki/Distortion_%28optics%29#Software_correction). This is the same [implementation used by ROS](http://docs.ros.org/en/diamondback/api/image_geometry/html/c++/pinhole__camera__model_8cpp_source.html)",
     },
     {
       name: "D",

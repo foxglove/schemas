@@ -42,6 +42,20 @@ export function generateOmgIdl(schema: FoxgloveSchema): string {
 
   let definition: string;
   switch (schema.type) {
+    case "primitive":
+      {
+        definition = "";
+        if (schema.name === "Time") {
+          definition = TIME_IDL;
+        } else if (schema.name === "Duration") {
+          definition = DURATION_IDL;
+        }
+        if (definition === "") {
+          throw new Error(`Flatbuffer encountered an unexpected type: ${schema.name}`);
+        }
+        return definition;
+      }
+      break;
     case "enum": {
       const fields = schema.values.map(({ name, value, description }, index) => {
         const separator = index === schema.values.length - 1 ? "" : ",";

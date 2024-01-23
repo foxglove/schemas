@@ -74,6 +74,17 @@ export function generateFlatbuffers(
   let definition;
   const imports = new Set<string>();
   switch (schema.type) {
+    case "primitive":
+      definition = "";
+      if (schema.name === "Time") {
+        definition = TIME_FB;
+      } else if (schema.name === "Duration") {
+        definition = DURATION_FB;
+      }
+      if (definition === "") {
+        throw new Error(`Flatbuffer encountered an unexpected type: ${schema.name}`);
+      }
+      return definition;
     case "enum": {
       const fields = schema.values.map(({ name, value, description }) => {
         if (description != undefined) {

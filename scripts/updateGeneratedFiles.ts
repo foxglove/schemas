@@ -5,17 +5,16 @@ import rimraf from "rimraf";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../internal";
 import { exportTypeScriptSchemas } from "../internal/exportTypeScriptSchemas";
-import {
-  BYTE_VECTOR_FB,
-  DURATION_FB,
-  TIME_FB,
-  generateFlatbuffers,
-} from "../internal/generateFlatbufferSchema";
+import { BYTE_VECTOR_FB, generateFlatbuffers } from "../internal/generateFlatbufferSchema";
 import { generateJsonSchema } from "../internal/generateJsonSchema";
 import { generateMarkdown } from "../internal/generateMarkdown";
-import { DURATION_IDL, TIME_IDL, generateOmgIdl } from "../internal/generateOmgIdl";
+import { generateOmgIdl } from "../internal/generateOmgIdl";
 import { generateProto } from "../internal/generateProto";
-import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../internal/schemas";
+import {
+  foxgloveEnumSchemas,
+  foxgloveMessageSchemas,
+  foxglovePrimitiveSchemas,
+} from "../internal/schemas";
 
 async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write(`${message}... `);
@@ -85,8 +84,13 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
   await logProgress("Generating FlatBuffer definitions", async () => {
     await fs.mkdir(path.join(outDir, "flatbuffer"), { recursive: true });
     await fs.writeFile(path.join(outDir, "flatbuffer", "ByteVector.fbs"), BYTE_VECTOR_FB);
-    await fs.writeFile(path.join(outDir, "flatbuffer", "Time.fbs"), TIME_FB);
-    await fs.writeFile(path.join(outDir, "flatbuffer", "Duration.fbs"), DURATION_FB);
+
+    for (const schema of Object.values(foxglovePrimitiveSchemas)) {
+      await fs.writeFile(
+        path.join(outDir, "flatbuffer", `${schema.name}.fbs`),
+        generateFlatbuffers(schema, []),
+      );
+    }
 
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       // want enums with their corresponding parent tables for usage
@@ -110,8 +114,14 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
 
   await logProgress("Generating OMG IDL definitions", async () => {
     await fs.mkdir(path.join(outDir, "omgidl", "foxglove"), { recursive: true });
-    await fs.writeFile(path.join(outDir, "omgidl", "foxglove", "Time.idl"), TIME_IDL);
-    await fs.writeFile(path.join(outDir, "omgidl", "foxglove", "Duration.idl"), DURATION_IDL);
+
+    for (const schema of Object.values(foxglovePrimitiveSchemas)) {
+      await fs.writeFile(
+        path.join(outDir, "omgidl", "foxglove", `${schema.name}.idl`),
+        generateOmgIdl(schema),
+      );
+    }
+
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       await fs.writeFile(
         path.join(outDir, "omgidl", "foxglove", `${schema.name}.idl`),

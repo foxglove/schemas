@@ -1,4 +1,4 @@
-import { FoxgloveEnumSchema, FoxgloveMessageSchema } from "./types";
+import { FoxgloveEnumSchema, FoxgloveMessageSchema, FoxglovePrimitiveSchema } from "./types";
 
 const Color: FoxgloveMessageSchema = {
   type: "message",
@@ -1448,6 +1448,47 @@ const LaserScan: FoxgloveMessageSchema = {
       array: true,
     },
   ],
+};
+
+const Time: FoxglovePrimitiveSchema = {
+  type: "primitive",
+  name: "time",
+  description: "Timestamp in the format of second and nanoseconds since epoch",
+  fields: [
+    {
+      name: "sec",
+      type: { type: "primitive", name: "float64" },
+      description: "Seconds since epoch",
+    },
+    {
+      name: "nsec",
+      type: { type: "primitive", name: "float64" },
+      description: "nanoseconds",
+    },
+  ],
+};
+
+const Duration: FoxglovePrimitiveSchema = {
+  type: "primitive",
+  name: "time",
+  description: "Difference between two timestamps",
+  fields: [
+    {
+      name: "sec",
+      type: { type: "primitive", name: "float64" },
+      description: "Seconds since epoch",
+    },
+    {
+      name: "nsec",
+      type: { type: "primitive", name: "float64" },
+      description: "nanoseconds",
+    },
+  ],
+};
+
+export const foxglovePrimitiveSchemas = {
+  Time,
+  Duration,
 };
 
 export const foxgloveMessageSchemas = {

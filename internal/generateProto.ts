@@ -81,7 +81,7 @@ export function generateProto(
         break;
       case "nested":
         qualifiers.push(`foxglove.${field.type.schema.name}`);
-        imports.add(`foxglove/${field.type.schema.name}`);
+        imports.add(`foxglove_schemas_protobuf/${field.type.schema.name}`);
         break;
       case "primitive":
         if (field.type.name === "time") {

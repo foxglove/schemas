@@ -2,7 +2,7 @@
 
 syntax = "proto3";
 
-import "foxglove/Pose.proto";
+import "foxglove_schemas_protobuf/Pose.proto";
 import "google/protobuf/timestamp.proto";
 
 package foxglove;

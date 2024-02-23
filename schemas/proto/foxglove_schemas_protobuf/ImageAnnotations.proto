@@ -2,9 +2,9 @@
 
 syntax = "proto3";
 
-import "foxglove/CircleAnnotation.proto";
-import "foxglove/PointsAnnotation.proto";
-import "foxglove/TextAnnotation.proto";
+import "foxglove_schemas_protobuf/CircleAnnotation.proto";
+import "foxglove_schemas_protobuf/PointsAnnotation.proto";
+import "foxglove_schemas_protobuf/TextAnnotation.proto";
 
 package foxglove;
 

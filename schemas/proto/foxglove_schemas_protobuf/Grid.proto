@@ -2,9 +2,9 @@
 
 syntax = "proto3";
 
-import "foxglove/PackedElementField.proto";
-import "foxglove/Pose.proto";
-import "foxglove/Vector2.proto";
+import "foxglove_schemas_protobuf/PackedElementField.proto";
+import "foxglove_schemas_protobuf/Pose.proto";
+import "foxglove_schemas_protobuf/Vector2.proto";
 import "google/protobuf/timestamp.proto";
 
 package foxglove;

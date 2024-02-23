@@ -11,7 +11,7 @@ describe("generateProto", () => {
 
       syntax = "proto3";
 
-      import "foxglove/NestedMessage.proto";
+      import "foxglove_schemas_protobuf/NestedMessage.proto";
       import "google/protobuf/duration.proto";
       import "google/protobuf/timestamp.proto";
 

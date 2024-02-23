@@ -2,15 +2,15 @@
 
 syntax = "proto3";
 
-import "foxglove/ArrowPrimitive.proto";
-import "foxglove/CubePrimitive.proto";
-import "foxglove/CylinderPrimitive.proto";
-import "foxglove/KeyValuePair.proto";
-import "foxglove/LinePrimitive.proto";
-import "foxglove/ModelPrimitive.proto";
-import "foxglove/SpherePrimitive.proto";
-import "foxglove/TextPrimitive.proto";
-import "foxglove/TriangleListPrimitive.proto";
+import "foxglove_schemas_protobuf/ArrowPrimitive.proto";
+import "foxglove_schemas_protobuf/CubePrimitive.proto";
+import "foxglove_schemas_protobuf/CylinderPrimitive.proto";
+import "foxglove_schemas_protobuf/KeyValuePair.proto";
+import "foxglove_schemas_protobuf/LinePrimitive.proto";
+import "foxglove_schemas_protobuf/ModelPrimitive.proto";
+import "foxglove_schemas_protobuf/SpherePrimitive.proto";
+import "foxglove_schemas_protobuf/TextPrimitive.proto";
+import "foxglove_schemas_protobuf/TriangleListPrimitive.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 

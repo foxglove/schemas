@@ -2,8 +2,8 @@
 
 syntax = "proto3";
 
-import "foxglove/SceneEntity.proto";
-import "foxglove/SceneEntityDeletion.proto";
+import "foxglove_schemas_protobuf/SceneEntity.proto";
+import "foxglove_schemas_protobuf/SceneEntityDeletion.proto";
 
 package foxglove;
 

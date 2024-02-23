@@ -2,9 +2,9 @@
 
 syntax = "proto3";
 
-import "foxglove/Color.proto";
-import "foxglove/Pose.proto";
-import "foxglove/Vector3.proto";
+import "foxglove_schemas_protobuf/Color.proto";
+import "foxglove_schemas_protobuf/Pose.proto";
+import "foxglove_schemas_protobuf/Vector3.proto";
 
 package foxglove;
 

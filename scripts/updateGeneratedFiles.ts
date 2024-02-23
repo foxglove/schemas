@@ -70,13 +70,13 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
   });
 
   await logProgress("Generating Protobuf definitions", async () => {
-    await fs.mkdir(path.join(outDir, "proto", "foxglove"), { recursive: true });
+    await fs.mkdir(path.join(outDir, "proto", "foxglove_schemas_protobuf"), { recursive: true });
     for (const schema of Object.values(foxgloveMessageSchemas)) {
       const enums = Object.values(foxgloveEnumSchemas).filter(
         (enumSchema) => enumSchema.parentSchemaName === schema.name,
       );
       await fs.writeFile(
-        path.join(outDir, "proto", "foxglove", `${schema.name}.proto`),
+        path.join(outDir, "proto", "foxglove_schemas_protobuf", `${schema.name}.proto`),
         generateProto(schema, enums),
       );
     }

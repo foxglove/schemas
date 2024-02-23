@@ -29,15 +29,10 @@ generate-flatbuffer:
 generate-protobuf:
 	rm -rf foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2*
 	pipenv run protoc \
-		--python_out=foxglove-schemas-protobuf/foxglove_schemas_protobuf \
-		--mypy_out=foxglove-schemas-protobuf/foxglove_schemas_protobuf \
+		--python_out=foxglove-schemas-protobuf \
+		--mypy_out=foxglove-schemas-protobuf \
 		--proto_path ../schemas/proto \
-		../schemas/proto/foxglove/*.proto
-	mv foxglove-schemas-protobuf/foxglove_schemas_protobuf/foxglove/* foxglove-schemas-protobuf/foxglove_schemas_protobuf
-	rmdir foxglove-schemas-protobuf/foxglove_schemas_protobuf/foxglove
-	sed -E $(SED_ARGS) 's/from foxglove import/from . import/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.py
-	sed -E $(SED_ARGS) 's/import foxglove\.(.+)$$/from . import \1 as foxglove_\1/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.pyi
-	sed -E $(SED_ARGS) 's/foxglove\./foxglove_/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.pyi
+		../schemas/proto/foxglove_schemas_protobuf/*.proto
 
 .PHONY: build
 build: pipenv generate-flatbuffer generate-protobuf

@@ -1,7 +1,7 @@
 // -*- jsonc -*-
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
@@ -18,12 +18,8 @@
   },
   "jest.jestCommandLine": "yarn test",
 
-  "python.formatting.provider": "black",
   "python.analysis.typeCheckingMode": "strict",
-  "python.linting.flake8Enabled": true,
-  "python.linting.enabled": true,
-  "python.linting.flake8Args": ["--config", "python/.flake8"],
   "[python]": {
-    "editor.defaultFormatter": "ms-python.python"
+    "editor.defaultFormatter": "ms-python.black-formatter"
   }
 }

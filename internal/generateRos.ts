@@ -127,8 +127,8 @@ export function generateRosMsgDefinition(
     let fieldType: string;
     switch (field.type.type) {
       case "enum": {
-        // Add enum constants preceding the field so that Studio can pick them up:
-        // https://foxglove.dev/docs/studio/annotating-data
+        // Add enum constants preceding the field so that Foxglove can pick them up:
+        // https://docs.foxglove.dev/docs/visualization/annotate-ros-enum-fields
         const enumName = field.type.enum.name;
         const valueType = "uint8";
         fieldType = valueType;

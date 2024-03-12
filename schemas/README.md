@@ -1,6 +1,6 @@
 # Foxglove schemas
 
-See [Foxglove Schemas documentation](https://foxglove.dev/docs/studio/messages).
+See [Foxglove Schemas documentation](https://docs.foxglove.dev/docs/visualization/message-schemas/introduction).
 
 All schemas are generated from [schemas.ts](/internal/schemas.ts).
 
@@ -664,7 +664,7 @@ bytes
 
 Compressed video frame data.
 
-For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove Studio does not support video streams that include B frames because they require lookahead.
+For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove does not support video streams that include B frames because they require lookahead.
 
 </td>
 </tr>

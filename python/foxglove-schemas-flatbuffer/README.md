@@ -1,6 +1,6 @@
 # Foxglove Schemas (Flatbuffer)
 
-This package provides [Flatbuffer](https://google.github.io/flatbuffers/) classes for [Foxglove Schemas](https://foxglove.dev/docs/studio/messages/introduction).
+This package provides [Flatbuffer](https://google.github.io/flatbuffers/) classes for [Foxglove Schemas](https://docs.foxglove.dev/docs/visualization/message-schemas/introduction).
 
 ## Installation
 

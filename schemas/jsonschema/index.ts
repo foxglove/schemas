@@ -360,7 +360,7 @@ export const CompressedVideo = {
     "data": {
       "type": "string",
       "contentEncoding": "base64",
-      "description": "Compressed video frame data.\n\nFor packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove Studio does not support video streams that include B frames because they require lookahead."
+      "description": "Compressed video frame data.\n\nFor packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove does not support video streams that include B frames because they require lookahead."
     },
     "format": {
       "type": "string",

@@ -175,6 +175,11 @@ jobs:
         run: |
           sudo pip install pydocstyle==6.1.1
 
+      - name: Downgrade pytest as a workaround for https://github.com/scientific-python/pytest-doctestplus/issues/240
+        if: ${{ matrix.ros_distribution == 'humble' || matrix.ros_distribution == 'iron' || matrix.ros_distribution == 'rolling' }}
+        run: |
+          sudo pip install pytest==8.0.2
+
       - name: build and test ros2
         if: ${{ matrix.ros_version == 2 }}
         uses: ros-tooling/action-ros-ci@master

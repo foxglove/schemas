@@ -2,6 +2,8 @@
 
 syntax = "proto3";
 
+option go_package = "github.com/foxglove/schemas";
+
 package foxglove;
 
 // A color in RGBA format

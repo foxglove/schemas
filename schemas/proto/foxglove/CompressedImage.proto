@@ -2,6 +2,8 @@
 
 syntax = "proto3";
 
+option go_package = "github.com/foxglove/schemas";
+
 import "google/protobuf/timestamp.proto";
 
 package foxglove;
@@ -18,7 +20,7 @@ message CompressedImage {
   bytes data = 2;
 
   // Image format
-  // 
+  //
   // Supported values: image media types supported by Chrome, such as `webp`, `jpeg`, `png`
   string format = 3;
 }

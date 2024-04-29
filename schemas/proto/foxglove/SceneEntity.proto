@@ -2,6 +2,8 @@
 
 syntax = "proto3";
 
+option go_package = "github.com/foxglove/schemas";
+
 import "foxglove/ArrowPrimitive.proto";
 import "foxglove/CubePrimitive.proto";
 import "foxglove/CylinderPrimitive.proto";

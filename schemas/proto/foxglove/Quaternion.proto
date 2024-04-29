@@ -2,6 +2,8 @@
 
 syntax = "proto3";
 
+option go_package = "github.com/foxglove/schemas";
+
 package foxglove;
 
 // A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space

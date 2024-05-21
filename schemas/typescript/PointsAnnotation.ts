@@ -14,7 +14,10 @@ export type PointsAnnotation = {
   /** Type of points annotation to draw */
   type: PointsAnnotationType;
 
-  /** Points in 2D image coordinates (pixels) */
+  /** Points in 2D image coordinates (pixels) 
+   * The coordinate uses the top-left corner of the image as the origin.
+   * It is not centered on the pixel, but on the top-left corner of the pixel.
+  */
   points: Point2[];
 
   /** Outline color */

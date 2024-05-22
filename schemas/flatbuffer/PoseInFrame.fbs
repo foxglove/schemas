@@ -8,13 +8,13 @@ namespace foxglove;
 /// A timestamped pose for an object or reference frame in 3D space
 table PoseInFrame {
   /// Timestamp of pose
-  timestamp:Time;
+  timestamp:Time (id: 0);
 
   /// Frame of reference for pose position and orientation
-  frame_id:string;
+  frame_id:string (id: 1);
 
   /// Pose in 3D space
-  pose:foxglove.Pose;
+  pose:foxglove.Pose (id: 2);
 }
 
 root_type PoseInFrame;

@@ -12,6 +12,7 @@ endif
 generate-flatbuffer:
 	find foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer ! -name '__init__.py' -type f -exec rm -f {} +
 	pipenv run flatc \
+		--require-explicit-ids \
 		--python \
 		-o foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer \
 		../schemas/flatbuffer/*.fbs

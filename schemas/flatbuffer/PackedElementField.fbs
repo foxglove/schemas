@@ -25,13 +25,13 @@ enum NumericType : ubyte {
 /// A field present within each element in a byte array of packed elements.
 table PackedElementField {
   /// Name of the field
-  name:string;
+  name:string (id: 0);
 
   /// Byte offset from start of data buffer
-  offset:uint32;
+  offset:uint32 (id: 1);
 
   /// Type of data in the field. Integers are stored using little-endian byte order.
-  type:NumericType;
+  type:NumericType (id: 2);
 }
 
 root_type PackedElementField;

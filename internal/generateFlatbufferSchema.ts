@@ -6,7 +6,7 @@ namespace foxglove;
 
 /// Used for nesting byte vectors
 table ByteVector {
-  data:[uint8];
+  data:[uint8] (id: 0);
 }
 root_type ByteVector;
 `;
@@ -29,7 +29,7 @@ namespace foxglove;
 struct Duration {
   /// Signed seconds of the span of time. Must be from -315,576,000,000 to +315,576,000,000 inclusive.
   sec:int32;
-  /// if sec === 0 : -999,999,999 <= nsec <= +999,999,999 
+  /// if sec === 0 : -999,999,999 <= nsec <= +999,999,999
   /// otherwise sign of sec must match sign of nsec or be 0 and abs(nsec) <= 999,999,999
   nsec:int32;
 }
@@ -90,7 +90,7 @@ export function generateFlatbuffers(
       break;
     }
     case "message": {
-      const fields = schema.fields.map((field) => {
+      const fields = schema.fields.map((field, fieldId) => {
         const isArray = field.array != undefined;
 
         let type;
@@ -162,7 +162,7 @@ export function generateFlatbuffers(
           // convert field.name to lowercase for flatbuffer compilation compliance
         }  ${field.name.toLowerCase()}:${isArray ? `[${type}]` : type}${
           defaultValue ? ` = ${defaultValue}` : ""
-        };`;
+        } (id: ${fieldId});`;
       });
 
       definition = `${enumDefinitions.join("\n\n")}/// ${schema.description}\ntable ${

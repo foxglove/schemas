@@ -17,46 +17,46 @@ namespace foxglove;
 /// A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
 table SceneEntity {
   /// Timestamp of the entity
-  timestamp:Time;
+  timestamp:Time (id: 0);
 
   /// Frame of reference
-  frame_id:string;
+  frame_id:string (id: 1);
 
   /// Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`.
-  id:string;
+  id:string (id: 2);
 
   /// Length of time (relative to `timestamp`) after which the entity should be automatically removed. Zero value indicates the entity should remain visible until it is replaced or deleted.
-  lifetime:Duration;
+  lifetime:Duration (id: 3);
 
   /// Whether the entity should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
-  frame_locked:bool;
+  frame_locked:bool (id: 4);
 
   /// Additional user-provided metadata associated with the entity. Keys must be unique.
-  metadata:[foxglove.KeyValuePair];
+  metadata:[foxglove.KeyValuePair] (id: 5);
 
   /// Arrow primitives
-  arrows:[foxglove.ArrowPrimitive];
+  arrows:[foxglove.ArrowPrimitive] (id: 6);
 
   /// Cube primitives
-  cubes:[foxglove.CubePrimitive];
+  cubes:[foxglove.CubePrimitive] (id: 7);
 
   /// Sphere primitives
-  spheres:[foxglove.SpherePrimitive];
+  spheres:[foxglove.SpherePrimitive] (id: 8);
 
   /// Cylinder primitives
-  cylinders:[foxglove.CylinderPrimitive];
+  cylinders:[foxglove.CylinderPrimitive] (id: 9);
 
   /// Line primitives
-  lines:[foxglove.LinePrimitive];
+  lines:[foxglove.LinePrimitive] (id: 10);
 
   /// Triangle list primitives
-  triangles:[foxglove.TriangleListPrimitive];
+  triangles:[foxglove.TriangleListPrimitive] (id: 11);
 
   /// Text primitives
-  texts:[foxglove.TextPrimitive];
+  texts:[foxglove.TextPrimitive] (id: 12);
 
   /// Model primitives
-  models:[foxglove.ModelPrimitive];
+  models:[foxglove.ModelPrimitive] (id: 13);
 }
 
 root_type SceneEntity;

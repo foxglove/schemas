@@ -9,19 +9,19 @@ namespace foxglove;
 /// A transform between two reference frames in 3D space
 table FrameTransform {
   /// Timestamp of transform
-  timestamp:Time;
+  timestamp:Time (id: 0);
 
   /// Name of the parent frame
-  parent_frame_id:string;
+  parent_frame_id:string (id: 1);
 
   /// Name of the child frame
-  child_frame_id:string;
+  child_frame_id:string (id: 2);
 
   /// Translation component of the transform
-  translation:foxglove.Vector3;
+  translation:foxglove.Vector3 (id: 3);
 
   /// Rotation component of the transform
-  rotation:foxglove.Quaternion;
+  rotation:foxglove.Quaternion (id: 4);
 }
 
 root_type FrameTransform;

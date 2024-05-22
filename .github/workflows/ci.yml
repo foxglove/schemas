@@ -47,7 +47,7 @@ jobs:
 
       - name: Validate Flatbuffer definitions
         run: |
-          output=$(flatc --ts -o /dev/null ./schemas/flatbuffer/*.fbs)
+          output=$(flatc --require-explicit-ids --ts -o /dev/null ./schemas/flatbuffer/*.fbs)
           if [ -n "$output" ]; then
             echo "::error::Flatbuffer schema compilation had warnings or errors. Fix them to proceed:"
             echo "$output"

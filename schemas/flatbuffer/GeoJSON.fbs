@@ -5,7 +5,7 @@ namespace foxglove;
 /// GeoJSON data for annotating maps
 table GeoJSON {
   /// GeoJSON data encoded as a UTF-8 string
-  geojson:string;
+  geojson:string (id: 0);
 }
 
 root_type GeoJSON;

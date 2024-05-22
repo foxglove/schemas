@@ -9,25 +9,25 @@ namespace foxglove;
 /// A primitive representing a 3D model file loaded from an external URL or embedded data
 table ModelPrimitive {
   /// Origin of model relative to reference frame
-  pose:foxglove.Pose;
+  pose:foxglove.Pose (id: 0);
 
   /// Scale factor to apply to the model along each axis
-  scale:foxglove.Vector3;
+  scale:foxglove.Vector3 (id: 1);
 
   /// Solid color to use for the whole model if `override_color` is true.
-  color:foxglove.Color;
+  color:foxglove.Color (id: 2);
 
   /// Whether to use the color specified in `color` instead of any materials embedded in the original model.
-  override_color:bool;
+  override_color:bool (id: 3);
 
   /// URL pointing to model file. One of `url` or `data` should be provided.
-  url:string;
+  url:string (id: 4);
 
   /// [Media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of embedded model (e.g. `model/gltf-binary`). Required if `data` is provided instead of `url`. Overrides the inferred media type if `url` is provided.
-  media_type:string;
+  media_type:string (id: 5);
 
   /// Embedded model. One of `url` or `data` should be provided. If `data` is provided, `media_type` must be set to indicate the type of the data.
-  data:[uint8];
+  data:[uint8] (id: 6);
 }
 
 root_type ModelPrimitive;

@@ -7,22 +7,22 @@ namespace foxglove;
 /// A single frame of a compressed video bitstream
 table CompressedVideo {
   /// Timestamp of video frame
-  timestamp:Time;
+  timestamp:Time (id: 0);
 
   /// Frame of reference for the video.
   /// 
   /// The origin of the frame is the optical center of the camera. +x points to the right in the video, +y points down, and +z points into the plane of the video.
-  frame_id:string;
+  frame_id:string (id: 1);
 
   /// Compressed video frame data.
   /// 
   /// For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove does not support video streams that include B frames because they require lookahead.
-  data:[uint8];
+  data:[uint8] (id: 2);
 
   /// Video format.
   /// 
   /// Supported values: `h264` (Annex B formatted data only)
-  format:string;
+  format:string (id: 3);
 }
 
 root_type CompressedVideo;

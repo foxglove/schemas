@@ -17,26 +17,26 @@ enum PositionCovarianceType : ubyte {
 /// A navigation satellite fix for any Global Navigation Satellite System
 table LocationFix {
   /// Timestamp of the message
-  timestamp:Time;
+  timestamp:Time (id: 0);
 
   /// Frame for the sensor. Latitude and longitude readings are at the origin of the frame.
-  frame_id:string;
+  frame_id:string (id: 1);
 
   /// Latitude in degrees
-  latitude:double;
+  latitude:double (id: 2);
 
   /// Longitude in degrees
-  longitude:double;
+  longitude:double (id: 3);
 
   /// Altitude in meters
-  altitude:double;
+  altitude:double (id: 4);
 
   /// Position covariance (m^2) defined relative to a tangential plane through the reported position. The components are East, North, and Up (ENU), in row-major order.
   /// length 9
-  position_covariance:[double];
+  position_covariance:[double] (id: 5);
 
   /// If `position_covariance` is available, `position_covariance_type` must be set to indicate the type of covariance.
-  position_covariance_type:PositionCovarianceType;
+  position_covariance_type:PositionCovarianceType (id: 6);
 }
 
 root_type LocationFix;

@@ -9,13 +9,13 @@ namespace foxglove;
 /// Array of annotations for a 2D image
 table ImageAnnotations {
   /// Circle annotations
-  circles:[foxglove.CircleAnnotation];
+  circles:[foxglove.CircleAnnotation] (id: 0);
 
   /// Points annotations
-  points:[foxglove.PointsAnnotation];
+  points:[foxglove.PointsAnnotation] (id: 1);
 
   /// Text annotations
-  texts:[foxglove.TextAnnotation];
+  texts:[foxglove.TextAnnotation] (id: 2);
 }
 
 root_type ImageAnnotations;

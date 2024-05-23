@@ -1085,7 +1085,8 @@ const CircleAnnotation: FoxgloveMessageSchema = {
     {
       name: "position",
       type: { type: "nested", schema: Point2 },
-      description: "Center of the circle in 2D image coordinates (pixels)",
+      description:
+        "Center of the circle in 2D image coordinates (pixels).\nThe coordinate uses the top-left corner of the top-left pixel of the image as the origin.",
     },
     {
       name: "diameter",
@@ -1147,7 +1148,8 @@ const PointsAnnotation: FoxgloveMessageSchema = {
     {
       name: "points",
       type: { type: "nested", schema: Point2 },
-      description: "Points in 2D image coordinates (pixels)",
+      description:
+        "Points in 2D image coordinates (pixels).\nThese coordinates use the top-left corner of the top-left pixel of the image as the origin.",
       array: true,
     },
     {
@@ -1188,7 +1190,8 @@ const TextAnnotation: FoxgloveMessageSchema = {
     {
       name: "position",
       type: { type: "nested", schema: Point2 },
-      description: "Bottom-left origin of the text label in 2D image coordinates (pixels)",
+      description:
+        "Bottom-left origin of the text label in 2D image coordinates (pixels).\nThe coordinate uses the top-left corner of the top-left pixel of the image as the origin.",
     },
     {
       name: "text",

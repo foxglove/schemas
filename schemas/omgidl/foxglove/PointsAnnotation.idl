@@ -15,7 +15,8 @@ struct PointsAnnotation {
   // Type of points annotation to draw
   PointsAnnotationType type;
 
-  // Points in 2D image coordinates (pixels)
+  // Points in 2D image coordinates (pixels).
+  // These coordinates use the top-left corner of the top-left pixel of the image as the origin.
   sequence<Point2> points;
 
   // Outline color

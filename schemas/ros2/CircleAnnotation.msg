@@ -6,7 +6,8 @@
 # Timestamp of circle
 builtin_interfaces/Time timestamp
 
-# Center of the circle in 2D image coordinates (pixels)
+# Center of the circle in 2D image coordinates (pixels).
+# The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
 foxglove_msgs/Point2 position
 
 # Circle diameter in pixels

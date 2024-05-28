@@ -198,7 +198,7 @@ export const CircleAnnotation = {
     },
     "position": {
       "title": "foxglove.Point2",
-      "description": "Center of the circle in 2D image coordinates (pixels)",
+      "description": "Center of the circle in 2D image coordinates (pixels).\nThe coordinate uses the top-left corner of the top-left pixel of the image as the origin.",
       "type": "object",
       "properties": {
         "x": {
@@ -957,7 +957,7 @@ export const ImageAnnotations = {
           },
           "position": {
             "title": "foxglove.Point2",
-            "description": "Center of the circle in 2D image coordinates (pixels)",
+            "description": "Center of the circle in 2D image coordinates (pixels).\nThe coordinate uses the top-left corner of the top-left pixel of the image as the origin.",
             "type": "object",
             "properties": {
               "x": {
@@ -1098,7 +1098,7 @@ export const ImageAnnotations = {
                 }
               }
             },
-            "description": "Points in 2D image coordinates (pixels)"
+            "description": "Points in 2D image coordinates (pixels).\nThese coordinates use the top-left corner of the top-left pixel of the image as the origin."
           },
           "outline_color": {
             "title": "foxglove.Color",
@@ -1206,7 +1206,7 @@ export const ImageAnnotations = {
           },
           "position": {
             "title": "foxglove.Point2",
-            "description": "Bottom-left origin of the text label in 2D image coordinates (pixels)",
+            "description": "Bottom-left origin of the text label in 2D image coordinates (pixels).\nThe coordinate uses the top-left corner of the top-left pixel of the image as the origin.",
             "type": "object",
             "properties": {
               "x": {
@@ -4272,7 +4272,7 @@ export const PointsAnnotation = {
           }
         }
       },
-      "description": "Points in 2D image coordinates (pixels)"
+      "description": "Points in 2D image coordinates (pixels).\nThese coordinates use the top-left corner of the top-left pixel of the image as the origin."
     },
     "outline_color": {
       "title": "foxglove.Color",
@@ -4767,7 +4767,7 @@ export const TextAnnotation = {
     },
     "position": {
       "title": "foxglove.Point2",
-      "description": "Bottom-left origin of the text label in 2D image coordinates (pixels)",
+      "description": "Bottom-left origin of the text label in 2D image coordinates (pixels).\nThe coordinate uses the top-left corner of the top-left pixel of the image as the origin.",
       "type": "object",
       "properties": {
         "x": {

@@ -427,7 +427,8 @@ Timestamp of circle
 </td>
 <td>
 
-Center of the circle in 2D image coordinates (pixels)
+Center of the circle in 2D image coordinates (pixels).
+The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
 
 </td>
 </tr>
@@ -1950,7 +1951,8 @@ Type of points annotation to draw
 </td>
 <td>
 
-Points in 2D image coordinates (pixels)
+Points in 2D image coordinates (pixels).
+These coordinates use the top-left corner of the top-left pixel of the image as the origin.
 
 </td>
 </tr>
@@ -2683,7 +2685,8 @@ Timestamp of annotation
 </td>
 <td>
 
-Bottom-left origin of the text label in 2D image coordinates (pixels)
+Bottom-left origin of the text label in 2D image coordinates (pixels).
+The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
 
 </td>
 </tr>

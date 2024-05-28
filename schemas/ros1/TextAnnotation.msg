@@ -6,7 +6,8 @@
 # Timestamp of annotation
 time timestamp
 
-# Bottom-left origin of the text label in 2D image coordinates (pixels)
+# Bottom-left origin of the text label in 2D image coordinates (pixels).
+# The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
 foxglove_msgs/Point2 position
 
 # Text to display

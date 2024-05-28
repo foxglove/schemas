@@ -10,7 +10,10 @@ export type CircleAnnotation = {
   /** Timestamp of circle */
   timestamp: Time;
 
-  /** Center of the circle in 2D image coordinates (pixels) */
+  /**
+   * Center of the circle in 2D image coordinates (pixels).
+   * The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
+   */
   position: Point2;
 
   /** Circle diameter in pixels */

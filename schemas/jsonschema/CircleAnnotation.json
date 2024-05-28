@@ -22,7 +22,7 @@
     },
     "position": {
       "title": "foxglove.Point2",
-      "description": "Center of the circle in 2D image coordinates (pixels)",
+      "description": "Center of the circle in 2D image coordinates (pixels).\nThe coordinate uses the top-left corner of the top-left pixel of the image as the origin.",
       "type": "object",
       "properties": {
         "x": {

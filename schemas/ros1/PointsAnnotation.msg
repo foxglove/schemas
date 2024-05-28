@@ -23,7 +23,8 @@ uint8 LINE_LIST=4
 # Type of points annotation to draw
 uint8 type
 
-# Points in 2D image coordinates (pixels)
+# Points in 2D image coordinates (pixels).
+# These coordinates use the top-left corner of the top-left pixel of the image as the origin.
 foxglove_msgs/Point2[] points
 
 # Outline color

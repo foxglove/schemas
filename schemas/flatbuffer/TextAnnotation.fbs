@@ -11,7 +11,8 @@ table TextAnnotation {
   /// Timestamp of annotation
   timestamp:Time (id: 0);
 
-  /// Bottom-left origin of the text label in 2D image coordinates (pixels)
+  /// Bottom-left origin of the text label in 2D image coordinates (pixels).
+  /// The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
   position:foxglove.Point2 (id: 1);
 
   /// Text to display

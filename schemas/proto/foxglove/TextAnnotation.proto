@@ -13,7 +13,8 @@ message TextAnnotation {
   // Timestamp of annotation
   google.protobuf.Timestamp timestamp = 1;
 
-  // Bottom-left origin of the text label in 2D image coordinates (pixels)
+  // Bottom-left origin of the text label in 2D image coordinates (pixels).
+  // The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
   foxglove.Point2 position = 2;
 
   // Text to display

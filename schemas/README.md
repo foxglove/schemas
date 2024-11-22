@@ -680,7 +680,10 @@ string
 
 Video format.
 
-Supported values: `h264` (Annex B formatted data only)
+Supported values:
+- `h264` (Annex B formatted data only)
+- `h265` (HEVC; Annex B formatted data only)
+- `av1` (Low overhead bitstream format)
 
 </td>
 </tr>

@@ -19,13 +19,8 @@ export type CompressedVideo = {
    * Compressed video frame data.
    * 
    * For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove does not support video streams that include B frames because they require lookahead.
-   */
-  data: Uint8Array;
-
-  /**
-   * Video format.
    * 
-   * Supported formats:
+   * Specifically, the requirements for different `format` values are:
    * 
    * - `h264`
    *   - Use Annex B formatted data
@@ -42,5 +37,8 @@ export type CompressedVideo = {
    *   - Each CompressedVideo message should contain enough OBUs to decode exactly one video frame
    *   - Each message containing a key frame must also include a Sequence Header OBU
    */
+  data: Uint8Array;
+
+  /** Video format. Supported values: `h264`, `h265`, `av1` */
   format: string;
 };

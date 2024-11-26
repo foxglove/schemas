@@ -810,15 +810,11 @@ const CompressedVideo: FoxgloveMessageSchema = {
     {
       name: "data",
       type: { type: "primitive", name: "bytes" },
-      description:
-        "Compressed video frame data.\n\nFor packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove does not support video streams that include B frames because they require lookahead.",
-    },
-    {
-      name: "format",
-      type: { type: "primitive", name: "string" },
-      description: `Video format.
+      description: `Compressed video frame data.
 
-Supported formats:
+For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove does not support video streams that include B frames because they require lookahead.
+
+Specifically, the requirements for different \`format\` values are:
 
 - \`h264\`
   - Use Annex B formatted data
@@ -834,6 +830,11 @@ Supported formats:
   - Use the "Low overhead bitstream format" (section 5.2)
   - Each CompressedVideo message should contain enough OBUs to decode exactly one video frame
   - Each message containing a key frame must also include a Sequence Header OBU`,
+    },
+    {
+      name: "format",
+      type: { type: "primitive", name: "string" },
+      description: "Video format. Supported values: `h264`, `h265`, `av1`",
     },
   ],
 };

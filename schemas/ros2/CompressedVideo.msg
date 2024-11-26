@@ -14,11 +14,8 @@ string frame_id
 # Compressed video frame data.
 # 
 # For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove does not support video streams that include B frames because they require lookahead.
-uint8[] data
-
-# Video format.
 # 
-# Supported formats:
+# Specifically, the requirements for different `format` values are:
 # 
 # - `h264`
 #   - Use Annex B formatted data
@@ -34,4 +31,7 @@ uint8[] data
 #   - Use the "Low overhead bitstream format" (section 5.2)
 #   - Each CompressedVideo message should contain enough OBUs to decode exactly one video frame
 #   - Each message containing a key frame must also include a Sequence Header OBU
+uint8[] data
+
+# Video format. Supported values: `h264`, `h265`, `av1`
 string format

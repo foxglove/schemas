@@ -33,5 +33,9 @@ string frame_id
 #   - Each message containing a key frame must also include a Sequence Header OBU
 uint8[] data
 
-# Video format. Supported values: `h264`, `h265`, `av1`
+# Video format.
+# 
+# Supported values: `h264`, `h265`, `av1`.
+# 
+# Note: compressed video support is subject to hardware limitations and patent licensing, so not all encodings may be supported on all platforms. See more about [H.265 support](https://caniuse.com/hevc) and [AV1 support](https://caniuse.com/av1).
 string format

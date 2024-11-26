@@ -364,7 +364,7 @@ export const CompressedVideo = {
     },
     "format": {
       "type": "string",
-      "description": "Video format. Supported values: `h264`, `h265`, `av1`"
+      "description": "Video format.\n\nSupported values: `h264`, `h265`, `av1`.\n\nNote: compressed video support is subject to hardware limitations and patent licensing, so not all encodings may be supported on all platforms. See more about [H.265 support](https://caniuse.com/hevc) and [AV1 support](https://caniuse.com/av1)."
     }
   }
 };

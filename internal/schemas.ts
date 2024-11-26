@@ -816,8 +816,24 @@ const CompressedVideo: FoxgloveMessageSchema = {
     {
       name: "format",
       type: { type: "primitive", name: "string" },
-      description:
-        "Video format.\n\nSupported values:\n- `h264` (Annex B formatted data only)\n- `h265` (HEVC; Annex B formatted data only)\n- `av1` (Low overhead bitstream format)",
+      description: `Video format.
+
+Supported formats:
+
+- \`h264\`
+  - Use Annex B formatted data
+  - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame
+  - Each message containing a key frame (IDR) must also include a SPS NAL unit
+
+- \`h265\` (HEVC)
+  - Use Annex B formatted data
+  - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame
+  - Each message containing a key frame (IRAP) must also include relevant VPS/SPS/PPS NAL units
+
+- \`av1\`
+  - Use the "Low overhead bitstream format" (section 5.2)
+  - Each CompressedVideo message should contain enough OBUs to decode exactly one video frame
+  - Each message containing a key frame must also include a Sequence Header OBU`,
     },
   ],
 };

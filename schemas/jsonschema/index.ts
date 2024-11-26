@@ -364,7 +364,7 @@ export const CompressedVideo = {
     },
     "format": {
       "type": "string",
-      "description": "Video format.\n\nSupported values:\n- `h264` (Annex B formatted data only)\n- `h265` (HEVC; Annex B formatted data only)\n- `av1` (Low overhead bitstream format)"
+      "description": "Video format.\n\nSupported formats:\n\n- `h264`\n  - Use Annex B formatted data\n  - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame\n  - Each message containing a key frame (IDR) must also include a SPS NAL unit\n\n- `h265` (HEVC)\n  - Use Annex B formatted data\n  - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame\n  - Each message containing a key frame (IRAP) must also include relevant VPS/SPS/PPS NAL units\n\n- `av1`\n  - Use the \"Low overhead bitstream format\" (section 5.2)\n  - Each CompressedVideo message should contain enough OBUs to decode exactly one video frame\n  - Each message containing a key frame must also include a Sequence Header OBU"
     }
   }
 };

@@ -1,7 +1,7 @@
 {
   "name": "@foxglove/schemas",
-  "version": "1.6.4",
-  "description": "Foxglove-defined message schemas for ROS, Protobuf, and JSON",
+  "version": "1.6.5",
+  "description": "Foxglove-defined message schemas for ROS, Protobuf, FlatBuffers, OMG IDL, and JSON",
   "license": "MIT",
   "repository": {
     "type": "git",

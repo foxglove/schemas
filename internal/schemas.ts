@@ -826,6 +826,9 @@ Specifically, the requirements for different \`format\` values are:
   - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame
   - Each message containing a key frame (IRAP) must also include relevant VPS/SPS/PPS NAL units
 
+- \`vp9\`
+  - Each CompressedVideo message should contain exactly one video frame
+
 - \`av1\`
   - Use the "Low overhead bitstream format" (section 5.2)
   - Each CompressedVideo message should contain enough OBUs to decode exactly one video frame

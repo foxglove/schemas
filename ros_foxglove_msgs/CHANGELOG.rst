@@ -2,6 +2,13 @@
 Changelog for package foxglove_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.1 (2024-12-10)
+------------------
+* Updating distortion model description
+* Update ImageAnnotation schemas' coordinate fields with comment specifying the coordinate space
+* Update RawImage schema with endianness
+* Update CompressedVideo format strings
+
 3.0.0 (2023-10-31)
 ------------------
 * Add a frame_id field to LocationFix

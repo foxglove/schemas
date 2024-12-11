@@ -826,6 +826,9 @@ Specifically, the requirements for different \`format\` values are:
   - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame
   - Each message containing a key frame (IRAP) must also include relevant VPS/SPS/PPS NAL units
 
+- \`vp9\`
+  - Each CompressedVideo message should contain exactly one video frame
+
 - \`av1\`
   - Use the "Low overhead bitstream format" (section 5.2)
   - Each CompressedVideo message should contain enough OBUs to decode exactly one video frame
@@ -835,7 +838,7 @@ Specifically, the requirements for different \`format\` values are:
       name: "format",
       type: { type: "primitive", name: "string" },
       description:
-        "Video format.\n\nSupported values: `h264`, `h265`, `av1`.\n\nNote: compressed video support is subject to hardware limitations and patent licensing, so not all encodings may be supported on all platforms. See more about [H.265 support](https://caniuse.com/hevc) and [AV1 support](https://caniuse.com/av1).",
+        "Video format.\n\nSupported values: `h264`, `h265`, `vp9`, `av1`.\n\nNote: compressed video support is subject to hardware limitations and patent licensing, so not all encodings may be supported on all platforms. See more about [H.265 support](https://caniuse.com/hevc), [VP9 support](https://caniuse.com/webm), and [AV1 support](https://caniuse.com/av1).",
     },
   ],
 };

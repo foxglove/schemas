@@ -98,6 +98,7 @@ jobs:
           packages_dir: python/foxglove-schemas-flatbuffer/dist
           repository_url: https://test.pypi.org/legacy/
           skip_existing: true
+          attestations: false # https://github.com/pypa/gh-action-pypi-publish/issues/283#issuecomment-2499296440
 
       - name: Publish foxglove-schemas-flatbuffer to PyPI
         if: |
@@ -115,6 +116,7 @@ jobs:
           packages_dir: python/foxglove-schemas-protobuf/dist
           repository_url: https://test.pypi.org/legacy/
           skip_existing: true
+          attestations: false # https://github.com/pypa/gh-action-pypi-publish/issues/283#issuecomment-2499296440
 
       - name: Publish foxglove-schemas-protobuf to PyPI
         if: |

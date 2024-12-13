@@ -16,6 +16,7 @@ All schemas are generated from [schemas.ts](/internal/schemas.ts).
 - [CameraCalibration](#cameracalibration)
 - [CircleAnnotation](#circleannotation)
 - [Color](#color)
+- [CompressedAudio](#compressedaudio)
 - [CompressedImage](#compressedimage)
 - [CompressedVideo](#compressedvideo)
 - [CubePrimitive](#cubeprimitive)
@@ -545,6 +546,61 @@ float64
 <td>
 
 Alpha value between 0 and 1
+
+</td>
+</tr>
+</table>
+
+## CompressedAudio
+
+A single frame of a compressed audio bitstream
+
+<table>
+  <tr>
+    <th>field</th>
+    <th>type</th>
+    <th>description</th>
+  </tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>
+
+time
+
+</td>
+<td>
+
+Timestamp of audio frame
+
+</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>
+
+bytes
+
+</td>
+<td>
+
+Compressed audio frame data.
+
+TK
+
+</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Audio format.
+
+Supported values: `opus`.
 
 </td>
 </tr>

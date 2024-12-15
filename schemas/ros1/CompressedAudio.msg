@@ -7,8 +7,6 @@
 time timestamp
 
 # Compressed audio frame data.
-# 
-# TK
 uint8[] data
 
 # Audio format.
@@ -20,3 +18,9 @@ string format
 # 
 #  Supported values: `key`, `delta`.
 string type
+
+# Number of audio samples per second.
+uint32 sample_rate
+
+# Number of audio channels in the input.
+uint32 number_of_channels

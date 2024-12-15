@@ -585,8 +585,6 @@ bytes
 
 Compressed audio frame data.
 
-TK
-
 </td>
 </tr>
 <tr>
@@ -616,6 +614,32 @@ string
 Frame type.
 
  Supported values: `key`, `delta`.
+
+</td>
+</tr>
+<tr>
+<td><code>sample_rate</code></td>
+<td>
+
+uint32
+
+</td>
+<td>
+
+Number of audio samples per second.
+
+</td>
+</tr>
+<tr>
+<td><code>number_of_channels</code></td>
+<td>
+
+uint32
+
+</td>
+<td>
+
+Number of audio channels in the input.
 
 </td>
 </tr>

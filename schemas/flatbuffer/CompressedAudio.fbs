@@ -10,8 +10,6 @@ table CompressedAudio {
   timestamp:Time (id: 0);
 
   /// Compressed audio frame data.
-  /// 
-  /// TK
   data:[uint8] (id: 1);
 
   /// Audio format.
@@ -23,6 +21,12 @@ table CompressedAudio {
   /// 
   ///  Supported values: `key`, `delta`.
   type:string (id: 3);
+
+  /// Number of audio samples per second.
+  sample_rate:uint32 (id: 4);
+
+  /// Number of audio channels in the input.
+  number_of_channels:uint32 (id: 5);
 }
 
 root_type CompressedAudio;

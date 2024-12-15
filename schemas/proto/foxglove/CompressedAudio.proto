@@ -12,8 +12,6 @@ message CompressedAudio {
   google.protobuf.Timestamp timestamp = 1;
 
   // Compressed audio frame data.
-  // 
-  // TK
   bytes data = 2;
 
   // Audio format.
@@ -25,4 +23,10 @@ message CompressedAudio {
   // 
   //  Supported values: `key`, `delta`.
   string type = 4;
+
+  // Number of audio samples per second.
+  fixed32 sample_rate = 5;
+
+  // Number of audio channels in the input.
+  fixed32 number_of_channels = 6;
 }

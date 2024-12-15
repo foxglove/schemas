@@ -10,8 +10,6 @@ struct CompressedAudio {
   Time timestamp;
 
   // Compressed audio frame data.
-  // 
-  // TK
   sequence<uint8> data;
 
   // Audio format.
@@ -23,6 +21,12 @@ struct CompressedAudio {
   // 
   //  Supported values: `key`, `delta`.
   string type;
+
+  // Number of audio samples per second.
+  uint32 sample_rate;
+
+  // Number of audio channels in the input.
+  uint32 number_of_channels;
 };
 
 };

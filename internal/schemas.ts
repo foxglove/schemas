@@ -856,9 +856,7 @@ const CompressedAudio: FoxgloveMessageSchema = {
     {
       name: "data",
       type: { type: "primitive", name: "bytes" },
-      description: `Compressed audio frame data.
-
-TK`,
+      description: `Compressed audio frame data.`,
     },
     {
       name: "format",
@@ -869,6 +867,16 @@ TK`,
       name: "type",
       type: { type: "primitive", name: "string" },
       description: "Frame type.\n\n Supported values: `key`, `delta`.",
+    },
+    {
+      name: "sample_rate",
+      type: { type: "primitive", name: "uint32" },
+      description: "Number of audio samples per second.",
+    },
+    {
+      name: "number_of_channels",
+      type: { type: "primitive", name: "uint32" },
+      description: "Number of audio channels in the input.",
     },
   ],
 };

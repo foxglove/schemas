@@ -394,7 +394,7 @@ export const CompressedAudio = {
     "data": {
       "type": "string",
       "contentEncoding": "base64",
-      "description": "Compressed audio frame data.\n\nTK"
+      "description": "Compressed audio frame data."
     },
     "format": {
       "type": "string",
@@ -403,6 +403,16 @@ export const CompressedAudio = {
     "type": {
       "type": "string",
       "description": "Frame type.\n\n Supported values: `key`, `delta`."
+    },
+    "sample_rate": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of audio samples per second."
+    },
+    "number_of_channels": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of audio channels in the input."
     }
   }
 };

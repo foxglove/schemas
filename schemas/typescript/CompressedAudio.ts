@@ -8,11 +8,7 @@ export type CompressedAudio = {
   /** Timestamp of audio frame */
   timestamp: Time;
 
-  /**
-   * Compressed audio frame data.
-   * 
-   * TK
-   */
+  /** Compressed audio frame data. */
   data: Uint8Array;
 
   /**
@@ -28,4 +24,10 @@ export type CompressedAudio = {
    *  Supported values: `key`, `delta`.
    */
   type: string;
+
+  /** Number of audio samples per second. */
+  sample_rate: number;
+
+  /** Number of audio channels in the input. */
+  number_of_channels: number;
 };

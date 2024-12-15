@@ -5,7 +5,7 @@ on:
     branches: [main]
     tags: ["releases/**"]
   pull_request:
-    branches: ["*"]
+    branches: ["**"]
 
 jobs:
   build:

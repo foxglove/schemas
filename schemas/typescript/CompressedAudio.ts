@@ -21,4 +21,11 @@ export type CompressedAudio = {
    * Supported values: `opus`.
    */
   format: string;
+
+  /**
+   * Frame type.
+   * 
+   *  Supported values: `key`, `delta`.
+   */
+  type: string;
 };

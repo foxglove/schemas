@@ -20,4 +20,9 @@ message CompressedAudio {
   // 
   // Supported values: `opus`.
   string format = 3;
+
+  // Frame type.
+  // 
+  //  Supported values: `key`, `delta`.
+  string type = 4;
 }

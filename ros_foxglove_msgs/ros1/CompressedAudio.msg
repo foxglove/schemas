@@ -15,3 +15,8 @@ uint8[] data
 # 
 # Supported values: `opus`.
 string format
+
+# Frame type.
+# 
+#  Supported values: `key`, `delta`.
+string type

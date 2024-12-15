@@ -399,6 +399,10 @@ export const CompressedAudio = {
     "format": {
       "type": "string",
       "description": "Audio format.\n\nSupported values: `opus`."
+    },
+    "type": {
+      "type": "string",
+      "description": "Frame type.\n\n Supported values: `key`, `delta`."
     }
   }
 };

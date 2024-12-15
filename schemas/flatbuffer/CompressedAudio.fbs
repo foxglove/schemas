@@ -18,6 +18,11 @@ table CompressedAudio {
   /// 
   /// Supported values: `opus`.
   format:string (id: 2);
+
+  /// Frame type.
+  /// 
+  ///  Supported values: `key`, `delta`.
+  type:string (id: 3);
 }
 
 root_type CompressedAudio;

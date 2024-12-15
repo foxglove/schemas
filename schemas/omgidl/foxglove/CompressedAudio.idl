@@ -18,6 +18,11 @@ struct CompressedAudio {
   // 
   // Supported values: `opus`.
   string format;
+
+  // Frame type.
+  // 
+  //  Supported values: `key`, `delta`.
+  string type;
 };
 
 };

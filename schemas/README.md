@@ -604,6 +604,21 @@ Supported values: `opus`.
 
 </td>
 </tr>
+<tr>
+<td><code>type</code></td>
+<td>
+
+string
+
+</td>
+<td>
+
+Frame type.
+
+ Supported values: `key`, `delta`.
+
+</td>
+</tr>
 </table>
 
 ## CompressedImage

@@ -865,6 +865,11 @@ TK`,
       type: { type: "primitive", name: "string" },
       description: "Audio format.\n\nSupported values: `opus`.",
     },
+    {
+      name: "type",
+      type: { type: "primitive", name: "string" },
+      description: "Frame type.\n\n Supported values: `key`, `delta`.",
+    },
   ],
 };
 

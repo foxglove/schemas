@@ -843,6 +843,44 @@ Specifically, the requirements for different \`format\` values are:
   ],
 };
 
+const CompressedAudio: FoxgloveMessageSchema = {
+  type: "message",
+  name: "CompressedAudio",
+  description: "A single frame of a compressed audio bitstream",
+  fields: [
+    {
+      name: "timestamp",
+      type: { type: "primitive", name: "time" },
+      description: "Timestamp of audio frame",
+    },
+    {
+      name: "data",
+      type: { type: "primitive", name: "bytes" },
+      description: `Compressed audio frame data.`,
+    },
+    {
+      name: "format",
+      type: { type: "primitive", name: "string" },
+      description: "Audio format.\n\nSupported values: `opus`.",
+    },
+    {
+      name: "type",
+      type: { type: "primitive", name: "string" },
+      description: "Frame type.\n\n Supported values: `key`, `delta`.",
+    },
+    {
+      name: "sample_rate",
+      type: { type: "primitive", name: "uint32" },
+      description: "Number of audio samples per second.",
+    },
+    {
+      name: "number_of_channels",
+      type: { type: "primitive", name: "uint32" },
+      description: "Number of audio channels in the input.",
+    },
+  ],
+};
+
 const RawImage: FoxgloveMessageSchema = {
   type: "message",
   name: "RawImage",
@@ -1482,6 +1520,7 @@ export const foxgloveMessageSchemas = {
   Color,
   CompressedImage,
   CompressedVideo,
+  CompressedAudio,
   CylinderPrimitive,
   CubePrimitive,
   FrameTransform,

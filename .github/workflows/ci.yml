@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Install Flatbuffer compiler
         run: |
           curl -LO https://github.com/google/flatbuffers/releases/download/v23.1.21/Linux.flatc.binary.clang++-12.zip
@@ -19,16 +20,19 @@ jobs:
           unzip Linux.flatc.binary.clang++-12.zip
           rm Linux.flatc.binary.clang++-12.zip
           sudo mv flatc /usr/local/bin
+
       - uses: arduino/setup-protoc@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: corepack enable
+
       - uses: actions/setup-node@v4
         with:
           node-version: 16.x
           cache: yarn
           registry-url: https://registry.npmjs.org
 
-      - run: corepack enable
       - run: yarn install --immutable
       - run: yarn lint:ci
       - run: yarn typecheck

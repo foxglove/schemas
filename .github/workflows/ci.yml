@@ -13,6 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          # cache: yarn
+          registry-url: https://registry.npmjs.org
+
       - name: Install Flatbuffer compiler
         run: |
           curl -LO https://github.com/google/flatbuffers/releases/download/v23.1.21/Linux.flatc.binary.clang++-12.zip
@@ -24,14 +32,6 @@ jobs:
       - uses: arduino/setup-protoc@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - run: corepack enable
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          # cache: yarn
-          registry-url: https://registry.npmjs.org
 
       - run: yarn install --immutable
       - run: yarn lint:ci

@@ -23,6 +23,12 @@ These schemas can be used in [MCAP](https://github.com/foxglove/mcap) files or [
 
 ## Development
 
+Corepack is required for development.
+
+```sh
+corepack enable
+```
+
 The schema definitions are in [internal/schemas.ts](internal/schemas.ts).
 
 After editing the schemas, re-generate the language-specific definitions by running `yarn update-generated-files`.

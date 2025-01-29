@@ -14,6 +14,7 @@
   "engines": {
     "node": ">=16"
   },
+  "packageManager": "yarn@4.6.0",
   "main": "schemas/typescript/index.js",
   "typings": "schemas/typescript/index.d.ts",
   "scripts": {
@@ -22,7 +23,7 @@
     "lint:ci": "eslint --report-unused-disable-directives .",
     "lint": "eslint --report-unused-disable-directives --fix .",
     "test": "jest",
-    "update-generated-files": "yarn test --updateSnapshot && ts-node --files --project tsconfig.json scripts/updateGeneratedFiles --out-dir schemas --ros-out-dir ros_foxglove_msgs"
+    "update-generated-files": "yarn test --updateSnapshot && ts-node --files --project tsconfig.json ./scripts/updateGeneratedFiles.ts --out-dir schemas --ros-out-dir ros_foxglove_msgs"
   },
   "devDependencies": {
     "@foxglove/eslint-plugin": "0.21.0",
@@ -47,7 +48,7 @@
     "protobufjs": "^7.2.2",
     "rimraf": "^4.1.2",
     "ts-jest": "29.0.5",
-    "ts-node": "10.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "4.9.5"
   },
   "dependencies": {

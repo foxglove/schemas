@@ -13,7 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - run: which -a yarn
       - run: corepack enable
+      - run: which -a yarn
 
       - uses: actions/setup-node@v4
         with:
@@ -33,6 +35,7 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - run: which -a yarn
       - run: yarn install --immutable
       - run: yarn lint:ci
       - run: yarn typecheck

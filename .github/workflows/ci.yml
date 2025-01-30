@@ -13,21 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: ls -la
-      - run: cat package.json
-
-      - run: which -a yarn && yarn --version
-      - run: corepack --version
       - run: corepack enable
-      - run: which -a yarn && yarn --version
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.x
-          # cache: yarn
+          node-version: 18
+          cache: yarn
           registry-url: https://registry.npmjs.org
-
-      - run: which -a yarn && yarn --version
 
       - name: Install Flatbuffer compiler
         run: |
@@ -41,7 +33,6 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: which -a yarn && yarn --version
       - run: yarn install --immutable
       - run: yarn lint:ci
       - run: yarn typecheck

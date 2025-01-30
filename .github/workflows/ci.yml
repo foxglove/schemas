@@ -13,7 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - run: ls -la
+      - run: cat package.json
+
       - run: which -a yarn && yarn --version
+      - run: corepack --version
       - run: corepack enable
       - run: which -a yarn && yarn --version
 

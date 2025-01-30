@@ -25,25 +25,26 @@ enum PointsAnnotationType : ubyte {
 /// An array of points on a 2D image
 table PointsAnnotation {
   /// Timestamp of annotation
-  timestamp:Time;
+  timestamp:Time (id: 0);
 
   /// Type of points annotation to draw
-  type:PointsAnnotationType;
+  type:PointsAnnotationType (id: 1);
 
-  /// Points in 2D image coordinates (pixels)
-  points:[foxglove.Point2];
+  /// Points in 2D image coordinates (pixels).
+  /// These coordinates use the top-left corner of the top-left pixel of the image as the origin.
+  points:[foxglove.Point2] (id: 2);
 
   /// Outline color
-  outline_color:foxglove.Color;
+  outline_color:foxglove.Color (id: 3);
 
   /// Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`, `LINE_STRIP` or `LINE_LOOP`.
-  outline_colors:[foxglove.Color];
+  outline_colors:[foxglove.Color] (id: 4);
 
   /// Fill color
-  fill_color:foxglove.Color;
+  fill_color:foxglove.Color (id: 5);
 
   /// Stroke thickness in pixels
-  thickness:double;
+  thickness:double (id: 6);
 }
 
 root_type PointsAnnotation;

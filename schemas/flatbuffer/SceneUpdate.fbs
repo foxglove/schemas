@@ -8,10 +8,10 @@ namespace foxglove;
 /// An update to the entities displayed in a 3D scene
 table SceneUpdate {
   /// Scene entities to delete
-  deletions:[foxglove.SceneEntityDeletion];
+  deletions:[foxglove.SceneEntityDeletion] (id: 0);
 
   /// Scene entities to add or replace
-  entities:[foxglove.SceneEntity];
+  entities:[foxglove.SceneEntity] (id: 1);
 }
 
 root_type SceneUpdate;

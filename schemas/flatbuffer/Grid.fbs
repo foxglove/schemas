@@ -10,31 +10,31 @@ namespace foxglove;
 /// A 2D grid of data
 table Grid {
   /// Timestamp of grid
-  timestamp:Time;
+  timestamp:Time (id: 0);
 
   /// Frame of reference
-  frame_id:string;
+  frame_id:string (id: 1);
 
   /// Origin of grid's corner relative to frame of reference; grid is positioned in the x-y plane relative to this origin
-  pose:foxglove.Pose;
+  pose:foxglove.Pose (id: 2);
 
   /// Number of grid columns
-  column_count:uint32;
+  column_count:uint32 (id: 3);
 
   /// Size of single grid cell along x and y axes, relative to `pose`
-  cell_size:foxglove.Vector2;
+  cell_size:foxglove.Vector2 (id: 4);
 
   /// Number of bytes between rows in `data`
-  row_stride:uint32;
+  row_stride:uint32 (id: 5);
 
   /// Number of bytes between cells within a row in `data`
-  cell_stride:uint32;
+  cell_stride:uint32 (id: 6);
 
   /// Fields in `data`. `red`, `green`, `blue`, and `alpha` are optional for customizing the grid's color.
-  fields:[foxglove.PackedElementField];
+  fields:[foxglove.PackedElementField] (id: 7);
 
   /// Grid cell data, interpreted using `fields`, in row-major (y-major) order
-  data:[uint8];
+  data:[uint8] (id: 8);
 }
 
 root_type Grid;

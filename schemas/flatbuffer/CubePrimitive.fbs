@@ -9,13 +9,13 @@ namespace foxglove;
 /// A primitive representing a cube or rectangular prism
 table CubePrimitive {
   /// Position of the center of the cube and orientation of the cube
-  pose:foxglove.Pose;
+  pose:foxglove.Pose (id: 0);
 
   /// Size of the cube along each axis
-  size:foxglove.Vector3;
+  size:foxglove.Vector3 (id: 1);
 
   /// Color of the cube
-  color:foxglove.Color;
+  color:foxglove.Color (id: 2);
 }
 
 root_type CubePrimitive;

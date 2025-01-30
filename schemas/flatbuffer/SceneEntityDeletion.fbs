@@ -15,13 +15,13 @@ enum SceneEntityDeletionType : ubyte {
 /// Command to remove previously published entities
 table SceneEntityDeletion {
   /// Timestamp of the deletion. Only matching entities earlier than this timestamp will be deleted.
-  timestamp:Time;
+  timestamp:Time (id: 0);
 
   /// Type of deletion action to perform
-  type:SceneEntityDeletionType;
+  type:SceneEntityDeletionType (id: 1);
 
   /// Identifier which must match if `type` is `MATCHING_ID`.
-  id:string;
+  id:string (id: 2);
 }
 
 root_type SceneEntityDeletion;

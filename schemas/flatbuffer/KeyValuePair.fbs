@@ -5,10 +5,10 @@ namespace foxglove;
 /// A key with its associated value
 table KeyValuePair {
   /// Key
-  key:string;
+  key:string (id: 0);
 
   /// Value
-  value:string;
+  value:string (id: 1);
 }
 
 root_type KeyValuePair;

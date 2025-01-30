@@ -11,7 +11,7 @@ export function generateMarkdown(
     `\
 # Foxglove schemas
 
-See [Foxglove Schemas documentation](https://foxglove.dev/docs/studio/messages).
+See [Foxglove Schemas documentation](https://docs.foxglove.dev/docs/visualization/message-schemas/introduction).
 
 All schemas are generated from [schemas.ts](/internal/schemas.ts).`,
 

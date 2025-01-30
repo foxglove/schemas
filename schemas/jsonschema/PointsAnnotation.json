@@ -67,7 +67,7 @@
           }
         }
       },
-      "description": "Points in 2D image coordinates (pixels)"
+      "description": "Points in 2D image coordinates (pixels).\nThese coordinates use the top-left corner of the top-left pixel of the image as the origin."
     },
     "outline_color": {
       "title": "foxglove.Color",

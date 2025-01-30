@@ -9,19 +9,19 @@ namespace foxglove;
 /// A primitive representing a cylinder, elliptic cylinder, or truncated cone
 table CylinderPrimitive {
   /// Position of the center of the cylinder and orientation of the cylinder. The flat face(s) are perpendicular to the z-axis.
-  pose:foxglove.Pose;
+  pose:foxglove.Pose (id: 0);
 
   /// Size of the cylinder's bounding box
-  size:foxglove.Vector3;
+  size:foxglove.Vector3 (id: 1);
 
   /// 0-1, ratio of the diameter of the cylinder's bottom face (min z) to the bottom of the bounding box
-  bottom_scale:double;
+  bottom_scale:double (id: 2);
 
   /// 0-1, ratio of the diameter of the cylinder's top face (max z) to the top of the bounding box
-  top_scale:double;
+  top_scale:double (id: 3);
 
   /// Color of the cylinder
-  color:foxglove.Color;
+  color:foxglove.Color (id: 4);
 }
 
 root_type CylinderPrimitive;

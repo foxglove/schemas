@@ -9,22 +9,23 @@ namespace foxglove;
 /// A text label on a 2D image
 table TextAnnotation {
   /// Timestamp of annotation
-  timestamp:Time;
+  timestamp:Time (id: 0);
 
-  /// Bottom-left origin of the text label in 2D image coordinates (pixels)
-  position:foxglove.Point2;
+  /// Bottom-left origin of the text label in 2D image coordinates (pixels).
+  /// The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
+  position:foxglove.Point2 (id: 1);
 
   /// Text to display
-  text:string;
+  text:string (id: 2);
 
   /// Font size in pixels
-  font_size:double = 12.0;
+  font_size:double = 12.0 (id: 3);
 
   /// Text color
-  text_color:foxglove.Color;
+  text_color:foxglove.Color (id: 4);
 
   /// Background fill color
-  background_color:foxglove.Color;
+  background_color:foxglove.Color (id: 5);
 }
 
 root_type TextAnnotation;

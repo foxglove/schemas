@@ -11,7 +11,8 @@ struct CircleAnnotation {
   // Timestamp of circle
   Time timestamp;
 
-  // Center of the circle in 2D image coordinates (pixels)
+  // Center of the circle in 2D image coordinates (pixels).
+  // The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
   Point2 position;
 
   // Circle diameter in pixels

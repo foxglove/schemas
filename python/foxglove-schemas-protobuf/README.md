@@ -1,6 +1,6 @@
 # Foxglove Schemas (Protobuf)
 
-This package provides [Protobuf](https://developers.google.com/protocol-buffers/) classes for [Foxglove Schemas](https://foxglove.dev/docs/studio/messages/introduction).
+This package provides [Protobuf](https://developers.google.com/protocol-buffers/) classes for [Foxglove Schemas](https://docs.foxglove.dev/docs/visualization/message-schemas/introduction).
 
 ## Installation
 

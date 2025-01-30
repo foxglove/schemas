@@ -1,7 +1,7 @@
 {
   "name": "@foxglove/schemas",
-  "version": "1.6.2",
-  "description": "Foxglove-defined message schemas for ROS, Protobuf, and JSON",
+  "version": "1.6.6",
+  "description": "Foxglove-defined message schemas for ROS, Protobuf, FlatBuffers, OMG IDL, and JSON",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -54,5 +54,6 @@
   "dependencies": {
     "@foxglove/rosmsg-msgs-common": "^3.0.0",
     "tslib": "^2.5.0"
-  }
+  },
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }

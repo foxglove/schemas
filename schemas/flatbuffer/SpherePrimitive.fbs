@@ -9,13 +9,13 @@ namespace foxglove;
 /// A primitive representing a sphere or ellipsoid
 table SpherePrimitive {
   /// Position of the center of the sphere and orientation of the sphere
-  pose:foxglove.Pose;
+  pose:foxglove.Pose (id: 0);
 
   /// Size (diameter) of the sphere along each axis
-  size:foxglove.Vector3;
+  size:foxglove.Vector3 (id: 1);
 
   /// Color of the sphere
-  color:foxglove.Color;
+  color:foxglove.Color (id: 2);
 }
 
 root_type SpherePrimitive;

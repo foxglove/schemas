@@ -7,7 +7,7 @@ namespace foxglove;
 /// An array of FrameTransform messages
 table FrameTransforms {
   /// Array of transforms
-  transforms:[foxglove.FrameTransform];
+  transforms:[foxglove.FrameTransform] (id: 0);
 }
 
 root_type FrameTransforms;

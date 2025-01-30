@@ -8,22 +8,22 @@ namespace foxglove;
 /// A primitive representing a text label
 table TextPrimitive {
   /// Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x.
-  pose:foxglove.Pose;
+  pose:foxglove.Pose (id: 0);
 
   /// Whether the text should respect `pose.orientation` (false) or always face the camera (true)
-  billboard:bool;
+  billboard:bool (id: 1);
 
   /// Font size (height of one line of text)
-  font_size:double;
+  font_size:double (id: 2);
 
   /// Indicates whether `font_size` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
-  scale_invariant:bool;
+  scale_invariant:bool (id: 3);
 
   /// Color of the text
-  color:foxglove.Color;
+  color:foxglove.Color (id: 4);
 
   /// Text
-  text:string;
+  text:string (id: 5);
 }
 
 root_type TextPrimitive;

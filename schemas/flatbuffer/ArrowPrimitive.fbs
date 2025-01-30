@@ -8,22 +8,22 @@ namespace foxglove;
 /// A primitive representing an arrow
 table ArrowPrimitive {
   /// Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.
-  pose:foxglove.Pose;
+  pose:foxglove.Pose (id: 0);
 
   /// Length of the arrow shaft
-  shaft_length:double;
+  shaft_length:double (id: 1);
 
   /// Diameter of the arrow shaft
-  shaft_diameter:double;
+  shaft_diameter:double (id: 2);
 
   /// Length of the arrow head
-  head_length:double;
+  head_length:double (id: 3);
 
   /// Diameter of the arrow head
-  head_diameter:double;
+  head_diameter:double (id: 4);
 
   /// Color of the arrow
-  color:foxglove.Color;
+  color:foxglove.Color (id: 5);
 }
 
 root_type ArrowPrimitive;

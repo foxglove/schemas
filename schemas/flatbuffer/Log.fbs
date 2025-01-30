@@ -21,22 +21,22 @@ enum LogLevel : ubyte {
 /// A log message
 table Log {
   /// Timestamp of log message
-  timestamp:Time;
+  timestamp:Time (id: 0);
 
   /// Log level
-  level:LogLevel;
+  level:LogLevel (id: 1);
 
   /// Log message
-  message:string;
+  message:string (id: 2);
 
   /// Process or node name
-  name:string;
+  name:string (id: 3);
 
   /// Filename
-  file:string;
+  file:string (id: 4);
 
   /// Line number in the file
-  line:uint32;
+  line:uint32 (id: 5);
 }
 
 root_type Log;

@@ -9,22 +9,23 @@ namespace foxglove;
 /// A circle annotation on a 2D image
 table CircleAnnotation {
   /// Timestamp of circle
-  timestamp:Time;
+  timestamp:Time (id: 0);
 
-  /// Center of the circle in 2D image coordinates (pixels)
-  position:foxglove.Point2;
+  /// Center of the circle in 2D image coordinates (pixels).
+  /// The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
+  position:foxglove.Point2 (id: 1);
 
   /// Circle diameter in pixels
-  diameter:double;
+  diameter:double (id: 2);
 
   /// Line thickness in pixels
-  thickness:double;
+  thickness:double (id: 3);
 
   /// Fill color
-  fill_color:foxglove.Color;
+  fill_color:foxglove.Color (id: 4);
 
   /// Outline color
-  outline_color:foxglove.Color;
+  outline_color:foxglove.Color (id: 5);
 }
 
 root_type CircleAnnotation;

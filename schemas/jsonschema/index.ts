@@ -198,7 +198,7 @@ export const CircleAnnotation = {
     },
     "position": {
       "title": "foxglove.Point2",
-      "description": "Center of the circle in 2D image coordinates (pixels)",
+      "description": "Center of the circle in 2D image coordinates (pixels).\nThe coordinate uses the top-left corner of the top-left pixel of the image as the origin.",
       "type": "object",
       "properties": {
         "x": {
@@ -360,11 +360,11 @@ export const CompressedVideo = {
     "data": {
       "type": "string",
       "contentEncoding": "base64",
-      "description": "Compressed video frame data.\n\nFor packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove Studio does not support video streams that include B frames because they require lookahead."
+      "description": "Compressed video frame data.\n\nFor packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove does not support video streams that include B frames because they require lookahead.\n\nSpecifically, the requirements for different `format` values are:\n\n- `h264`\n  - Use Annex B formatted data\n  - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame\n  - Each message containing a key frame (IDR) must also include a SPS NAL unit\n\n- `h265` (HEVC)\n  - Use Annex B formatted data\n  - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame\n  - Each message containing a key frame (IRAP) must also include relevant VPS/SPS/PPS NAL units\n\n- `vp9`\n  - Each CompressedVideo message should contain exactly one video frame\n\n- `av1`\n  - Use the \"Low overhead bitstream format\" (section 5.2)\n  - Each CompressedVideo message should contain enough OBUs to decode exactly one video frame\n  - Each message containing a key frame must also include a Sequence Header OBU"
     },
     "format": {
       "type": "string",
-      "description": "Video format.\n\nSupported values: `h264` (Annex B formatted data only)"
+      "description": "Video format.\n\nSupported values: `h264`, `h265`, `vp9`, `av1`.\n\nNote: compressed video support is subject to hardware limitations and patent licensing, so not all encodings may be supported on all platforms. See more about [H.265 support](https://caniuse.com/hevc), [VP9 support](https://caniuse.com/webm), and [AV1 support](https://caniuse.com/av1)."
     }
   }
 };
@@ -957,7 +957,7 @@ export const ImageAnnotations = {
           },
           "position": {
             "title": "foxglove.Point2",
-            "description": "Center of the circle in 2D image coordinates (pixels)",
+            "description": "Center of the circle in 2D image coordinates (pixels).\nThe coordinate uses the top-left corner of the top-left pixel of the image as the origin.",
             "type": "object",
             "properties": {
               "x": {
@@ -1098,7 +1098,7 @@ export const ImageAnnotations = {
                 }
               }
             },
-            "description": "Points in 2D image coordinates (pixels)"
+            "description": "Points in 2D image coordinates (pixels).\nThese coordinates use the top-left corner of the top-left pixel of the image as the origin."
           },
           "outline_color": {
             "title": "foxglove.Color",
@@ -1206,7 +1206,7 @@ export const ImageAnnotations = {
           },
           "position": {
             "title": "foxglove.Point2",
-            "description": "Bottom-left origin of the text label in 2D image coordinates (pixels)",
+            "description": "Bottom-left origin of the text label in 2D image coordinates (pixels).\nThe coordinate uses the top-left corner of the top-left pixel of the image as the origin.",
             "type": "object",
             "properties": {
               "x": {
@@ -4272,7 +4272,7 @@ export const PointsAnnotation = {
           }
         }
       },
-      "description": "Points in 2D image coordinates (pixels)"
+      "description": "Points in 2D image coordinates (pixels).\nThese coordinates use the top-left corner of the top-left pixel of the image as the origin."
     },
     "outline_color": {
       "title": "foxglove.Color",
@@ -4628,7 +4628,7 @@ export const RawImage = {
     },
     "encoding": {
       "type": "string",
-      "description": "Encoding of the raw image data\n\nSupported values: `8UC1`, `8UC3`, `16UC1`, `32FC1`, `bayer_bggr8`, `bayer_gbrg8`, `bayer_grbg8`, `bayer_rggb8`, `bgr8`, `bgra8`, `mono8`, `mono16`, `rgb8`, `rgba8`, `uyvy` or `yuv422`, `yuyv` or `yuv422_yuy2`"
+      "description": "Encoding of the raw image data\n\nSupported values: `8UC1`, `8UC3`, `16UC1` (little endian), `32FC1` (little endian), `bayer_bggr8`, `bayer_gbrg8`, `bayer_grbg8`, `bayer_rggb8`, `bgr8`, `bgra8`, `mono8`, `mono16`, `rgb8`, `rgba8`, `uyvy` or `yuv422`, `yuyv` or `yuv422_yuy2`"
     },
     "step": {
       "type": "integer",
@@ -4767,7 +4767,7 @@ export const TextAnnotation = {
     },
     "position": {
       "title": "foxglove.Point2",
-      "description": "Bottom-left origin of the text label in 2D image coordinates (pixels)",
+      "description": "Bottom-left origin of the text label in 2D image coordinates (pixels).\nThe coordinate uses the top-left corner of the top-left pixel of the image as the origin.",
       "type": "object",
       "properties": {
         "x": {

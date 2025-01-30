@@ -10,7 +10,10 @@ export type TextAnnotation = {
   /** Timestamp of annotation */
   timestamp: Time;
 
-  /** Bottom-left origin of the text label in 2D image coordinates (pixels) */
+  /**
+   * Bottom-left origin of the text label in 2D image coordinates (pixels).
+   * The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
+   */
   position: Point2;
 
   /** Text to display */

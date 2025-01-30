@@ -3,6 +3,6 @@ namespace foxglove;
 
 /// Used for nesting byte vectors
 table ByteVector {
-  data:[uint8];
+  data:[uint8] (id: 0);
 }
 root_type ByteVector;

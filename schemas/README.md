@@ -1,6 +1,6 @@
 # Foxglove schemas
 
-See [Foxglove Schemas documentation](https://foxglove.dev/docs/studio/messages).
+See [Foxglove Schemas documentation](https://docs.foxglove.dev/docs/visualization/message-schemas/introduction).
 
 All schemas are generated from [schemas.ts](/internal/schemas.ts).
 
@@ -427,7 +427,8 @@ Timestamp of circle
 </td>
 <td>
 
-Center of the circle in 2D image coordinates (pixels)
+Center of the circle in 2D image coordinates (pixels).
+The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
 
 </td>
 </tr>
@@ -664,7 +665,27 @@ bytes
 
 Compressed video frame data.
 
-For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove Studio does not support video streams that include B frames because they require lookahead.
+For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove does not support video streams that include B frames because they require lookahead.
+
+Specifically, the requirements for different `format` values are:
+
+- `h264`
+  - Use Annex B formatted data
+  - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame
+  - Each message containing a key frame (IDR) must also include a SPS NAL unit
+
+- `h265` (HEVC)
+  - Use Annex B formatted data
+  - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame
+  - Each message containing a key frame (IRAP) must also include relevant VPS/SPS/PPS NAL units
+
+- `vp9`
+  - Each CompressedVideo message should contain exactly one video frame
+
+- `av1`
+  - Use the "Low overhead bitstream format" (section 5.2)
+  - Each CompressedVideo message should contain enough OBUs to decode exactly one video frame
+  - Each message containing a key frame must also include a Sequence Header OBU
 
 </td>
 </tr>
@@ -679,7 +700,9 @@ string
 
 Video format.
 
-Supported values: `h264` (Annex B formatted data only)
+Supported values: `h264`, `h265`, `vp9`, `av1`.
+
+Note: compressed video support is subject to hardware limitations and patent licensing, so not all encodings may be supported on all platforms. See more about [H.265 support](https://caniuse.com/hevc), [VP9 support](https://caniuse.com/webm), and [AV1 support](https://caniuse.com/av1).
 
 </td>
 </tr>
@@ -1950,7 +1973,8 @@ Type of points annotation to draw
 </td>
 <td>
 
-Points in 2D image coordinates (pixels)
+Points in 2D image coordinates (pixels).
+These coordinates use the top-left corner of the top-left pixel of the image as the origin.
 
 </td>
 </tr>
@@ -2285,7 +2309,7 @@ string
 
 Encoding of the raw image data
 
-Supported values: `8UC1`, `8UC3`, `16UC1`, `32FC1`, `bayer_bggr8`, `bayer_gbrg8`, `bayer_grbg8`, `bayer_rggb8`, `bgr8`, `bgra8`, `mono8`, `mono16`, `rgb8`, `rgba8`, `uyvy` or `yuv422`, `yuyv` or `yuv422_yuy2`
+Supported values: `8UC1`, `8UC3`, `16UC1` (little endian), `32FC1` (little endian), `bayer_bggr8`, `bayer_gbrg8`, `bayer_grbg8`, `bayer_rggb8`, `bgr8`, `bgra8`, `mono8`, `mono16`, `rgb8`, `rgba8`, `uyvy` or `yuv422`, `yuyv` or `yuv422_yuy2`
 
 </td>
 </tr>
@@ -2683,7 +2707,8 @@ Timestamp of annotation
 </td>
 <td>
 
-Bottom-left origin of the text label in 2D image coordinates (pixels)
+Bottom-left origin of the text label in 2D image coordinates (pixels).
+The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
 
 </td>
 </tr>

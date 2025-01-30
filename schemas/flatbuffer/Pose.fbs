@@ -8,10 +8,10 @@ namespace foxglove;
 /// A position and orientation for an object or reference frame in 3D space
 table Pose {
   /// Point denoting position in 3D space
-  position:foxglove.Vector3;
+  position:foxglove.Vector3 (id: 0);
 
   /// Quaternion denoting orientation in 3D space
-  orientation:foxglove.Quaternion;
+  orientation:foxglove.Quaternion (id: 1);
 }
 
 root_type Pose;

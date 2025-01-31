@@ -100,8 +100,9 @@ jobs:
           python-version: '3.9'
           cache: poetry
 
-      - run: make test
+      - run: make install
       - run: make build
+      - run: make test
 
       - name: Publish foxglove-schemas-flatbuffer to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1

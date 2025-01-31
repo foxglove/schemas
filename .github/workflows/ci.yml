@@ -72,7 +72,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
   python:
-    runs-on: ubuntu-22.04 # Required for python 3.7
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: python

@@ -4,10 +4,10 @@ This package provides [Protobuf](https://developers.google.com/protocol-buffers/
 
 ## Installation
 
-Install via [Pipenv](https://pipenv.pypa.io/en/latest/) by adding `foxglove-schemas-protobuf` to your `Pipfile` or via the command line:
+Install via [Poetry](https://python-poetry.org/):
 
-```bash
-pipenv install foxglove-schemas-protobuf
+```sh
+poetry add foxglove-schemas-protobuf
 ```
 
 ## Usage

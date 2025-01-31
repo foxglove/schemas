@@ -10,6 +10,7 @@
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
   "prettier.prettierPath": "./node_modules/prettier",
+  "prettier.documentSelectors": ["**/*.toml"],
   "search.exclude": {
     "**/node_modules": true,
     ".yarn/**": true,

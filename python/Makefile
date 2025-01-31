@@ -4,6 +4,9 @@ else
 SED_ARGS = -i
 endif
 
+.PHONY: all
+all: install generate build test
+
 .PHONY: install
 install:
 	cd foxglove-schemas-flatbuffer && poetry install

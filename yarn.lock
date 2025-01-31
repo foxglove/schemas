@@ -637,7 +637,7 @@ __metadata:
     eslint-plugin-jest: "npm:27.2.1"
     eslint-plugin-prettier: "npm:4.2.1"
     jest: "npm:29.4.3"
-    prettier: "npm:^3.4.2"
+    prettier: "npm:^2.8.4"
     prettier-plugin-toml: "npm:^2.0.1"
     protobufjs: "npm:^7.2.2"
     rimraf: "npm:^4.1.2"
@@ -5049,12 +5049,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.4.2":
-  version: 3.4.2
-  resolution: "prettier@npm:3.4.2"
+"prettier@npm:^2.8.4":
+  version: 2.8.8
+  resolution: "prettier@npm:2.8.8"
   bin:
-    prettier: bin/prettier.cjs
-  checksum: 10c0/99e076a26ed0aba4ebc043880d0f08bbb8c59a4c6641cdee6cdadf2205bdd87aa1d7823f50c3aea41e015e99878d37c58d7b5f0e663bba0ef047f94e36b96446
+    prettier: bin-prettier.js
+  checksum: 10c0/463ea8f9a0946cd5b828d8cf27bd8b567345cf02f56562d5ecde198b91f47a76b7ac9eae0facd247ace70e927143af6135e8cf411986b8cb8478784a4d6d724a
   languageName: node
   linkType: hard
 

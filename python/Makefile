@@ -5,7 +5,7 @@ SED_ARGS = -i
 endif
 
 .PHONY: all
-all: install generate build test
+all: clean install generate build test
 
 .PHONY: install
 install:

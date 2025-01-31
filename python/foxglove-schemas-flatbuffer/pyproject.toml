@@ -3,25 +3,21 @@ name = "foxglove-schemas-flatbuffer"
 version = "0.2.1"
 description = "Precompiled flatbuffer schemas for Foxglove"
 authors = [
-    {name = "Foxglove Technologies Inc",email = "support@foxglove.dev"}
+  { name = "Foxglove Technologies Inc", email = "support@foxglove.dev" },
 ]
+license = { text = "MIT" }
 readme = "README.md"
+dynamic = ["classifiers"]
 requires-python = ">=3.9"
-dependencies = [
-    "flatbuffers (>=23)"
-]
+dependencies = ["flatbuffers (>=23.0)"]
+
+[project.urls]
+repository = "https://github.com/foxglove/schemas"
+documentation = "https://docs.foxglove.dev/"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry]
-repository = "https://github.com/foxglove/schemas"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent"
-]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.4"
@@ -30,6 +26,3 @@ pytest = "^8.3.4"
 addopts = "-vv --color=yes"
 log_cli = true
 xfail_strict = true
-
-[[tool.poetry.packages]]
-include = "foxglove_schemas_flatbuffer"

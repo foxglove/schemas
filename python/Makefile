@@ -1,26 +1,27 @@
-.PHONY: pipenv
-pipenv:
-	SETUPTOOLS_ENABLE_FEATURES="legacy-editable" pipenv install --dev --deploy
-
 ifeq ($(shell uname),Darwin)
 SED_ARGS = -i ''
 else
 SED_ARGS = -i
 endif
 
+.PHONY: install
+install:
+	cd foxglove-schemas-flatbuffer && poetry install
+	cd foxglove-schemas-protobuf && poetry install
+
 .PHONY: generate-flatbuffer
 generate-flatbuffer:
 	find foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer ! -name '__init__.py' -type f -exec rm -f {} +
-	pipenv run flatc \
+	cd foxglove-schemas-flatbuffer && poetry run flatc \
 		--require-explicit-ids \
 		--python \
-		-o foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer \
-		../schemas/flatbuffer/*.fbs
-	pipenv run flatc \
+		-o foxglove_schemas_flatbuffer \
+		../../schemas/flatbuffer/*.fbs
+	cd foxglove-schemas-flatbuffer && poetry run flatc \
 		-b \
 		--schema \
-		-o foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer \
-		../schemas/flatbuffer/*.fbs
+		-o foxglove_schemas_flatbuffer \
+		../../schemas/flatbuffer/*.fbs
 	rm foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/foxglove/__init__.py
 	mv foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/foxglove/* foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer
 	rmdir foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/foxglove
@@ -29,11 +30,11 @@ generate-flatbuffer:
 .PHONY: generate-protobuf
 generate-protobuf:
 	rm -rf foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2*
-	pipenv run protoc \
-		--python_out=foxglove-schemas-protobuf/foxglove_schemas_protobuf \
-		--mypy_out=foxglove-schemas-protobuf/foxglove_schemas_protobuf \
-		--proto_path ../schemas/proto \
-		../schemas/proto/foxglove/*.proto
+	cd foxglove-schemas-protobuf && poetry run protoc \
+		--python_out=foxglove_schemas_protobuf \
+		--mypy_out=foxglove_schemas_protobuf \
+		--proto_path ../../schemas/proto \
+		../../schemas/proto/foxglove/*.proto
 	mv foxglove-schemas-protobuf/foxglove_schemas_protobuf/foxglove/* foxglove-schemas-protobuf/foxglove_schemas_protobuf
 	rmdir foxglove-schemas-protobuf/foxglove_schemas_protobuf/foxglove
 	sed -E $(SED_ARGS) 's/from foxglove import/from . import/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.py
@@ -41,14 +42,14 @@ generate-protobuf:
 	sed -E $(SED_ARGS) 's/foxglove\./foxglove_/g' foxglove-schemas-protobuf/foxglove_schemas_protobuf/*_pb2.pyi
 
 .PHONY: build
-build: pipenv generate-flatbuffer generate-protobuf
-	pipenv run python -m build foxglove-schemas-flatbuffer
-	pipenv run python -m build foxglove-schemas-protobuf
+build: install generate-flatbuffer generate-protobuf
+	cd foxglove-schemas-flatbuffer && poetry build
+	cd foxglove-schemas-protobuf && poetry build
 
 .PHONY: test
-test: pipenv generate-flatbuffer generate-protobuf
-	pipenv run python -m pytest foxglove-schemas-flatbuffer
-	pipenv run python -m pytest foxglove-schemas-protobuf
+test: install generate-flatbuffer generate-protobuf
+	cd foxglove-schemas-flatbuffer && poetry run pytest
+	cd foxglove-schemas-protobuf && poetry run pytest
 
 .PHONY: clean
 clean:

@@ -79,10 +79,14 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - run: pipx install poetry
+
       - uses: arduino/setup-protoc@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install Flatbuffer compiler
         run: |
           curl -LO https://github.com/google/flatbuffers/releases/download/v23.1.21/Linux.flatc.binary.clang++-12.zip
@@ -90,11 +94,11 @@ jobs:
           unzip Linux.flatc.binary.clang++-12.zip
           rm Linux.flatc.binary.clang++-12.zip
           sudo mv flatc /usr/local/bin
-      - uses: actions/setup-python@v4
+
+      - uses: actions/setup-python@v5
         with:
-          python-version: 3.7
-          cache: pipenv
-      - run: pip install pipenv==2022.7.24
+          python-version: '3.9'
+          cache: poetry
 
       - run: make test
       - run: make build
@@ -166,7 +170,7 @@ jobs:
       - name: setup directories
         run: mkdir -p ros_ws/src
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: ros_ws/src
       - name: build and test ros1

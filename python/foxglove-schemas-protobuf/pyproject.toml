@@ -1,9 +1,38 @@
+[project]
+name = "foxglove-schemas-protobuf"
+version = "0.3.0"
+description = "Precompiled protocol buffer schemas for Foxglove"
+authors = [{ name = "Foxglove", email = "support@foxglove.dev" }]
+license = { text = "MIT" }
+readme = "README.md"
+dynamic = ["classifiers"]
+requires-python = ">=3.9"
+dependencies = ["protobuf (>=3.20)"]
+
+[project.urls]
+repository = "https://github.com/foxglove/schemas"
+documentation = "https://docs.foxglove.dev/"
+
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+include = [
+  { path = "tests", format = "sdist" },
+  { path = "foxglove_schemas_protobuf/*.py", format = [
+    "sdist",
+    "wheel",
+  ] },
+  { path = "foxglove_schemas_protobuf/*.pyi", format = [
+    "sdist",
+    "wheel",
+  ] },
 ]
-build-backend = "setuptools.build_meta"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+mypy-protobuf = "^3.6.0"
 
 [tool.pytest.ini_options]
 addopts = "-vv --color=yes"

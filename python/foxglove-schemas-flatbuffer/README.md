@@ -4,10 +4,10 @@ This package provides [Flatbuffer](https://google.github.io/flatbuffers/) classe
 
 ## Installation
 
-Install via [Pipenv](https://pipenv.pypa.io/en/latest/) by adding `foxglove-schemas-flatbuffer` to your `Pipfile` or via the command line:
+Install via [Poetry](https://python-poetry.org/):
 
-```bash
-pipenv install foxglove-schemas-flatbuffer
+```sh
+poetry add foxglove-schemas-flatbuffer
 ```
 
 ## Usage

@@ -1,2 +1,3 @@
+plugins: ["prettier-plugin-toml"]
 printWidth: 100
 trailingComma: all

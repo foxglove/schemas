@@ -3,12 +3,12 @@ name: CI
 on:
   push:
     branches: [main]
-    tags: ["releases/**"]
+    tags: ["*"]
   pull_request:
     branches: ["*"]
 
 jobs:
-  build:
+  typescript:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -71,11 +71,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
-  python:
+  python-legacy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: python
     permissions:
       id-token: write
     steps:
@@ -100,9 +97,18 @@ jobs:
           python-version: '3.9'
           cache: poetry
 
+      - run: poetry install
+      - run: poetry run black --check .
+      - run: poetry run flake8 .
+
       - run: make install
+        working-directory: python
+
       - run: make build
+        working-directory: python
+
       - run: make test
+        working-directory: python
 
       - name: Publish foxglove-schemas-flatbuffer to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1

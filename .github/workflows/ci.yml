@@ -34,6 +34,11 @@ jobs:
       - run: cargo clippy --no-deps --all-targets --tests -- -D warnings
       - run: cargo test --features unstable --verbose
         timeout-minutes: 10
+      - run: cargo publish --package foxglove --dry-run
+      - run: cargo publish --package foxglove
+        if: startsWith(github.ref, 'refs/tags/rust/v')
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 
   python:
     runs-on: ubuntu-latest
@@ -164,7 +169,7 @@ jobs:
         run: protoc --proto_path=schemas/proto schemas/proto/**/*.proto --descriptor_set_out=/dev/null
 
       - name: Publish to NPM
-        if: ${{ startsWith(github.ref, 'refs/tags/releases/typescript/v') }}
+        if: startsWith(github.ref, 'refs/tags/typescript/v')
         run: yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
@@ -210,7 +215,9 @@ jobs:
 
       - name: Publish foxglove-schemas-flatbuffer to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        if: ${{ !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' }}
+        if: |
+          !github.event.pull_request.head.repo.fork &&
+          github.actor != 'dependabot[bot]'
         with:
           packages-dir: python/foxglove-schemas-flatbuffer/dist
           repository-url: https://test.pypi.org/legacy/
@@ -218,17 +225,16 @@ jobs:
           attestations: false # https://github.com/pypa/gh-action-pypi-publish/issues/283#issuecomment-2499296440
 
       - name: Publish foxglove-schemas-flatbuffer to PyPI
-        if: |
-          !github.event.pull_request.head.repo.fork &&
-          github.actor != 'dependabot[bot]' &&
-          startsWith(github.ref, 'refs/tags/releases/python/foxglove-schemas-flatbuffer/v')
+        if: startsWith(github.ref, 'refs/tags/python/foxglove-schemas-flatbuffer/v')
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: python/foxglove-schemas-flatbuffer/dist
 
       - name: Publish foxglove-schemas-protobuf to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        if: ${{ !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' }}
+        if: |
+          !github.event.pull_request.head.repo.fork &&
+          github.actor != 'dependabot[bot]'
         with:
           packages-dir: python/foxglove-schemas-protobuf/dist
           repository-url: https://test.pypi.org/legacy/
@@ -236,10 +242,7 @@ jobs:
           attestations: false # https://github.com/pypa/gh-action-pypi-publish/issues/283#issuecomment-2499296440
 
       - name: Publish foxglove-schemas-protobuf to PyPI
-        if: |
-          !github.event.pull_request.head.repo.fork &&
-          github.actor != 'dependabot[bot]' &&
-          startsWith(github.ref, 'refs/tags/releases/python/foxglove-schemas-protobuf/v')
+        if: startsWith(github.ref, 'refs/tags/python/foxglove-schemas-protobuf/v')
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: python/foxglove-schemas-protobuf/dist
@@ -279,7 +282,7 @@ jobs:
         with:
           path: ros_ws/src
       - name: build and test ros1
-        if: ${{ matrix.ros_version == 1 }}
+        if: matrix.ros_version == 1
         uses: ros-tooling/action-ros-ci@master
         with:
           package-name: foxglove_msgs
@@ -287,17 +290,17 @@ jobs:
           vcs-repo-file-url: ""
 
       - name: Downgrade pydocstyle as a workaround for ament_lint error https://github.com/ament/ament_lint/pull/428
-        if: ${{ matrix.ros_distribution == 'galactic' }}
+        if: matrix.ros_distribution == 'galactic'
         run: |
           sudo pip install pydocstyle==6.1.1
 
       - name: Downgrade pytest as a workaround for https://github.com/scientific-python/pytest-doctestplus/issues/240
-        if: ${{ matrix.ros_distribution == 'humble' || matrix.ros_distribution == 'iron' || matrix.ros_distribution == 'rolling' }}
+        if: matrix.ros_distribution == 'humble' || matrix.ros_distribution == 'iron' || matrix.ros_distribution == 'rolling'
         run: |
           sudo pip install pytest==8.0.2
 
       - name: build and test ros2
-        if: ${{ matrix.ros_version == 2 }}
+        if: matrix.ros_version == 2
         uses: ros-tooling/action-ros-ci@master
         with:
           package-name: foxglove_msgs

@@ -1,10 +1,8 @@
 [project]
 name = "foxglove-schemas-protobuf"
-version = "0.2.2"
+version = "0.3.0"
 description = "Precompiled protocol buffer schemas for Foxglove"
-authors = [
-  { name = "Foxglove Technologies Inc", email = "support@foxglove.dev" },
-]
+authors = [{ name = "Foxglove", email = "support@foxglove.dev" }]
 license = { text = "MIT" }
 readme = "README.md"
 dynamic = ["classifiers"]

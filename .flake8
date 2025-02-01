@@ -1,0 +1,5 @@
+[flake8]
+max-line-length = 100
+extend-ignore = E203
+exclude = python/foxglove-sdk/python/foxglove/_protobuf/*
+count = true

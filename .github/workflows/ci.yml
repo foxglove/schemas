@@ -3,12 +3,110 @@ name: CI
 on:
   push:
     branches: [main]
-    tags: ["releases/**"]
+    tags: ["*"]
   pull_request:
     branches: ["*"]
 
 jobs:
-  build:
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install common dependencies
+        uses: ./.github/actions/common-deps
+
+      # Recent version of protoc required on ubuntu <24
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          version: "28.2"
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Ensure generated protobuf schemas are up to date
+        run: cargo run --bin foxglove-proto-gen && git diff --exit-code
+
+      - run: cargo fmt --all --check
+      - run: cargo build --verbose
+      - run: cargo clippy --no-deps --all-targets --tests -- -D warnings
+      - run: cargo test --features unstable --verbose
+        timeout-minutes: 10
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install common dependencies
+        uses: ./.github/actions/common-deps
+
+      # Recent version of protoc required on ubuntu <24
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          version: "28.2"
+
+      - run: poetry check
+        working-directory: python/foxglove-sdk
+
+      - run: poetry install
+        working-directory: python/foxglove-sdk
+
+      - run: poetry run maturin develop
+        working-directory: python/foxglove-sdk
+
+      - run: poetry run mypy .
+        working-directory: python/foxglove-sdk
+
+      - name: Run black check
+        run: poetry run black . --check
+        working-directory: python/foxglove-sdk
+
+      - name: Run flake8
+        run: poetry run flake8 .
+        working-directory: python/foxglove-sdk
+
+  wheels:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - aarch64
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install common dependencies
+        uses: ./.github/actions/common-deps
+
+      # Recent version of protoc required on ubuntu <24
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          version: "28.2"
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - run: poetry install
+        working-directory: python/foxglove-sdk
+
+      - run: poetry run maturin build --release
+        working-directory: python/foxglove-sdk
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-linux-${{ matrix.target }}
+          path: target/wheels
+
+  typescript:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -71,7 +169,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
-  python:
+  python-legacy:
     runs-on: ubuntu-latest
     defaults:
       run:

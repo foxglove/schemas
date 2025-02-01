@@ -1,0 +1,28 @@
+[package]
+name = "foxglove"
+version = "0.0.1"
+description = "Foxglove SDK"
+edition = "2021"
+repository = "https://github.com/foxglove/foxglove-sdk"
+license-file = "../../LICENSE"
+readme = false
+
+[dependencies]
+foxglove-sdk-core.workspace = true
+prost.workspace = true
+prost-types.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+clap = { version = "4.5", features = ["derive"] }
+env_logger = "0.11.5"
+futures-util = "0.3.31"
+mcap = "0.14.0"
+quaternion = "2.0.0"
+tempfile = "3.15.0"
+serde_json = "1.0.138"
+tracing-test = "0.2.5"
+serde.workspace = true
+tokio-tungstenite.workspace = true
+tokio.workspace = true

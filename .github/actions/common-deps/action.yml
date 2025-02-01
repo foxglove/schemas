@@ -1,0 +1,24 @@
+name: Install common dependencies
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - shell: bash
+      run: python -m pip install poetry
+
+    # disable man-db to speed up apt install
+    - shell: bash
+      run: sudo rm -f /var/lib/man-db/auto-update
+
+    - shell: bash
+      run: sudo apt-get update
+
+    - shell: bash
+      run: |
+        sudo apt-get install -y --no-install-recommends \
+          libprotobuf-dev \
+          protobuf-compiler

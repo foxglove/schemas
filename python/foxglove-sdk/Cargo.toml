@@ -1,0 +1,23 @@
+[package]
+name = "foxglove-sdk-python"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+name = "foxglove_py"
+crate-type = ["cdylib"]
+
+[dependencies]
+env_logger = "0.11.5"
+log = "0.4.22"
+pyo3 = "0.22.0"
+pyo3-log = "0.11.0"
+foxglove = { path = "../../rust/foxglove" }
+thiserror.workspace = true
+tokio-tungstenite.workspace = true
+tokio-util.workspace = true
+tokio.workspace = true
+
+[build-dependencies]
+walkdir = "2.5.0"

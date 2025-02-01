@@ -1,0 +1,59 @@
+[package]
+name = "foxglove"
+version = "0.1.0"
+description = "Foxglove SDK"
+edition = "2021"
+repository = "https://github.com/foxglove/foxglove-sdk"
+license = "MIT"
+readme = false
+
+[features]
+unstable = []
+
+[dependencies]
+schemars = "0.8.21"
+arc-swap = "1.7.1"
+base64 = "0.22.1"
+bytes.workspace = true
+flume = "0.11.1"
+futures-util = { version = "0.3.31", features = ["sink", "std"] }
+mcap.workspace = true
+parking_lot = "0.12.3"
+prost-types.workspace = true
+prost.workspace = true
+serde_json = "1.0.128"
+serde_repr = "0.1.19"
+serde_with = { version = "3.12.0", features = ["macros", "base64"] }
+serde.workspace = true
+strum = { version = "0.26", features = ["derive"] }
+thiserror.workspace = true
+tokio-tungstenite.workspace = true
+tokio-util.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+assert_matches = "1.5.0"
+clap = { version = "4.5", features = ["derive"] }
+env_logger = "0.11.5"
+futures-util = "0.3.31"
+quaternion = "2.0.0"
+tempfile = "3.15.0"
+serde_json = "1.0.138"
+tracing-test = "0.2.5"
+serde.workspace = true
+
+[[example]]
+name = "ws-server"
+path = "examples/ws-server-unstable.rs"
+required-features = ["unstable"]
+
+[[example]]
+name = "param-server"
+path = "examples/param-server-unstable.rs"
+required-features = ["unstable"]
+
+[[test]]
+name = "websocket-unstable"
+path = "tests/websocket-unstable.rs"
+required-features = ["unstable"]

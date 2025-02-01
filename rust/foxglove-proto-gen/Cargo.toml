@@ -1,0 +1,16 @@
+[package]
+name = "foxglove-proto-gen"
+edition = "2021"
+publish = false
+
+[dependencies]
+anyhow = "1.0.95"
+prost.workspace = true
+prost-build.workspace = true
+prost-types.workspace = true
+tempfile = "3.15.0"
+walkdir = "2.5.0"
+
+[[bin]]
+name = "foxglove-proto-gen"
+path = "src/bin.rs"

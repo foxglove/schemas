@@ -1,0 +1,54 @@
+[project]
+name = "foxglove-sdk"
+description = "Foxglove Python SDK"
+authors = [{ name = "Foxglove", email = "support@foxglove.dev" }]
+license = "MIT"
+readme = "README.md"
+dynamic = ["version"]
+classifiers = ["Programming Language :: Python :: 3", "Programming Language :: Rust"]
+requires-python = ">=3.9"
+dependencies = ["protobuf (>= 5.29)"]
+
+[project.urls]
+repository = "https://github.com/foxglove/foxglove-sdk"
+documentation = "https://docs.foxglove.dev/"
+
+[build-system]
+requires = ["maturin>=1.7,<2.0", "poetry-core>=2.0"]
+build-backend = "maturin"
+
+[tool.maturin]
+python-source = "python"
+module-name = "foxglove._foxglove_py"
+features = ["pyo3/extension-module"]
+
+[tool.poetry]
+package-mode = false
+requires-poetry = ">=2.0"
+
+[tool.poetry.group.dev.dependencies]
+types-protobuf = "^5.28.3.20241030"
+mypy = "^1.13.0"
+maturin = "^1.7.4"
+numpy = "^2.0"
+black = "^24.2.0"
+flake8 = "^7.0.0"
+
+[tool.mypy]
+python_version = "3.9"
+exclude = ["python/foxglove/_protobuf"]
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+
+[tool.black]
+include = '\.pyi?$'
+extend-exclude = "python/foxglove/_protobuf"

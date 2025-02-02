@@ -25,7 +25,9 @@ describe("schemas", () => {
     }
   }
   const exportedSchemas = Object.values(foxgloveMessageSchemas);
-  exportedSchemas.forEach((schema) => addNestedSchemas(schema, allSchemas));
+  exportedSchemas.forEach((schema) => {
+    addNestedSchemas(schema, allSchemas);
+  });
   it.each([...allSchemas])("exports nested schemas - $name", (nestedSchema) => {
     expect(exportedSchemas).toContain(nestedSchema);
   });

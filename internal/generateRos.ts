@@ -108,7 +108,7 @@ function* getRosDependencies(schema: MessageDefinition): Iterable<Dependency> {
   for (const field of schema.definitions) {
     if (field.isComplex === true) {
       yield { type: "ros", name: field.type as keyof typeof ros1 };
-      yield* getRosDependencies(ros1[field.type as keyof typeof ros1]!);
+      yield* getRosDependencies(ros1[field.type as keyof typeof ros1]);
     }
   }
 }

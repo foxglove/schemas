@@ -1,7 +1,7 @@
 import { program } from "commander";
 import fs from "fs/promises";
 import path from "path";
-import rimraf from "rimraf";
+import { rimraf } from "rimraf";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../internal";
 import { exportTypeScriptSchemas } from "../internal/exportTypeScriptSchemas";

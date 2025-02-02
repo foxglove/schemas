@@ -48,13 +48,13 @@ export const exampleMessage: FoxgloveMessageSchema = {
         name === "boolean"
           ? true
           : name === "string"
-          ? "string-type"
-          : name === "uint32"
-          ? 5
-          : name === "float64"
-          ? 1.0
-          : // time and duration and bytes
-            undefined,
+            ? "string-type"
+            : name === "uint32"
+              ? 5
+              : name === "float64"
+                ? 1.0
+                : // time and duration and bytes
+                  undefined,
     })),
     ...allPrimitives.map((name): FoxgloveMessageSchema["fields"][0] => ({
       name: `field_${name}_array`,

@@ -18,11 +18,10 @@ jobs:
       - name: Install common dependencies
         uses: ./.github/actions/common-deps
 
-      # Recent version of protoc required on ubuntu <24
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v3
+      - uses: arduino/setup-protoc@v3
         with:
-          version: "28.2"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: "29.x"
 
       - uses: actions-rust-lang/setup-rust-toolchain@v1
 
@@ -50,11 +49,10 @@ jobs:
       - name: Install common dependencies
         uses: ./.github/actions/common-deps
 
-      # Recent version of protoc required on ubuntu <24
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v3
+      - uses: arduino/setup-protoc@v3
         with:
-          version: "28.2"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: "29.x"
 
       - run: poetry check
         working-directory: python/foxglove-sdk
@@ -91,11 +89,10 @@ jobs:
       - name: Install common dependencies
         uses: ./.github/actions/common-deps
 
-      # Recent version of protoc required on ubuntu <24
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v3
+      - uses: arduino/setup-protoc@v3
         with:
-          version: "28.2"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: "29.x"
 
       - uses: actions-rust-lang/setup-rust-toolchain@v1
 
@@ -132,9 +129,10 @@ jobs:
           rm Linux.flatc.binary.clang++-12.zip
           sudo mv flatc /usr/local/bin
 
-      - uses: arduino/setup-protoc@v1
+      - uses: arduino/setup-protoc@v3
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: "29.x"
 
       - run: yarn install --immutable
       - run: yarn lint:ci
@@ -183,9 +181,10 @@ jobs:
 
       - run: pipx install poetry
 
-      - uses: arduino/setup-protoc@v1
+      - uses: arduino/setup-protoc@v3
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: "29.x"
 
       - name: Install Flatbuffer compiler
         run: |

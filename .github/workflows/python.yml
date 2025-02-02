@@ -11,9 +11,6 @@ on:
 jobs:
   linux:
     runs-on: ${{ matrix.platform.runner }}
-    defaults:
-      run:
-        working-directory: python/foxglove-sdk
     strategy:
       matrix:
         platform:
@@ -38,6 +35,7 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
+          working-directory: python/foxglove-sdk
           args: --release --out dist --find-interpreter
           sccache: "true"
           manylinux: auto
@@ -45,13 +43,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: wheels-linux-${{ matrix.platform.target }}
-          path: dist
+          path: python/foxglove-sdk/dist
 
   musllinux:
     runs-on: ${{ matrix.platform.runner }}
-    defaults:
-      run:
-        working-directory: python/foxglove-sdk
     strategy:
       matrix:
         platform:
@@ -72,6 +67,7 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
+          working-directory: python/foxglove-sdk
           args: --release --out dist --find-interpreter
           sccache: "true"
           manylinux: musllinux_1_2
@@ -79,13 +75,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: wheels-musllinux-${{ matrix.platform.target }}
-          path: dist
+          path: python/foxglove-sdk/dist
 
   windows:
     runs-on: ${{ matrix.platform.runner }}
-    defaults:
-      run:
-        working-directory: python/foxglove-sdk
     strategy:
       matrix:
         platform:
@@ -103,19 +96,17 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
+          working-directory: python/foxglove-sdk
           args: --release --out dist --find-interpreter
           sccache: "true"
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheels-windows-${{ matrix.platform.target }}
-          path: dist
+          path: python/foxglove-sdk/dist
 
   macos:
     runs-on: ${{ matrix.platform.runner }}
-    defaults:
-      run:
-        working-directory: python/foxglove-sdk
     strategy:
       matrix:
         platform:
@@ -132,19 +123,17 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
+          working-directory: python/foxglove-sdk
           args: --release --out dist --find-interpreter
           sccache: "true"
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheels-macos-${{ matrix.platform.target }}
-          path: dist
+          path: python/foxglove-sdk/dist
 
   sdist:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: python/foxglove-sdk
     steps:
       - uses: actions/checkout@v4
       - name: Build sdist
@@ -152,18 +141,16 @@ jobs:
         with:
           command: sdist
           args: --out dist
+          working-directory: python/foxglove-sdk
       - name: Upload sdist
         uses: actions/upload-artifact@v4
         with:
           name: wheels-sdist
-          path: dist
+          path: python/foxglove-sdk/dist
 
   release:
     name: Release
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: python/foxglove-sdk
     # if: ${{ startsWith(github.ref, 'refs/tags/python/foxglove-sdk/v') }}
     needs: [linux, musllinux, windows, macos, sdist]
     permissions:
@@ -175,10 +162,12 @@ jobs:
       attestations: write
     steps:
       - uses: actions/download-artifact@v4
+        with:
+          path: python/foxglove-sdk/dist
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-path: "wheels-*/*"
+          subject-path: "python/foxglove-sdk/wheels-*/*"
       - name: Publish to PyPI
         if: ${{ startsWith(github.ref, 'refs/tags/python/foxglove-schemas-flatbuffer/v') }}
         uses: PyO3/maturin-action@v1
@@ -186,4 +175,5 @@ jobs:
         #   MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         with:
           command: upload
+          working-directory: python/foxglove-sdk
           args: --non-interactive --skip-existing wheels-*/*

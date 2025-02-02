@@ -9,6 +9,23 @@ on:
     branches: ["*"]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python/foxglove-sdk
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install common dependencies
+        uses: ./.github/actions/common-deps
+
+      - run: poetry check
+      - run: poetry install
+      - run: poetry run mypy .
+      - run: poetry run black . --check
+      - run: poetry run flake8 .
+
   linux:
     runs-on: ${{ matrix.platform.runner }}
     strategy:

@@ -11,6 +11,18 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - run: poetry check
+      - run: poetry install
+      - run: poetry run black . --check
+      - run: poetry run flake8 .
+
+  lint-sdk:
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: python/foxglove-sdk
@@ -29,8 +41,6 @@ jobs:
       - run: poetry install
       - run: poetry run maturin develop
       - run: poetry run mypy .
-      - run: poetry run black . --check
-      - run: poetry run flake8 .
 
   linux:
     runs-on: ${{ matrix.platform.runner }}
@@ -53,7 +63,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.x
+          python-version: "3.9"
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
@@ -85,7 +95,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.x
+          python-version: "3.9"
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
@@ -113,7 +123,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.x
+          python-version: "3.9"
           architecture: ${{ matrix.platform.target }}
       - name: Build wheels
         uses: PyO3/maturin-action@v1
@@ -141,7 +151,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.x
+          python-version: "3.9"
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:

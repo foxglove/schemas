@@ -234,8 +234,8 @@ jobs:
           path: python/foxglove-sdk/dist
 
   release:
-    name: Release
     runs-on: ubuntu-latest
+    # if: ${{ startsWith(github.ref, 'refs/tags/python/foxglove-sdk/v') }}
     needs: [linux, musllinux, windows, macos, sdist]
     permissions:
       id-token: write
@@ -251,10 +251,7 @@ jobs:
         with:
           subject-path: "python/foxglove-sdk/wheels-*/*"
       - name: Publish to PyPI
-        if: ${{ startsWith(github.ref, 'refs/tags/python/foxglove-schemas-flatbuffer/v') }}
         uses: PyO3/maturin-action@v1
-        # env:
-        #   MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         with:
           command: upload
           working-directory: python/foxglove-sdk

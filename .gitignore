@@ -4,11 +4,13 @@
 .pytest_cache/
 .yarn/
 *.py[cod]
-/python/**/dist/
+*.tsbuildinfo
+/python/*/dist/
 /python/foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/*.bfbs
 /python/foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/*.py
 /python/foxglove-schemas-protobuf/foxglove_schemas_protobuf/*.py
 /python/foxglove-schemas-protobuf/foxglove_schemas_protobuf/*.pyi
 /python/foxglove-sdk/python/foxglove/_protobuf/
 /target/
+/typescript/*/dist/
 node_modules/

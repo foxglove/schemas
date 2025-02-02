@@ -1,10 +1,10 @@
 {
-  "extends": "@foxglove/tsconfig/base",
+  "extends": "../../tsconfig.json",
   "include": ["./**/*"],
   "compilerOptions": {
-    "rootDir": ".",
+    "outDir": "./dist",
     "module": "commonjs",
     "lib": ["es2020"],
-    "noEmit": true
+    "noEmit": false
   }
 }

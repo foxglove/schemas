@@ -20,8 +20,14 @@ jobs:
       - name: Install common dependencies
         uses: ./.github/actions/common-deps
 
+      - uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: "29.x"
+
       - run: poetry check
       - run: poetry install
+      - run: poetry run maturin develop
       - run: poetry run mypy .
       - run: poetry run black . --check
       - run: poetry run flake8 .

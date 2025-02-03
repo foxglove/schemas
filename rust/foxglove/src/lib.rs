@@ -73,7 +73,7 @@
 //!
 //! A common pattern is to create the channels once as static variables, and then use them
 //! throughout the application. To support this, the [`crate::static_typed_channel!`] macro
-//! makes it convenient to create static channels:
+//! provides a convenient way to create static channels:
 //!
 //! ```no_run
 //! foxglove::static_typed_channel!(pub(crate) BOXES, "/boxes", foxglove::schemas::SceneUpdate);

@@ -1,6 +1,8 @@
 # Foxglove Python SDK
 
-**Note:** This SDK is currently under development and not recommended for production use. See [foxglove-websocket](https://github.com/foxglove/ws-protocol/tree/main/python) for the currently recommended package.
+## Unstable
+
+This package is currently under active development and not recommended for production use. See [foxglove-websocket](https://github.com/foxglove/ws-protocol/tree/main/python) for the currently recommended approach.
 
 ## Development
 

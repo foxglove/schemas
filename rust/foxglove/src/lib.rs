@@ -32,6 +32,8 @@ pub use websocket_server::{WebSocketServer, WebSocketServerHandle};
 pub enum FoxgloveError {
     #[error("Fatal error: {0}")]
     Fatal(String),
+    #[error("Channel for topic {0} already exists in registry")]
+    DuplicateChannel(String),
     #[error(transparent)]
     IOError(#[from] std::io::Error),
     #[error("MCAP error: {0}")]

@@ -1,4 +1,4 @@
-use crate::{Channel, PartialMetadata, Schema};
+use crate::{Channel, ChannelBuilder, FoxgloveError, PartialMetadata, Schema};
 use bytes::BufMut;
 use schemars::{schema_for, JsonSchema};
 use serde::Serialize;
@@ -64,6 +64,13 @@ pub struct TypedChannel<T: TypedMessage> {
 }
 
 impl<T: TypedMessage> TypedChannel<T> {
+    /// Constructs a new typed channel with default settings.
+    ///
+    /// If you want to override the channel configuration, use [`ChannelBuilder::build_typed`].
+    pub fn new(topic: impl Into<String>) -> Result<Self, FoxgloveError> {
+        ChannelBuilder::new(topic).build_typed()
+    }
+
     pub(crate) fn from_channel(channel: Arc<Channel>) -> Self {
         Self {
             inner: channel,
@@ -110,8 +117,7 @@ impl<T: TypedMessage> TypedChannel<T> {
 /// initializes the channel lazily upon first use. If the initialization fails (e.g., due to
 /// [`FoxgloveError::DuplicateChannel`]), the program will panic.
 ///
-/// If you don't require a static variable, you can just use
-/// [`ChannelBuilder::build_typed()`](crate::ChannelBuilder::build_typed) directly.
+/// If you don't require a static variable, you can just use [`TypedChannel::new()`] directly.
 ///
 /// # Example
 /// ```
@@ -128,7 +134,7 @@ impl<T: TypedMessage> TypedChannel<T> {
 macro_rules! static_typed_channel {
     ($vis:vis $ident: ident, $topic: literal, $ty: ty) => {
         $vis static $ident: std::sync::LazyLock<$crate::TypedChannel<$ty>> =
-            std::sync::LazyLock::new(|| match $crate::ChannelBuilder::new($topic).build_typed::<$ty>() {
+            std::sync::LazyLock::new(|| match $crate::TypedChannel::new($topic) {
                 Ok(channel) => channel,
                 Err(e) => {
                     panic!("Failed to create channel for {}: {:?}", $topic, e);

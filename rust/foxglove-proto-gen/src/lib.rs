@@ -128,7 +128,7 @@ fn generate_impls(out_dir: &Path, fds: &FileDescriptorSet) -> anyhow::Result<()>
         module,
         "use crate::schemas::{{descriptors, foxglove::*}};"
     ));
-    result = result.and(writeln!(module, "use crate::{{Schema, TypedMessage}};"));
+    result = result.and(writeln!(module, "use crate::{{Schema, Encode}};"));
     result = result.and(writeln!(module, "use bytes::BufMut;"));
     result.context("Failed to write impls.rs")?;
 
@@ -149,7 +149,7 @@ fn generate_impls(out_dir: &Path, fds: &FileDescriptorSet) -> anyhow::Result<()>
         let descriptor_name = camel_case_to_constant_case(name);
         writeln!(
             module,
-            "\nimpl TypedMessage for {name} {{
+            "\nimpl Encode for {name} {{
     type Error = ::prost::EncodeError;
 
     fn get_schema() -> Option<Schema> {{

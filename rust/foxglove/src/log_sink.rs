@@ -3,6 +3,9 @@ use crate::metadata::Metadata;
 use crate::FoxgloveError;
 use std::sync::Arc;
 
+/// A LogSink writes log messages to their destination.
+/// LogSinks are thread-safe and can be shared between threads.
+/// Usually you'd use our implementations like [`crate::McapWriter`] or [`crate::WebSocketServer`].
 pub trait LogSink: Send + Sync {
     /// log writes the message for the channel to the sink.
     /// metadata contains optional message metadata that may be used by some sink implementations.

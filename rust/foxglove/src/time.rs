@@ -1,5 +1,7 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
+/// nanoseconds_since_epoch returns the current time in nanoseconds since the Unix epoch.
+/// This is useful for setting timestamps in log messages.
 pub fn nanoseconds_since_epoch() -> u64 {
     let now = SystemTime::now();
     if let Ok(duration) = now.duration_since(UNIX_EPOCH) {

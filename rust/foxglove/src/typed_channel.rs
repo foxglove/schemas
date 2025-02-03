@@ -9,9 +9,9 @@ const STACK_BUFFER_SIZE: usize = 128 * 1024;
 
 /// A trait representing a message that can be logged to a [`Channel`].
 ///
-/// Implementing this trait for your type `T` enables the use of [`TypedChannel<T>`], which
-/// offers a type-checked `log` method.
-pub trait TypedMessage {
+/// Implementing this trait for your type `T` enables the use of [`TypedChannel<T>`],
+/// which offers a type-checked `log` method.
+pub trait Encode {
     type Error: std::error::Error;
 
     /// Returns the schema for your data.
@@ -28,15 +28,17 @@ pub trait TypedMessage {
     /// Encodes message data to the provided buffer.
     fn encode(&self, buf: &mut impl BufMut) -> Result<(), Self::Error>;
 
-    /// Returns an estimated encoded length for the message data.
+    /// Optional. Returns an estimated encoded length for the message data.
     ///
-    /// Used as a hint when allocating the buffer for [`TypedMessage::encode`].
+    /// Used as a hint when allocating the buffer for [`Encode::encode`].
     fn encoded_len(&self) -> Option<usize> {
         None
     }
 }
 
-impl<T: Serialize + JsonSchema> TypedMessage for T {
+/// Automatically implements [`Encode`] for any type that implements [`Serialize`] and [`JsonSchema`].
+/// See the JsonSchema Trait and schema_for! macro from the schemars crate for more information.
+impl<T: Serialize + JsonSchema> Encode for T {
     type Error = serde_json::Error;
 
     fn get_schema() -> Option<Schema> {
@@ -57,13 +59,14 @@ impl<T: Serialize + JsonSchema> TypedMessage for T {
     }
 }
 
-/// A typed [`Channel`] for messages that implement [`TypedMessage`].
-pub struct TypedChannel<T: TypedMessage> {
+/// A typed [`Channel`] for messages that implement [`Encode`].
+/// Channels are immutable, returned as `Arc<Channel>` and can be shared between threads.
+pub struct TypedChannel<T: Encode> {
     inner: Arc<Channel>,
     _phantom: std::marker::PhantomData<T>,
 }
 
-impl<T: TypedMessage> TypedChannel<T> {
+impl<T: Encode> TypedChannel<T> {
     /// Constructs a new typed channel with default settings.
     ///
     /// If you want to override the channel configuration, use [`ChannelBuilder::build_typed`].
@@ -96,12 +99,13 @@ impl<T: TypedMessage> TypedChannel<T> {
                 self.inner.log_with_meta(&stack_buf[..written], metadata);
             }
             Err(_) => {
-                // The stack buffer was likely too small, fall back to heap allocation.
-                // Unfortunately the interface of TypedMessage does not expose the size we need,
-                // even though we do get that information from prost.
-                // (but TypedMessage can be implemented without prost, so we keep it generic).
-                let mut buf =
-                    Vec::with_capacity(msg.encoded_len().unwrap_or(STACK_BUFFER_SIZE * 2));
+                // Likely the stack buffer was too small, so fall back to a heap buffer.
+                let mut size = msg.encoded_len().unwrap_or(STACK_BUFFER_SIZE * 2);
+                if size <= STACK_BUFFER_SIZE {
+                    // The estimate in `encoded_len` was too small, fall back to stack buffer size * 2
+                    size = STACK_BUFFER_SIZE * 2;
+                }
+                let mut buf = Vec::with_capacity(size);
                 if let Err(err) = msg.encode(&mut buf) {
                     tracing::error!("failed to encode message: {:?}", err);
                 }
@@ -113,11 +117,13 @@ impl<T: TypedMessage> TypedChannel<T> {
 
 /// Registers a static [`TypedChannel`] for the provided topic and message type.
 ///
-/// This macro is essentially just a wrapper around [`LazyLock`](std::sync::LazyLock), which
-/// initializes the channel lazily upon first use. If the initialization fails (e.g., due to
+/// This macro is a wrapper around [`LazyLock<TypedChannel<T>>`](std::sync::LazyLock),
+/// which initializes the channel lazily upon first use. If the initialization fails (e.g., due to
 /// [`FoxgloveError::DuplicateChannel`]), the program will panic.
 ///
 /// If you don't require a static variable, you can just use [`TypedChannel::new()`] directly.
+///
+/// The channel is created with the provided visibility and identifier, and the topic and message type.
 ///
 /// # Example
 /// ```
@@ -129,6 +135,10 @@ impl<T: TypedMessage> TypedChannel<T> {
 ///
 /// // A pub(crate)-scoped typed channel.
 /// static_typed_channel!(pub(crate) BOXES, "/boxes", SceneUpdate);
+///
+/// // Usage (you would populate the structs, rather than using `default()`).
+/// TF.log(&FrameTransform::default());
+/// BOXES.log(&SceneUpdate::default());
 /// ```
 #[macro_export]
 macro_rules! static_typed_channel {
@@ -159,7 +169,7 @@ mod test {
         count: u32,
     }
 
-    impl TypedMessage for TestMessage {
+    impl Encode for TestMessage {
         type Error = serde_json::Error;
 
         fn get_schema() -> Option<Schema> {

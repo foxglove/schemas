@@ -8,8 +8,8 @@
 /// Set-like: Takes a series of values separated by commas, again optionally terminated by a comma.
 /// Just like the map-like pattern, it uses Iterator::collect to transform an array of values into a collection,
 /// which could be a HashSet or another set-like collection depending on the type expected in the context.
-///
-/// Source: https://stackoverflow.com/a/27582993/152580
+// Source: https://stackoverflow.com/a/27582993/152580
+#[doc(hidden)]
 #[macro_export]
 macro_rules! collection {
     ($($k:expr => $v:expr),* $(,)?) => {{

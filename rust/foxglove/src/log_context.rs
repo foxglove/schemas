@@ -69,7 +69,7 @@ impl LogContext {
             // Wrapped in a block, so we release the lock immediately.
             let mut channels = self.channels.write();
             if !channels.insert(ChannelByTopic(channel.clone())) {
-                return Err(FoxgloveError::Fatal(format!(
+                return Err(FoxgloveError::DuplicateChannel(format!(
                     "Channel id={} for topic {} already exists in registry",
                     channel.id, channel.topic,
                 )));

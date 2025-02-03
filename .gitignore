@@ -3,6 +3,7 @@
 .mypy_cache/
 .pytest_cache/
 .yarn/
+.idea/
 *.py[cod]
 /python/**/dist/
 /python/foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/*.bfbs

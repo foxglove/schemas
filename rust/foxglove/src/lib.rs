@@ -7,12 +7,6 @@
 //! [Foxglove]: https://docs.foxglove.dev/
 //! [MCAP]: https://mcap.dev/
 //!
-//! ## Requirements
-//!
-//! The Foxglove SDK depends on [`tokio`](tokio) as its async runtime with the `rt-multi-thread`
-//! feature enabled. Refer to the tokio documentation for more information about how to configure
-//! your application to use tokio.
-//!
 //! # Getting started
 //!
 //! To record messages, you need at least one sink, and at least one channel. In this example, we
@@ -54,7 +48,7 @@
 //!
 //! ### Custom data
 //!
-//! You can also define your own custom data types by implementing the [`TypedMessage`] trait. This
+//! You can also define your own custom data types by implementing the [`Encode`] trait. This
 //! allows you to log arbitrary custom data types. Notably, the `TypedMessage` trait is
 //! automatically implemented for types that implement [`Serialize`](serde::Serialize) and
 //! [`JsonSchema`][jsonschema-trait]. This makes it easy to define new custom messages:
@@ -73,6 +67,16 @@
 //!     count: 42
 //! });
 //! # Ok(()) }
+//! ```
+//!
+//! ### Static Channels
+//!
+//! A common pattern is to create the channels once as static variables, and then use them
+//! throughout the application. To support this, the [`crate::static_typed_channel!`] macro
+//! makes it convenient to create static channels:
+//!
+//! ```no_run
+//! foxglove::static_typed_channel!(pub(crate) BOXES, "/boxes", foxglove::schemas::SceneUpdate);
 //! ```
 //!
 //! [jsonschema-trait]: https://docs.rs/schemars/latest/schemars/trait.JsonSchema.html
@@ -141,6 +145,14 @@
 //! server.stop().await;
 //! # }
 //! ```
+//!
+//! ## Requirements
+//!
+//! The Foxglove SDK depends on [tokio] as its async runtime with the `rt-multi-thread`
+//! feature enabled. Refer to the tokio documentation for more information about how to configure
+//! your application to use tokio.
+//!
+//! [tokio]: https://docs.rs/tokio/latest/tokio/
 
 use thiserror::Error;
 
@@ -158,17 +170,19 @@ mod metadata;
 pub mod schemas;
 mod time;
 mod typed_channel;
+#[doc(hidden)]
 pub mod websocket;
 mod websocket_server;
 
 pub use channel::{Channel, Schema};
 pub use channel_builder::ChannelBuilder;
+#[doc(hidden)]
 pub use log_context::{GlobalContextTest, LogContext};
 pub use log_sink::LogSink;
 pub use mcap_writer::{McapWriter, McapWriterHandle};
 pub use metadata::{Metadata, PartialMetadata};
 pub use time::nanoseconds_since_epoch;
-pub use typed_channel::{TypedChannel, TypedMessage};
+pub use typed_channel::{Encode, TypedChannel};
 pub use websocket_server::{WebSocketServer, WebSocketServerHandle};
 
 #[derive(Error, Debug)]
@@ -176,6 +190,8 @@ pub use websocket_server::{WebSocketServer, WebSocketServerHandle};
 pub enum FoxgloveError {
     #[error("Fatal error: {0}")]
     Fatal(String),
+    #[error("Channel for topic {0} already exists in registry")]
+    DuplicateChannel(String),
     #[error(transparent)]
     IOError(#[from] std::io::Error),
     #[error("MCAP error: {0}")]

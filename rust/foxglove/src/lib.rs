@@ -34,9 +34,9 @@
 //!
 //! ## Channels
 //!
-//! A "channel" is conceptually the same as a [MCAP channel]: it is a stream of messages which all
-//! have the same type, or schema. Each channel is instantiated with a unique "topic", or name,
-//! which is typically prefixed by a `/`.
+//! A "channel" gives a way to log related messages which have the same type, or [`crate::Schema`].
+//! Each channel is instantiated with a unique "topic", or name, which is typically prefixed by a `/`.
+//! If you're familiar with MCAP, it's the same concept as an [MCAP channel]:
 //!
 //! [MCAP channel]: https://mcap.dev/guides/concepts#channel
 //!

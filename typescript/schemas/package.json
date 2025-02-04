@@ -26,7 +26,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rimraf dist",
-    "prepack": "yarn workspace foxglove-sdk update-generated-files && yarn build"
+    "prepack": "yarn build"
   },
   "dependencies": {
     "tslib": "^2"

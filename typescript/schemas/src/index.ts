@@ -1,1 +1,1 @@
-export * from "../../../schemas/typescript";
+export * from "./types/index.js";

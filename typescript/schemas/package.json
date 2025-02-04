@@ -13,11 +13,11 @@
     "url": "git+https://github.com/foxglove/foxglove-sdk.git",
     "directory": "typescript/schemas"
   },
-  "main": "./dist/typescript/schemas/src/index.js",
+  "main": "./dist/index.js",
   "exports": {
-    ".": "./dist/typescript/schemas/src/index.js",
-    "./internal": "./dist/typescript/schemas/src/internal.js",
-    "./jsonschema": "./dist/typescript/schemas/src/jsonschema.js"
+    ".": "./dist/index.js",
+    "./internal": "./dist/internal.js",
+    "./jsonschema": "./dist/jsonschema.js"
   },
   "files": [
     "dist"
@@ -25,8 +25,8 @@
   "packageManager": "yarn@4.6.0",
   "scripts": {
     "build": "tsc -b",
-    "clean": "rimraf dist",
-    "prepack": "yarn build"
+    "clean": "git clean -Xdf",
+    "prepack": "yarn clean && cp -R ../../schemas/jsonschema ./src/jsonschema && yarn build"
   },
   "dependencies": {
     "tslib": "^2"

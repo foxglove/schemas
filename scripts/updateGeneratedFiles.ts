@@ -108,7 +108,7 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
   });
 
   await logProgress("Generating TypeScript definitions", async () => {
-    const typesDir = path.join(outDir, "typescript");
+    const typesDir = path.join(outDir, "../typescript/schemas/src/types");
     await rimraf(typesDir);
     await fs.mkdir(typesDir, { recursive: true });
 

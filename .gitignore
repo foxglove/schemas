@@ -15,4 +15,5 @@
 /python/foxglove-sdk/python/foxglove/_protobuf/
 /target/
 /typescript/*/dist/
+/typescript/schemas/src/jsonschema/
 node_modules/

@@ -69,6 +69,14 @@ impl WebSocketServer {
         self
     }
 
+    /// Configure an event listener to receive client message events.
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub fn listener(mut self, listener: Arc<dyn crate::websocket::ServerListener>) -> Self {
+        self.options.listener = Some(listener);
+        self
+    }
+
     /// Set the message backlog size.
     ///
     /// The server buffers outgoing log entries into a queue. If the backlog size is exceeded, the

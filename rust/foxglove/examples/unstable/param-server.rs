@@ -22,6 +22,7 @@ struct Cli {
     #[arg(long, default_value = "127.0.0.1")]
     host: String,
 }
+
 #[tokio::main]
 async fn main() {
     let env = env_logger::Env::default().default_filter_or("debug");

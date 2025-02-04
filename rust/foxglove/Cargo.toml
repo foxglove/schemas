@@ -42,18 +42,3 @@ tempfile = "3.15.0"
 serde_json = "1.0.138"
 tracing-test = "0.2.5"
 serde.workspace = true
-
-[[example]]
-name = "ws-server"
-path = "examples/ws-server-unstable.rs"
-required-features = ["unstable"]
-
-[[example]]
-name = "param-server"
-path = "examples/param-server-unstable.rs"
-required-features = ["unstable"]
-
-[[test]]
-name = "websocket-unstable"
-path = "tests/websocket-unstable.rs"
-required-features = ["unstable"]

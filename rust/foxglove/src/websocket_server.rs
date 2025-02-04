@@ -4,6 +4,8 @@ use std::fmt::Debug;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
+#[cfg(feature = "unstable")]
+use crate::websocket::Parameter;
 use crate::websocket::{create_server, Server, ServerOptions};
 use crate::{FoxgloveError, LogContext, LogSink};
 
@@ -109,6 +111,15 @@ impl Debug for WebSocketServerHandle {
 }
 
 impl WebSocketServerHandle {
+    /// Publishes parameter values to all clients.
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub async fn publish_parameter_values(&self, parameters: impl IntoIterator<Item = Parameter>) {
+        self.0
+            .publish_parameter_values(parameters.into_iter().collect(), None)
+            .await;
+    }
+
     /// Gracefully shutdown the websocket server.
     pub async fn stop(self) {
         let sink = self.0.clone() as Arc<dyn LogSink>;

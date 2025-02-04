@@ -1,0 +1,260 @@
+name: Python
+
+on:
+  push:
+    branches: [main]
+    tags: ["*"]
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - run: pipx install poetry
+      - run: poetry check --strict
+      - run: poetry install
+      - run: poetry run black . --check
+      - run: poetry run flake8 .
+
+  lint-sdk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python/foxglove-sdk
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install common dependencies
+        uses: ./.github/actions/common-deps
+
+      - uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: "29.x"
+
+      - run: pipx install poetry
+      - run: poetry check --strict
+      - run: poetry install
+      - run: poetry run maturin develop
+      - run: poetry run mypy .
+
+  schemas:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: "29.x"
+
+      - name: Install Flatbuffer compiler
+        run: |
+          curl -LO https://github.com/google/flatbuffers/releases/download/v23.1.21/Linux.flatc.binary.clang++-12.zip
+          echo "359dbbf56153cc1b022170a228adfde4199f67dc  Linux.flatc.binary.clang++-12.zip" | shasum -a 1 -c
+          unzip Linux.flatc.binary.clang++-12.zip
+          rm Linux.flatc.binary.clang++-12.zip
+          sudo mv flatc /usr/local/bin
+
+      - run: pipx install poetry
+      - run: poetry install
+
+      - run: make install
+        working-directory: python
+
+      - run: make build
+        working-directory: python
+
+      - run: make test
+        working-directory: python
+
+      - name: Publish foxglove-schemas-flatbuffer
+        if: startsWith(github.ref, 'refs/tags/python/foxglove-schemas-flatbuffer/v')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/foxglove-schemas-flatbuffer/dist
+
+      - name: Publish foxglove-schemas-protobuf
+        if: startsWith(github.ref, 'refs/tags/python/foxglove-schemas-protobuf/v')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/foxglove-schemas-protobuf/dist
+
+  linux:
+    runs-on: ${{ matrix.platform.runner }}
+    strategy:
+      matrix:
+        platform:
+          - runner: ubuntu-22.04
+            target: x86_64
+          - runner: ubuntu-22.04
+            target: x86
+          - runner: ubuntu-22.04
+            target: aarch64
+          - runner: ubuntu-22.04
+            target: armv7
+          - runner: ubuntu-22.04
+            target: s390x
+          - runner: ubuntu-22.04
+            target: ppc64le
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.platform.target }}
+          working-directory: python/foxglove-sdk
+          args: --release --out dist --find-interpreter
+          sccache: "true"
+          manylinux: auto
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-linux-${{ matrix.platform.target }}
+          path: python/foxglove-sdk/dist
+
+  musllinux:
+    runs-on: ${{ matrix.platform.runner }}
+    strategy:
+      matrix:
+        platform:
+          - runner: ubuntu-22.04
+            target: x86_64
+          - runner: ubuntu-22.04
+            target: x86
+          - runner: ubuntu-22.04
+            target: aarch64
+          - runner: ubuntu-22.04
+            target: armv7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.platform.target }}
+          working-directory: python/foxglove-sdk
+          args: --release --out dist --find-interpreter
+          sccache: "true"
+          manylinux: musllinux_1_2
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-musllinux-${{ matrix.platform.target }}
+          path: python/foxglove-sdk/dist
+
+  windows:
+    runs-on: ${{ matrix.platform.runner }}
+    strategy:
+      matrix:
+        platform:
+          - runner: windows-latest
+            target: x64
+          - runner: windows-latest
+            target: x86
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+          architecture: ${{ matrix.platform.target }}
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.platform.target }}
+          working-directory: python/foxglove-sdk
+          args: --release --out dist --find-interpreter
+          sccache: "true"
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-windows-${{ matrix.platform.target }}
+          path: python/foxglove-sdk/dist
+
+  macos:
+    runs-on: ${{ matrix.platform.runner }}
+    strategy:
+      matrix:
+        platform:
+          - runner: macos-13
+            target: x86_64
+          - runner: macos-14
+            target: aarch64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.platform.target }}
+          working-directory: python/foxglove-sdk
+          args: --release --out dist --find-interpreter
+          sccache: "true"
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-macos-${{ matrix.platform.target }}
+          path: python/foxglove-sdk/dist
+
+  sdist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build sdist
+        uses: PyO3/maturin-action@v1
+        with:
+          command: sdist
+          args: --out dist
+          working-directory: python/foxglove-sdk
+      - name: Upload sdist
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-sdist
+          path: python/foxglove-sdk/dist
+
+  # The maturin jobs were generated by `maturin generate-ci`.
+  # We modified them quite a bit, so there should be no need to regenerate
+  # them unless the maturin API changes substantially.
+  release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/python/foxglove-sdk/v')
+    needs: [linux, musllinux, windows, macos, sdist]
+    permissions:
+      id-token: write
+      contents: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: python/foxglove-sdk
+      - run: find python/foxglove-sdk/wheels*
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: "python/foxglove-sdk/wheels-*/*"
+      - name: Publish to PyPI
+        uses: PyO3/maturin-action@v1
+        with:
+          command: upload
+          working-directory: python/foxglove-sdk
+          args: --non-interactive --skip-existing wheels-*/*

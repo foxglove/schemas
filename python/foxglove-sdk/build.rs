@@ -1,6 +1,6 @@
-use std::io::{ErrorKind, Read};
+// use std::io::{ErrorKind, Read};
 use std::path::Path;
-use std::process::Command;
+// use std::process::Command;
 
 fn compile_protos() {
     let proto_path = Path::new("../../schemas/proto");
@@ -30,6 +30,7 @@ fn compile_protos() {
         ));
     }
 
+    /*
     // Compile protos
     let mut command = Command::new("protoc");
     command
@@ -70,6 +71,7 @@ fn compile_protos() {
         let new_contents = contents.replace("from foxglove import ", "from . import ");
         std::fs::write(py_file, new_contents).unwrap();
     }
+    */
 
     // Write __init__.py
     let init_path = out_dir.join("__init__.py");

@@ -4,6 +4,7 @@
 .pytest_cache/
 .yarn/
 *.py[cod]
+*.so
 /python/**/dist/
 /python/foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/*.bfbs
 /python/foxglove-schemas-flatbuffer/foxglove_schemas_flatbuffer/*.py

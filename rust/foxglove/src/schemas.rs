@@ -4,7 +4,7 @@
 //! and a better experience in the Foxglove App.
 //!
 //! They're encoded as compact, binary protobuf messages,
-//! and can be conveniently used with the [`crate::TypedChannel`] API.
+//! and can be conveniently used with the [`TypedChannel`](crate::TypedChannel) API.
 
 #[allow(dead_code)]
 pub(crate) mod descriptors;

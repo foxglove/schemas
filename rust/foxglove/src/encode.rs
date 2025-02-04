@@ -36,8 +36,8 @@ pub trait Encode {
     }
 }
 
-/// Automatically implements [`Encode`] for any type that implements [`Serialize`] and [`JsonSchema`].
-/// See the JsonSchema Trait and schema_for! macro from the schemars crate for more information.
+/// Automatically implements [`Encode`] for any type that implements [`Serialize`] and [`JsonSchema`](https://docs.rs/schemars/latest/schemars/trait.JsonSchema.html).
+/// See the JsonSchema Trait and schema_for! macro from the [schemars crate](https://docs.rs/schemars/latest/schemars/) for more information.
 impl<T: Serialize + JsonSchema> Encode for T {
     type Error = serde_json::Error;
 

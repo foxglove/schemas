@@ -65,10 +65,10 @@ impl Schema {
 /// [MCAP channel]: https://mcap.dev/guides/concepts#channel
 ///
 /// If a schema was provided, all messages must be encoded according to the schema.
-/// This is not checked. See [`crate::TypedChannel`] for type-safe channels.
+/// This is not checked. See [`TypedChannel`](crate::TypedChannel) for type-safe channels.
 /// Channels are immutable, returned as `Arc<Channel>` and can be shared between threads.
 ///
-/// Channels are created using [`crate::ChannelBuilder`].
+/// Channels are created using [`ChannelBuilder`](crate::ChannelBuilder).
 ///
 /// # Example
 /// ```

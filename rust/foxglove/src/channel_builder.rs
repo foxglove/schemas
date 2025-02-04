@@ -1,6 +1,6 @@
 use crate::channel::ChannelId;
+use crate::encode::TypedChannel;
 use crate::log_sink_set::LogSinkSet;
-use crate::typed_channel::TypedChannel;
 use crate::{Channel, Encode, FoxgloveError, LogContext, Schema};
 use std::collections::BTreeMap;
 use std::sync::atomic::Ordering::Relaxed;
@@ -37,7 +37,7 @@ impl<'a> ChannelBuilder<'a> {
 
     /// Set the message encoding for the channel.
     /// This is required for Channel, but not for [`TypedChannel`].
-    /// (it's provided by the [`crate::Encode`] trait for [`TypedChannel`].)
+    /// (it's provided by the [`Encode`] trait for [`TypedChannel`].)
     /// The [well-known message encodings](https://mcap.dev/spec/registry#well-known-message-encodings) are preferred.
     pub fn message_encoding(mut self, encoding: &str) -> Self {
         self.message_encoding = Some(encoding.to_string());

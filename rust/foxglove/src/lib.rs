@@ -34,7 +34,7 @@
 //!
 //! ## Channels
 //!
-//! A "channel" gives a way to log related messages which have the same type, or [`crate::Schema`].
+//! A "channel" gives a way to log related messages which have the same type, or [`Schema`].
 //! Each channel is instantiated with a unique "topic", or name, which is typically prefixed by a `/`.
 //! If you're familiar with MCAP, it's the same concept as an [MCAP channel]:
 //!
@@ -42,7 +42,7 @@
 //!
 //! ### Well-known types
 //!
-//! The SDK provides [structs for well-known schemas](crate::schemas). These can be used in
+//! The SDK provides [structs for well-known schemas](schemas). These can be used in
 //! conjunction with [`TypedChannel`] for type-safe logging, which ensures at compile time that
 //! messages logged to a channel all share a common schema.
 //!
@@ -72,7 +72,7 @@
 //! ### Static Channels
 //!
 //! A common pattern is to create the channels once as static variables, and then use them
-//! throughout the application. To support this, the [`crate::static_typed_channel!`] macro
+//! throughout the application. To support this, the [`static_typed_channel!`] macro
 //! provides a convenient way to create static channels:
 //!
 //! ```no_run
@@ -160,6 +160,7 @@ mod channel;
 mod channel_builder;
 mod collection;
 mod cow_vec;
+mod encode;
 mod log_context;
 mod log_sink;
 mod log_sink_set;
@@ -169,20 +170,19 @@ mod mcap_writer;
 mod metadata;
 pub mod schemas;
 mod time;
-mod typed_channel;
 #[doc(hidden)]
 pub mod websocket;
 mod websocket_server;
 
 pub use channel::{Channel, Schema};
 pub use channel_builder::ChannelBuilder;
+pub use encode::{Encode, TypedChannel};
 #[doc(hidden)]
 pub use log_context::{GlobalContextTest, LogContext};
 pub use log_sink::LogSink;
 pub use mcap_writer::{McapWriter, McapWriterHandle};
 pub use metadata::{Metadata, PartialMetadata};
 pub use time::nanoseconds_since_epoch;
-pub use typed_channel::{Encode, TypedChannel};
 pub use websocket_server::{WebSocketServer, WebSocketServerHandle};
 
 #[derive(Error, Debug)]

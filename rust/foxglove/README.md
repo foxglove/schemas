@@ -1,3 +1,5 @@
+# Foxglove
+
 The official [Foxglove] SDK.
 
 This crate provides support for integrating with the Foxglove platform. It can be used to log

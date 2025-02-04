@@ -65,7 +65,13 @@ jobs:
 
       - run: yarn install --immutable
       - run: yarn lint:ci
+
+      # must run this first because it copies the jsonschema directory
+      - run: yarn workspace @foxglove/schemas build
+
+      # typecheck remaining files in the repo
       - run: yarn build
+
       - run: yarn test
 
       - name: Ensure generated files are up to date

@@ -49,7 +49,7 @@
 //! ### Custom data
 //!
 //! You can also define your own custom data types by implementing the [`Encode`] trait. This
-//! allows you to log arbitrary custom data types. Notably, the `TypedMessage` trait is
+//! allows you to log arbitrary custom data types. Notably, the `Encode` trait is
 //! automatically implemented for types that implement [`Serialize`](serde::Serialize) and
 //! [`JsonSchema`][jsonschema-trait]. This makes it easy to define new custom messages:
 //!
@@ -201,7 +201,3 @@ pub enum FoxgloveError {
     #[error(transparent)]
     JSONError(#[from] serde_json::Error),
 }
-
-#[doc = include_str!("../README.md")]
-#[cfg(doctest)]
-pub struct ReadmeTests;

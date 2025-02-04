@@ -154,8 +154,6 @@
 //!
 //! [tokio]: https://docs.rs/tokio/latest/tokio/
 
-//#![warn(missing_docs)]
-
 use thiserror::Error;
 
 mod channel;

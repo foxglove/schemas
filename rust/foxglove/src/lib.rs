@@ -11,7 +11,7 @@
 //!
 //! To record messages, you need at least one sink, and at least one channel. In this example, we
 //! create an MCAP file sink, and a channel for [`Log`](`crate::schemas::Log`) messages on a topic
-//! called `"/topic"`. Then we write one log message and close the file.
+//! called `"/log"`. Then we write one log message and close the file.
 //!
 //! ```no_run
 //! use foxglove::{McapWriter, TypedChannel};
@@ -146,7 +146,7 @@
 //! # }
 //! ```
 //!
-//! ## Requirements
+//! # Requirements
 //!
 //! The Foxglove SDK depends on [tokio] as its async runtime with the `rt-multi-thread`
 //! feature enabled. Refer to the tokio documentation for more information about how to configure
@@ -177,6 +177,7 @@ mod websocket_server;
 pub use channel::{Channel, Schema};
 pub use channel_builder::ChannelBuilder;
 pub use encode::{Encode, TypedChannel};
+// For tests
 #[doc(hidden)]
 pub use log_context::{GlobalContextTest, LogContext};
 pub use log_sink::LogSink;

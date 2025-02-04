@@ -31,7 +31,9 @@ mod protocol;
 #[cfg(test)]
 mod tests;
 
-pub(crate) const SUBPROTOCOL: &str = "foxglove.sdk.v1";
+// For tests
+#[doc(hidden)]
+pub const SUBPROTOCOL: &str = "foxglove.sdk.v1";
 
 type WebsocketSender = SplitSink<WebSocketStream<TcpStream>, Message>;
 

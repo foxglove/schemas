@@ -22,9 +22,9 @@ The SDK provides structs for well-known schemas. These can be used in conjunctio
 messages logged to a channel all share a common schema.
 
 You can also define your own custom data types by implementing the `Encode` trait. This
-allows you to log arbitrary custom data types. Notably, the `TypedMessage` trait is
-automatically implemented for types that implement [`Serialize`](serde::Serialize) and
-[`JsonSchema`][jsonschema-trait]. This makes it easy to define new custom messages:
+allows you to log arbitrary custom data types. Notably, the `Encode` trait is
+automatically implemented for types that implement `serde::Serialize` and
+`schemars::JsonSchema`. This makes it easy to define new custom messages.
 
 # Get Started
 

@@ -1,9 +1,9 @@
 .catkin_tools
 .DS_Store
+.idea/
 .mypy_cache/
 .pytest_cache/
 .yarn/
-.idea/
 *.py[cod]
 *.so
 *.tsbuildinfo

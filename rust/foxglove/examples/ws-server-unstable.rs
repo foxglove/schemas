@@ -9,11 +9,11 @@
 
 use clap::Parser;
 use foxglove::websocket::{self, create_server_with_internal_options, Capability, ServerListener};
-use foxglove::{nanoseconds_since_epoch, ChannelBuilder, LogSink, Metadata, Schema};
+use foxglove::{ChannelBuilder, LogSink, Metadata, Schema};
 use serde_json::json;
 use std::collections::HashSet;
 use std::sync::Arc;
-use std::time::{self, Duration};
+use std::time::{self, Duration, SystemTime, UNIX_EPOCH};
 
 #[derive(Debug, Parser)]
 struct Cli {
@@ -101,9 +101,17 @@ async fn main() {
 }
 
 fn new_session_id() -> String {
-    time::SystemTime::now()
+    SystemTime::now()
         .duration_since(time::UNIX_EPOCH)
         .expect("Failed to create session ID; invalid system time")
         .as_millis()
         .to_string()
+}
+
+fn nanoseconds_since_epoch() -> u64 {
+    let now = SystemTime::now();
+    if let Ok(duration) = now.duration_since(UNIX_EPOCH) {
+        return duration.as_secs() * 1_000_000_000 + duration.subsec_nanos() as u64;
+    }
+    0
 }

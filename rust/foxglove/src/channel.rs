@@ -27,10 +27,19 @@ impl std::fmt::Display for ChannelId {
     }
 }
 
+/// A Schema is a description of the data format of messages in a channel.
+///
+/// It allows Foxglove to validate messages and provide richer visualizations.
+/// You can use the well known types provided in the [crate::schemas] module or provide your own.
+/// See the [MCAP spec](https://mcap.dev/spec#schema-op0x03) for more information.
 #[derive(Clone, PartialEq, Debug)]
 pub struct Schema {
+    /// An identifier for the schema.
     pub name: String,
+    /// The encoding of the schema data. For example "jsonschema" or "protobuf".
+    /// The [well-known schema encodings](https://mcap.dev/spec/registry#well-known-schema-encodings) are preferred.
     pub encoding: String,
+    /// Must conform to the schema encoding. If encoding is an empty string, data should be 0 length.
     pub data: Cow<'static, [u8]>,
 }
 
@@ -48,6 +57,24 @@ impl Schema {
     }
 }
 
+/// A log channel that can be used to log binary messages.
+///
+/// A "channel" is conceptually the same as a [MCAP channel]: it is a stream of messages which all
+/// have the same type, or schema. Each channel is instantiated with a unique "topic", or name,
+/// which is typically prefixed by a `/`.
+///
+/// [MCAP channel]: https://mcap.dev/guides/concepts#channel
+///
+/// If a schema was provided, all messages must be encoded according to the schema.
+/// This is not checked. See [`TypedChannel`](crate::TypedChannel) for type-safe channels.
+/// Channels are immutable, returned as `Arc<Channel>` and can be shared between threads.
+///
+/// Channels are created using [`ChannelBuilder`](crate::ChannelBuilder).
+///
+/// # Example
+/// ```
+/// use foxglove::{ChannelBuilder, Schema};
+/// ```
 pub struct Channel {
     // TODO add public read-only accessors for these for the Rust API.
     // TODO add a list of contexts here as well (or restrict to one context per channel?)

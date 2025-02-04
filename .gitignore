@@ -3,6 +3,7 @@
 .mypy_cache/
 .pytest_cache/
 .yarn/
+.idea/
 *.py[cod]
 *.so
 /python/**/dist/

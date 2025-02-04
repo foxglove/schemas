@@ -39,6 +39,9 @@ env_logger = "0.11.5"
 futures-util = "0.3.31"
 quaternion = "2.0.0"
 tempfile = "3.15.0"
-serde_json = "1.0.138"
 tracing-test = "0.2.5"
-serde.workspace = true
+
+[[example]]
+name = "param-server"
+path = "examples/unstable/param-server.rs"
+required-features = ["unstable"]

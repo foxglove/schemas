@@ -40,7 +40,7 @@ const DEFAULT_MESSAGE_BACKLOG_SIZE: usize = 1024;
 const DEFAULT_CONTROL_PLANE_BACKLOG_SIZE: usize = 64;
 
 #[derive(Error, Debug)]
-pub enum WSError {
+enum WSError {
     #[error("client handshake failed")]
     HandshakeError,
 }
@@ -84,7 +84,7 @@ impl std::fmt::Debug for ServerOptions {
 }
 
 /// A websocket server that implements the Foxglove WebSocket Protocol
-pub struct Server {
+pub(crate) struct Server {
     /// A weak reference to the Arc holding the server.
     /// This is used to get a reference to the outer `Arc<Server>` from Server methods.
     /// See the arc() method and its callers. We need the Arc so we can use it in async futures
@@ -93,7 +93,7 @@ pub struct Server {
     weak_self: Weak<Self>,
     started: AtomicBool,
     message_backlog_size: u32,
-    pub(crate) runtime_handle: Handle,
+    pub runtime_handle: Handle,
     /// May be provided by the caller
     session_id: String,
     name: String,
@@ -293,7 +293,7 @@ impl ConnectedClient {
 
 // A websocket server that implements the Foxglove WebSocket Protocol
 impl Server {
-    pub(crate) fn new(weak_self: Weak<Self>, opts: ServerOptions) -> Self {
+    pub fn new(weak_self: Weak<Self>, opts: ServerOptions) -> Self {
         Server {
             weak_self,
             started: AtomicBool::new(false),
@@ -726,8 +726,7 @@ impl LogSink for Server {
     }
 }
 
-#[doc(hidden)]
-pub fn create_server(opts: ServerOptions) -> Arc<Server> {
+pub(crate) fn create_server(opts: ServerOptions) -> Arc<Server> {
     Arc::new_cyclic(|weak_self| Server::new(weak_self.clone(), opts))
 }
 

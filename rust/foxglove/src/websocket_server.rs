@@ -4,9 +4,9 @@ use std::fmt::Debug;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-#[cfg(feature = "unstable")]
-use crate::websocket::Parameter;
 use crate::websocket::{create_server, Server, ServerOptions};
+#[cfg(feature = "unstable")]
+use crate::websocket::{Capability, Parameter};
 use crate::{FoxgloveError, LogContext, LogSink};
 
 /// A websocket server for live visualization.
@@ -56,6 +56,16 @@ impl WebSocketServer {
     pub fn bind(mut self, host: impl Into<String>, port: u16) -> Self {
         self.host = host.into();
         self.port = port;
+        self
+    }
+
+    /// Sets the server capabilities to advertise to the client.
+    ///
+    /// By default, the server does not advertise any capabilities.
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub fn capabilities(mut self, capabilities: impl IntoIterator<Item = Capability>) -> Self {
+        self.options.capabilities = Some(capabilities.into_iter().collect());
         self
     }
 

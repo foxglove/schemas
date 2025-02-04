@@ -1,8 +1,19 @@
-from ._foxglove_py import BaseChannel
+from ._foxglove_py import (
+    BaseChannel,
+    # BasePointCloudChannel,
+    # BaseSceneUpdateChannel,
+    # PointCloud,
+    # SceneUpdate,
+)
 from .encoding import Encoder, ProtobufEncoder
 from google.protobuf import message as _message
 
 from typing import Any, Dict, Optional
+
+
+# For the pyo3 types, no base is needed. We need to provide individual classes.
+# BasePointCloudChannel
+# BaseSceneUpdateChannel
 
 
 class Channel:
@@ -10,7 +21,7 @@ class Channel:
     base: BaseChannel
     encoder: Encoder
 
-    def __init__(self, topic: str, encoder: Encoder, schema: Any):
+    def __init__(self, topic: str, encoder: Encoder, schema: Optional[Any]):
         if topic in _channels_by_topic:
             raise ValueError(f"Channel for topic '{topic}' already exists")
 

@@ -705,8 +705,8 @@ pub struct PointCloud {
     #[prost(message, repeated, tag = "5")]
     pub fields: ::prost::alloc::vec::Vec<PackedElementField>,
     /// Point data, interpreted using `fields`
-    #[prost(bytes = "vec", tag = "6")]
-    pub data: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "bytes", tag = "6")]
+    pub data: ::prost::bytes::Bytes,
 }
 /// An array of points on a 2D image
 #[derive(Clone, PartialEq, ::prost::Message)]

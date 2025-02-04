@@ -12,6 +12,9 @@ use std::io::BufWriter;
 use std::sync::Arc;
 use std::time;
 
+mod py_channels;
+mod py_schemas;
+
 mod errors;
 
 #[pyclass]
@@ -182,19 +185,130 @@ fn disable_log_forwarding() -> PyResult<()> {
     Ok(())
 }
 
-/// Our public API is in the `python` directory.
-/// Rust bindings are exported as `_foxglove_py` and should not be imported directly.
 #[pymodule]
-fn _foxglove_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    pyo3_log::init();
-    m.add_function(wrap_pyfunction!(enable_log_forwarding, m)?)?;
-    m.add_function(wrap_pyfunction!(disable_log_forwarding, m)?)?;
+mod _foxglove_py {
+    use super::*;
 
-    m.add_function(wrap_pyfunction!(record_file, m)?)?;
-    m.add_function(wrap_pyfunction!(start_server, m)?)?;
-    m.add_function(wrap_pyfunction!(get_channel_for_topic, m)?)?;
-    m.add_class::<BaseChannel>()?;
-    m.add_class::<PyWebSocketServer>()?;
-    m.add_class::<PyMcapWriter>()?;
-    Ok(())
+    #[pymodule_export]
+    use super::disable_log_forwarding;
+    #[pymodule_export]
+    use super::enable_log_forwarding;
+    #[pymodule_export]
+    use super::record_file;
+    #[pymodule_export]
+    use super::start_server;
+
+    #[pymodule_export]
+    use super::get_channel_for_topic;
+    #[pymodule_export]
+    use super::BaseChannel;
+    #[pymodule_export]
+    use super::PyMcapWriter;
+    #[pymodule_export]
+    use super::PyWebSocketServer;
+
+    #[pymodule]
+    mod schemas {
+        use super::*;
+
+        #[pymodule_export]
+        use super::py_schemas::Vector3;
+
+        #[pymodule_export]
+        use super::py_schemas::SceneUpdate;
+
+        #[pymodule_export]
+        use super::py_schemas::PointCloud;
+
+        #[pymodule_export]
+        use super::py_schemas::OptimizedPointCloud;
+
+        #[pymodule_export]
+        use super::py_schemas::Duration;
+
+        #[pymodule_export]
+        use super::py_schemas::Timestamp;
+
+        #[pymodule_export]
+        use super::py_schemas::SceneEntity;
+
+        #[pymodule_export]
+        use super::py_schemas::SceneEntityDeletion;
+
+        #[pymodule_export]
+        use super::py_schemas::PackedElementField;
+
+        #[pymodule_export]
+        use super::py_schemas::CubePrimitive;
+
+        #[pymodule_export]
+        use super::py_schemas::Pose;
+
+        #[pymodule_export]
+        use super::py_schemas::Color;
+
+        #[pymodule_export]
+        use super::py_schemas::Quaternion;
+
+        #[pymodule_export]
+        use super::py_schemas::KeyValuePair;
+
+        #[pymodule_export]
+        use super::py_schemas::ArrowPrimitive;
+
+        #[pymodule_export]
+        use super::py_schemas::SpherePrimitive;
+
+        #[pymodule_export]
+        use super::py_schemas::CylinderPrimitive;
+
+        #[pymodule_export]
+        use super::py_schemas::LinePrimitive;
+
+        #[pymodule_export]
+        use super::py_schemas::TriangleListPrimitive;
+
+        #[pymodule_export]
+        use super::py_schemas::TextPrimitive;
+
+        #[pymodule_export]
+        use super::py_schemas::ModelPrimitive;
+
+        #[pymodule_export]
+        use super::py_schemas::PackedElementFieldType;
+
+        #[pymodule_init]
+        fn init(m: &Bound<'_, PyModule>) -> PyResult<()> {
+            // https://github.com/PyO3/pyo3/issues/759
+            let py = m.py();
+            py.import("sys")?
+                .getattr("modules")?
+                .set_item("foxglove._foxglove_py.schemas", m)
+        }
+    }
+
+    #[pymodule]
+    mod channels {
+        use super::*;
+
+        #[pymodule_export]
+        use super::py_channels::BasePointCloudChannel;
+        #[pymodule_export]
+        use super::py_channels::BaseSceneUpdateChannel;
+
+        #[pymodule_export]
+        use super::py_channels::log_point_cloud;
+
+        #[pymodule_export]
+        use super::py_channels::log_bytes;
+
+        #[pymodule_init]
+        fn init(m: &Bound<'_, PyModule>) -> PyResult<()> {
+            // https://github.com/PyO3/pyo3/issues/759
+            let py = m.py();
+            py.import("sys")?
+                .getattr("modules")?
+                .set_item("foxglove._foxglove_py.channels", m)
+        }
+    }
 }

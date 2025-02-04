@@ -201,6 +201,9 @@ pub fn generate_protos(proto_path: &Path, out_dir: &Path) -> anyhow::Result<()> 
     let mut config = prost_build::Config::new();
     config.out_dir(out_dir);
 
+    // Use bytes::Bytes instead of Vec<u8>
+    config.bytes(&[".foxglove.PointCloud.data"]);
+
     let mut fds = config
         .load_fds(&proto_files, &[proto_path])
         .context("Failed to load protos")?;

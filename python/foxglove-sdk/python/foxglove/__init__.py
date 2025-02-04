@@ -6,6 +6,7 @@ from ._foxglove_py import (
     disable_log_forwarding,
     start_server,
 )
+
 from .encoding import Encoder, ProtobufEncoder, JsonEncoder
 from .channel import Channel
 

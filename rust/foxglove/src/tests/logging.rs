@@ -1,4 +1,5 @@
-use foxglove::{ChannelBuilder, GlobalContextTest, McapWriter, Schema, WebSocketServer};
+use crate::testutil::GlobalContextTest;
+use crate::{ChannelBuilder, McapWriter, Schema, WebSocketServer};
 use futures_util::{FutureExt, SinkExt, StreamExt};
 use serde_json::json;
 use std::{

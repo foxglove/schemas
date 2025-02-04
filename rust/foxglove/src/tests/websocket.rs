@@ -1,12 +1,11 @@
-use foxglove::websocket::{
-    create_server, ClientMessage, ServerOptions, SubscriptionId, SUBPROTOCOL,
-};
-use foxglove::{collection, Channel, ChannelBuilder, LogContext, LogSink, Metadata, Schema};
 use futures_util::{FutureExt, SinkExt, StreamExt};
 use serde_json::{json, Value};
 use std::sync::Arc;
 use tokio_tungstenite::tungstenite::{self, http::HeaderValue, Message};
 use tungstenite::client::IntoClientRequest;
+
+use crate::websocket::{create_server, ClientMessage, ServerOptions, SubscriptionId, SUBPROTOCOL};
+use crate::{collection, Channel, ChannelBuilder, LogContext, LogSink, Metadata, Schema};
 
 fn new_channel(topic: &str, ctx: &LogContext) -> Arc<Channel> {
     ChannelBuilder::new(topic)
@@ -170,7 +169,7 @@ async fn test_advertise_to_client() {
 
     // Allow the server to process the subscription
     // FG-9723: replace this with an on_subscribe callback
-    std::thread::sleep(std::time::Duration::from_millis(100));
+    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
 
     server.log(&ch, b"{\"a\":1}", &metadata).unwrap();
 
@@ -279,7 +278,7 @@ async fn test_log_only_to_subscribers() {
 
     // Allow the server to process the subscription
     // FG-9723: replace this with an on_subscribe callback
-    std::thread::sleep(std::time::Duration::from_millis(100));
+    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
 
     let metadata = Metadata {
         log_time: 123456,

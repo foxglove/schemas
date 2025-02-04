@@ -31,9 +31,7 @@ mod protocol;
 #[cfg(test)]
 mod tests;
 
-// For tests
-#[doc(hidden)]
-pub const SUBPROTOCOL: &str = "foxglove.sdk.v1";
+pub(crate) const SUBPROTOCOL: &str = "foxglove.sdk.v1";
 
 type WebsocketSender = SplitSink<WebSocketStream<TcpStream>, Message>;
 
@@ -42,7 +40,7 @@ const DEFAULT_MESSAGE_BACKLOG_SIZE: usize = 1024;
 const DEFAULT_CONTROL_PLANE_BACKLOG_SIZE: usize = 64;
 
 #[derive(Error, Debug)]
-pub enum WSError {
+enum WSError {
     #[error("client handshake failed")]
     HandshakeError,
 }
@@ -65,34 +63,14 @@ fn get_tokio_runtime() -> Handle {
     runtime.handle().clone()
 }
 
-#[doc(hidden)]
-pub struct InternalServerOptions {
+#[derive(Default)]
+pub(crate) struct ServerOptions {
     pub session_id: Option<String>,
     pub name: Option<String>,
-    pub listener: Option<Arc<dyn ServerListener>>,
     pub message_backlog_size: Option<usize>,
+    pub listener: Option<Arc<dyn ServerListener>>,
     pub capabilities: Option<HashSet<Capability>>,
     pub supported_encodings: Option<HashSet<String>>,
-}
-
-#[derive(Default)]
-pub struct ServerOptions {
-    pub session_id: Option<String>,
-    pub name: Option<String>,
-    pub message_backlog_size: Option<usize>,
-}
-
-impl From<ServerOptions> for InternalServerOptions {
-    fn from(options: ServerOptions) -> Self {
-        Self {
-            session_id: options.session_id,
-            name: options.name,
-            message_backlog_size: options.message_backlog_size,
-            listener: None,
-            capabilities: None,
-            supported_encodings: None,
-        }
-    }
 }
 
 impl std::fmt::Debug for ServerOptions {
@@ -106,7 +84,7 @@ impl std::fmt::Debug for ServerOptions {
 }
 
 /// A websocket server that implements the Foxglove WebSocket Protocol
-pub struct Server {
+pub(crate) struct Server {
     /// A weak reference to the Arc holding the server.
     /// This is used to get a reference to the outer `Arc<Server>` from Server methods.
     /// See the arc() method and its callers. We need the Arc so we can use it in async futures
@@ -115,7 +93,7 @@ pub struct Server {
     weak_self: Weak<Self>,
     started: AtomicBool,
     message_backlog_size: u32,
-    pub(crate) runtime_handle: Handle,
+    pub runtime_handle: Handle,
     /// May be provided by the caller
     session_id: String,
     name: String,
@@ -315,7 +293,7 @@ impl ConnectedClient {
 
 // A websocket server that implements the Foxglove WebSocket Protocol
 impl Server {
-    pub(crate) fn new(weak_self: Weak<Self>, opts: InternalServerOptions) -> Self {
+    pub fn new(weak_self: Weak<Self>, opts: ServerOptions) -> Self {
         Server {
             weak_self,
             started: AtomicBool::new(false),
@@ -748,13 +726,7 @@ impl LogSink for Server {
     }
 }
 
-#[doc(hidden)]
-pub fn create_server(opts: ServerOptions) -> Arc<Server> {
-    Arc::new_cyclic(|weak_self| Server::new(weak_self.clone(), opts.into()))
-}
-
-#[cfg(feature = "unstable")]
-pub fn create_server_with_internal_options(opts: InternalServerOptions) -> Arc<Server> {
+pub(crate) fn create_server(opts: ServerOptions) -> Arc<Server> {
     Arc::new_cyclic(|weak_self| Server::new(weak_self.clone(), opts))
 }
 

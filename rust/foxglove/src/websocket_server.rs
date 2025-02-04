@@ -5,6 +5,8 @@ use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::websocket::{create_server, Server, ServerOptions};
+#[cfg(feature = "unstable")]
+use crate::websocket::{Capability, Parameter};
 use crate::{FoxgloveError, LogContext, LogSink};
 
 /// A websocket server for live visualization.
@@ -54,6 +56,24 @@ impl WebSocketServer {
     pub fn bind(mut self, host: impl Into<String>, port: u16) -> Self {
         self.host = host.into();
         self.port = port;
+        self
+    }
+
+    /// Sets the server capabilities to advertise to the client.
+    ///
+    /// By default, the server does not advertise any capabilities.
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub fn capabilities(mut self, capabilities: impl IntoIterator<Item = Capability>) -> Self {
+        self.options.capabilities = Some(capabilities.into_iter().collect());
+        self
+    }
+
+    /// Configure an event listener to receive client message events.
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub fn listener(mut self, listener: Arc<dyn crate::websocket::ServerListener>) -> Self {
+        self.options.listener = Some(listener);
         self
     }
 
@@ -109,6 +129,15 @@ impl Debug for WebSocketServerHandle {
 }
 
 impl WebSocketServerHandle {
+    /// Publishes parameter values to all clients.
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub async fn publish_parameter_values(&self, parameters: impl IntoIterator<Item = Parameter>) {
+        self.0
+            .publish_parameter_values(parameters.into_iter().collect(), None)
+            .await;
+    }
+
     /// Gracefully shutdown the websocket server.
     pub async fn stop(self) {
         let sink = self.0.clone() as Arc<dyn LogSink>;

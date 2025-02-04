@@ -158,7 +158,7 @@ macro_rules! static_typed_channel {
 mod test {
     use super::*;
     use crate::channel_builder::ChannelBuilder;
-    use crate::log_context::GlobalContextTest;
+    use crate::testutil::GlobalContextTest;
     use crate::Schema;
     use prost::bytes::BufMut;
     use serde::Serialize;

@@ -58,6 +58,9 @@ impl McapWriter {
     ///
     /// If the file already exists, this call will fail with
     /// [`AlreadyExists`](`std::io::ErrorKind::AlreadyExists`).
+    ///
+    /// If you want more control over how the file is opened, or you want to write to something
+    /// other than a file, use [`McapWriter::create`].
     pub fn create_new_buffered_file<P>(
         self,
         path: P,

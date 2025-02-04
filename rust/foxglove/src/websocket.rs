@@ -31,6 +31,8 @@ mod protocol;
 #[cfg(test)]
 mod tests;
 
+// For tests
+#[doc(hidden)]
 pub const SUBPROTOCOL: &str = "foxglove.sdk.v1";
 
 type WebsocketSender = SplitSink<WebSocketStream<TcpStream>, Message>;
@@ -63,6 +65,7 @@ fn get_tokio_runtime() -> Handle {
     runtime.handle().clone()
 }
 
+#[doc(hidden)]
 pub struct InternalServerOptions {
     pub session_id: Option<String>,
     pub name: Option<String>,
@@ -105,7 +108,7 @@ impl std::fmt::Debug for ServerOptions {
 /// A websocket server that implements the Foxglove WebSocket Protocol
 pub struct Server {
     /// A weak reference to the Arc holding the server.
-    /// This is used to get a reference to the outer Arc<Server> from Server methods.
+    /// This is used to get a reference to the outer `Arc<Server>` from Server methods.
     /// See the arc() method and its callers. We need the Arc so we can use it in async futures
     /// which need to prove to the compiler that the server will outlive the future.
     /// It's analogous to the mixin shared_from_this in C++.
@@ -147,6 +150,8 @@ impl Default for Server {
     }
 }
 
+/// Provides a mechanism for registering callbacks for
+/// handling client message events.
 pub trait ServerListener: Send + Sync {
     fn on_message_data(&self, channel_id: ClientChannelId, payload: &[u8]);
 }
@@ -743,6 +748,7 @@ impl LogSink for Server {
     }
 }
 
+#[doc(hidden)]
 pub fn create_server(opts: ServerOptions) -> Arc<Server> {
     Arc::new_cyclic(|weak_self| Server::new(weak_self.clone(), opts.into()))
 }
@@ -761,7 +767,7 @@ async fn handle_connections(server: Arc<Server>, listener: TcpListener) {
 
 /// Add the subprotocol header to the response if the client requested one we support.
 /// If the client doesn't support our protocol, do not include the protocol header in the response;
-/// the client must fail the connection. https://www.rfc-editor.org/rfc/rfc6455#section-4
+/// the client must fail the connection. [WebSocket RFC](https://www.rfc-editor.org/rfc/rfc6455#section-4)
 async fn do_handshake(stream: TcpStream) -> Result<WebSocketStream<TcpStream>, tungstenite::Error> {
     tokio_tungstenite::accept_hdr_async(
         stream,

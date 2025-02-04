@@ -82,6 +82,7 @@ pub struct Subscription {
     pub channel_id: ChannelId,
 }
 
+#[doc(hidden)]
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ClientChannel {
@@ -94,7 +95,8 @@ pub struct ClientChannel {
 }
 
 /// Parse message data from the client, returning the channel id and the payload:
-/// https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#client-message-data
+/// [MCAP Client Message Data](https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#client-message-data)
+#[doc(hidden)]
 pub fn parse_binary_message(msg: &[u8]) -> Result<(ClientChannelId, &[u8]), Error> {
     // - 1-byte opcode == 0x01
     // - 4-byte channel id

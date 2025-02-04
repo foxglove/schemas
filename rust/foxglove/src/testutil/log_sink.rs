@@ -3,7 +3,7 @@ use crate::{Channel, FoxgloveError, Metadata};
 use parking_lot::Mutex;
 use std::sync::Arc;
 
-pub(crate) struct MockSink;
+pub struct MockSink;
 
 impl LogSink for MockSink {
     fn log(
@@ -22,7 +22,7 @@ pub struct LogCall {
     pub metadata: Metadata,
 }
 
-pub(crate) struct RecordingSink {
+pub struct RecordingSink {
     pub recorded: Mutex<Vec<LogCall>>,
 }
 
@@ -51,7 +51,7 @@ impl LogSink for RecordingSink {
     }
 }
 
-pub(crate) struct ErrorSink;
+pub struct ErrorSink;
 
 impl LogSink for ErrorSink {
     fn log(

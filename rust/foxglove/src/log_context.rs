@@ -1,6 +1,6 @@
 use crate::log_sink_set::LogSinkSet;
 use crate::{Channel, FoxgloveError, LogSink};
-use parking_lot::{Mutex, MutexGuard, RwLock};
+use parking_lot::RwLock;
 use std::collections::hash_map::Entry;
 use std::collections::HashMap;
 use std::sync::{Arc, OnceLock};
@@ -135,37 +135,13 @@ impl Default for LogContext {
     }
 }
 
-static GLOBAL_CONTEXT_TEST_LOCK: Mutex<()> = Mutex::new(());
-
-/// A helper to synchronize tests that use the global context, and clear it afterwards.
-#[doc(hidden)]
-pub struct GlobalContextTest<'a>(#[allow(dead_code)] MutexGuard<'a, ()>);
-
-impl GlobalContextTest<'_> {
-    pub fn new() -> Self {
-        Self(GLOBAL_CONTEXT_TEST_LOCK.lock())
-    }
-}
-
-impl Drop for GlobalContextTest<'_> {
-    fn drop(&mut self) {
-        LogContext::global().clear();
-    }
-}
-
-impl Default for GlobalContextTest<'_> {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use crate::channel::ChannelId;
     use crate::collection::collection;
     use crate::log_context::*;
     use crate::log_sink_set::ERROR_LOGGING_MESSAGE;
-    use crate::log_sink_test::{ErrorSink, MockSink, RecordingSink};
+    use crate::testutil::{ErrorSink, MockSink, RecordingSink};
     use crate::{nanoseconds_since_epoch, Channel, PartialMetadata, Schema};
     use std::sync::atomic::AtomicU32;
     use std::sync::Arc;

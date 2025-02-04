@@ -5,7 +5,7 @@ runs:
   steps:
     - uses: actions/setup-python@v5
       with:
-        python-version: "3.12"
+        python-version: "3.9"
 
     - shell: bash
       run: python -m pip install poetry

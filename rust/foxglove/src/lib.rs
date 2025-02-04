@@ -168,6 +168,7 @@ mod log_sink;
 mod log_sink_set;
 mod mcap_writer;
 mod metadata;
+mod runtime;
 pub mod schemas;
 mod time;
 mod websocket;
@@ -187,6 +188,8 @@ pub use log_context::LogContext;
 pub use log_sink::LogSink;
 pub use mcap_writer::{McapWriter, McapWriterHandle};
 pub use metadata::{Metadata, PartialMetadata};
+pub(crate) use runtime::get_runtime_handle;
+pub use runtime::shutdown_runtime;
 pub(crate) use time::nanoseconds_since_epoch;
 #[doc(hidden)]
 #[cfg(feature = "unstable")]

@@ -20,20 +20,12 @@ struct BaseChannel(Arc<Channel>);
 #[pyclass]
 struct PyWebSocketServer(Option<WebSocketServerHandle>);
 
-impl Drop for PyWebSocketServer {
-    fn drop(&mut self) {
-        log::info!("WebSocket server dropped");
-        self.stop();
-    }
-}
-
 #[pymethods]
 impl PyWebSocketServer {
     fn stop(&mut self) {
-        let Some(server) = self.0.take() else {
-            return;
-        };
-        server.stop_blocking();
+        if let Some(server) = self.0.take() {
+            server.stop_blocking()
+        }
     }
 }
 
@@ -182,6 +174,12 @@ fn disable_log_forwarding() -> PyResult<()> {
     Ok(())
 }
 
+#[pyfunction]
+fn shutdown() {
+    log::set_max_level(LevelFilter::Off);
+    foxglove::shutdown_runtime();
+}
+
 /// Our public API is in the `python` directory.
 /// Rust bindings are exported as `_foxglove_py` and should not be imported directly.
 #[pymodule]
@@ -189,7 +187,7 @@ fn _foxglove_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     pyo3_log::init();
     m.add_function(wrap_pyfunction!(enable_log_forwarding, m)?)?;
     m.add_function(wrap_pyfunction!(disable_log_forwarding, m)?)?;
-
+    m.add_function(wrap_pyfunction!(shutdown, m)?)?;
     m.add_function(wrap_pyfunction!(record_file, m)?)?;
     m.add_function(wrap_pyfunction!(start_server, m)?)?;
     m.add_function(wrap_pyfunction!(get_channel_for_topic, m)?)?;

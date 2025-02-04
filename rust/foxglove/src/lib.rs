@@ -201,3 +201,7 @@ pub enum FoxgloveError {
     #[error(transparent)]
     JSONError(#[from] serde_json::Error),
 }
+
+#[doc = include_str!("../README.md")]
+#[cfg(doctest)]
+pub struct ReadmeTests;

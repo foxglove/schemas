@@ -183,7 +183,7 @@ pub use log_context::{GlobalContextTest, LogContext};
 pub use log_sink::LogSink;
 pub use mcap_writer::{McapWriter, McapWriterHandle};
 pub use metadata::{Metadata, PartialMetadata};
-pub use time::nanoseconds_since_epoch;
+pub(crate) use time::nanoseconds_since_epoch;
 pub use websocket_server::{WebSocketServer, WebSocketServerHandle};
 
 #[derive(Error, Debug)]

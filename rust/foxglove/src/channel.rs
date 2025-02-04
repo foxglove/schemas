@@ -28,6 +28,7 @@ impl std::fmt::Display for ChannelId {
 }
 
 /// A Schema is a description of the data format of messages in a channel.
+///
 /// It allows Foxglove to validate messages and provide richer visualizations.
 /// You can use the well known types provided in the [crate::schemas] module or provide your own.
 /// See the [MCAP spec](https://mcap.dev/spec#schema-op0x03) for more information.
@@ -36,7 +37,7 @@ pub struct Schema {
     /// An identifier for the schema.
     pub name: String,
     /// The encoding of the schema data. For example "jsonschema" or "protobuf".
-    /// The [well-known schema encodings](https://mcap.dev/spec/registry#well-known-schema-encodings) are preferred
+    /// The [well-known schema encodings](https://mcap.dev/spec/registry#well-known-schema-encodings) are preferred.
     pub encoding: String,
     /// Must conform to the schema encoding. If encoding is an empty string, data should be 0 length.
     pub data: Cow<'static, [u8]>,

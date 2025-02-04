@@ -5,7 +5,6 @@ description = "Foxglove SDK"
 edition = "2021"
 repository = "https://github.com/foxglove/foxglove-sdk"
 license = "MIT"
-readme = false
 
 [features]
 unstable = []

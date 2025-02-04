@@ -1,55 +1,21 @@
 use crate::log_sink_set::LogSinkSet;
 use crate::{Channel, FoxgloveError, LogSink};
 use parking_lot::RwLock;
-use std::borrow::Borrow;
-use std::collections::HashSet;
-use std::hash::{Hash, Hasher};
-use std::ops::Deref;
+use std::collections::hash_map::Entry;
+use std::collections::HashMap;
 use std::sync::{Arc, OnceLock};
-
-/// A wrapper to store a Channel in a HashSet by topic.
-#[derive(Clone)]
-pub struct ChannelByTopic(Arc<Channel>);
-
-impl PartialEq for ChannelByTopic {
-    fn eq(&self, other: &Self) -> bool {
-        self.0.topic == other.topic
-    }
-}
-
-impl Eq for ChannelByTopic {}
-
-impl Hash for ChannelByTopic {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        self.0.topic.hash(state);
-    }
-}
-
-impl Borrow<str> for ChannelByTopic {
-    fn borrow(&self) -> &str {
-        self.0.topic.as_str()
-    }
-}
-
-impl Deref for ChannelByTopic {
-    type Target = Channel;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
 
 /// A thread-safe wrapper around one or more Sinks, that writes to all of them.
 pub struct LogContext {
     // Map of channels by topic.
-    channels: RwLock<HashSet<ChannelByTopic>>,
+    channels: RwLock<HashMap<String, Arc<Channel>>>,
     sinks: LogSinkSet,
 }
 
 impl LogContext {
     pub fn new() -> Self {
         Self {
-            channels: RwLock::new(HashSet::new()),
+            channels: RwLock::new(HashMap::new()),
             sinks: LogSinkSet::new(),
         }
     }
@@ -61,19 +27,18 @@ impl LogContext {
 
     pub fn get_channel_by_topic(&self, topic: &str) -> Option<Arc<Channel>> {
         let channels = self.channels.read();
-        channels.get(topic).map(|channel| channel.0.clone())
+        channels.get(topic).cloned()
     }
 
     pub fn add_channel(&self, channel: Arc<Channel>) -> Result<(), FoxgloveError> {
         {
             // Wrapped in a block, so we release the lock immediately.
             let mut channels = self.channels.write();
-            if !channels.insert(ChannelByTopic(channel.clone())) {
-                return Err(FoxgloveError::DuplicateChannel(format!(
-                    "Channel id={} for topic {} already exists in registry",
-                    channel.id, channel.topic,
-                )));
-            }
+            let topic = &channel.topic;
+            let Entry::Vacant(entry) = channels.entry(topic.clone()) else {
+                return Err(FoxgloveError::DuplicateChannel(topic.clone()));
+            };
+            entry.insert(channel.clone());
         }
         self.sinks.for_each(|sink| {
             if channel.sinks.add_sink(sink.clone()) {
@@ -87,14 +52,14 @@ impl LogContext {
     pub fn remove_channel_for_topic(&self, topic: &str) -> bool {
         let maybe_channel_by_topic = {
             let mut channels = self.channels.write();
-            channels.take(topic)
+            channels.remove(topic)
         };
 
         let Some(channel_by_topic) = maybe_channel_by_topic else {
             // Channel not found.
             return false;
         };
-        let channel = &*channel_by_topic.0;
+        let channel = &*channel_by_topic;
 
         self.sinks.for_each(|sink| {
             if channel.sinks.remove_sink(sink) {
@@ -111,9 +76,9 @@ impl LogContext {
         }
 
         // Add the sink to all existing channels.
-        for channel in self.channels.read().iter() {
+        for channel in self.channels.read().values() {
             if channel.sinks.add_sink(sink.clone()) {
-                sink.add_channel(&channel.0);
+                sink.add_channel(channel);
             }
         }
 
@@ -136,9 +101,9 @@ impl LogContext {
         // FG-9893
 
         // Remove the sink from all existing channels.
-        for channel in self.channels.read().iter() {
+        for channel in self.channels.read().values() {
             if channel.sinks.remove_sink(sink) {
-                sink.remove_channel(&channel.0);
+                sink.remove_channel(channel);
             }
         }
 
@@ -146,12 +111,10 @@ impl LogContext {
     }
 
     pub fn clear(&self) {
-        // This seems like a false positive, ChannelByTopic is not mutable.
-        #[allow(clippy::mutable_key_type)]
-        let channels: HashSet<_> = { std::mem::take(&mut self.channels.write()) };
+        let channels: HashMap<_, _> = std::mem::take(&mut self.channels.write());
         self.sinks.for_each(|sink| {
-            for channel in channels.iter() {
-                sink.remove_channel(&channel.0);
+            for channel in channels.values() {
+                sink.remove_channel(channel);
                 channel.sinks.clear();
             }
             Ok(())

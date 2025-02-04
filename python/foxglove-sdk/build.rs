@@ -1,6 +1,4 @@
-// use std::io::{ErrorKind, Read};
-use std::path::Path;
-// use std::process::Command;
+use std::{io::Read, path::Path, process::Command};
 
 fn compile_protos() {
     let proto_path = Path::new("../../schemas/proto");
@@ -30,10 +28,13 @@ fn compile_protos() {
         ));
     }
 
-    /*
     // Compile protos
-    let mut command = Command::new("protoc");
+    let mut command = Command::new("poetry");
     command
+        .arg("run")
+        .arg("python")
+        .arg("-m")
+        .arg("grpc_tools.protoc")
         .arg(format!("--proto_path={}", proto_path.display()))
         .arg(format!("--python_out={}", out_dir.display()))
         .arg(format!("--pyi_out={}", out_dir.display()));
@@ -46,13 +47,8 @@ fn compile_protos() {
 
     let status = command
         .status()
-        .map_err(|e| match e.kind() {
-            ErrorKind::NotFound => {
-                panic!("The command `protoc` was not found. Probably you need to install it.")
-            }
-            _ => panic!("protoc failed: {}", e),
-        })
-        .unwrap();
+        .unwrap_or_else(|err| panic!("failed to execute command: {}: {:#?}", err, command));
+
     if !status.success() {
         panic!("protoc failed!");
     }
@@ -71,7 +67,6 @@ fn compile_protos() {
         let new_contents = contents.replace("from foxglove import ", "from . import ");
         std::fs::write(py_file, new_contents).unwrap();
     }
-    */
 
     // Write __init__.py
     let init_path = out_dir.join("__init__.py");

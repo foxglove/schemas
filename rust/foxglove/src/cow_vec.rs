@@ -93,18 +93,16 @@ mod tests {
 
         let handle = thread::spawn(move || {
             vec2.push(4);
-            vec2.get().to_vec()
         });
 
         vec.push(5);
-        let thread_state = handle.join().unwrap();
+        handle.join().unwrap();
         let final_state = vec.get().to_vec();
 
         // Old snapshot should still be valid and have original length
         assert_eq!(old_snapshot.len(), 3);
         // Both threads should see 5 items in their final state
         assert_eq!(final_state.len(), 5);
-        assert_eq!(thread_state.len(), 5);
     }
 
     #[test]

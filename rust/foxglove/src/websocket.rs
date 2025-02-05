@@ -433,6 +433,28 @@ impl Server {
         }
     }
 
+    /// Publish the current timestamp to all clients.
+    #[cfg(feature = "unstable")]
+    pub async fn broadcast_time(&self, timestamp_nanos: u64) {
+        if !self.capabilities.contains(&Capability::Time) {
+            tracing::error!("Server does not support time capability");
+            return;
+        }
+
+        // https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#time
+        let mut buf = BytesMut::with_capacity(9);
+        buf.put_u8(protocol::server::BinaryOpcode::TimeData as u8);
+        buf.put_u64_le(timestamp_nanos);
+        let message = Message::binary(buf);
+
+        let clients = self.clients.get();
+        for client in clients.iter() {
+            if let Err(err) = client.control_plane_tx.send_async(message.clone()).await {
+                tracing::error!("Failed to send time to client {}: {err}", client.addr);
+            }
+        }
+    }
+
     /// Publish parameter values to all clients.
     #[cfg(feature = "unstable")]
     pub async fn publish_parameter_values(
@@ -467,28 +489,6 @@ impl Server {
                     "Failed to send parameter values to client {}: {err}",
                     client.addr
                 );
-            }
-        }
-    }
-
-    /// Publish the current timestamp to all clients.
-    #[cfg(feature = "unstable")]
-    pub async fn broadcast_time(&self, timestamp_nanos: u64) {
-        if !self.capabilities.contains(&Capability::Time) {
-            tracing::error!("Server does not support time capability");
-            return;
-        }
-
-        // https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#time
-        let mut buf = BytesMut::with_capacity(9);
-        buf.put_u8(protocol::server::BinaryOpcode::TimeData as u8);
-        buf.put_u64_le(timestamp_nanos);
-        let message = Message::binary(buf);
-
-        let clients = self.clients.get();
-        for client in clients.iter() {
-            if let Err(err) = client.control_plane_tx.send_async(message.clone()).await {
-                tracing::error!("Failed to send time to client {}: {err}", client.addr);
             }
         }
     }

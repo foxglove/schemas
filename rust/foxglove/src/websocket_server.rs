@@ -129,6 +129,13 @@ impl Debug for WebSocketServerHandle {
 }
 
 impl WebSocketServerHandle {
+    /// Publishes the current server timestamp to all clients.
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub async fn broadcast_time(&self, timestamp_nanos: u64) {
+        self.0.broadcast_time(timestamp_nanos).await;
+    }
+
     /// Publishes parameter values to all clients.
     #[doc(hidden)]
     #[cfg(feature = "unstable")]
@@ -136,13 +143,6 @@ impl WebSocketServerHandle {
         self.0
             .publish_parameter_values(parameters.into_iter().collect(), None)
             .await;
-    }
-
-    /// Publishes the current server timestamp to all clients.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
-    pub async fn broadcast_time(&self, timestamp_nanos: u64) {
-        self.0.broadcast_time(timestamp_nanos).await;
     }
 
     /// Gracefully shutdown the websocket server.

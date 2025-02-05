@@ -19,7 +19,13 @@ fn euler_to_quaternion(roll: f64, pitch: f64, yaw: f64) -> Quaternion {
 #[derive(Debug, Serialize, JsonSchema)]
 struct Message {
     msg: String,
-    count: u32,
+    inner: MessageInner,
+}
+
+#[derive(Debug, Serialize, JsonSchema)]
+struct MessageInner {
+    foo: u32,
+    bar: u32,
 }
 
 static_typed_channel!(pub BOX_CHANNEL, "/boxes", SceneUpdate);
@@ -35,7 +41,7 @@ pub async fn log_forever(fps: u8) {
 
         MSG_CHANNEL.log(&Message {
             msg: "Hello, world!".to_string(),
-            count: counter,
+            inner: MessageInner { foo: 1, bar: 42 },
         });
 
         BOX_CHANNEL.log(&SceneUpdate {

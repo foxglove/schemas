@@ -197,50 +197,65 @@ impl ConnectedClient {
                 }
             }
             Ok(ClientMessage::Advertise { channels }) => {
-                if !server.capabilities.contains(&Capability::ClientPublish) {
-                    self.send_error("Server does not support clientPublish capability".to_string());
-                    return;
-                }
-
-                for channel in channels {
-                    // Using a limited scope here to avoid holding the lock on advertised_channels while calling on_client_advertise
-                    {
-                        match self.advertised_channels.lock().entry(channel.id) {
-                            Entry::Occupied(_) => {
-                                self.send_warning(format!(
-                                    "Client is already advertising channel: {}; ignoring advertisement",
-                                    channel.id
-                                ));
-                                continue;
-                            }
-                            Entry::Vacant(entry) => {
-                                entry.insert(channel.clone());
-                            }
-                        }
-                    }
-
-                    if let Some(handler) = self.server_listener.as_ref() {
-                        handler.on_client_advertise(&channel);
-                    }
-                }
+                self.on_advertise(server, channels);
             }
             Ok(ClientMessage::Unadvertise { channel_ids }) => {
-                // Using a limited scope and iterating twice to avoid holding the lock on advertised_channels while calling on_client_unadvertise
-                {
-                    let mut advertised_channels = self.advertised_channels.lock();
-                    for id in channel_ids.iter() {
-                        advertised_channels.remove(&id);
-                    }
-                }
-                if let Some(handler) = self.server_listener.as_ref() {
-                    for id in channel_ids {
-                        handler.on_client_unadvertise(id);
-                    }
-                }
+                self.on_unadvertise(channel_ids);
             }
             _ => {
                 tracing::error!("Unsupported message from {}: {message}", self.addr);
                 self.send_error(format!("Unsupported message: {message}"));
+            }
+        }
+    }
+
+    fn on_unadvertise(&self, channel_ids: Vec<ClientChannelId>) {
+        // Using a limited scope and iterating twice to avoid holding the lock on advertised_channels while calling on_client_unadvertise
+        let mut channels_not_found = Vec::new();
+        {
+            let mut advertised_channels = self.advertised_channels.lock();
+            for id in channel_ids.iter() {
+                if advertised_channels.remove(&id).is_none() {
+                    channels_not_found.push(id);
+                    self.send_warning(format!(
+                        "Client is not advertising channel: {}; ignoring unadvertisement",
+                        id
+                    ));
+                }
+            }
+        }
+        if let Some(handler) = self.server_listener.as_ref() {
+            for id in channel_ids.filter(|id| !channels_not_found.contains(id)) {
+                handler.on_client_unadvertise(id);
+            }
+        }
+    }
+
+    fn on_advertise(&self, server: Arc<Server>, channels: Vec<ClientChannel>) {
+        if !server.capabilities.contains(&Capability::ClientPublish) {
+            self.send_error("Server does not support clientPublish capability".to_string());
+            return;
+        }
+
+        for channel in channels {
+            // Using a limited scope here to avoid holding the lock on advertised_channels while calling on_client_advertise
+            {
+                match self.advertised_channels.lock().entry(channel.id) {
+                    Entry::Occupied(_) => {
+                        self.send_warning(format!(
+                            "Client is already advertising channel: {}; ignoring advertisement",
+                            channel.id
+                        ));
+                        continue;
+                    }
+                    Entry::Vacant(entry) => {
+                        entry.insert(channel.clone());
+                    }
+                }
+            }
+
+            if let Some(handler) = self.server_listener.as_ref() {
+                handler.on_client_advertise(&channel);
             }
         }
     }

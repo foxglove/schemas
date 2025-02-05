@@ -186,7 +186,7 @@ async fn test_time() {
     let mut ws_client = connect_client(addr).await;
     _ = ws_client.next().await.expect("serverInfo");
 
-    server.publish_time(42).await;
+    server.broadcast_time(42).await;
     let msg = ws_client
         .next()
         .await

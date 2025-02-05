@@ -141,8 +141,8 @@ impl WebSocketServerHandle {
     /// Publishes the current server timestamp to all clients.
     #[doc(hidden)]
     #[cfg(feature = "unstable")]
-    pub async fn publish_time(&self, timestamp_nanos: u64) {
-        self.0.publish_time(timestamp_nanos).await;
+    pub async fn broadcast_time(&self, timestamp_nanos: u64) {
+        self.0.broadcast_time(timestamp_nanos).await;
     }
 
     /// Gracefully shutdown the websocket server.

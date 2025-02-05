@@ -473,7 +473,7 @@ impl Server {
 
     /// Publish the current timestamp to all clients.
     #[cfg(feature = "unstable")]
-    pub async fn publish_time(&self, timestamp_nanos: u64) {
+    pub async fn broadcast_time(&self, timestamp_nanos: u64) {
         if !self.capabilities.contains(&Capability::Time) {
             tracing::error!("Server does not support time capability");
             return;

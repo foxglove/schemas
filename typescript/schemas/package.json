@@ -16,7 +16,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "internal.cjs",
+    "jsonschema.cjs"
   ],
   "packageManager": "yarn@4.6.0",
   "scripts": {

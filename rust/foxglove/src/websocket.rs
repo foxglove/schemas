@@ -1,5 +1,6 @@
 use crate::channel::ChannelId;
 use crate::cow_vec::CowVec;
+use crate::websocket::protocol::client::Subscription;
 pub use crate::websocket::protocol::client::{
     ClientChannel, ClientChannelId, ClientMessage, SubscriptionId,
 };
@@ -7,6 +8,7 @@ pub use crate::websocket::protocol::server::Capability;
 #[cfg(feature = "unstable")]
 pub use crate::websocket::protocol::server::{Parameter, ParameterType, ParameterValue};
 use crate::{Channel, FoxgloveError, LogSink, Metadata};
+use bimap::BiHashMap;
 use bytes::{BufMut, BytesMut};
 use flume::TrySendError;
 use futures_util::{stream::SplitSink, SinkExt, StreamExt};
@@ -132,6 +134,11 @@ impl Default for Server {
 /// handling client message events.
 pub trait ServerListener: Send + Sync {
     fn on_message_data(&self, channel_id: ClientChannelId, payload: &[u8]);
+    fn on_subscribe(&self, channel_id: ChannelId);
+    fn on_unsubscribe(&self, channel_id: ChannelId);
+    // Whole Channel?
+    fn on_client_advertise(&self, channel_id: ClientChannelId);
+    fn on_client_unadvertise(&self, channel_id: ClientChannelId);
 }
 
 /// State for a client maintained by the server
@@ -144,7 +151,7 @@ struct ConnectedClient {
     control_plane_tx: flume::Sender<Message>,
     control_plane_rx: flume::Receiver<Message>,
     /// Subscriptions from this client
-    subscriptions_by_channel: parking_lot::Mutex<HashMap<ChannelId, SubscriptionId>>,
+    subscriptions: parking_lot::Mutex<BiHashMap<ChannelId, SubscriptionId>>,
     /// Channels advertised by this client
     advertised_channels: parking_lot::Mutex<HashMap<ClientChannelId, ClientChannel>>,
     /// Optional callback handler for a server implementation
@@ -170,45 +177,26 @@ impl ConnectedClient {
             self.send_error(format!("Invalid message: {message}"));
             return;
         };
+        let Some(server) = self.server.upgrade() else {
+            tracing::error!("Server closed");
+            return;
+        };
 
         match serde_json::from_str::<ClientMessage>(message) {
             Ok(ClientMessage::Subscribe { subscriptions }) => {
-                let Some(server) = self.server.upgrade() else {
-                    tracing::error!("Server closed");
-                    return;
-                };
-                let channels = server.channels.read();
-                for subscription in subscriptions {
-                    if !channels.contains_key(&subscription.channel_id) {
-                        tracing::error!(
-                            "Client {} attempted to subscribe to unknown channel: {}",
-                            self.addr,
-                            subscription.channel_id
-                        );
-                        self.send_error(format!("Unknown channel ID: {}", subscription.channel_id));
-                        continue;
-                    }
-
-                    let mut subscriptions = self.subscriptions_by_channel.lock();
-                    subscriptions.insert(subscription.channel_id, subscription.id);
-                    tracing::info!(
-                        "Client {} subscribed to channel {} with subscription id {}",
-                        self.addr,
-                        subscription.channel_id,
-                        subscription.id
-                    );
-                }
+                self.on_subscribe(server, subscriptions);
             }
             Ok(ClientMessage::Unsubscribe { subscription_ids }) => {
-                let mut subscriptions = self.subscriptions_by_channel.lock();
-                subscriptions
-                    .retain(|_, subscription_id| !subscription_ids.contains(subscription_id))
+                let mut subscriptions = self.subscriptions.lock();
+                for subscription_id in subscription_ids {
+                    if let Some((channel_id, _)) = subscriptions.remove_by_right(&subscription_id) {
+                        if let Some(handler) = self.server_listener.as_ref() {
+                            handler.on_unsubscribe(channel_id);
+                        }
+                    }
+                }
             }
             Ok(ClientMessage::Advertise { channels }) => {
-                let Some(server) = self.server.upgrade() else {
-                    tracing::info!("Server closed; ignoring client advertisement");
-                    return;
-                };
                 if !server.capabilities.contains(&Capability::ClientPublish) {
                     self.send_error("Server does not support clientPublish capability".to_string());
                     return;
@@ -232,13 +220,68 @@ impl ConnectedClient {
         }
     }
 
+    fn on_subscribe(&self, server: Arc<Server>, subscriptions: Vec<Subscription>) {
+        let channels = server.channels.read();
+        for subscription in subscriptions {
+            if !channels.contains_key(&subscription.channel_id) {
+                tracing::error!(
+                    "Client {} attempted to subscribe to unknown channel: {}",
+                    self.addr,
+                    subscription.channel_id
+                );
+                self.send_error(format!("Unknown channel ID: {}", subscription.channel_id));
+                continue;
+            }
+
+            let mut subscriptions = self.subscriptions.lock();
+            if subscriptions
+                .insert_no_overwrite(subscription.channel_id, subscription.id)
+                .is_err()
+            {
+                if subscriptions.contains_left(&subscription.channel_id) {
+                    self.send_warning(format!(
+                        "Client is already subscribed to channel: {}; ignoring subscription",
+                        subscription.channel_id
+                    ));
+                } else {
+                    assert!(subscriptions.contains_right(&subscription.id));
+                    self.send_error(format!(
+                        "Subscription ID was already used: {}; ignoring subscription",
+                        subscription.id
+                    ));
+                }
+                continue;
+            }
+
+            tracing::info!(
+                "Client {} subscribed to channel {} with subscription id {}",
+                self.addr,
+                subscription.channel_id,
+                subscription.id
+            );
+            if let Some(handler) = self.server_listener.as_ref() {
+                handler.on_subscribe(subscription.channel_id);
+            }
+        }
+    }
+
     /// Send an ad hoc error status message to the client, with the given message.
     fn send_error(&self, message: String) {
-        let status = protocol::server::Status {
-            level: protocol::server::StatusLevel::Error,
-            message: message.to_string(),
-            id: None,
-        };
+        self.send_status(protocol::server::StatusLevel::Error, message, None);
+    }
+
+    /// Send an ad hoc warning status message to the client, with the given message.
+    fn send_warning(&self, message: String) {
+        self.send_status(protocol::server::StatusLevel::Warning, message, None);
+    }
+
+    fn send_status(
+        &self,
+        level: protocol::server::StatusLevel,
+        message: String,
+        id: Option<String>,
+    ) {
+        let status = protocol::server::Status { level, message, id };
         let message = Message::text(serde_json::to_string(&status).unwrap());
         // If the message can't be sent, or the outbox is full, log a warning and continue.
         self.data_plane_tx.try_send(message).unwrap_or_else(|err| {
@@ -508,7 +551,7 @@ impl Server {
             data_plane_rx: data_rx,
             control_plane_tx: ctrl_tx,
             control_plane_rx: ctrl_rx,
-            subscriptions_by_channel: parking_lot::Mutex::new(HashMap::new()),
+            subscriptions: parking_lot::Mutex::new(BiHashMap::new()),
             advertised_channels: parking_lot::Mutex::new(HashMap::new()),
             server_listener: self.listener.clone(),
             server: self.weak_self.clone(),
@@ -673,7 +716,7 @@ impl LogSink for Server {
     ) -> Result<(), FoxgloveError> {
         let clients = self.clients.get();
         for client in clients.iter() {
-            let subscriptions = client.subscriptions_by_channel.lock();
+            let subscriptions = client.subscriptions.lock();
             let Some(subscription_id) = subscriptions.get(&channel.id).cloned() else {
                 continue;
             };

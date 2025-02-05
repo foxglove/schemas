@@ -10,6 +10,7 @@ license = "MIT"
 unstable = []
 
 [dependencies]
+bimap = "0.6.3"
 schemars = "0.8.21"
 arc-swap = "1.7.1"
 base64 = "0.22.1"

@@ -134,10 +134,15 @@ impl Default for Server {
 /// Provides a mechanism for registering callbacks for handling client message events.
 /// All methods are optional.
 pub trait ServerListener: Send + Sync {
+    /// Callback invoked when a client message is received.
     fn on_message_data(&self, _channel_id: ClientChannelId, _payload: &[u8]) {}
+    /// Callback invoked when a client subscribes to a channel.
     fn on_subscribe(&self, _channel_id: ChannelId) {}
+    /// Callback invoked when a client unsubscribes from a channel.
     fn on_unsubscribe(&self, _channel_id: ChannelId) {}
+    /// Callback invoked when a client advertises a client channel. Requires the "clientPublish" capability.
     fn on_client_advertise(&self, _channel: &ClientChannel) {}
+    /// Callback invoked when a client unadvertises a client channel. Requires the "clientPublish" capability.
     fn on_client_unadvertise(&self, _channel_id: ClientChannelId) {}
 }
 
@@ -408,20 +413,18 @@ impl Server {
     // Spawn a task to accept all incoming connections and return
     pub async fn start(&self, host: &str, port: u16) -> Result<String, FoxgloveError> {
         if self.started.load(Acquire) {
-            return Err(FoxgloveError::Fatal("Server already started".to_string()));
+            return Err(FoxgloveError::ServerAlreadyStarted);
         }
         let already_started = self.started.swap(true, AcqRel);
         assert!(!already_started);
 
         let addr = format!("{}:{}", host, port);
-        let listener = TcpListener::bind(&addr).await.map_err(|err| {
-            FoxgloveError::Fatal(format!("Failed to bind TCP listener: {}", &err))
-        })?;
+        let listener = TcpListener::bind(&addr)
+            .await
+            .map_err(FoxgloveError::Bind)?;
         let bound_addr = listener
             .local_addr()
-            .map_err(|err| {
-                FoxgloveError::Fatal(format!("Failed to get listener address: {}", &err))
-            })?
+            .map_err(|err| FoxgloveError::Unspecified(err.into()))?
             .to_string();
 
         let cancellation_token = self.cancellation_token.clone();

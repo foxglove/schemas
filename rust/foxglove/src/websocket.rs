@@ -277,10 +277,6 @@ impl ConnectedClient {
                 continue;
             }
 
-            println!(
-                "Client {} subscribed to channel {} with subscription id {}",
-                self.addr, subscription.channel_id, subscription.id
-            );
             let mut subscriptions = self.subscriptions.lock();
             if subscriptions
                 .insert_no_overwrite(subscription.channel_id, subscription.id)
@@ -301,10 +297,6 @@ impl ConnectedClient {
                 continue;
             }
 
-            println!(
-                "Client {} subscribed to channel {} with subscription id {}",
-                self.addr, subscription.channel_id, subscription.id
-            );
             tracing::info!(
                 "Client {} subscribed to channel {} with subscription id {}",
                 self.addr,
@@ -769,13 +761,9 @@ impl LogSink for Server {
         let clients = self.clients.get();
         for client in clients.iter() {
             let subscriptions = client.subscriptions.lock();
-            println!("Subscriptions active: {}", subscriptions.len());
             let Some(subscription_id) = subscriptions.get_by_left(&channel.id).cloned() else {
-                println!("No subscription found for channel {}", channel.id);
                 continue;
             };
-
-            println!("Sending message to client {}", client.addr);
 
             // https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#message-data
             let header_size: usize = 1 + 4 + 8;

@@ -193,7 +193,6 @@ async fn test_advertise_to_client() {
         .expect("Failed to parse message");
     let data = msg.into_data();
     let data_str = std::str::from_utf8(&data).unwrap();
-    println!("data: {:?}", data_str);
     assert!(data_str.contains("Client is already subscribed to channel"));
 
     let msg = client_receiver

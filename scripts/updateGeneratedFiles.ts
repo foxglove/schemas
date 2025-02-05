@@ -3,19 +3,26 @@ import fs from "fs/promises";
 import path from "path";
 import { rimraf } from "rimraf";
 
-import { generateRosMsg, generateRosMsgDefinition } from "../internal";
-import { exportTypeScriptSchemas } from "../internal/exportTypeScriptSchemas";
+import { generateRosMsg, generateRosMsgDefinition } from "../typescript/schemas/src/internal";
+import { exportTypeScriptSchemas } from "../typescript/schemas/src/internal/exportTypeScriptSchemas";
 import {
   BYTE_VECTOR_FB,
   DURATION_FB,
   TIME_FB,
   generateFlatbuffers,
-} from "../internal/generateFlatbufferSchema";
-import { generateJsonSchema } from "../internal/generateJsonSchema";
-import { generateMarkdown } from "../internal/generateMarkdown";
-import { DURATION_IDL, TIME_IDL, generateOmgIdl } from "../internal/generateOmgIdl";
-import { generateProto } from "../internal/generateProto";
-import { foxgloveEnumSchemas, foxgloveMessageSchemas } from "../internal/schemas";
+} from "../typescript/schemas/src/internal/generateFlatbufferSchema";
+import { generateJsonSchema } from "../typescript/schemas/src/internal/generateJsonSchema";
+import { generateMarkdown } from "../typescript/schemas/src/internal/generateMarkdown";
+import {
+  DURATION_IDL,
+  TIME_IDL,
+  generateOmgIdl,
+} from "../typescript/schemas/src/internal/generateOmgIdl";
+import { generateProto } from "../typescript/schemas/src/internal/generateProto";
+import {
+  foxgloveEnumSchemas,
+  foxgloveMessageSchemas,
+} from "../typescript/schemas/src/internal/schemas";
 
 async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write(`${message}... `);
@@ -101,10 +108,13 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
   });
 
   await logProgress("Generating TypeScript definitions", async () => {
-    await fs.mkdir(path.join(outDir, "typescript"), { recursive: true });
+    const typesDir = path.join(outDir, "../typescript/schemas/src/types");
+    await rimraf(typesDir);
+    await fs.mkdir(typesDir, { recursive: true });
+
     const schemas = exportTypeScriptSchemas();
     for (const [name, source] of schemas.entries()) {
-      await fs.writeFile(path.join(outDir, "typescript", `${name}.ts`), source);
+      await fs.writeFile(path.join(typesDir, `${name}.ts`), source);
     }
   });
 

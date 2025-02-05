@@ -1,14 +1,15 @@
 use std::{collections::HashSet, sync::Arc};
 
-use bytes::{BufMut, BytesMut};
+use bytes::{Buf, BufMut, BytesMut};
 use futures_util::{SinkExt, StreamExt};
 use serde_json::{json, Value};
 use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
-use tokio_tungstenite::tungstenite::{client::IntoClientRequest, http::HeaderValue, Message};
+use tokio_tungstenite::tungstenite::Message;
 
-use crate::websocket::{
-    create_server, Capability, ClientChannelId, Parameter, ParameterType, ParameterValue,
-    ServerListener, ServerOptions, SUBPROTOCOL,
+use super::tests::connect_client;
+use super::{
+    create_server, protocol, Capability, ClientChannelId, Parameter, ParameterType, ParameterValue,
+    ServerListener, ServerOptions,
 };
 
 struct ClientMessageData {
@@ -171,27 +172,29 @@ async fn test_parameter_values() {
     server.stop().await;
 }
 
-/// Connect to a server, ensuring the protocol header is set, and return the client WS stream
-async fn connect_client(
-    addr: String,
-) -> tokio_tungstenite::WebSocketStream<tokio_tungstenite::MaybeTlsStream<tokio::net::TcpStream>> {
-    let mut request = format!("ws://{addr}/")
-        .into_client_request()
-        .expect("Failed to build request");
-
-    request.headers_mut().insert(
-        "sec-websocket-protocol",
-        HeaderValue::from_static(SUBPROTOCOL),
-    );
-
-    let (ws_stream, response) = tokio_tungstenite::connect_async(request)
+#[tokio::test]
+async fn test_time() {
+    let server = create_server(ServerOptions {
+        capabilities: Some(HashSet::from([Capability::Time])),
+        ..Default::default()
+    });
+    let addr = server
+        .start("127.0.0.1", 0)
         .await
-        .expect("Failed to connect");
+        .expect("Failed to start server");
 
-    assert_eq!(
-        response.headers().get("sec-websocket-protocol"),
-        Some(&HeaderValue::from_static(SUBPROTOCOL))
-    );
+    let mut ws_client = connect_client(addr).await;
+    _ = ws_client.next().await.expect("serverInfo");
 
-    ws_stream
+    server.publish_time(42).await;
+    let msg = ws_client
+        .next()
+        .await
+        .expect("no message received")
+        .expect("failed to parse message");
+    let Message::Binary(mut buf) = msg else {
+        panic!("unexpected message type");
+    };
+    assert_eq!(buf.get_u8(), protocol::server::BinaryOpcode::TimeData as u8);
+    assert_eq!(buf.get_u64_le(), 42);
 }

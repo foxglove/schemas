@@ -138,6 +138,13 @@ impl WebSocketServerHandle {
             .await;
     }
 
+    /// Publishes the current server timestamp to all clients.
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub async fn publish_time(&self, timestamp_nanos: u64) {
+        self.0.publish_time(timestamp_nanos).await;
+    }
+
     /// Gracefully shutdown the websocket server.
     pub async fn stop(self) {
         let sink = self.0.clone() as Arc<dyn LogSink>;

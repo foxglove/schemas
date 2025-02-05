@@ -3,9 +3,6 @@ use std::{error::Error, fmt::Display};
 use crate::FoxgloveError;
 
 mod logging;
-mod websocket;
-#[cfg(feature = "unstable")]
-mod websocket_unstable;
 
 #[derive(Debug, thiserror::Error)]
 struct SourceError(&'static str);

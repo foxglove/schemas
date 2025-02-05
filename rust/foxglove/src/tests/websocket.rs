@@ -4,6 +4,7 @@ use std::sync::Arc;
 use tokio_tungstenite::tungstenite::{self, http::HeaderValue, Message};
 use tungstenite::client::IntoClientRequest;
 
+use crate::testutil::RecordingServerListener;
 use crate::websocket::{create_server, ClientMessage, ServerOptions, SubscriptionId, SUBPROTOCOL};
 use crate::{collection, Channel, ChannelBuilder, LogContext, LogSink, Metadata, Schema};
 
@@ -121,7 +122,12 @@ async fn test_handshake_with_multiple_subprotocols() {
 
 #[tokio::test]
 async fn test_advertise_to_client() {
-    let server = create_server(ServerOptions::default());
+    let recording_listener = Arc::new(RecordingServerListener::new());
+
+    let server = create_server(ServerOptions {
+        listener: Some(recording_listener.clone()),
+        ..Default::default()
+    });
 
     let ctx = LogContext::new();
     ctx.add_sink(server.clone());
@@ -166,15 +172,35 @@ async fn test_advertise_to_client() {
         .send(Message::text(subscribe.to_string()))
         .await
         .expect("Failed to send");
+    // Send a duplicate subscribe message (ignored)
+    client_sender
+        .send(Message::text(subscribe.to_string()))
+        .await
+        .expect("Failed to send");
 
     // Allow the server to process the subscription
     // FG-9723: replace this with an on_subscribe callback
+    // (whoops, that won't work either, unless we do something like polling the recording_listener)
     tokio::time::sleep(std::time::Duration::from_millis(100)).await;
 
-    server.log(&ch, b"{\"a\":1}", &metadata).unwrap();
+    server.log(&ch, b"foo bar baz", &metadata).unwrap();
 
-    let result = client_receiver.next().await.unwrap();
-    let msg = result.expect("Failed to parse message");
+    // Ignore the warning message from the duplicate subscribe
+    let msg = client_receiver
+        .next()
+        .await
+        .unwrap()
+        .expect("Failed to parse message");
+    let data = msg.into_data();
+    let data_str = std::str::from_utf8(&data).unwrap();
+    println!("data: {:?}", data_str);
+    assert!(data_str.contains("Client is already subscribed to channel"));
+
+    let msg = client_receiver
+        .next()
+        .await
+        .unwrap()
+        .expect("Failed to parse message");
     let data = msg.into_data();
 
     assert_eq!(data[0], 0x01); // message data opcode
@@ -183,12 +209,21 @@ async fn test_advertise_to_client() {
         subscription_id
     );
 
+    let subscriptions = recording_listener.take_subscribe();
+    assert_eq!(subscriptions.len(), 1);
+    assert_eq!(subscriptions[0], ch.id());
+
     server.stop().await;
 }
 
 #[tokio::test]
 async fn test_log_only_to_subscribers() {
-    let server = create_server(ServerOptions::default());
+    let recording_listener = Arc::new(RecordingServerListener::new());
+
+    let server = create_server(ServerOptions {
+        listener: Some(recording_listener.clone()),
+        ..Default::default()
+    });
 
     let ctx = LogContext::new();
 
@@ -279,6 +314,18 @@ async fn test_log_only_to_subscribers() {
     // Allow the server to process the subscription
     // FG-9723: replace this with an on_subscribe callback
     tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+
+    let subscriptions = recording_listener.take_subscribe();
+    assert_eq!(subscriptions.len(), 4);
+    assert_eq!(subscriptions[0], ch1.id());
+    assert_eq!(subscriptions[1], ch2.id());
+    assert_eq!(subscriptions[2], ch1.id());
+    assert_eq!(subscriptions[3], ch2.id());
+
+    let unsubscriptions = recording_listener.take_unsubscribe();
+    assert_eq!(unsubscriptions.len(), 2);
+    assert_eq!(unsubscriptions[0], ch1.id());
+    assert_eq!(unsubscriptions[1], ch2.id());
 
     let metadata = Metadata {
         log_time: 123456,

@@ -31,27 +31,27 @@ impl RecordingServerListener {
     }
 
     #[allow(dead_code)]
-    pub fn message_data(&self) -> Vec<(ClientChannelId, Vec<u8>)> {
+    pub fn take_message_data(&self) -> Vec<(ClientChannelId, Vec<u8>)> {
         std::mem::take(&mut self.message_data.lock())
     }
 
     #[allow(dead_code)]
-    pub fn subscribe(&self) -> Vec<ChannelId> {
+    pub fn take_subscribe(&self) -> Vec<ChannelId> {
         std::mem::take(&mut self.subscribe.lock())
     }
 
     #[allow(dead_code)]
-    pub fn unsubscribe(&self) -> Vec<ChannelId> {
+    pub fn take_unsubscribe(&self) -> Vec<ChannelId> {
         std::mem::take(&mut self.unsubscribe.lock())
     }
 
     #[allow(dead_code)]
-    pub fn client_advertise(&self) -> Vec<ClientChannel> {
+    pub fn take_client_advertise(&self) -> Vec<ClientChannel> {
         std::mem::take(&mut self.client_advertise.lock())
     }
 
     #[allow(dead_code)]
-    pub fn client_unadvertise(&self) -> Vec<ClientChannelId> {
+    pub fn take_client_unadvertise(&self) -> Vec<ClientChannelId> {
         std::mem::take(&mut self.client_unadvertise.lock())
     }
 }

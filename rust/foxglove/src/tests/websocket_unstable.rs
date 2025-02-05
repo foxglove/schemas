@@ -19,9 +19,7 @@ async fn test_client_advertising() {
         capabilities: Some(HashSet::from([Capability::ClientPublish])),
         supported_encodings: Some(HashSet::from(["json".to_string()])),
         listener: Some(recording_listener.clone()),
-        session_id: None,
-        name: None,
-        message_backlog_size: None,
+        ..Default::default()
     });
 
     let addr = server
@@ -46,7 +44,7 @@ async fn test_client_advertising() {
         .await
         .expect("Failed to send binary message");
     // No message sent to listener
-    assert!(recording_listener.message_data().is_empty());
+    assert!(recording_listener.take_message_data().is_empty());
 
     let advertise = json!({
         "op": "advertise",
@@ -104,18 +102,18 @@ async fn test_client_advertising() {
     sleep(std::time::Duration::from_millis(10)).await;
 
     // Server should have received one message
-    let mut received = recording_listener.message_data();
+    let mut received = recording_listener.take_message_data();
     let (channel_id, payload) = received.pop().expect("No message received");
     assert_eq!(channel_id, ClientChannelId::new(1));
     assert_eq!(payload, b"{\"a\":1}");
 
     // Server should have ignored the duplicate advertisement
-    let advertisements = recording_listener.client_advertise();
+    let advertisements = recording_listener.take_client_advertise();
     assert_eq!(advertisements.len(), 1);
     assert_eq!(advertisements[0].id, channel_id);
 
     // Server should have received one unadvertise (and ignored the duplicate)
-    let unadvertises = recording_listener.client_unadvertise();
+    let unadvertises = recording_listener.take_client_unadvertise();
     assert_eq!(unadvertises.len(), 1);
     assert_eq!(unadvertises[0], channel_id);
 

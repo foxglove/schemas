@@ -12,6 +12,7 @@ use bimap::BiHashMap;
 use bytes::{BufMut, BytesMut};
 use flume::TrySendError;
 use futures_util::{stream::SplitSink, SinkExt, StreamExt};
+use std::collections::hash_map::Entry;
 use std::collections::HashSet;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering::{AcqRel, Acquire};
@@ -136,8 +137,7 @@ pub trait ServerListener: Send + Sync {
     fn on_message_data(&self, channel_id: ClientChannelId, payload: &[u8]);
     fn on_subscribe(&self, channel_id: ChannelId);
     fn on_unsubscribe(&self, channel_id: ChannelId);
-    // Whole Channel?
-    fn on_client_advertise(&self, channel_id: ClientChannelId);
+    fn on_client_advertise(&self, channel: &ClientChannel);
     fn on_client_unadvertise(&self, channel_id: ClientChannelId);
 }
 
@@ -202,15 +202,40 @@ impl ConnectedClient {
                     return;
                 }
 
-                let mut advertised_channels = self.advertised_channels.lock();
                 for channel in channels {
-                    advertised_channels.insert(channel.id, channel);
+                    // Using a limited scope here to avoid holding the lock on advertised_channels while calling on_client_advertise
+                    {
+                        match self.advertised_channels.lock().entry(channel.id) {
+                            Entry::Occupied(_) => {
+                                self.send_warning(format!(
+                                    "Client is already advertising channel: {}; ignoring advertisement",
+                                    channel.id
+                                ));
+                                continue;
+                            }
+                            Entry::Vacant(entry) => {
+                                entry.insert(channel.clone());
+                            }
+                        }
+                    }
+
+                    if let Some(handler) = self.server_listener.as_ref() {
+                        handler.on_client_advertise(&channel);
+                    }
                 }
             }
             Ok(ClientMessage::Unadvertise { channel_ids }) => {
-                let mut advertised_channels = self.advertised_channels.lock();
-                for id in channel_ids {
-                    advertised_channels.remove(&id);
+                // Using a limited scope and iterating twice to avoid holding the lock on advertised_channels while calling on_client_unadvertise
+                {
+                    let mut advertised_channels = self.advertised_channels.lock();
+                    for id in channel_ids.iter() {
+                        advertised_channels.remove(&id);
+                    }
+                }
+                if let Some(handler) = self.server_listener.as_ref() {
+                    for id in channel_ids {
+                        handler.on_client_unadvertise(id);
+                    }
                 }
             }
             _ => {

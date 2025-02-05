@@ -1,52 +1,24 @@
 use std::{collections::HashSet, sync::Arc};
 
+use crate::testutil::RecordingServerListener;
+use crate::websocket::{
+    create_server, Capability, ClientChannelId, Parameter, ParameterType, ParameterValue,
+    ServerOptions, SUBPROTOCOL,
+};
 use bytes::{BufMut, BytesMut};
 use futures_util::{SinkExt, StreamExt};
 use serde_json::{json, Value};
-use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
+use tokio::time::sleep;
 use tokio_tungstenite::tungstenite::{client::IntoClientRequest, http::HeaderValue, Message};
-
-use crate::websocket::{
-    create_server, Capability, ClientChannelId, Parameter, ParameterType, ParameterValue,
-    ServerListener, ServerOptions, SUBPROTOCOL,
-};
-
-struct ClientMessageData {
-    channel_id: ClientChannelId,
-    payload: Vec<u8>,
-}
-
-struct MPSCServerListener(UnboundedSender<ClientMessageData>);
-
-impl MPSCServerListener {
-    fn create() -> (
-        Arc<dyn ServerListener>,
-        UnboundedReceiver<ClientMessageData>,
-    ) {
-        let (tx, rx) = unbounded_channel();
-        (Arc::new(Self(tx)), rx)
-    }
-}
-
-impl ServerListener for MPSCServerListener {
-    fn on_message_data(&self, channel_id: ClientChannelId, message: &[u8]) {
-        self.0
-            .send(ClientMessageData {
-                channel_id,
-                payload: message.to_vec(),
-            })
-            .expect("MPSC queue closed");
-    }
-}
 
 #[tokio::test]
 async fn test_client_advertising() {
-    let (listener, mut chan_rx) = MPSCServerListener::create();
+    let recording_listener = Arc::new(RecordingServerListener::new());
 
     let server = create_server(ServerOptions {
         capabilities: Some(HashSet::from([Capability::ClientPublish])),
         supported_encodings: Some(HashSet::from(["json".to_string()])),
-        listener: Some(listener),
+        listener: Some(recording_listener.clone()),
         session_id: None,
         name: None,
         message_backlog_size: None,
@@ -74,7 +46,7 @@ async fn test_client_advertising() {
         .await
         .expect("Failed to send binary message");
     // No message sent to listener
-    assert!(chan_rx.try_recv().is_err());
+    assert!(recording_listener.message_data().is_empty());
 
     let advertise = json!({
         "op": "advertise",
@@ -122,10 +94,30 @@ async fn test_client_advertising() {
         .await
         .expect("Failed to send unadvertise");
 
+    // Should be ignored
+    ws_client
+        .send(Message::text(unadvertise.to_string()))
+        .await
+        .expect("Failed to send unadvertise");
+
+    // Give the server time to process the messages
+    sleep(std::time::Duration::from_millis(10)).await;
+
     // Server should have received one message
-    let received = chan_rx.recv().await.expect("No message received");
-    assert_eq!(received.channel_id, ClientChannelId::new(1));
-    assert_eq!(received.payload, b"{\"a\":1}");
+    let mut received = recording_listener.message_data();
+    let (channel_id, payload) = received.pop().expect("No message received");
+    assert_eq!(channel_id, ClientChannelId::new(1));
+    assert_eq!(payload, b"{\"a\":1}");
+
+    // Server should have ignored the duplicate advertisement
+    let advertisements = recording_listener.client_advertise();
+    assert_eq!(advertisements.len(), 1);
+    assert_eq!(advertisements[0].id, channel_id);
+
+    // Server should have received one unadvertise (and ignored the duplicate)
+    let unadvertises = recording_listener.client_unadvertise();
+    assert_eq!(unadvertises.len(), 1);
+    assert_eq!(unadvertises[0], channel_id);
 
     ws_client.close(None).await.unwrap();
     server.stop().await;

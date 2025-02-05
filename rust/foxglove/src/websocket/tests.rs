@@ -1,7 +1,6 @@
+use super::{send_lossy, SendLossyResult};
 use assert_matches::assert_matches;
 use tokio_tungstenite::tungstenite::Message;
-
-use super::{send_lossy, SendLossyResult};
 
 fn make_message(id: usize) -> Message {
     Message::Text(format!("{id}").into())

@@ -96,7 +96,7 @@ pub(crate) struct Server {
     weak_self: Weak<Self>,
     started: AtomicBool,
     message_backlog_size: u32,
-    pub runtime_handle: Handle,
+    pub(crate) runtime_handle: Handle,
     /// May be provided by the caller
     session_id: String,
     name: String,
@@ -131,14 +131,14 @@ impl Default for Server {
     }
 }
 
-/// Provides a mechanism for registering callbacks for
-/// handling client message events.
+/// Provides a mechanism for registering callbacks for handling client message events.
+/// All methods are optional.
 pub trait ServerListener: Send + Sync {
-    fn on_message_data(&self, channel_id: ClientChannelId, payload: &[u8]);
-    fn on_subscribe(&self, channel_id: ChannelId);
-    fn on_unsubscribe(&self, channel_id: ChannelId);
-    fn on_client_advertise(&self, channel: &ClientChannel);
-    fn on_client_unadvertise(&self, channel_id: ClientChannelId);
+    fn on_message_data(&self, _channel_id: ClientChannelId, _payload: &[u8]) {}
+    fn on_subscribe(&self, _channel_id: ChannelId) {}
+    fn on_unsubscribe(&self, _channel_id: ChannelId) {}
+    fn on_client_advertise(&self, _channel: &ClientChannel) {}
+    fn on_client_unadvertise(&self, _channel_id: ClientChannelId) {}
 }
 
 /// State for a client maintained by the server
@@ -214,7 +214,7 @@ impl ConnectedClient {
         let mut channels_not_found = Vec::new();
         {
             let mut advertised_channels = self.advertised_channels.lock();
-            for id in channel_ids.iter() {
+            for &id in channel_ids.iter() {
                 if advertised_channels.remove(&id).is_none() {
                     channels_not_found.push(id);
                     self.send_warning(format!(
@@ -225,7 +225,11 @@ impl ConnectedClient {
             }
         }
         if let Some(handler) = self.server_listener.as_ref() {
-            for id in channel_ids.filter(|id| !channels_not_found.contains(id)) {
+            for id in channel_ids
+                .iter()
+                .cloned()
+                .filter(|id| !channels_not_found.contains(id))
+            {
                 handler.on_client_unadvertise(id);
             }
         }
@@ -757,7 +761,7 @@ impl LogSink for Server {
         let clients = self.clients.get();
         for client in clients.iter() {
             let subscriptions = client.subscriptions.lock();
-            let Some(subscription_id) = subscriptions.get(&channel.id).cloned() else {
+            let Some(subscription_id) = subscriptions.get_by_left(&channel.id).cloned() else {
                 continue;
             };
 

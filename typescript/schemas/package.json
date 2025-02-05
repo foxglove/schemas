@@ -14,11 +14,7 @@
     "directory": "typescript/schemas"
   },
   "main": "./dist/index.js",
-  "exports": {
-    ".": "./dist/index.js",
-    "./internal": "./dist/internal.js",
-    "./jsonschema": "./dist/jsonschema.js"
-  },
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],

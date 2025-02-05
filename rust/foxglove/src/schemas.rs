@@ -6,8 +6,8 @@
 //! They're encoded as compact, binary protobuf messages,
 //! and can be conveniently used with the [`TypedChannel`](crate::TypedChannel) API.
 
-#[allow(dead_code)]
 pub(crate) mod descriptors;
+#[allow(missing_docs)]
 #[rustfmt::skip]
 mod foxglove;
 #[rustfmt::skip]

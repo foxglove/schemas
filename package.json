@@ -30,6 +30,7 @@
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jest": "28.11.0",
     "eslint-plugin-prettier": "5.2.3",
+    "globals": "^15.14.0",
     "jest": "29.7.0",
     "prettier": "^3.4.2",
     "prettier-plugin-toml": "^2.0.1",

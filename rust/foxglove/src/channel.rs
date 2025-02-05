@@ -170,9 +170,9 @@ mod test {
     use super::*;
     use crate::channel_builder::ChannelBuilder;
     use crate::collection::collection;
-    use crate::log_context::{GlobalContextTest, LogContext};
+    use crate::log_context::LogContext;
     use crate::log_sink_set::ERROR_LOGGING_MESSAGE;
-    use crate::log_sink_test::RecordingSink;
+    use crate::testutil::{GlobalContextTest, RecordingSink};
     use crate::Channel;
     use std::sync::Arc;
     use tracing_test::traced_test;

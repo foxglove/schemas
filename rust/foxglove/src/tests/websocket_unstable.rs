@@ -1,14 +1,15 @@
 use std::{collections::HashSet, sync::Arc};
 
 use bytes::{BufMut, BytesMut};
-use foxglove::websocket::{
-    create_server_with_internal_options, Capability, ClientChannelId, InternalServerOptions,
-    Parameter, ParameterType, ParameterValue, ServerListener, SUBPROTOCOL,
-};
 use futures_util::{SinkExt, StreamExt};
 use serde_json::{json, Value};
 use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
 use tokio_tungstenite::tungstenite::{client::IntoClientRequest, http::HeaderValue, Message};
+
+use crate::websocket::{
+    create_server, Capability, ClientChannelId, Parameter, ParameterType, ParameterValue,
+    ServerListener, ServerOptions, SUBPROTOCOL,
+};
 
 struct ClientMessageData {
     channel_id: ClientChannelId,
@@ -42,7 +43,7 @@ impl ServerListener for MPSCServerListener {
 async fn test_client_advertising() {
     let (listener, mut chan_rx) = MPSCServerListener::create();
 
-    let server = create_server_with_internal_options(InternalServerOptions {
+    let server = create_server(ServerOptions {
         capabilities: Some(HashSet::from([Capability::ClientPublish])),
         supported_encodings: Some(HashSet::from(["json".to_string()])),
         listener: Some(listener),
@@ -132,7 +133,7 @@ async fn test_client_advertising() {
 
 #[tokio::test]
 async fn test_parameter_values() {
-    let server = create_server_with_internal_options(InternalServerOptions {
+    let server = create_server(ServerOptions {
         capabilities: Some(HashSet::from([Capability::Parameters])),
         listener: None,
         session_id: None,

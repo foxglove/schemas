@@ -1,3 +1,4 @@
+import atexit
 from typing import Union
 from google.protobuf.message import Message
 from ._foxglove_py import (
@@ -5,6 +6,7 @@ from ._foxglove_py import (
     enable_log_forwarding,
     disable_log_forwarding,
     start_server,
+    shutdown,
 )
 from .encoding import Encoder, ProtobufEncoder, JsonEncoder
 from .channel import Channel
@@ -14,6 +16,8 @@ import logging
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s [%(levelname)s] %(message)s"
 )
+
+atexit.register(shutdown)
 
 
 def log_level_from_int(level: int) -> str:

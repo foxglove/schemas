@@ -691,36 +691,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@foxglove/schemas@workspace:.":
+"@foxglove/schemas@workspace:typescript/schemas":
   version: 0.0.0-use.local
-  resolution: "@foxglove/schemas@workspace:."
+  resolution: "@foxglove/schemas@workspace:typescript/schemas"
   dependencies:
-    "@foxglove/eslint-plugin": "npm:2.0.0"
-    "@foxglove/omgidl-parser": "npm:^0.2.0"
-    "@foxglove/rosmsg": "npm:^4.0.0"
     "@foxglove/rosmsg-msgs-common": "npm:^3.0.0"
-    "@foxglove/tsconfig": "npm:2.0.0"
-    "@types/jest": "npm:29.5.14"
-    "@types/node": "npm:22.13.0"
-    "@typescript-eslint/eslint-plugin": "npm:8.22.0"
-    "@typescript-eslint/parser": "npm:8.22.0"
-    ajv: "npm:^8.12.0"
-    commander: "npm:^10.0.0"
-    eslint: "npm:9.19.0"
-    eslint-config-prettier: "npm:10.0.1"
-    eslint-plugin-es: "npm:4.1.0"
-    eslint-plugin-filenames: "npm:1.3.2"
-    eslint-plugin-import: "npm:2.31.0"
-    eslint-plugin-jest: "npm:28.11.0"
-    eslint-plugin-prettier: "npm:5.2.3"
-    jest: "npm:29.7.0"
-    prettier: "npm:^3.4.2"
-    prettier-plugin-toml: "npm:^2.0.1"
-    protobufjs: "npm:^7.2.2"
     rimraf: "npm:^6.0.1"
-    ts-jest: "npm:29.2.5"
-    ts-node: "npm:^10.9.2"
-    tslib: "npm:^2.8.1"
+    tslib: "npm:^2"
     typescript: "npm:5.7.3"
   languageName: unknown
   linkType: soft
@@ -3428,6 +3405,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"foxglove-sdk@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "foxglove-sdk@workspace:."
+  dependencies:
+    "@foxglove/eslint-plugin": "npm:2.0.0"
+    "@foxglove/omgidl-parser": "npm:^0.2.0"
+    "@foxglove/rosmsg": "npm:^4.0.0"
+    "@foxglove/tsconfig": "npm:2.0.0"
+    "@types/jest": "npm:29.5.14"
+    "@types/node": "npm:22.13.0"
+    "@typescript-eslint/eslint-plugin": "npm:8.22.0"
+    "@typescript-eslint/parser": "npm:8.22.0"
+    ajv: "npm:^8.12.0"
+    commander: "npm:^10.0.0"
+    eslint: "npm:9.19.0"
+    eslint-config-prettier: "npm:10.0.1"
+    eslint-plugin-es: "npm:4.1.0"
+    eslint-plugin-filenames: "npm:1.3.2"
+    eslint-plugin-import: "npm:2.31.0"
+    eslint-plugin-jest: "npm:28.11.0"
+    eslint-plugin-prettier: "npm:5.2.3"
+    globals: "npm:^15.14.0"
+    jest: "npm:29.7.0"
+    prettier: "npm:^3.4.2"
+    prettier-plugin-toml: "npm:^2.0.1"
+    protobufjs: "npm:^7.2.5"
+    rimraf: "npm:^6.0.1"
+    ts-jest: "npm:29.2.5"
+    ts-node: "npm:^10.9.2"
+    typescript: "npm:5.7.3"
+  languageName: unknown
+  linkType: soft
+
 "fs-minipass@npm:^3.0.0":
   version: 3.0.3
   resolution: "fs-minipass@npm:3.0.3"
@@ -3684,6 +3694,13 @@ __metadata:
   version: 14.0.0
   resolution: "globals@npm:14.0.0"
   checksum: 10c0/b96ff42620c9231ad468d4c58ff42afee7777ee1c963013ff8aabe095a451d0ceeb8dcd8ef4cbd64d2538cef45f787a78ba3a9574f4a634438963e334471302d
+  languageName: node
+  linkType: hard
+
+"globals@npm:^15.14.0":
+  version: 15.14.0
+  resolution: "globals@npm:15.14.0"
+  checksum: 10c0/039deb8648bd373b7940c15df9f96ab7508fe92b31bbd39cbd1c1a740bd26db12457aa3e5d211553b234f30e9b1db2fee3683012f543a01a6942c9062857facb
   languageName: node
   linkType: hard
 
@@ -5998,9 +6015,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"protobufjs@npm:^7.2.2":
-  version: 7.2.2
-  resolution: "protobufjs@npm:7.2.2"
+"protobufjs@npm:^7.2.5":
+  version: 7.4.0
+  resolution: "protobufjs@npm:7.4.0"
   dependencies:
     "@protobufjs/aspromise": "npm:^1.1.2"
     "@protobufjs/base64": "npm:^1.1.2"
@@ -6014,7 +6031,7 @@ __metadata:
     "@protobufjs/utf8": "npm:^1.1.0"
     "@types/node": "npm:>=13.7.0"
     long: "npm:^5.0.0"
-  checksum: 10c0/eb630c6aa9419c448605b6ad550d5c001538071e4ef437ececa3cf25e36839aa817757f60bca7dff4037872fdd1b265ac55b6a12bdb735dd72299bb8c959252d
+  checksum: 10c0/a5460a63fe596523b9a067cbce39a6b310d1a71750fda261f076535662aada97c24450e18c5bc98a27784f70500615904ff1227e1742183509f0db4fdede669b
   languageName: node
   linkType: hard
 
@@ -6941,7 +6958,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.6.2, tslib@npm:^2.8.1":
+"tslib@npm:^2.6.2":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62

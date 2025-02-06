@@ -301,7 +301,7 @@ impl Server {
 
         let cancellation_token = self.cancellation_token.clone();
         let server = self.arc().clone();
-        get_runtime_handle().spawn(async move {
+        self.runtime_handle.spawn(async move {
             tokio::select! {
                 () = handle_connections(server, listener) => (),
                 () = cancellation_token.cancelled() => {

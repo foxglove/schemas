@@ -4,7 +4,9 @@ use std::sync::Arc;
 use tokio_tungstenite::tungstenite::{self, http::HeaderValue, Message};
 use tungstenite::client::IntoClientRequest;
 
-use crate::websocket::{create_server, ClientMessage, ServerOptions, SubscriptionId, SUBPROTOCOL};
+use crate::websocket::{
+    create_server, ClientMessage, ServerOptions, StatusLevel, SubscriptionId, SUBPROTOCOL,
+};
 use crate::{collection, Channel, ChannelBuilder, LogContext, LogSink, Metadata, Schema};
 
 fn new_channel(topic: &str, ctx: &LogContext) -> Arc<Channel> {
@@ -368,53 +370,127 @@ async fn test_error_status_message() {
 
     _ = ws_client.next().await.expect("No serverInfo sent");
 
-    {
-        ws_client
-            .send(Message::text("nonsense".to_string()))
-            .await
-            .expect("Failed to send message");
+    ws_client
+        .send(Message::text("nonsense".to_string()))
+        .await
+        .expect("Failed to send message");
 
-        let result = ws_client.next().await.unwrap();
-        let msg = result.expect("Failed to parse message");
-        let text = msg.into_text().expect("Failed to get message text");
-        let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
-        assert_eq!(status["level"], 2);
-        assert_eq!(status["message"], "Unsupported message: nonsense");
-    }
+    let result = ws_client.next().await.unwrap();
+    let msg = result.expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
+    assert_eq!(status["level"], 2);
+    assert_eq!(status["message"], "Unsupported message: nonsense");
 
-    {
-        let msg = json!({
-            "op": "subscribe",
-            "subscriptions": [{ "id": 1, "channelId": 555, }]
-        });
-        ws_client
-            .send(Message::text(msg.to_string()))
-            .await
-            .expect("Failed to send message");
+    let msg = json!({
+        "op": "subscribe",
+        "subscriptions": [{ "id": 1, "channelId": 555, }]
+    });
+    ws_client
+        .send(Message::text(msg.to_string()))
+        .await
+        .expect("Failed to send message");
 
-        let result = ws_client.next().await.unwrap();
-        let msg = result.expect("Failed to parse message");
-        let text = msg.into_text().expect("Failed to get message text");
-        let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
-        assert_eq!(status["level"], 2);
-        assert_eq!(status["message"], "Unknown channel ID: 555");
-    }
+    let result = ws_client.next().await.unwrap();
+    let msg = result.expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
+    assert_eq!(status["level"], 2);
+    assert_eq!(status["message"], "Unknown channel ID: 555");
 
-    {
-        ws_client
-            .send(Message::binary(vec![0xff]))
-            .await
-            .expect("Failed to send message");
+    ws_client
+        .send(Message::binary(vec![0xff]))
+        .await
+        .expect("Failed to send message");
 
-        let result = ws_client.next().await.unwrap();
-        let msg = result.expect("Failed to parse message");
-        let text = msg.into_text().expect("Failed to get message text");
-        let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
-        assert_eq!(status["level"], 2);
-        assert_eq!(status["message"], "Invalid binary opcode: 255");
-    }
+    let result = ws_client.next().await.unwrap();
+    let msg = result.expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
+    assert_eq!(status["level"], 2);
+    assert_eq!(status["message"], "Invalid binary opcode: 255");
 
     server.stop().await;
+}
+
+#[tokio::test]
+async fn test_publish_status_message() {
+    let server = create_server(ServerOptions::default());
+    let addr = server
+        .start("127.0.0.1", 0)
+        .await
+        .expect("Failed to start server");
+
+    let mut ws_client = connect_client(addr).await;
+
+    _ = ws_client.next().await.expect("No serverInfo sent");
+
+    server.publish_status(
+        StatusLevel::Info,
+        "Hello, world!".to_string(),
+        Some("123".to_string()),
+    );
+    server.publish_status(
+        StatusLevel::Error,
+        "Reactor core overload!".to_string(),
+        Some("abc".to_string()),
+    );
+
+    let msg = ws_client
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(
+        text,
+        r#"{"op":"status","level":1,"message":"Hello, world!","id":"123"}"#
+    );
+
+    let msg = ws_client
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(
+        text,
+        r#"{"op":"status","level":3,"message":"Reactor core overload!","id":"abc"}"#
+    );
+}
+
+#[tokio::test]
+async fn test_remove_status() {
+    let server = create_server(ServerOptions::default());
+    let addr = server
+        .start("127.0.0.1", 0)
+        .await
+        .expect("Failed to start server");
+
+    let mut ws_client1 = connect_client(addr.clone()).await;
+    let mut ws_client2 = connect_client(addr).await;
+
+    _ = ws_client1.next().await.expect("No serverInfo sent");
+    _ = ws_client2.next().await.expect("No serverInfo sent");
+
+    // These don't have to exist, and aren't checked
+    server.remove_status(vec!["123".to_string(), "abc".to_string()]);
+
+    let msg = ws_client1
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(text, r#"{"op":"removeStatus","statusIds":["123","abc"]}"#);
+
+    let msg = ws_client2
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(text, r#"{"op":"removeStatus","statusIds":["123","abc"]}"#);
 }
 
 /// Connect to a server, ensuring the protocol header is set, and return the client WS stream

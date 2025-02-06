@@ -129,6 +129,9 @@ impl Debug for WebSocketServerHandle {
 }
 
 impl WebSocketServerHandle {
+    // TODO how could we expose this from Python where we need sync methods?
+    // Wrap with block_on like stop_blocking?
+    // Or should this be a sync interface and it runs in a worker thread?
     /// Publishes parameter values to all clients.
     #[doc(hidden)]
     #[cfg(feature = "unstable")]
@@ -136,6 +139,22 @@ impl WebSocketServerHandle {
         self.0
             .publish_parameter_values(parameters.into_iter().collect(), None)
             .await;
+    }
+
+    /// Publishes a status message to all clients.
+    pub fn publish_status(
+        &self,
+        level: crate::websocket::StatusLevel,
+        message: impl Into<String>,
+        id: Option<impl Into<String>>,
+    ) {
+        self.0
+            .publish_status(level, message.into(), id.map(|id| id.into()));
+    }
+
+    /// Removes status messages by id from all clients.
+    pub fn remove_status(&self, status_ids: Vec<String>) {
+        self.0.remove_status(status_ids);
     }
 
     /// Gracefully shutdown the websocket server.

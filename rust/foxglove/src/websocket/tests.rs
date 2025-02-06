@@ -1,4 +1,5 @@
 use assert_matches::assert_matches;
+use std::net::SocketAddr;
 use tokio_tungstenite::tungstenite::Message;
 
 use super::{send_lossy, SendLossyResult};
@@ -19,10 +20,12 @@ fn test_send_lossy() {
     const BACKLOG: usize = 4;
     const TOTAL: usize = 10;
 
+    let addr = SocketAddr::new("127.0.0.1".parse().unwrap(), 1234);
+
     let (tx, rx) = flume::bounded(BACKLOG);
     for i in 0..BACKLOG {
         assert_matches!(
-            send_lossy(&tx, &rx, make_message(i), 0),
+            send_lossy(&addr, &tx, &rx, make_message(i), 0),
             SendLossyResult::Sent
         );
     }
@@ -30,11 +33,11 @@ fn test_send_lossy() {
     // The queue is full now. We'll only succeed with retries.
     for i in BACKLOG..TOTAL {
         assert_matches!(
-            send_lossy(&tx, &rx, make_message(TOTAL + i), 0),
+            send_lossy(&addr, &tx, &rx, make_message(TOTAL + i), 0),
             SendLossyResult::ExhaustedRetries
         );
         assert_matches!(
-            send_lossy(&tx, &rx, make_message(i), 1),
+            send_lossy(&addr, &tx, &rx, make_message(i), 1),
             SendLossyResult::SentLossy(1)
         );
     }

@@ -109,6 +109,14 @@ pub struct Status {
     pub id: Option<String>,
 }
 
+#[derive(Serialize)]
+#[serde(tag = "op")]
+#[serde(rename = "removeStatus")]
+#[serde(rename_all = "camelCase")]
+pub struct RemoveStatus {
+    pub status_ids: Vec<String>,
+}
+
 /// A capability that the websocket server advertises to its clients.
 #[derive(Debug, Serialize, Eq, PartialEq, Hash)]
 #[serde(rename_all = "camelCase")]

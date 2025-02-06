@@ -3,7 +3,7 @@ use crate::cow_vec::CowVec;
 pub use crate::websocket::protocol::client::{
     ClientChannel, ClientChannelId, ClientMessage, SubscriptionId,
 };
-pub use crate::websocket::protocol::server::Capability;
+pub use crate::websocket::protocol::server::{Capability, StatusLevel};
 #[cfg(feature = "unstable")]
 pub use crate::websocket::protocol::server::{Parameter, ParameterType, ParameterValue};
 use crate::{Channel, FoxgloveError, LogSink, Metadata};
@@ -32,6 +32,7 @@ mod protocol;
 mod tests;
 
 pub(crate) const SUBPROTOCOL: &str = "foxglove.sdk.v1";
+const MAX_SEND_RETRIES: usize = 10;
 
 type WebsocketSender = SplitSink<WebSocketStream<TcpStream>, Message>;
 
@@ -233,18 +234,33 @@ impl ConnectedClient {
         }
     }
 
+    /// Send the message on the data plane, dropping up to retries older messages to make room, if necessary.
+    fn send_data_lossy(&self, message: Message, retries: usize) -> SendLossyResult {
+        send_lossy(
+            &self.addr,
+            &self.data_plane_tx,
+            &self.data_plane_rx,
+            message,
+            retries,
+        )
+    }
+
     /// Send an ad hoc error status message to the client, with the given message.
     fn send_error(&self, message: String) {
-        let status = protocol::server::Status {
-            level: protocol::server::StatusLevel::Error,
-            message: message.to_string(),
-            id: None,
-        };
+        self.send_status(StatusLevel::Error, message, None);
+    }
+
+    /// Send an ad hoc warning status message to the client, with the given message.
+    #[allow(dead_code)]
+    fn send_warning(&self, message: String) {
+        self.send_status(StatusLevel::Warning, message, None);
+    }
+
+    /// Send a status message to the client.
+    fn send_status(&self, level: StatusLevel, message: String, id: Option<String>) {
+        let status = protocol::server::Status { level, message, id };
         let message = Message::text(serde_json::to_string(&status).unwrap());
-        // If the message can't be sent, or the outbox is full, log a warning and continue.
-        self.data_plane_tx.try_send(message).unwrap_or_else(|err| {
-            tracing::warn!("Failed to send status to client {}: {err}", self.addr)
-        });
+        self.send_data_lossy(message, MAX_SEND_RETRIES);
     }
 
     fn handle_binary_message(&self, message: Message) {
@@ -469,6 +485,26 @@ impl Server {
         }
     }
 
+    /// Send a message to all clients.
+    pub fn publish_status(&self, level: StatusLevel, message: String, id: Option<String>) {
+        let status = protocol::server::Status { level, message, id };
+        let message = Message::text(serde_json::to_string(&status).unwrap());
+        let clients = self.clients.get();
+        for client in clients.iter() {
+            client.send_data_lossy(message.clone(), MAX_SEND_RETRIES);
+        }
+    }
+
+    /// Remove status messages by id from all clients.
+    pub fn remove_status(&self, status_ids: Vec<String>) {
+        let remove = protocol::server::RemoveStatus { status_ids };
+        let message = Message::text(serde_json::to_string(&remove).unwrap());
+        let clients = self.clients.get();
+        for client in clients.iter() {
+            client.send_data_lossy(message.clone(), MAX_SEND_RETRIES);
+        }
+    }
+
     /// When a new client connects:
     /// - Handshake
     /// - Send ServerInfo
@@ -640,19 +676,34 @@ enum SendLossyResult {
 /// in this manner, this function returns `SendLossyResult::SentLossy(dropped)`. If the maximum
 /// number of retries is reached, it returns `SendLossyResult::ExhaustedRetries`.
 fn send_lossy(
+    client_addr: &SocketAddr,
     tx: &flume::Sender<Message>,
     rx: &flume::Receiver<Message>,
     mut message: Message,
     retries: usize,
 ) -> SendLossyResult {
+    // If the queue is full, drop the oldest message(s). We do this because the websocket
+    // client is falling behind, and we either start dropping messages, or we'll end up
+    // buffering until we run out of memory. There's no point in that because the client is
+    // unlikely to catch up and be able to consume the messages.
     let mut dropped = 0;
     loop {
         match (dropped, tx.try_send(message)) {
             (0, Ok(_)) => return SendLossyResult::Sent,
-            (dropped, Ok(_)) => return SendLossyResult::SentLossy(dropped),
+            (dropped, Ok(_)) => {
+                tracing::warn!(
+                    "outbox for client {} full, dropped {dropped} messages",
+                    client_addr
+                );
+                return SendLossyResult::SentLossy(dropped);
+            }
             (_, Err(TrySendError::Disconnected(_))) => unreachable!("we're holding rx"),
             (_, Err(TrySendError::Full(rejected))) => {
                 if dropped >= retries {
+                    tracing::warn!(
+                        "outbox for client {} full, dropping message after 10 attempts",
+                        client_addr
+                    );
                     return SendLossyResult::ExhaustedRetries;
                 }
                 message = rejected;
@@ -687,23 +738,7 @@ impl LogSink for Server {
 
             let message = Message::binary(buf);
 
-            // If the queue is full, drop the oldest message(s). We do this because the websocket
-            // client is falling behind, and we either start dropping messages, or we'll end up
-            // buffering until we run out of memory. There's no point in that because the client is
-            // unlikely to catch up and be able to consume the messages.
-            match send_lossy(&client.data_plane_tx, &client.data_plane_rx, message, 10) {
-                SendLossyResult::Sent => (),
-                SendLossyResult::SentLossy(dropped) => tracing::warn!(
-                    "outbox for client {} full, dropped {dropped} messages",
-                    client.addr
-                ),
-                SendLossyResult::ExhaustedRetries => {
-                    tracing::warn!(
-                        "outbox for client {} full, dropping message after 10 attempts",
-                        client.addr
-                    )
-                }
-            };
+            client.send_data_lossy(message, MAX_SEND_RETRIES);
         }
         Ok(())
     }

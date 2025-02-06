@@ -1,7 +1,7 @@
 use errors::PyFoxgloveError;
 use foxglove::{
     Channel, ChannelBuilder, LogContext, McapWriter, McapWriterHandle, PartialMetadata, Schema,
-    WebSocketServer, WebSocketServerHandle,
+    WebSocketServer, WebSocketServerBlockingHandle,
 };
 use log::LevelFilter;
 use pyo3::exceptions::PyValueError;
@@ -18,13 +18,13 @@ mod errors;
 struct BaseChannel(Arc<Channel>);
 
 #[pyclass]
-struct PyWebSocketServer(Option<WebSocketServerHandle>);
+struct PyWebSocketServer(Option<WebSocketServerBlockingHandle>);
 
 #[pymethods]
 impl PyWebSocketServer {
     fn stop(&mut self, py: Python<'_>) {
         if let Some(server) = self.0.take() {
-            py.allow_threads(|| server.stop_blocking())
+            py.allow_threads(|| server.stop())
         }
     }
 }

@@ -40,10 +40,19 @@ pub(crate) fn get_runtime_handle() -> Handle {
     RUNTIME.handle.clone()
 }
 
-/// Shuts down the tokio runtime, if we created one.
+/// Shuts down the tokio runtime, ensuring that there are no remaining async tasks.
 ///
-/// This should be called at program exit, but only if you did not create your own tokio runtime
-/// (e.g. with `#[tokio::main]`).
+/// This function is a no-op if we didn't create our own internal tokio runtime.
+///
+/// This function should only be used as part of a graceful program shutdown.
+///
+/// Typically it isn't necessary to shutdown the runtime explicitly, but under some circumstances
+/// it can be useful to ensure that there are no more async tasks running.
+///
+/// This function will block forever waiting for async tasks to yield. Tasks are not guaranteed to
+/// run until completion, but might do so if they do not yield until completion.
+///
+/// Once the runtime is shut down, it will not be restarted or replaced.
 #[doc(hidden)]
 pub fn shutdown_runtime() {
     RUNTIME.shutdown()

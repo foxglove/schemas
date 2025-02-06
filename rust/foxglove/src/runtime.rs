@@ -1,7 +1,6 @@
 //! Tokio runtime.
 
 use std::sync::LazyLock;
-use std::time::Duration;
 
 use parking_lot::Mutex;
 use tokio::runtime::Handle;
@@ -25,10 +24,7 @@ impl Runtime {
     }
 
     fn shutdown(&self) {
-        let mut inner = self.inner.lock();
-        if let Some(rt) = inner.take() {
-            rt.shutdown_timeout(Duration::from_millis(500));
-        }
+        self.inner.lock().take();
     }
 }
 

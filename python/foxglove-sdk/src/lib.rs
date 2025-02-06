@@ -22,9 +22,9 @@ struct PyWebSocketServer(Option<WebSocketServerHandle>);
 
 #[pymethods]
 impl PyWebSocketServer {
-    fn stop(&mut self) {
+    fn stop(&mut self, py: Python<'_>) {
         if let Some(server) = self.0.take() {
-            server.stop_blocking()
+            py.allow_threads(|| server.stop_blocking())
         }
     }
 }
@@ -130,7 +130,12 @@ fn record_file(path: &str) -> PyResult<PyMcapWriter> {
 /// Start a new Foxglove WebSocket server
 #[pyfunction]
 #[pyo3(signature = (name = None, host="127.0.0.1", port=0))]
-fn start_server(name: Option<String>, host: &str, port: u16) -> PyResult<PyWebSocketServer> {
+fn start_server(
+    py: Python<'_>,
+    name: Option<String>,
+    host: &str,
+    port: u16,
+) -> PyResult<PyWebSocketServer> {
     let session_id = time::SystemTime::now()
         .duration_since(time::UNIX_EPOCH)
         .expect("Failed to create session ID; invalid system time")
@@ -144,7 +149,9 @@ fn start_server(name: Option<String>, host: &str, port: u16) -> PyResult<PyWebSo
         server = server.name(name);
     }
 
-    let handle = server.start_blocking().map_err(PyFoxgloveError::from)?;
+    let handle = py
+        .allow_threads(|| server.start_blocking())
+        .map_err(PyFoxgloveError::from)?;
     Ok(PyWebSocketServer(Some(handle)))
 }
 
@@ -175,9 +182,8 @@ fn disable_log_forwarding() -> PyResult<()> {
 }
 
 #[pyfunction]
-fn shutdown() {
-    log::set_max_level(LevelFilter::Off);
-    foxglove::shutdown_runtime();
+fn shutdown(py: Python<'_>) {
+    py.allow_threads(foxglove::shutdown_runtime);
 }
 
 /// Our public API is in the `python` directory.

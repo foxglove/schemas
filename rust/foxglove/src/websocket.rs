@@ -664,6 +664,7 @@ impl Server {
 #[derive(Debug, Clone, Copy)]
 enum SendLossyResult {
     Sent,
+    #[allow(dead_code)]
     SentLossy(usize),
     ExhaustedRetries,
 }

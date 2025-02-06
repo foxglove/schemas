@@ -34,6 +34,7 @@ mod protocol;
 #[cfg(test)]
 mod tests;
 
+/// An arbitrary integer unique identifier for a client connection.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub struct ClientId(u32);
 
@@ -104,8 +105,10 @@ pub trait ServerListener: Send + Sync {
     fn on_message_data(&self, _client_id: ClientId, _channel_id: ClientChannelId, _payload: &[u8]) {
     }
     /// Callback invoked when a client subscribes to a channel.
+    /// Only invoked if the channel is associated with the server and isn't already subscribed to by the client.
     fn on_subscribe(&self, _client_id: ClientId, _channel_id: Arc<Channel>) {}
     /// Callback invoked when a client unsubscribes from a channel.
+    /// Only invoked for channels that had an active subscription from the client.
     fn on_unsubscribe(&self, _client_id: ClientId, _channel_id: Arc<Channel>) {}
     /// Callback invoked when a client advertises a client channel. Requires the "clientPublish" capability.
     fn on_client_advertise(&self, _client_id: ClientId, _channel: &ClientChannel) {}

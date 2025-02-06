@@ -103,19 +103,19 @@ async fn test_client_advertising() {
 
     // Server should have received one message
     let mut received = recording_listener.take_message_data();
-    let (channel_id, payload) = received.pop().expect("No message received");
+    let (_, channel_id, payload) = received.pop().expect("No message received");
     assert_eq!(channel_id, ClientChannelId::new(1));
     assert_eq!(payload, b"{\"a\":1}");
 
     // Server should have ignored the duplicate advertisement
     let advertisements = recording_listener.take_client_advertise();
     assert_eq!(advertisements.len(), 1);
-    assert_eq!(advertisements[0].id, channel_id);
+    assert_eq!(advertisements[0].1.id, channel_id);
 
     // Server should have received one unadvertise (and ignored the duplicate)
     let unadvertises = recording_listener.take_client_unadvertise();
     assert_eq!(unadvertises.len(), 1);
-    assert_eq!(unadvertises[0], channel_id);
+    assert_eq!(unadvertises[0].1, channel_id);
 
     ws_client.close(None).await.unwrap();
     server.stop().await;

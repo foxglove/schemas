@@ -209,7 +209,7 @@ async fn test_advertise_to_client() {
 
     let subscriptions = recording_listener.take_subscribe();
     assert_eq!(subscriptions.len(), 1);
-    assert_eq!(subscriptions[0], ch.id());
+    assert!(Arc::ptr_eq(&subscriptions[0].1, &ch));
 
     server.stop().await;
 }
@@ -315,15 +315,15 @@ async fn test_log_only_to_subscribers() {
 
     let subscriptions = recording_listener.take_subscribe();
     assert_eq!(subscriptions.len(), 4);
-    assert_eq!(subscriptions[0], ch1.id());
-    assert_eq!(subscriptions[1], ch2.id());
-    assert_eq!(subscriptions[2], ch1.id());
-    assert_eq!(subscriptions[3], ch2.id());
+    assert!(Arc::ptr_eq(&subscriptions[0].1, &ch1));
+    assert!(Arc::ptr_eq(&subscriptions[1].1, &ch2));
+    assert!(Arc::ptr_eq(&subscriptions[2].1, &ch1));
+    assert!(Arc::ptr_eq(&subscriptions[3].1, &ch2));
 
     let unsubscriptions = recording_listener.take_unsubscribe();
     assert_eq!(unsubscriptions.len(), 2);
-    assert_eq!(unsubscriptions[0], ch1.id());
-    assert_eq!(unsubscriptions[1], ch2.id());
+    assert!(Arc::ptr_eq(&unsubscriptions[0].1, &ch1));
+    assert!(Arc::ptr_eq(&unsubscriptions[1].1, &ch2));
 
     let metadata = Metadata {
         log_time: 123456,

@@ -14,8 +14,8 @@ use flume::TrySendError;
 use futures_util::{stream::SplitSink, SinkExt, StreamExt};
 use std::collections::hash_map::Entry;
 use std::collections::HashSet;
-use std::sync::atomic::AtomicBool;
-use std::sync::atomic::Ordering::{AcqRel, Acquire};
+use std::sync::atomic::Ordering::{AcqRel, Acquire, Relaxed};
+use std::sync::atomic::{AtomicBool, AtomicU32};
 use std::sync::{OnceLock, Weak};
 use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 use thiserror::Error;
@@ -33,6 +33,9 @@ use tokio_util::sync::CancellationToken;
 mod protocol;
 #[cfg(test)]
 mod tests;
+
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
+pub struct ClientId(u32);
 
 pub(crate) const SUBPROTOCOL: &str = "foxglove.sdk.v1";
 
@@ -135,19 +138,21 @@ impl Default for Server {
 /// All methods are optional.
 pub trait ServerListener: Send + Sync {
     /// Callback invoked when a client message is received.
-    fn on_message_data(&self, _channel_id: ClientChannelId, _payload: &[u8]) {}
+    fn on_message_data(&self, _client_id: ClientId, _channel_id: ClientChannelId, _payload: &[u8]) {
+    }
     /// Callback invoked when a client subscribes to a channel.
-    fn on_subscribe(&self, _channel_id: ChannelId) {}
+    fn on_subscribe(&self, _client_id: ClientId, _channel_id: Arc<Channel>) {}
     /// Callback invoked when a client unsubscribes from a channel.
-    fn on_unsubscribe(&self, _channel_id: ChannelId) {}
+    fn on_unsubscribe(&self, _client_id: ClientId, _channel_id: Arc<Channel>) {}
     /// Callback invoked when a client advertises a client channel. Requires the "clientPublish" capability.
-    fn on_client_advertise(&self, _channel: &ClientChannel) {}
+    fn on_client_advertise(&self, _client_id: ClientId, _channel: &ClientChannel) {}
     /// Callback invoked when a client unadvertises a client channel. Requires the "clientPublish" capability.
-    fn on_client_unadvertise(&self, _channel_id: ClientChannelId) {}
+    fn on_client_unadvertise(&self, _client_id: ClientId, _channel_id: ClientChannelId) {}
 }
 
 /// State for a client maintained by the server
 struct ConnectedClient {
+    id: ClientId,
     addr: SocketAddr,
     /// Write side of a WS stream
     sender: Mutex<WebsocketSender>,
@@ -192,14 +197,7 @@ impl ConnectedClient {
                 self.on_subscribe(server, subscriptions);
             }
             Ok(ClientMessage::Unsubscribe { subscription_ids }) => {
-                let mut subscriptions = self.subscriptions.lock();
-                for subscription_id in subscription_ids {
-                    if let Some((channel_id, _)) = subscriptions.remove_by_right(&subscription_id) {
-                        if let Some(handler) = self.server_listener.as_ref() {
-                            handler.on_unsubscribe(channel_id);
-                        }
-                    }
-                }
+                self.on_unsubscribe(server, subscription_ids);
             }
             Ok(ClientMessage::Advertise { channels }) => {
                 self.on_advertise(server, channels);
@@ -214,28 +212,74 @@ impl ConnectedClient {
         }
     }
 
-    fn on_unadvertise(&self, channel_ids: Vec<ClientChannelId>) {
+    fn handle_binary_message(&self, message: Message) {
+        if message.is_empty() {
+            tracing::debug!("Received empty binary message from {}", self.addr);
+            return;
+        }
+
+        let msg_bytes = message.into_data();
+        let opcode = protocol::client::BinaryOpcode::from_repr(msg_bytes[0]);
+        match opcode {
+            Some(protocol::client::BinaryOpcode::MessageData) => {
+                match protocol::client::parse_binary_message(&msg_bytes) {
+                    Ok((channel_id, payload)) => {
+                        {
+                            let advertised_channels = self.advertised_channels.lock();
+                            if !advertised_channels.contains_key(&channel_id) {
+                                tracing::error!(
+                                    "Received message for unknown channel: {}",
+                                    channel_id
+                                );
+                                self.send_error(format!("Unknown channel ID: {}", channel_id));
+                                // Do not forward to server listener
+                                return;
+                            }
+                        }
+                        // Call the handler after releasing the advertised_channels lock
+                        if let Some(handler) = self.server_listener.as_ref() {
+                            handler.on_message_data(self.id, channel_id, payload);
+                        }
+                    }
+                    Err(err) => {
+                        tracing::error!("Failed to parse binary message: {err}");
+                        self.send_error(format!("Failed to parse binary message: {err}"));
+                    }
+                }
+            }
+            Some(_) => {
+                tracing::error!("Opcode not yet implemented: {}", msg_bytes[0]);
+            }
+            None => {
+                tracing::error!("Invalid binary opcode: {}", msg_bytes[0]);
+                self.send_error(format!("Invalid binary opcode: {}", msg_bytes[0]));
+            }
+        }
+    }
+
+    fn on_unadvertise(&self, mut channel_ids: Vec<ClientChannelId>) {
         // Using a limited scope and iterating twice to avoid holding the lock on advertised_channels while calling on_client_unadvertise
-        let mut channels_not_found = Vec::new();
         {
             let mut advertised_channels = self.advertised_channels.lock();
-            for &id in channel_ids.iter() {
+            let mut i = 0;
+            while i < channel_ids.len() {
+                let id = channel_ids[i];
                 if advertised_channels.remove(&id).is_none() {
-                    channels_not_found.push(id);
+                    // Remove the channel ID from the list so we don't invoke the on_client_unadvertise callback
+                    channel_ids.swap_remove(i);
                     self.send_warning(format!(
                         "Client is not advertising channel: {}; ignoring unadvertisement",
                         id
                     ));
+                    continue;
                 }
+                i += 1;
             }
         }
+        // Call the handler after releasing the advertised_channels lock
         if let Some(handler) = self.server_listener.as_ref() {
-            for id in channel_ids
-                .iter()
-                .cloned()
-                .filter(|id| !channels_not_found.contains(id))
-            {
-                handler.on_client_unadvertise(id);
+            for id in channel_ids {
+                handler.on_client_unadvertise(self.id, id);
             }
         }
     }
@@ -263,43 +307,94 @@ impl ConnectedClient {
                 }
             }
 
+            // Call the handler after releasing the advertised_channels lock
             if let Some(handler) = self.server_listener.as_ref() {
-                handler.on_client_advertise(&channel);
+                handler.on_client_advertise(self.id, &channel);
             }
         }
     }
 
-    fn on_subscribe(&self, server: Arc<Server>, subscriptions: Vec<Subscription>) {
-        let channels = server.channels.read();
-        for subscription in subscriptions {
-            if !channels.contains_key(&subscription.channel_id) {
-                tracing::error!(
-                    "Client {} attempted to subscribe to unknown channel: {}",
-                    self.addr,
-                    subscription.channel_id
-                );
-                self.send_error(format!("Unknown channel ID: {}", subscription.channel_id));
-                continue;
-            }
-
+    fn on_unsubscribe(&self, server: Arc<Server>, subscription_ids: Vec<SubscriptionId>) {
+        let mut unsubscribed_channel_ids = Vec::with_capacity(subscription_ids.len());
+        // First gather the unsubscribed channel ids while holding the subscriptions lock
+        {
             let mut subscriptions = self.subscriptions.lock();
-            if subscriptions
-                .insert_no_overwrite(subscription.channel_id, subscription.id)
-                .is_err()
-            {
-                if subscriptions.contains_left(&subscription.channel_id) {
-                    self.send_warning(format!(
-                        "Client is already subscribed to channel: {}; ignoring subscription",
-                        subscription.channel_id
-                    ));
-                } else {
-                    assert!(subscriptions.contains_right(&subscription.id));
-                    self.send_error(format!(
-                        "Subscription ID was already used: {}; ignoring subscription",
-                        subscription.id
-                    ));
+            for subscription_id in subscription_ids {
+                if let Some((channel_id, _)) = subscriptions.remove_by_right(&subscription_id) {
+                    unsubscribed_channel_ids.push(channel_id);
                 }
-                continue;
+            }
+        }
+
+        // If we don't have a ServerListener, we're done.
+        let Some(handler) = self.server_listener.as_ref() else {
+            return;
+        };
+
+        // Then gather the actual channel references while holding the channels lock
+        let mut unsubscribed_channels = Vec::with_capacity(unsubscribed_channel_ids.len());
+        {
+            let channels = server.channels.read();
+            for channel_id in unsubscribed_channel_ids {
+                if let Some(channel) = channels.get(&channel_id) {
+                    unsubscribed_channels.push(channel.clone());
+                }
+            }
+        }
+
+        // Finally call the handler for each channel
+        for channel in unsubscribed_channels {
+            handler.on_unsubscribe(self.id, channel);
+        }
+    }
+
+    fn on_subscribe(&self, server: Arc<Server>, mut subscriptions: Vec<Subscription>) {
+        // First prune out any subscriptions for channels not in the channel map,
+        // limiting how long we need to hold the lock.
+        let mut subscribed_channels = Vec::with_capacity(subscriptions.len());
+        {
+            let channels = server.channels.read();
+            let mut i = 0;
+            while i < subscriptions.len() {
+                let subscription = &subscriptions[i];
+                let Some(channel) = channels.get(&subscription.channel_id) else {
+                    tracing::error!(
+                        "Client {} attempted to subscribe to unknown channel: {}",
+                        self.addr,
+                        subscription.channel_id
+                    );
+                    self.send_error(format!("Unknown channel ID: {}", subscription.channel_id));
+                    // Remove the subscription from the list so we don't invoke the on_subscribe callback for it
+                    subscriptions.swap_remove(i);
+                    continue;
+                };
+                subscribed_channels.push(channel.clone());
+                i += 1
+            }
+        }
+
+        for (subscription, channel) in subscriptions.into_iter().zip(subscribed_channels) {
+            // Using a limited scope here to avoid holding the lock on subscriptions while calling on_subscribe
+            {
+                let mut subscriptions = self.subscriptions.lock();
+                if subscriptions
+                    .insert_no_overwrite(subscription.channel_id, subscription.id)
+                    .is_err()
+                {
+                    if subscriptions.contains_left(&subscription.channel_id) {
+                        self.send_warning(format!(
+                            "Client is already subscribed to channel: {}; ignoring subscription",
+                            subscription.channel_id
+                        ));
+                    } else {
+                        assert!(subscriptions.contains_right(&subscription.id));
+                        self.send_error(format!(
+                            "Subscription ID was already used: {}; ignoring subscription",
+                            subscription.id
+                        ));
+                    }
+                    continue;
+                }
             }
 
             tracing::info!(
@@ -309,7 +404,7 @@ impl ConnectedClient {
                 subscription.id
             );
             if let Some(handler) = self.server_listener.as_ref() {
-                handler.on_subscribe(subscription.channel_id);
+                handler.on_subscribe(self.id, channel);
             }
         }
     }
@@ -336,50 +431,6 @@ impl ConnectedClient {
         self.data_plane_tx.try_send(message).unwrap_or_else(|err| {
             tracing::warn!("Failed to send status to client {}: {err}", self.addr)
         });
-    }
-
-    fn handle_binary_message(&self, message: Message) {
-        if message.is_empty() {
-            tracing::debug!("Received empty binary message from {}", self.addr);
-            return;
-        }
-
-        let msg_bytes = message.into_data();
-        let opcode = protocol::client::BinaryOpcode::from_repr(msg_bytes[0]);
-        match opcode {
-            Some(protocol::client::BinaryOpcode::MessageData) => {
-                match protocol::client::parse_binary_message(&msg_bytes) {
-                    Ok((channel_id, payload)) => {
-                        {
-                            let advertised_channels = self.advertised_channels.lock();
-                            if !advertised_channels.contains_key(&channel_id) {
-                                tracing::error!(
-                                    "Received message for unknown channel: {}",
-                                    channel_id
-                                );
-                                self.send_error(format!("Unknown channel ID: {}", channel_id));
-                                // Do not forward to server listener
-                                return;
-                            }
-                        }
-                        if let Some(handler) = self.server_listener.as_ref() {
-                            handler.on_message_data(channel_id, payload);
-                        }
-                    }
-                    Err(err) => {
-                        tracing::error!("Failed to parse binary message: {err}");
-                        self.send_error(format!("Failed to parse binary message: {err}"));
-                    }
-                }
-            }
-            Some(_) => {
-                tracing::error!("Opcode not yet implemented: {}", msg_bytes[0]);
-            }
-            None => {
-                tracing::error!("Invalid binary opcode: {}", msg_bytes[0]);
-                self.send_error(format!("Invalid binary opcode: {}", msg_bytes[0]));
-            }
-        }
     }
 }
 
@@ -588,10 +639,14 @@ impl Server {
             return;
         }
 
+        static CLIENT_ID: AtomicU32 = AtomicU32::new(1);
+        let id = ClientId(CLIENT_ID.fetch_add(1, Relaxed));
+
         let (data_tx, data_rx) = flume::bounded(self.message_backlog_size as usize);
         let (ctrl_tx, ctrl_rx) = flume::bounded(DEFAULT_CONTROL_PLANE_BACKLOG_SIZE);
 
         let new_client = Arc::new(ConnectedClient {
+            id,
             addr,
             sender: Mutex::new(ws_sender),
             data_plane_tx: data_tx,

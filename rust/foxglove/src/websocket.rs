@@ -6,17 +6,17 @@ pub use crate::websocket::protocol::client::{
 pub use crate::websocket::protocol::server::Capability;
 #[cfg(feature = "unstable")]
 pub use crate::websocket::protocol::server::{Parameter, ParameterType, ParameterValue};
-use crate::{Channel, FoxgloveError, LogSink, Metadata};
+use crate::{get_runtime_handle, Channel, FoxgloveError, LogSink, Metadata};
 use bytes::{BufMut, BytesMut};
 use flume::TrySendError;
 use futures_util::{stream::SplitSink, SinkExt, StreamExt};
 use std::collections::HashSet;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering::{AcqRel, Acquire};
-use std::sync::{OnceLock, Weak};
+use std::sync::Weak;
 use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 use thiserror::Error;
-use tokio::runtime::{Handle, Runtime};
+use tokio::runtime::Handle;
 use tokio::{
     net::{TcpListener, TcpStream},
     sync::Mutex,
@@ -43,24 +43,6 @@ const DEFAULT_CONTROL_PLANE_BACKLOG_SIZE: usize = 64;
 enum WSError {
     #[error("client handshake failed")]
     HandshakeError,
-}
-
-fn get_tokio_runtime() -> Handle {
-    // Do not use a global runtime in tests
-    if cfg!(test) {
-        return Handle::current();
-    }
-
-    static TOKIO_RUNTIME: OnceLock<Runtime> = OnceLock::new();
-    tracing::info!("Creating tokio runtime");
-    let runtime = TOKIO_RUNTIME.get_or_init(|| {
-        let rt = tokio::runtime::Builder::new_multi_thread()
-            .enable_all()
-            .build()
-            .expect("Failed to create tokio runtime");
-        rt
-    });
-    runtime.handle().clone()
 }
 
 #[derive(Default)]
@@ -93,7 +75,7 @@ pub(crate) struct Server {
     weak_self: Weak<Self>,
     started: AtomicBool,
     message_backlog_size: u32,
-    pub runtime_handle: Handle,
+    runtime_handle: Handle,
     /// May be provided by the caller
     session_id: String,
     name: String,
@@ -107,25 +89,6 @@ pub(crate) struct Server {
     supported_encodings: HashSet<String>,
     /// Token for cancelling all tasks
     cancellation_token: CancellationToken,
-}
-
-impl Default for Server {
-    fn default() -> Self {
-        Self {
-            weak_self: Weak::new(),
-            started: AtomicBool::new(false),
-            message_backlog_size: DEFAULT_MESSAGE_BACKLOG_SIZE as u32,
-            runtime_handle: get_tokio_runtime(),
-            session_id: "".to_string(),
-            name: "".to_string(),
-            clients: CowVec::new(),
-            channels: parking_lot::RwLock::new(HashMap::new()),
-            listener: None,
-            capabilities: HashSet::new(),
-            supported_encodings: HashSet::new(),
-            cancellation_token: CancellationToken::new(),
-        }
-    }
 }
 
 /// Provides a mechanism for registering callbacks for
@@ -301,7 +264,7 @@ impl Server {
             message_backlog_size: opts
                 .message_backlog_size
                 .unwrap_or(DEFAULT_MESSAGE_BACKLOG_SIZE) as u32,
-            runtime_handle: get_tokio_runtime(),
+            runtime_handle: get_runtime_handle(),
             listener: opts.listener,
             session_id: opts.session_id.unwrap_or_default(),
             name: opts.name.unwrap_or_default(),

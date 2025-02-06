@@ -1,7 +1,7 @@
 use errors::PyFoxgloveError;
 use foxglove::{
     Channel, ChannelBuilder, LogContext, McapWriter, McapWriterHandle, PartialMetadata, Schema,
-    WebSocketServer, WebSocketServerHandle,
+    WebSocketServer, WebSocketServerBlockingHandle,
 };
 use log::LevelFilter;
 use pyo3::exceptions::PyValueError;
@@ -18,22 +18,14 @@ mod errors;
 struct BaseChannel(Arc<Channel>);
 
 #[pyclass]
-struct PyWebSocketServer(Option<WebSocketServerHandle>);
-
-impl Drop for PyWebSocketServer {
-    fn drop(&mut self) {
-        log::info!("WebSocket server dropped");
-        self.stop();
-    }
-}
+struct PyWebSocketServer(Option<WebSocketServerBlockingHandle>);
 
 #[pymethods]
 impl PyWebSocketServer {
-    fn stop(&mut self) {
-        let Some(server) = self.0.take() else {
-            return;
-        };
-        server.stop_blocking();
+    fn stop(&mut self, py: Python<'_>) {
+        if let Some(server) = self.0.take() {
+            py.allow_threads(|| server.stop())
+        }
     }
 }
 
@@ -138,7 +130,12 @@ fn record_file(path: &str) -> PyResult<PyMcapWriter> {
 /// Start a new Foxglove WebSocket server
 #[pyfunction]
 #[pyo3(signature = (name = None, host="127.0.0.1", port=0))]
-fn start_server(name: Option<String>, host: &str, port: u16) -> PyResult<PyWebSocketServer> {
+fn start_server(
+    py: Python<'_>,
+    name: Option<String>,
+    host: &str,
+    port: u16,
+) -> PyResult<PyWebSocketServer> {
     let session_id = time::SystemTime::now()
         .duration_since(time::UNIX_EPOCH)
         .expect("Failed to create session ID; invalid system time")
@@ -152,7 +149,9 @@ fn start_server(name: Option<String>, host: &str, port: u16) -> PyResult<PyWebSo
         server = server.name(name);
     }
 
-    let handle = server.start_blocking().map_err(PyFoxgloveError::from)?;
+    let handle = py
+        .allow_threads(|| server.start_blocking())
+        .map_err(PyFoxgloveError::from)?;
     Ok(PyWebSocketServer(Some(handle)))
 }
 
@@ -182,6 +181,11 @@ fn disable_log_forwarding() -> PyResult<()> {
     Ok(())
 }
 
+#[pyfunction]
+fn shutdown(py: Python<'_>) {
+    py.allow_threads(foxglove::shutdown_runtime);
+}
+
 /// Our public API is in the `python` directory.
 /// Rust bindings are exported as `_foxglove_py` and should not be imported directly.
 #[pymodule]
@@ -189,7 +193,7 @@ fn _foxglove_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     pyo3_log::init();
     m.add_function(wrap_pyfunction!(enable_log_forwarding, m)?)?;
     m.add_function(wrap_pyfunction!(disable_log_forwarding, m)?)?;
-
+    m.add_function(wrap_pyfunction!(shutdown, m)?)?;
     m.add_function(wrap_pyfunction!(record_file, m)?)?;
     m.add_function(wrap_pyfunction!(start_server, m)?)?;
     m.add_function(wrap_pyfunction!(get_channel_for_topic, m)?)?;

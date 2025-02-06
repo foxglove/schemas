@@ -48,9 +48,7 @@ async fn test_client_advertising() {
         capabilities: Some(HashSet::from([Capability::ClientPublish])),
         supported_encodings: Some(HashSet::from(["json".to_string()])),
         listener: Some(listener),
-        session_id: None,
-        name: None,
-        message_backlog_size: None,
+        ..Default::default()
     });
 
     let addr = server
@@ -163,11 +161,7 @@ async fn test_broadcast_time() {
 async fn test_parameter_values() {
     let server = create_server(ServerOptions {
         capabilities: Some(HashSet::from([Capability::Parameters])),
-        listener: None,
-        session_id: None,
-        name: None,
-        message_backlog_size: None,
-        supported_encodings: None,
+        ..Default::default()
     });
     let addr = server
         .start("127.0.0.1", 0)

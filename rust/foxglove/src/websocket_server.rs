@@ -4,10 +4,12 @@ use std::fmt::Debug;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
+use tokio::runtime::Handle;
+
 use crate::websocket::{create_server, Server, ServerOptions};
 #[cfg(feature = "unstable")]
 use crate::websocket::{Capability, Parameter};
-use crate::{FoxgloveError, LogContext, LogSink};
+use crate::{get_runtime_handle, FoxgloveError, LogContext, LogSink};
 
 /// A websocket server for live visualization.
 #[must_use]
@@ -99,6 +101,18 @@ impl WebSocketServer {
         self
     }
 
+    /// Configure the tokio runtime for the server to use for async tasks.
+    ///
+    /// By default, the server will use either the current runtime (if started with
+    /// [`WebSocketServer::start`]), or spawn its own internal runtime (if started with
+    /// [`WebSocketServer::start_blocking`]).
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub fn tokio_runtime(mut self, handle: &Handle) -> Self {
+        self.options.runtime = Some(handle.clone());
+        self
+    }
+
     /// Starts the websocket server.
     ///
     /// Returns a handle that can optionally be used to gracefully shutdown the server. The caller
@@ -110,10 +124,21 @@ impl WebSocketServer {
         Ok(WebSocketServerHandle(server))
     }
 
-    #[doc(hidden)]
-    pub fn start_blocking(self) -> Result<WebSocketServerHandle, FoxgloveError> {
-        let handle = tokio::runtime::Handle::current();
-        handle.block_on(self.start())
+    /// Starts the websocket server.
+    ///
+    /// Returns a handle that can optionally be used to gracefully shutdown the server. The caller
+    /// can safely drop the handle, and the server will run forever.
+    ///
+    /// This method will panic if invoked from an asynchronous execution context. Use
+    /// [`WebSocketServer::start`] instead.
+    pub fn start_blocking(mut self) -> Result<WebSocketServerBlockingHandle, FoxgloveError> {
+        let runtime = self
+            .options
+            .runtime
+            .get_or_insert_with(get_runtime_handle)
+            .clone();
+        let handle = runtime.block_on(self.start())?;
+        Ok(WebSocketServerBlockingHandle(handle))
     }
 }
 
@@ -129,6 +154,11 @@ impl Debug for WebSocketServerHandle {
 }
 
 impl WebSocketServerHandle {
+    /// Returns a handle to the async runtime.
+    fn runtime(&self) -> &Handle {
+        self.0.runtime()
+    }
+
     /// Publishes the current server timestamp to all clients.
     #[doc(hidden)]
     #[cfg(feature = "unstable")]
@@ -151,10 +181,33 @@ impl WebSocketServerHandle {
         LogContext::global().remove_sink(&sink);
         self.0.stop().await;
     }
+}
 
+/// A blocking wrapper around a WebSocketServerHandle.
+#[derive(Debug)]
+pub struct WebSocketServerBlockingHandle(WebSocketServerHandle);
+
+impl WebSocketServerBlockingHandle {
+    /// Publishes the current server timestamp to all clients.
     #[doc(hidden)]
-    pub fn stop_blocking(self) {
-        let handle = self.0.runtime_handle.clone();
-        handle.block_on(self.stop());
+    #[cfg(feature = "unstable")]
+    pub async fn broadcast_time(&self, timestamp_nanos: u64) {
+        self.0
+            .runtime()
+            .block_on(self.0.broadcast_time(timestamp_nanos))
+    }
+
+    /// Publishes parameter values to all clients.
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub fn publish_parameter_values(&self, parameters: impl IntoIterator<Item = Parameter>) {
+        self.0
+            .runtime()
+            .block_on(self.0.publish_parameter_values(parameters))
+    }
+
+    /// Gracefully shutdown the websocket server.
+    pub fn stop(self) {
+        self.0.runtime().clone().block_on(self.0.stop());
     }
 }

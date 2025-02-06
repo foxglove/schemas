@@ -6,17 +6,17 @@ pub use crate::websocket::protocol::client::{
 pub use crate::websocket::protocol::server::Capability;
 #[cfg(feature = "unstable")]
 pub use crate::websocket::protocol::server::{Parameter, ParameterType, ParameterValue};
-use crate::{Channel, FoxgloveError, LogSink, Metadata};
+use crate::{get_runtime_handle, Channel, FoxgloveError, LogSink, Metadata};
 use bytes::{BufMut, BytesMut};
 use flume::TrySendError;
 use futures_util::{stream::SplitSink, SinkExt, StreamExt};
 use std::collections::HashSet;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering::{AcqRel, Acquire};
-use std::sync::{OnceLock, Weak};
+use std::sync::Weak;
 use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 use thiserror::Error;
-use tokio::runtime::{Handle, Runtime};
+use tokio::runtime::Handle;
 use tokio::{
     net::{TcpListener, TcpStream},
     sync::Mutex,
@@ -47,24 +47,6 @@ enum WSError {
     HandshakeError,
 }
 
-fn get_tokio_runtime() -> Handle {
-    // Do not use a global runtime in tests
-    if cfg!(test) {
-        return Handle::current();
-    }
-
-    static TOKIO_RUNTIME: OnceLock<Runtime> = OnceLock::new();
-    tracing::info!("Creating tokio runtime");
-    let runtime = TOKIO_RUNTIME.get_or_init(|| {
-        let rt = tokio::runtime::Builder::new_multi_thread()
-            .enable_all()
-            .build()
-            .expect("Failed to create tokio runtime");
-        rt
-    });
-    runtime.handle().clone()
-}
-
 #[derive(Default)]
 pub(crate) struct ServerOptions {
     pub session_id: Option<String>,
@@ -73,6 +55,7 @@ pub(crate) struct ServerOptions {
     pub listener: Option<Arc<dyn ServerListener>>,
     pub capabilities: Option<HashSet<Capability>>,
     pub supported_encodings: Option<HashSet<String>>,
+    pub runtime: Option<Handle>,
 }
 
 impl std::fmt::Debug for ServerOptions {
@@ -95,7 +78,7 @@ pub(crate) struct Server {
     weak_self: Weak<Self>,
     started: AtomicBool,
     message_backlog_size: u32,
-    pub runtime_handle: Handle,
+    runtime: Handle,
     /// May be provided by the caller
     session_id: String,
     name: String,
@@ -109,25 +92,6 @@ pub(crate) struct Server {
     supported_encodings: HashSet<String>,
     /// Token for cancelling all tasks
     cancellation_token: CancellationToken,
-}
-
-impl Default for Server {
-    fn default() -> Self {
-        Self {
-            weak_self: Weak::new(),
-            started: AtomicBool::new(false),
-            message_backlog_size: DEFAULT_MESSAGE_BACKLOG_SIZE as u32,
-            runtime_handle: get_tokio_runtime(),
-            session_id: "".to_string(),
-            name: "".to_string(),
-            clients: CowVec::new(),
-            channels: parking_lot::RwLock::new(HashMap::new()),
-            listener: None,
-            capabilities: HashSet::new(),
-            supported_encodings: HashSet::new(),
-            cancellation_token: CancellationToken::new(),
-        }
-    }
 }
 
 /// Provides a mechanism for registering callbacks for
@@ -303,7 +267,7 @@ impl Server {
             message_backlog_size: opts
                 .message_backlog_size
                 .unwrap_or(DEFAULT_MESSAGE_BACKLOG_SIZE) as u32,
-            runtime_handle: get_tokio_runtime(),
+            runtime: opts.runtime.unwrap_or_else(get_runtime_handle),
             listener: opts.listener,
             session_id: opts.session_id.unwrap_or_default(),
             name: opts.name.unwrap_or_default(),
@@ -319,6 +283,11 @@ impl Server {
         self.weak_self
             .upgrade()
             .expect("server cannot be dropped while in use")
+    }
+
+    // Returns a handle to the async runtime that this server is using.
+    pub fn runtime(&self) -> &Handle {
+        &self.runtime
     }
 
     // Spawn a task to accept all incoming connections and return
@@ -340,7 +309,7 @@ impl Server {
 
         let cancellation_token = self.cancellation_token.clone();
         let server = self.arc().clone();
-        self.runtime_handle.spawn(async move {
+        self.runtime.spawn(async move {
             tokio::select! {
                 () = handle_connections(server, listener) => (),
                 () = cancellation_token.cancelled() => {
@@ -736,7 +705,7 @@ impl LogSink for Server {
     fn add_channel(&self, channel: &Arc<Channel>) {
         let server = self.arc();
         let ch = channel.clone();
-        self.runtime_handle
+        self.runtime
             .spawn(async move { server.advertise_channel(ch).await });
     }
 
@@ -744,7 +713,7 @@ impl LogSink for Server {
     fn remove_channel(&self, channel: &Channel) {
         let server = self.arc();
         let channel_id = channel.id();
-        self.runtime_handle
+        self.runtime
             .spawn(async move { server.unadvertise_channel(channel_id).await });
     }
 }

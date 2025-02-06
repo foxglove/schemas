@@ -7,7 +7,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use crate::websocket::{create_server, Server, ServerOptions};
 #[cfg(feature = "unstable")]
 use crate::websocket::{Capability, Parameter};
-use crate::{FoxgloveError, LogContext, LogSink};
+use crate::{get_runtime_handle, FoxgloveError, LogContext, LogSink};
 
 /// A websocket server for live visualization.
 #[must_use]
@@ -112,8 +112,7 @@ impl WebSocketServer {
 
     #[doc(hidden)]
     pub fn start_blocking(self) -> Result<WebSocketServerHandle, FoxgloveError> {
-        let handle = tokio::runtime::Handle::current();
-        handle.block_on(self.start())
+        get_runtime_handle().block_on(self.start())
     }
 }
 
@@ -166,7 +165,6 @@ impl WebSocketServerHandle {
 
     #[doc(hidden)]
     pub fn stop_blocking(self) {
-        let handle = self.0.runtime_handle.clone();
-        handle.block_on(self.stop());
+        get_runtime_handle().block_on(self.stop());
     }
 }

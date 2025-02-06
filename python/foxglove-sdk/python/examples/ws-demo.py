@@ -28,7 +28,6 @@ def main() -> None:
     foxglove.verbose_on()
 
     server = foxglove.start_server(port=8765)
-    print(server)
 
     sin_chan = foxglove.Channel(
         topic="/sine", encoder=foxglove.JsonEncoder(), schema=plot_schema
@@ -86,7 +85,7 @@ def main() -> None:
             time.sleep(0.05)
 
     except KeyboardInterrupt:
-        pass
+        server.stop()
 
 
 if __name__ == "__main__":

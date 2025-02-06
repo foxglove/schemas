@@ -98,7 +98,7 @@ async fn test_client_advertising() {
         .await
         .expect("Failed to send unadvertise");
 
-    // Give the server time to process the messages
+    // FG-10395 replace this with something more precise
     sleep(std::time::Duration::from_millis(10)).await;
 
     // Server should have received one message
@@ -147,7 +147,7 @@ async fn test_parameter_values() {
     };
     server.publish_parameter_values(vec![parameter], None).await;
 
-    // Allow the server to process the parameter values
+    // FG-10395 replace this with something more precise
     std::thread::sleep(std::time::Duration::from_millis(100));
 
     let msg = ws_client.next().await.expect("No message received");

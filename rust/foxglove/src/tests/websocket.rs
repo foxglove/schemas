@@ -179,8 +179,7 @@ async fn test_advertise_to_client() {
         .expect("Failed to send");
 
     // Allow the server to process the subscription
-    // FG-9723: replace this with an on_subscribe callback
-    // (whoops, that won't work either, unless we do something like polling the recording_listener)
+    // FG-10395 replace this with something more precise
     tokio::time::sleep(std::time::Duration::from_millis(100)).await;
 
     server.log(&ch, b"foo bar baz", &metadata).unwrap();
@@ -311,7 +310,7 @@ async fn test_log_only_to_subscribers() {
         .expect("Failed to send");
 
     // Allow the server to process the subscription
-    // FG-9723: replace this with an on_subscribe callback
+    // FG-10395 replace this with something more precise
     tokio::time::sleep(std::time::Duration::from_millis(100)).await;
 
     let subscriptions = recording_listener.take_subscribe();

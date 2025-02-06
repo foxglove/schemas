@@ -101,7 +101,7 @@ mod tests {
 
         // Old snapshot should still be valid and have original length
         assert_eq!(old_snapshot.len(), 3);
-        // Both threads should see 5 items in their final state
+        // There should now be 5 items in the final state
         assert_eq!(final_state.len(), 5);
     }
 

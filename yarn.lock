@@ -3430,7 +3430,7 @@ __metadata:
     jest: "npm:29.7.0"
     prettier: "npm:^3.4.2"
     prettier-plugin-toml: "npm:^2.0.1"
-    protobufjs: "npm:^7.2.2"
+    protobufjs: "npm:^7.2.5"
     rimraf: "npm:^6.0.1"
     ts-jest: "npm:29.2.5"
     ts-node: "npm:^10.9.2"
@@ -6015,9 +6015,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"protobufjs@npm:^7.2.2":
-  version: 7.2.2
-  resolution: "protobufjs@npm:7.2.2"
+"protobufjs@npm:^7.2.5":
+  version: 7.4.0
+  resolution: "protobufjs@npm:7.4.0"
   dependencies:
     "@protobufjs/aspromise": "npm:^1.1.2"
     "@protobufjs/base64": "npm:^1.1.2"
@@ -6031,7 +6031,7 @@ __metadata:
     "@protobufjs/utf8": "npm:^1.1.0"
     "@types/node": "npm:>=13.7.0"
     long: "npm:^5.0.0"
-  checksum: 10c0/eb630c6aa9419c448605b6ad550d5c001538071e4ef437ececa3cf25e36839aa817757f60bca7dff4037872fdd1b265ac55b6a12bdb735dd72299bb8c959252d
+  checksum: 10c0/a5460a63fe596523b9a067cbce39a6b310d1a71750fda261f076535662aada97c24450e18c5bc98a27784f70500615904ff1227e1742183509f0db4fdede669b
   languageName: node
   linkType: hard
 

@@ -1,0 +1,68 @@
+name: Draft Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version (must start with 'v')"
+        required: true
+
+env:
+  SDK_VERSION: ${{ github.event.inputs.version }}
+  SDK_TAG: sdk/${{ github.event.inputs.version }}
+  SDK_BRANCH: release/sdk/${{ github.event.inputs.version }}
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed to get the previous release tag
+
+      - run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: yarn
+
+      - name: Check for existing ${{ env.SDK_TAG }} release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${{ env.SDK_TAG }}" --json "name,url"; then
+            echo "Release ${SDK_TAG} already exists!"
+            exit 1
+          fi
+
+      - run: yarn install --immutable
+      - run: yarn bump-sdk-version "${{ env.SDK_VERSION }}"
+
+      - name: Detect previous version
+        id: previous-release
+        run: |
+          tag=$(git describe --tags --abbrev=0 --match "sdk/v*")
+          echo "tag=$tag" | tee -a $GITHUB_OUTPUT
+
+      - name: Commit and push branch
+        run: |
+          git config user.name "Foxglove"
+          git config user.email "support@foxglove.dev"
+          git checkout -b "${{ env.SDK_BRANCH }}"
+          git add .
+          git commit -m "Release SDK version ${{ env.SDK_VERSION }}"
+          git push -f origin "${{ env.SDK_BRANCH }}"
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ env.SDK_TAG }}" \
+            --title "${{ env.SDK_TAG }}" \
+            --target "${{ env.SDK_BRANCH }}" \
+            --generate-notes \
+            --notes-start-tag "${{ steps.previous-release.outputs.tag }}" \
+            --draft

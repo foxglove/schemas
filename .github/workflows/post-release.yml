@@ -1,0 +1,26 @@
+name: Post Release
+
+on:
+  release:
+    types: [released]
+
+env:
+  SDK_TAG: ${{ github.event.release.tag_name }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SDK_TAG }}
+          fetch-depth: 0
+
+      - name: Git merge into main
+        run: |
+          echo ${{ secrets.FOXGLOVEBOT_GITHUB_TOKEN }} | gh auth login --with-token
+          git config user.name "Foxglove"
+          git config user.email "support@foxglove.dev"
+          git checkout -b main --track origin/main
+          git merge --no-ff ${{ github.ref }}
+          git push origin main

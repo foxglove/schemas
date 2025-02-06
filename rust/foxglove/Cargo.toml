@@ -34,6 +34,7 @@ tracing.workspace = true
 [dev-dependencies]
 assert_matches = "1.5.0"
 clap = { version = "4.5", features = ["derive"] }
+ctrlc = "3.4.5"
 env_logger = "0.11.5"
 futures-util = "0.3.31"
 quaternion = "2.0.0"

@@ -53,6 +53,7 @@ pub(crate) struct ServerOptions {
     pub listener: Option<Arc<dyn ServerListener>>,
     pub capabilities: Option<HashSet<Capability>>,
     pub supported_encodings: Option<HashSet<String>>,
+    pub runtime: Option<Handle>,
 }
 
 impl std::fmt::Debug for ServerOptions {
@@ -75,7 +76,7 @@ pub(crate) struct Server {
     weak_self: Weak<Self>,
     started: AtomicBool,
     message_backlog_size: u32,
-    runtime_handle: Handle,
+    runtime: Handle,
     /// May be provided by the caller
     session_id: String,
     name: String,
@@ -264,7 +265,7 @@ impl Server {
             message_backlog_size: opts
                 .message_backlog_size
                 .unwrap_or(DEFAULT_MESSAGE_BACKLOG_SIZE) as u32,
-            runtime_handle: get_runtime_handle(),
+            runtime: opts.runtime.unwrap_or_else(get_runtime_handle),
             listener: opts.listener,
             session_id: opts.session_id.unwrap_or_default(),
             name: opts.name.unwrap_or_default(),
@@ -280,6 +281,11 @@ impl Server {
         self.weak_self
             .upgrade()
             .expect("server cannot be dropped while in use")
+    }
+
+    // Returns a handle to the async runtime that this server is using.
+    pub fn runtime(&self) -> &Handle {
+        &self.runtime
     }
 
     // Spawn a task to accept all incoming connections and return
@@ -301,7 +307,7 @@ impl Server {
 
         let cancellation_token = self.cancellation_token.clone();
         let server = self.arc().clone();
-        self.runtime_handle.spawn(async move {
+        self.runtime.spawn(async move {
             tokio::select! {
                 () = handle_connections(server, listener) => (),
                 () = cancellation_token.cancelled() => {
@@ -675,7 +681,7 @@ impl LogSink for Server {
     fn add_channel(&self, channel: &Arc<Channel>) {
         let server = self.arc();
         let ch = channel.clone();
-        self.runtime_handle
+        self.runtime
             .spawn(async move { server.advertise_channel(ch).await });
     }
 
@@ -683,7 +689,7 @@ impl LogSink for Server {
     fn remove_channel(&self, channel: &Channel) {
         let server = self.arc();
         let channel_id = channel.id();
-        self.runtime_handle
+        self.runtime
             .spawn(async move { server.unadvertise_channel(channel_id).await });
     }
 }

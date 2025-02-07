@@ -101,7 +101,7 @@ type WebsocketSender = SplitSink<WebSocketStream<TcpStream>, Message>;
 // Queue up to 1024 messages per connected client before dropping messages
 const DEFAULT_MESSAGE_BACKLOG_SIZE: usize = 1024;
 const DEFAULT_CONTROL_PLANE_BACKLOG_SIZE: usize = 64;
-const DEFAULT_ADVERTISE_CLOCK_PERIOD: Duration = Duration::from_millis(1000 / 60);
+const DEFAULT_ADVERTISE_CLOCK_PERIOD: Duration = Duration::from_micros(1_000_000 / 60); // 60 Hz
 
 #[derive(Error, Debug)]
 enum WSError {

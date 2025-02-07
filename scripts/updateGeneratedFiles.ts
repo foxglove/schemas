@@ -23,6 +23,11 @@ import {
   foxgloveEnumSchemas,
   foxgloveMessageSchemas,
 } from "../typescript/schemas/src/internal/schemas";
+import {
+  generatePrelude,
+  generatePyclass,
+  generateTimeTypes,
+} from "../typescript/schemas/src/internal/generatePyclass";
 
 async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write(`${message}... `);
@@ -141,6 +146,29 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
       path.join(outDir, "README.md"),
       generateMarkdown(Object.values(foxgloveMessageSchemas), Object.values(foxgloveEnumSchemas)),
     );
+  });
+
+  await logProgress("Generating Pyclass definitions", async () => {
+    const dir = await fs.mkdir(path.join(outDir, "pyclass"), { recursive: true });
+    if (dir == undefined) {
+      throw new Error("Failed to create pyclass directory");
+    }
+
+    const file = await fs.open(path.join(dir, "foxglove.rs"), "w");
+    const ws = file.createWriteStream();
+    ws.write(generatePrelude());
+
+    for (const enumSchema of Object.values(foxgloveEnumSchemas)) {
+      ws.write(generatePyclass(enumSchema));
+    }
+
+    ws.write(generateTimeTypes());
+
+    for (const schema of Object.values(foxgloveMessageSchemas)) {
+      ws.write(generatePyclass(schema));
+    }
+
+    ws.end();
   });
 }
 

@@ -191,7 +191,7 @@ impl WebSocketServerBlockingHandle {
     /// Publishes the current server timestamp to all clients.
     #[doc(hidden)]
     #[cfg(feature = "unstable")]
-    pub async fn broadcast_time(&self, timestamp_nanos: u64) {
+    pub fn broadcast_time(&self, timestamp_nanos: u64) {
         self.0
             .runtime()
             .block_on(self.0.broadcast_time(timestamp_nanos))

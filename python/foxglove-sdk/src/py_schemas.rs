@@ -462,14 +462,19 @@ pub(crate) struct OptimizedPointCloud {
     //frame_id: String,
     pub(crate) pose: Pose,
     pub(crate) point_stride: u32,
-    pub(crate) fields: Py<PyList>,
+    pub(crate) fields: Vec<PackedElementField>,
     pub(crate) data: Py<PyBytes>,
 }
 
 #[pymethods]
 impl OptimizedPointCloud {
     #[new]
-    fn new(pose: Pose, point_stride: u32, fields: Py<PyList>, data: Py<PyBytes>) -> Self {
+    fn new(
+        pose: Pose,
+        point_stride: u32,
+        fields: Vec<PackedElementField>,
+        data: Py<PyBytes>,
+    ) -> Self {
         Self {
             //timestamp: Timestamp::new(0, 0),
             //frame_id: "".to_string(),

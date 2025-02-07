@@ -152,9 +152,7 @@ impl OptimizedPointCloudChannel {
         let msg_ref = msg.borrow();
         let slice = msg_ref.data.as_bytes(msg.py());
 
-        let fields = msg_ref
-            .fields
-            .extract::<Vec<crate::py_schemas::PackedElementField>>(msg.py())?;
+        let fields = msg_ref.fields.iter().map(|f| f.clone().into()).collect();
 
         // Safety: cast slice from &[u8] to static.
         // This is not safe if log_with_meta or we keep a copy of the Bytes object, but we don't.
@@ -166,7 +164,7 @@ impl OptimizedPointCloudChannel {
             frame_id: "".to_string(),
             pose: Some(msg_ref.pose.clone().into()),
             point_stride: msg_ref.point_stride,
-            fields: fields.into_iter().map(|f| f.into()).collect(),
+            fields,
             data: bytes,
         };
 

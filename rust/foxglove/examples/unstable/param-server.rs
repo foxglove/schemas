@@ -10,7 +10,7 @@
 use std::time::{Duration, Instant};
 
 use clap::Parser;
-use foxglove::websocket_protocol::{Capability, Parameter, ParameterType, ParameterValue};
+use foxglove::websocket::{Capability, Parameter, ParameterType, ParameterValue};
 use foxglove::{WebSocketServer, WebSocketServerHandle};
 use tokio_util::sync::CancellationToken;
 

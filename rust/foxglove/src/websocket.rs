@@ -1,9 +1,9 @@
+//! Websocket functionality
+
 use crate::channel::ChannelId;
 use crate::cow_vec::CowVec;
-use crate::websocket::protocol::client::Subscription;
-pub use crate::websocket::protocol::client::{
-    ClientChannel, ClientChannelId, ClientMessage, SubscriptionId,
-};
+pub use crate::websocket::protocol::client::{ClientChannel, ClientChannelId};
+use crate::websocket::protocol::client::{ClientMessage, Subscription, SubscriptionId};
 pub use crate::websocket::protocol::server::Capability;
 #[cfg(feature = "unstable")]
 pub use crate::websocket::protocol::server::{Parameter, ParameterType, ParameterValue};

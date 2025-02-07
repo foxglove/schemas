@@ -6,10 +6,10 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use tokio::runtime::Handle;
 
-use crate::websocket::{create_server, Server, ServerOptions};
-use crate::websocket_protocol::Capability;
+use crate::websocket::Capability;
 #[cfg(feature = "unstable")]
-use crate::websocket_protocol::Parameter;
+use crate::websocket::Parameter;
+use crate::websocket::{create_server, Server, ServerOptions};
 use crate::{get_runtime_handle, FoxgloveError, LogContext, LogSink};
 
 /// A websocket server for live visualization.

@@ -13,7 +13,7 @@ use std::time::{Duration, Instant};
 use anyhow::{anyhow, Context, Result};
 use bytes::Buf;
 use clap::Parser;
-use foxglove::websocket_protocol::Capability;
+use foxglove::websocket::Capability;
 use foxglove::{
     Channel, ChannelBuilder, PartialMetadata, Schema, WebSocketServer,
     WebSocketServerBlockingHandle,

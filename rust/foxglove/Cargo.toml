@@ -33,6 +33,7 @@ tokio.workspace = true
 tracing.workspace = true
 
 [dev-dependencies]
+anyhow = "1.0.95"
 assert_matches = "1.5.0"
 clap = { version = "4.5", features = ["derive"] }
 ctrlc = "3.4.5"
@@ -50,4 +51,9 @@ required-features = ["unstable"]
 [[example]]
 name = "param-server"
 path = "examples/unstable/param-server.rs"
+required-features = ["unstable"]
+
+[[example]]
+name = "ws-stream-mcap"
+path = "examples/unstable/ws-stream-mcap.rs"
 required-features = ["unstable"]

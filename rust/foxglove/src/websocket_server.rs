@@ -67,7 +67,7 @@ impl WebSocketServer {
     ///
     /// Note that some capabilities are advertised automatically when certain features are enabled.
     /// This method cannot be used to override those advertisements. For example, when the
-    /// [`advertise_clock`][Self::advertise_clock] feature is enabled, the server will advertise
+    /// [`WebSocketServer::advertise_clock`] feature is enabled, the server will advertise
     /// [`Capability::Time`] in addition to any capabilities enabled with this method.
     pub fn capabilities(mut self, capabilities: impl IntoIterator<Item = Capability>) -> Self {
         self.options.capabilities = Some(capabilities.into_iter().collect());
@@ -77,7 +77,7 @@ impl WebSocketServer {
     /// Periodically advertise the local system clock to clients.
     ///
     /// When enabled, the server will automatically advertise [`Capability::Time`], regardless of
-    /// whether that capability was set via the [`capabilities`][Self::capabilities] method.
+    /// whether that capability was set via [`WebSocketServer::capabilities`].
     ///
     /// By default, this feature is enabled.
     pub fn advertise_clock(mut self, enable: bool) -> Self {

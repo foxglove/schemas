@@ -1,0 +1,30 @@
+name: Post Release
+
+on:
+  release:
+    types: [released]
+
+env:
+  SDK_TAG: ${{ github.event.release.tag_name }}
+  SDK_BRANCH: release/${{ github.event.release.tag_name }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.FOXGLOVEBOT_GITHUB_TOKEN }}
+          ref: ${{ env.SDK_TAG }}
+          fetch-depth: 0 # needed to checkout main
+
+      - name: Merge release tag into main
+        run: |
+          git config user.name "Foxglove"
+          git config user.email "support@foxglove.dev"
+          git checkout -b main --track origin/main
+          git merge --no-ff "${{ env.SDK_TAG }}"
+          git push origin main
+
+      - name: Delete old release branch
+        run: git push origin --delete "${{ env.SDK_BRANCH }}" || true

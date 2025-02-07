@@ -1,6 +1,6 @@
 [package]
 name = "foxglove"
-version = "0.1.0"
+version = "0.1.2"
 description = "Foxglove SDK"
 edition = "2021"
 repository = "https://github.com/foxglove/foxglove-sdk"
@@ -34,25 +34,19 @@ tracing.workspace = true
 [dev-dependencies]
 assert_matches = "1.5.0"
 clap = { version = "4.5", features = ["derive"] }
+ctrlc = "3.4.5"
 env_logger = "0.11.5"
 futures-util = "0.3.31"
 quaternion = "2.0.0"
 tempfile = "3.15.0"
-serde_json = "1.0.138"
 tracing-test = "0.2.5"
-serde.workspace = true
 
 [[example]]
-name = "ws-server"
-path = "examples/ws-server-unstable.rs"
+name = "client-publish"
+path = "examples/unstable/client-publish.rs"
 required-features = ["unstable"]
 
 [[example]]
 name = "param-server"
-path = "examples/param-server-unstable.rs"
-required-features = ["unstable"]
-
-[[test]]
-name = "websocket-unstable"
-path = "tests/websocket-unstable.rs"
+path = "examples/unstable/param-server.rs"
 required-features = ["unstable"]

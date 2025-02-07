@@ -6,17 +6,17 @@ pub use crate::websocket::protocol::client::{
 pub use crate::websocket::protocol::server::Capability;
 #[cfg(feature = "unstable")]
 pub use crate::websocket::protocol::server::{Parameter, ParameterType, ParameterValue};
-use crate::{Channel, FoxgloveError, LogSink, Metadata};
+use crate::{get_runtime_handle, Channel, FoxgloveError, LogSink, Metadata};
 use bytes::{BufMut, BytesMut};
 use flume::TrySendError;
 use futures_util::{stream::SplitSink, SinkExt, StreamExt};
 use std::collections::HashSet;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering::{AcqRel, Acquire};
-use std::sync::{OnceLock, Weak};
+use std::sync::Weak;
 use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 use thiserror::Error;
-use tokio::runtime::{Handle, Runtime};
+use tokio::runtime::Handle;
 use tokio::{
     net::{TcpListener, TcpStream},
     sync::Mutex,
@@ -30,10 +30,10 @@ use tokio_util::sync::CancellationToken;
 mod protocol;
 #[cfg(test)]
 mod tests;
+#[cfg(all(test, feature = "unstable"))]
+mod unstable_tests;
 
-// For tests
-#[doc(hidden)]
-pub const SUBPROTOCOL: &str = "foxglove.sdk.v1";
+pub(crate) const SUBPROTOCOL: &str = "foxglove.sdk.v1";
 
 type WebsocketSender = SplitSink<WebSocketStream<TcpStream>, Message>;
 
@@ -42,57 +42,20 @@ const DEFAULT_MESSAGE_BACKLOG_SIZE: usize = 1024;
 const DEFAULT_CONTROL_PLANE_BACKLOG_SIZE: usize = 64;
 
 #[derive(Error, Debug)]
-pub enum WSError {
+enum WSError {
     #[error("client handshake failed")]
     HandshakeError,
 }
 
-fn get_tokio_runtime() -> Handle {
-    // Do not use a global runtime in tests
-    if cfg!(test) {
-        return Handle::current();
-    }
-
-    static TOKIO_RUNTIME: OnceLock<Runtime> = OnceLock::new();
-    tracing::info!("Creating tokio runtime");
-    let runtime = TOKIO_RUNTIME.get_or_init(|| {
-        let rt = tokio::runtime::Builder::new_multi_thread()
-            .enable_all()
-            .build()
-            .expect("Failed to create tokio runtime");
-        rt
-    });
-    runtime.handle().clone()
-}
-
-#[doc(hidden)]
-pub struct InternalServerOptions {
+#[derive(Default)]
+pub(crate) struct ServerOptions {
     pub session_id: Option<String>,
     pub name: Option<String>,
-    pub listener: Option<Arc<dyn ServerListener>>,
     pub message_backlog_size: Option<usize>,
+    pub listener: Option<Arc<dyn ServerListener>>,
     pub capabilities: Option<HashSet<Capability>>,
     pub supported_encodings: Option<HashSet<String>>,
-}
-
-#[derive(Default)]
-pub struct ServerOptions {
-    pub session_id: Option<String>,
-    pub name: Option<String>,
-    pub message_backlog_size: Option<usize>,
-}
-
-impl From<ServerOptions> for InternalServerOptions {
-    fn from(options: ServerOptions) -> Self {
-        Self {
-            session_id: options.session_id,
-            name: options.name,
-            message_backlog_size: options.message_backlog_size,
-            listener: None,
-            capabilities: None,
-            supported_encodings: None,
-        }
-    }
+    pub runtime: Option<Handle>,
 }
 
 impl std::fmt::Debug for ServerOptions {
@@ -106,7 +69,7 @@ impl std::fmt::Debug for ServerOptions {
 }
 
 /// A websocket server that implements the Foxglove WebSocket Protocol
-pub struct Server {
+pub(crate) struct Server {
     /// A weak reference to the Arc holding the server.
     /// This is used to get a reference to the outer `Arc<Server>` from Server methods.
     /// See the arc() method and its callers. We need the Arc so we can use it in async futures
@@ -115,7 +78,7 @@ pub struct Server {
     weak_self: Weak<Self>,
     started: AtomicBool,
     message_backlog_size: u32,
-    pub(crate) runtime_handle: Handle,
+    runtime: Handle,
     /// May be provided by the caller
     session_id: String,
     name: String,
@@ -131,28 +94,10 @@ pub struct Server {
     cancellation_token: CancellationToken,
 }
 
-impl Default for Server {
-    fn default() -> Self {
-        Self {
-            weak_self: Weak::new(),
-            started: AtomicBool::new(false),
-            message_backlog_size: DEFAULT_MESSAGE_BACKLOG_SIZE as u32,
-            runtime_handle: get_tokio_runtime(),
-            session_id: "".to_string(),
-            name: "".to_string(),
-            clients: CowVec::new(),
-            channels: parking_lot::RwLock::new(HashMap::new()),
-            listener: None,
-            capabilities: HashSet::new(),
-            supported_encodings: HashSet::new(),
-            cancellation_token: CancellationToken::new(),
-        }
-    }
-}
-
 /// Provides a mechanism for registering callbacks for
 /// handling client message events.
 pub trait ServerListener: Send + Sync {
+    /// Callback invoked when a client message is received.
     fn on_message_data(&self, channel_id: ClientChannelId, payload: &[u8]);
 }
 
@@ -315,14 +260,14 @@ impl ConnectedClient {
 
 // A websocket server that implements the Foxglove WebSocket Protocol
 impl Server {
-    pub(crate) fn new(weak_self: Weak<Self>, opts: InternalServerOptions) -> Self {
+    pub fn new(weak_self: Weak<Self>, opts: ServerOptions) -> Self {
         Server {
             weak_self,
             started: AtomicBool::new(false),
             message_backlog_size: opts
                 .message_backlog_size
                 .unwrap_or(DEFAULT_MESSAGE_BACKLOG_SIZE) as u32,
-            runtime_handle: get_tokio_runtime(),
+            runtime: opts.runtime.unwrap_or_else(get_runtime_handle),
             listener: opts.listener,
             session_id: opts.session_id.unwrap_or_default(),
             name: opts.name.unwrap_or_default(),
@@ -340,28 +285,31 @@ impl Server {
             .expect("server cannot be dropped while in use")
     }
 
+    // Returns a handle to the async runtime that this server is using.
+    pub fn runtime(&self) -> &Handle {
+        &self.runtime
+    }
+
     // Spawn a task to accept all incoming connections and return
     pub async fn start(&self, host: &str, port: u16) -> Result<String, FoxgloveError> {
         if self.started.load(Acquire) {
-            return Err(FoxgloveError::Fatal("Server already started".to_string()));
+            return Err(FoxgloveError::ServerAlreadyStarted);
         }
         let already_started = self.started.swap(true, AcqRel);
         assert!(!already_started);
 
         let addr = format!("{}:{}", host, port);
-        let listener = TcpListener::bind(&addr).await.map_err(|err| {
-            FoxgloveError::Fatal(format!("Failed to bind TCP listener: {}", &err))
-        })?;
+        let listener = TcpListener::bind(&addr)
+            .await
+            .map_err(FoxgloveError::Bind)?;
         let bound_addr = listener
             .local_addr()
-            .map_err(|err| {
-                FoxgloveError::Fatal(format!("Failed to get listener address: {}", &err))
-            })?
+            .map_err(|err| FoxgloveError::Unspecified(err.into()))?
             .to_string();
 
         let cancellation_token = self.cancellation_token.clone();
         let server = self.arc().clone();
-        self.runtime_handle.spawn(async move {
+        self.runtime.spawn(async move {
             tokio::select! {
                 () = handle_connections(server, listener) => (),
                 () = cancellation_token.cancelled() => {
@@ -450,6 +398,28 @@ impl Server {
                     channel_id,
                     client.addr
                 );
+            }
+        }
+    }
+
+    /// Publish the current timestamp to all clients.
+    #[cfg(feature = "unstable")]
+    pub async fn broadcast_time(&self, timestamp_nanos: u64) {
+        if !self.capabilities.contains(&Capability::Time) {
+            tracing::error!("Server does not support time capability");
+            return;
+        }
+
+        // https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#time
+        let mut buf = BytesMut::with_capacity(9);
+        buf.put_u8(protocol::server::BinaryOpcode::TimeData as u8);
+        buf.put_u64_le(timestamp_nanos);
+        let message = Message::binary(buf);
+
+        let clients = self.clients.get();
+        for client in clients.iter() {
+            if let Err(err) = client.control_plane_tx.send_async(message.clone()).await {
+                tracing::error!("Failed to send time to client {}: {err}", client.addr);
             }
         }
     }
@@ -735,7 +705,7 @@ impl LogSink for Server {
     fn add_channel(&self, channel: &Arc<Channel>) {
         let server = self.arc();
         let ch = channel.clone();
-        self.runtime_handle
+        self.runtime
             .spawn(async move { server.advertise_channel(ch).await });
     }
 
@@ -743,18 +713,12 @@ impl LogSink for Server {
     fn remove_channel(&self, channel: &Channel) {
         let server = self.arc();
         let channel_id = channel.id();
-        self.runtime_handle
+        self.runtime
             .spawn(async move { server.unadvertise_channel(channel_id).await });
     }
 }
 
-#[doc(hidden)]
-pub fn create_server(opts: ServerOptions) -> Arc<Server> {
-    Arc::new_cyclic(|weak_self| Server::new(weak_self.clone(), opts.into()))
-}
-
-#[cfg(feature = "unstable")]
-pub fn create_server_with_internal_options(opts: InternalServerOptions) -> Arc<Server> {
+pub(crate) fn create_server(opts: ServerOptions) -> Arc<Server> {
     Arc::new_cyclic(|weak_self| Server::new(weak_self.clone(), opts))
 }
 

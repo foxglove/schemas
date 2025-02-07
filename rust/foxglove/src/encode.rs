@@ -12,6 +12,7 @@ const STACK_BUFFER_SIZE: usize = 128 * 1024;
 /// Implementing this trait for your type `T` enables the use of [`TypedChannel<T>`],
 /// which offers a type-checked `log` method.
 pub trait Encode {
+    /// The error type returned by methods in this trait.
     type Error: std::error::Error;
 
     /// Returns the schema for your data.
@@ -84,7 +85,7 @@ impl<T: Encode> TypedChannel<T> {
 
     /// Encodes the message and logs it on the channel.
     pub fn log(&self, msg: &T) {
-        self.log_with_meta(msg, PartialMetadata::new());
+        self.log_with_meta(msg, PartialMetadata::default());
     }
 
     /// Encodes the message and logs it on the channel with additional metadata.
@@ -158,7 +159,7 @@ macro_rules! static_typed_channel {
 mod test {
     use super::*;
     use crate::channel_builder::ChannelBuilder;
-    use crate::log_context::GlobalContextTest;
+    use crate::testutil::GlobalContextTest;
     use crate::Schema;
     use prost::bytes::BufMut;
     use serde::Serialize;

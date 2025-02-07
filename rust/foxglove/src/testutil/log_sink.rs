@@ -3,7 +3,7 @@ use crate::{Channel, FoxgloveError, Metadata};
 use parking_lot::Mutex;
 use std::sync::Arc;
 
-pub(crate) struct MockSink;
+pub struct MockSink;
 
 impl LogSink for MockSink {
     fn log(
@@ -22,7 +22,7 @@ pub struct LogCall {
     pub metadata: Metadata,
 }
 
-pub(crate) struct RecordingSink {
+pub struct RecordingSink {
     pub recorded: Mutex<Vec<LogCall>>,
 }
 
@@ -51,7 +51,16 @@ impl LogSink for RecordingSink {
     }
 }
 
-pub(crate) struct ErrorSink;
+pub struct ErrorSink;
+
+#[derive(Debug, thiserror::Error)]
+struct StrError(&'static str);
+
+impl std::fmt::Display for StrError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(self.0)
+    }
+}
 
 impl LogSink for ErrorSink {
     fn log(
@@ -60,6 +69,8 @@ impl LogSink for ErrorSink {
         _msg: &[u8],
         _metadata: &Metadata,
     ) -> Result<(), FoxgloveError> {
-        Err(FoxgloveError::Fatal("ErrorSink always fails".to_string()))
+        Err(FoxgloveError::Unspecified(Box::new(StrError(
+            "ErrorSink always fails",
+        ))))
     }
 }

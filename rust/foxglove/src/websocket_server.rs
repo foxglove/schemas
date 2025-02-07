@@ -159,6 +159,13 @@ impl WebSocketServerHandle {
         self.0.runtime()
     }
 
+    /// Publishes the current server timestamp to all clients.
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub async fn broadcast_time(&self, timestamp_nanos: u64) {
+        self.0.broadcast_time(timestamp_nanos).await;
+    }
+
     /// Publishes parameter values to all clients.
     #[doc(hidden)]
     #[cfg(feature = "unstable")]
@@ -181,6 +188,15 @@ impl WebSocketServerHandle {
 pub struct WebSocketServerBlockingHandle(WebSocketServerHandle);
 
 impl WebSocketServerBlockingHandle {
+    /// Publishes the current server timestamp to all clients.
+    #[doc(hidden)]
+    #[cfg(feature = "unstable")]
+    pub async fn broadcast_time(&self, timestamp_nanos: u64) {
+        self.0
+            .runtime()
+            .block_on(self.0.broadcast_time(timestamp_nanos))
+    }
+
     /// Publishes parameter values to all clients.
     #[doc(hidden)]
     #[cfg(feature = "unstable")]

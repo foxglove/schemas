@@ -22,13 +22,11 @@
     "reportUnusedDisableDirectives": "error"
   },
   "jest.jestCommandLine": "yarn test",
-
   "python.analysis.typeCheckingMode": "strict",
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "[rust]": {
-    "editor.defaultFormatter": "rust-lang.rust-analyzer",
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
   }
 }

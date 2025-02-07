@@ -1,15 +1,15 @@
 use std::{collections::HashSet, sync::Arc};
 
-use crate::testutil::RecordingServerListener;
-use crate::websocket::{
-    create_server, Capability, ClientChannelId, Parameter, ParameterType, ParameterValue,
-    ServerOptions, SUBPROTOCOL,
+use super::tests::connect_client;
+use super::{
+    create_server, protocol, Capability, ClientChannelId, Parameter, ParameterType, ParameterValue,
+    ServerOptions,
 };
-use bytes::{BufMut, BytesMut};
+use crate::testutil::RecordingServerListener;
+use bytes::{Buf, BufMut, BytesMut};
 use futures_util::{SinkExt, StreamExt};
 use serde_json::{json, Value};
-use tokio::time::sleep;
-use tokio_tungstenite::tungstenite::{client::IntoClientRequest, http::HeaderValue, Message};
+use tokio_tungstenite::tungstenite::Message;
 
 #[tokio::test]
 async fn test_client_advertising() {
@@ -99,7 +99,7 @@ async fn test_client_advertising() {
         .expect("Failed to send unadvertise");
 
     // FG-10395 replace this with something more precise
-    sleep(std::time::Duration::from_millis(10)).await;
+    tokio::time::sleep(std::time::Duration::from_millis(10)).await;
 
     // Server should have received one message
     let mut received = recording_listener.take_message_data();
@@ -119,6 +119,33 @@ async fn test_client_advertising() {
 
     ws_client.close(None).await.unwrap();
     server.stop().await;
+}
+
+#[tokio::test]
+async fn test_broadcast_time() {
+    let server = create_server(ServerOptions {
+        capabilities: Some(HashSet::from([Capability::Time])),
+        ..Default::default()
+    });
+    let addr = server
+        .start("127.0.0.1", 0)
+        .await
+        .expect("Failed to start server");
+
+    let mut ws_client = connect_client(addr).await;
+    _ = ws_client.next().await.expect("serverInfo");
+
+    server.broadcast_time(42).await;
+    let msg = ws_client
+        .next()
+        .await
+        .expect("no message received")
+        .expect("failed to parse message");
+    let Message::Binary(mut buf) = msg else {
+        panic!("unexpected message type");
+    };
+    assert_eq!(buf.get_u8(), protocol::server::BinaryOpcode::TimeData as u8);
+    assert_eq!(buf.get_u64_le(), 42);
 }
 
 #[tokio::test]
@@ -155,29 +182,4 @@ async fn test_parameter_values() {
     assert_eq!(msg["parameters"][0]["value"], 1.23);
 
     server.stop().await;
-}
-
-/// Connect to a server, ensuring the protocol header is set, and return the client WS stream
-async fn connect_client(
-    addr: String,
-) -> tokio_tungstenite::WebSocketStream<tokio_tungstenite::MaybeTlsStream<tokio::net::TcpStream>> {
-    let mut request = format!("ws://{addr}/")
-        .into_client_request()
-        .expect("Failed to build request");
-
-    request.headers_mut().insert(
-        "sec-websocket-protocol",
-        HeaderValue::from_static(SUBPROTOCOL),
-    );
-
-    let (ws_stream, response) = tokio_tungstenite::connect_async(request)
-        .await
-        .expect("Failed to connect");
-
-    assert_eq!(
-        response.headers().get("sec-websocket-protocol"),
-        Some(&HeaderValue::from_static(SUBPROTOCOL))
-    );
-
-    ws_stream
 }

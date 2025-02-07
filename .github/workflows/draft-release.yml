@@ -47,7 +47,7 @@ jobs:
           git config user.email "support@foxglove.dev"
           git checkout -b "${{ env.SDK_BRANCH }}"
           git add .
-          git commit -m "Release SDK version ${{ env.SDK_VERSION }}"
+          git commit -m "Release '${{ env.SDK_TAG }}'"
           git push -f origin "${{ env.SDK_BRANCH }}"
 
       - name: Create draft release

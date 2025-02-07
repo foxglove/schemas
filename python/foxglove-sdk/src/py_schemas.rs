@@ -632,7 +632,7 @@ impl From<PointCloud> for foxglove::schemas::PointCloud {
             pose: Some(value.pose.into()),
             point_stride: value.point_stride,
             fields: value.fields.into_iter().map(|f| f.into()).collect(),
-            data: value.data,
+            data: bytes::Bytes::from(value.data),
         }
     }
 }

@@ -3,18 +3,19 @@
 //! see https://pyo3.rs/v0.23.4/class.html#no-generic-parameters
 //! Spike: serialize python messages on the rust side
 
-use foxglove::{Channel, ChannelBuilder, Encode, PartialMetadata};
+use crate::errors::PyFoxgloveError;
+use foxglove::schemas::{PointCloud, SceneUpdate};
+use foxglove::{Channel, ChannelBuilder, Encode, PartialMetadata, TypedChannel};
 use pyo3::types::{PyBytes, PyList};
 use pyo3::{prelude::*, py_run};
 use std::collections::BTreeMap;
+use std::fs::metadata;
 use std::sync::Arc;
-
-use crate::errors::PyFoxgloveError;
 
 // todo: may want TypedChannel here, but then we need to generate concrete pyclasses for each schema
 // since pyo3 doesn't support generics
 #[pyclass]
-pub(crate) struct BaseSceneUpdateChannel(Arc<Channel>);
+pub(crate) struct BaseSceneUpdateChannel(TypedChannel<SceneUpdate>);
 
 #[pymethods]
 impl BaseSceneUpdateChannel {
@@ -33,7 +34,7 @@ impl BaseSceneUpdateChannel {
             .message_encoding(message_encoding)
             .schema(schema)
             .metadata(metadata.unwrap_or_default())
-            .build()
+            .build_typed()
             .map_err(PyFoxgloveError::from)?;
 
         Ok(BaseSceneUpdateChannel(channel))
@@ -51,23 +52,19 @@ impl BaseSceneUpdateChannel {
     ) -> PyResult<()> {
         // Encode fg schemas
         let update = foxglove::schemas::SceneUpdate::from(msg);
-        let mut buf = Vec::new();
-        update
-            .encode(&mut buf)
-            .expect("Failed to encode SceneUpdate");
 
         let metadata = PartialMetadata {
             sequence,
             log_time,
             publish_time,
         };
-        self.0.log_with_meta(&buf, metadata);
+        self.0.log_with_meta(&update, metadata);
         Ok(())
     }
 }
 
 #[pyclass]
-pub(crate) struct BasePointCloudChannel(Arc<Channel>);
+pub(crate) struct BasePointCloudChannel(TypedChannel<PointCloud>);
 
 #[pymethods]
 impl BasePointCloudChannel {
@@ -86,7 +83,7 @@ impl BasePointCloudChannel {
             .message_encoding(message_encoding)
             .schema(schema)
             .metadata(metadata.unwrap_or_default())
-            .build()
+            .build_typed()
             .map_err(PyFoxgloveError::from)?;
 
         Ok(BasePointCloudChannel(channel))
@@ -104,17 +101,13 @@ impl BasePointCloudChannel {
     ) -> PyResult<()> {
         // Encode fg schemas
         let update = foxglove::schemas::PointCloud::from(msg);
-        let mut buf = Vec::new();
-        update
-            .encode(&mut buf)
-            .expect("Failed to encode SceneUpdate");
 
         let metadata = PartialMetadata {
             sequence,
             log_time,
             publish_time,
         };
-        self.0.log_with_meta(&buf, metadata);
+        self.0.log_with_meta(&update, metadata);
         Ok(())
     }
 }
@@ -151,51 +144,40 @@ impl OptimizedPointCloudChannel {
         &self,
         // see https://pyo3.rs/v0.23.4/class.html#no-generic-parameters -- need to generate
         // concrete classes for each schema
-        msg: Py<crate::py_schemas::OptimizedPointCloud>,
+        msg: Bound<'py, crate::py_schemas::OptimizedPointCloud>,
         publish_time: Option<u64>,
         log_time: Option<u64>,
         sequence: Option<u32>,
     ) -> PyResult<()> {
-        Python::with_gil(move |py| {
-            let bound = msg.bind(py);
-            // let bound = bound.extract::<crate::py_schemas::OptimizedPointCloud>()?;
-            // Get PyRef<T>
-            let obj_ref = bound.borrow();
-            let data = &obj_ref.data;
-            let data = data.as_bytes(py);
-            let data = bytes::Bytes::from_owner(data);
+        let bytes_ref = msg.borrow();
+        let slice = bytes_ref.data.as_bytes(msg.py());
 
-            let point_cloud = foxglove::schemas::PointCloud {
-                timestamp: None,
-                frame_id: "".to_string(),
-                pose: None,
-                point_stride: 0,
-                fields: vec![],
-                data: data,
-            };
-        });
+        // Safety: cast slice from &[u8] to static.
+        // This is not safe if log_with_meta or we keep a copy of the Bytes object, but we don't.
+        // It's only valid for the duration of this function.
+        let bytes = unsafe { bytes::Bytes::from_static(std::mem::transmute(slice)) };
 
-        // Encode fg schemas
-        // let update = foxglove::schemas::PointCloud::from(msg);
-        // let update = foxglove::schemas::PointCloud {
-        //     timestamp: None,
-        //     frame_id: "".to_string(),
-        //     pose: None,
-        //     point_stride: 0,
-        //     fields: vec![],
-        //     data: vec![],
-        // };
-        // let mut buf = Vec::new();
-        // update
-        //     .encode(&mut buf)
-        //     .expect("Failed to encode SceneUpdate");
+        let point_cloud = foxglove::schemas::PointCloud {
+            timestamp: None,
+            frame_id: "".to_string(),
+            pose: None,
+            point_stride: 0,
+            fields: vec![],
+            data: bytes,
+        };
 
-        // let metadata = PartialMetadata {
-        //     sequence,
-        //     log_time,
-        //     publish_time,
-        // };
-        // self.0.log_with_meta(&buf, metadata);
+        let mut buf = Vec::new();
+        point_cloud
+            .encode(&mut buf)
+            .expect("Failed to encode SceneUpdate");
+
+        let metadata = PartialMetadata {
+            sequence,
+            log_time,
+            publish_time,
+        };
+        self.0.log_with_meta(&buf, metadata);
+
         Ok(())
     }
 }

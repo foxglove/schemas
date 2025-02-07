@@ -193,8 +193,9 @@ pub use runtime::shutdown_runtime;
 pub(crate) use time::nanoseconds_since_epoch;
 #[doc(hidden)]
 #[cfg(feature = "unstable")]
+pub use websocket::{Capability, Parameter, ParameterType, ParameterValue};
 pub use websocket::{
-    Capability, ClientChannelId, ClientId, Parameter, ParameterType, ParameterValue, ServerListener,
+    ChannelView, Client, ClientChannelId, ClientChannelView, ClientId, ServerListener,
 };
 pub use websocket_server::{WebSocketServer, WebSocketServerBlockingHandle, WebSocketServerHandle};
 

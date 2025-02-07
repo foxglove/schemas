@@ -209,7 +209,8 @@ async fn test_advertise_to_client() {
 
     let subscriptions = recording_listener.take_subscribe();
     assert_eq!(subscriptions.len(), 1);
-    assert!(Arc::ptr_eq(&subscriptions[0].1, &ch));
+    assert_eq!(subscriptions[0].1.id, ch.id);
+    assert_eq!(subscriptions[0].1.topic, ch.topic);
 
     server.stop().await;
 }
@@ -315,15 +316,21 @@ async fn test_log_only_to_subscribers() {
 
     let subscriptions = recording_listener.take_subscribe();
     assert_eq!(subscriptions.len(), 4);
-    assert!(Arc::ptr_eq(&subscriptions[0].1, &ch1));
-    assert!(Arc::ptr_eq(&subscriptions[1].1, &ch2));
-    assert!(Arc::ptr_eq(&subscriptions[2].1, &ch1));
-    assert!(Arc::ptr_eq(&subscriptions[3].1, &ch2));
+    assert_eq!(subscriptions[0].1.id, ch1.id);
+    assert_eq!(subscriptions[1].1.id, ch2.id);
+    assert_eq!(subscriptions[2].1.id, ch1.id);
+    assert_eq!(subscriptions[3].1.id, ch2.id);
+    assert_eq!(subscriptions[0].1.topic, ch1.topic);
+    assert_eq!(subscriptions[1].1.topic, ch2.topic);
+    assert_eq!(subscriptions[2].1.topic, ch1.topic);
+    assert_eq!(subscriptions[3].1.topic, ch2.topic);
 
     let unsubscriptions = recording_listener.take_unsubscribe();
     assert_eq!(unsubscriptions.len(), 2);
-    assert!(Arc::ptr_eq(&unsubscriptions[0].1, &ch1));
-    assert!(Arc::ptr_eq(&unsubscriptions[1].1, &ch2));
+    assert_eq!(unsubscriptions[0].1.id, ch1.id);
+    assert_eq!(unsubscriptions[1].1.id, ch2.id);
+    assert_eq!(unsubscriptions[0].1.topic, ch1.topic);
+    assert_eq!(unsubscriptions[1].1.topic, ch2.topic);
 
     let metadata = Metadata {
         log_time: 123456,

@@ -34,9 +34,58 @@ mod protocol;
 #[cfg(test)]
 mod tests;
 
-/// An arbitrary integer unique identifier for a client connection.
+/// Identifies a client connection. Unique for the duration of the server's lifetime.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub struct ClientId(u32);
+
+/// A connected client session with the websocket server.
+#[derive(Debug)]
+pub struct Client<'a>(&'a ConnectedClient);
+
+impl Client<'_> {
+    /// Returns the client ID.
+    pub fn id(&self) -> ClientId {
+        self.0.id
+    }
+}
+
+/// Information about a client channel.
+#[derive(Debug)]
+pub struct ClientChannelView<'a> {
+    id: ClientChannelId,
+    topic: &'a str,
+}
+
+impl ClientChannelView<'_> {
+    /// Returns the client channel ID.
+    pub fn id(&self) -> ClientChannelId {
+        self.id
+    }
+
+    /// Returns the topic of the client channel.
+    pub fn topic(&self) -> &str {
+        self.topic
+    }
+}
+
+/// Information about a channel.
+#[derive(Debug)]
+pub struct ChannelView<'a> {
+    id: ChannelId,
+    topic: &'a str,
+}
+
+impl ChannelView<'_> {
+    /// Returns the channel ID.
+    pub fn id(&self) -> ChannelId {
+        self.id
+    }
+
+    /// Returns the topic of the channel.
+    pub fn topic(&self) -> &str {
+        self.topic
+    }
+}
 
 pub(crate) const SUBPROTOCOL: &str = "foxglove.sdk.v1";
 
@@ -103,21 +152,26 @@ pub(crate) struct Server {
 /// handling client message events.
 pub trait ServerListener: Send + Sync {
     /// Callback invoked when a client message is received.
-    fn on_message_data(&self, _client_id: ClientId, _channel_id: ClientChannelId, _payload: &[u8]) {
+    fn on_message_data(
+        &self,
+        _client: Client,
+        _client_channel: ClientChannelView,
+        _payload: &[u8],
+    ) {
     }
     /// Callback invoked when a client subscribes to a channel.
     /// Only invoked if the channel is associated with the server and isn't already subscribed to by the client.
-    fn on_subscribe(&self, _client_id: ClientId, _channel_id: Arc<Channel>) {}
+    fn on_subscribe(&self, _client: Client, _channel: ChannelView) {}
     /// Callback invoked when a client unsubscribes from a channel.
     /// Only invoked for channels that had an active subscription from the client.
-    fn on_unsubscribe(&self, _client_id: ClientId, _channel_id: Arc<Channel>) {}
+    fn on_unsubscribe(&self, _client: Client, _channel: ChannelView) {}
     /// Callback invoked when a client advertises a client channel. Requires the "clientPublish" capability.
-    fn on_client_advertise(&self, _client_id: ClientId, _channel: &ClientChannel) {}
+    fn on_client_advertise(&self, _client: Client, _channel: ClientChannelView) {}
     /// Callback invoked when a client unadvertises a client channel. Requires the "clientPublish" capability.
-    fn on_client_unadvertise(&self, _client_id: ClientId, _channel_id: ClientChannelId) {}
+    fn on_client_unadvertise(&self, _client: Client, _channel: ClientChannelView) {}
 }
 
-/// State for a client maintained by the server
+/// A connected client session with the websocket server.
 struct ConnectedClient {
     id: ClientId,
     addr: SocketAddr,
@@ -130,7 +184,7 @@ struct ConnectedClient {
     /// Subscriptions from this client
     subscriptions: parking_lot::Mutex<BiHashMap<ChannelId, SubscriptionId>>,
     /// Channels advertised by this client
-    advertised_channels: parking_lot::Mutex<HashMap<ClientChannelId, ClientChannel>>,
+    advertised_channels: parking_lot::Mutex<HashMap<ClientChannelId, Arc<ClientChannel>>>,
     /// Optional callback handler for a server implementation
     server_listener: Option<Arc<dyn ServerListener>>,
     server: Weak<Server>,
@@ -191,9 +245,9 @@ impl ConnectedClient {
             Some(protocol::client::BinaryOpcode::MessageData) => {
                 match protocol::client::parse_binary_message(&msg_bytes) {
                     Ok((channel_id, payload)) => {
-                        {
+                        let client_channel = {
                             let advertised_channels = self.advertised_channels.lock();
-                            if !advertised_channels.contains_key(&channel_id) {
+                            let Some(channel) = advertised_channels.get(&channel_id) else {
                                 tracing::error!(
                                     "Received message for unknown channel: {}",
                                     channel_id
@@ -201,11 +255,19 @@ impl ConnectedClient {
                                 self.send_error(format!("Unknown channel ID: {}", channel_id));
                                 // Do not forward to server listener
                                 return;
-                            }
-                        }
+                            };
+                            channel.clone()
+                        };
                         // Call the handler after releasing the advertised_channels lock
                         if let Some(handler) = self.server_listener.as_ref() {
-                            handler.on_message_data(self.id, channel_id, payload);
+                            handler.on_message_data(
+                                Client(self),
+                                ClientChannelView {
+                                    id: client_channel.id,
+                                    topic: &client_channel.topic,
+                                },
+                                payload,
+                            );
                         }
                     }
                     Err(err) => {
@@ -225,13 +287,14 @@ impl ConnectedClient {
     }
 
     fn on_unadvertise(&self, mut channel_ids: Vec<ClientChannelId>) {
+        let mut client_channels = Vec::with_capacity(channel_ids.len());
         // Using a limited scope and iterating twice to avoid holding the lock on advertised_channels while calling on_client_unadvertise
         {
             let mut advertised_channels = self.advertised_channels.lock();
             let mut i = 0;
             while i < channel_ids.len() {
                 let id = channel_ids[i];
-                if advertised_channels.remove(&id).is_none() {
+                let Some(channel) = advertised_channels.remove(&id) else {
                     // Remove the channel ID from the list so we don't invoke the on_client_unadvertise callback
                     channel_ids.swap_remove(i);
                     self.send_warning(format!(
@@ -239,14 +302,21 @@ impl ConnectedClient {
                         id
                     ));
                     continue;
-                }
+                };
+                client_channels.push(channel.clone());
                 i += 1;
             }
         }
         // Call the handler after releasing the advertised_channels lock
         if let Some(handler) = self.server_listener.as_ref() {
-            for id in channel_ids {
-                handler.on_client_unadvertise(self.id, id);
+            for (id, client_channel) in channel_ids.iter().cloned().zip(client_channels) {
+                handler.on_client_unadvertise(
+                    Client(self),
+                    ClientChannelView {
+                        id,
+                        topic: &client_channel.topic,
+                    },
+                );
             }
         }
     }
@@ -259,7 +329,7 @@ impl ConnectedClient {
 
         for channel in channels {
             // Using a limited scope here to avoid holding the lock on advertised_channels while calling on_client_advertise
-            {
+            let client_channel = {
                 match self.advertised_channels.lock().entry(channel.id) {
                     Entry::Occupied(_) => {
                         self.send_warning(format!(
@@ -269,14 +339,22 @@ impl ConnectedClient {
                         continue;
                     }
                     Entry::Vacant(entry) => {
-                        entry.insert(channel.clone());
+                        let client_channel = Arc::new(channel);
+                        entry.insert(client_channel.clone());
+                        client_channel
                     }
                 }
-            }
+            };
 
             // Call the handler after releasing the advertised_channels lock
             if let Some(handler) = self.server_listener.as_ref() {
-                handler.on_client_advertise(self.id, &channel);
+                handler.on_client_advertise(
+                    Client(self),
+                    ClientChannelView {
+                        id: client_channel.id,
+                        topic: &client_channel.topic,
+                    },
+                );
             }
         }
     }
@@ -311,7 +389,13 @@ impl ConnectedClient {
 
         // Finally call the handler for each channel
         for channel in unsubscribed_channels {
-            handler.on_unsubscribe(self.id, channel);
+            handler.on_unsubscribe(
+                Client(self),
+                ChannelView {
+                    id: channel.id,
+                    topic: &channel.topic,
+                },
+            );
         }
     }
 
@@ -371,7 +455,13 @@ impl ConnectedClient {
                 subscription.id
             );
             if let Some(handler) = self.server_listener.as_ref() {
-                handler.on_subscribe(self.id, channel);
+                handler.on_subscribe(
+                    Client(self),
+                    ChannelView {
+                        id: channel.id,
+                        topic: &channel.topic,
+                    },
+                );
             }
         }
     }
@@ -398,6 +488,15 @@ impl ConnectedClient {
         self.data_plane_tx.try_send(message).unwrap_or_else(|err| {
             tracing::warn!("Failed to send status to client {}: {err}", self.addr)
         });
+    }
+}
+
+impl std::fmt::Debug for ConnectedClient {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Client")
+            .field("id", &self.id)
+            .field("address", &self.addr)
+            .finish()
     }
 }
 

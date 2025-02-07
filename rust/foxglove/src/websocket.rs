@@ -2,8 +2,10 @@
 
 use crate::channel::ChannelId;
 use crate::cow_vec::CowVec;
-pub use crate::websocket::protocol::client::{ClientChannel, ClientChannelId};
-use crate::websocket::protocol::client::{ClientMessage, Subscription, SubscriptionId};
+pub use crate::websocket::protocol::client::ClientChannelId;
+use crate::websocket::protocol::client::{
+    ClientChannel, ClientMessage, Subscription, SubscriptionId,
+};
 pub use crate::websocket::protocol::server::Capability;
 #[cfg(feature = "unstable")]
 pub use crate::websocket::protocol::server::{Parameter, ParameterType, ParameterValue};

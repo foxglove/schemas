@@ -85,7 +85,7 @@ pub struct Subscription {
 }
 
 #[doc(hidden)]
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Clone, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ClientChannel {
     pub id: ClientChannelId,

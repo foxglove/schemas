@@ -189,16 +189,24 @@ fn shutdown(py: Python<'_>) {
 /// Our public API is in the `python` directory.
 /// Rust bindings are exported as `_foxglove_py` and should not be imported directly.
 #[pymodule]
-fn _foxglove_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    pyo3_log::init();
-    m.add_function(wrap_pyfunction!(enable_log_forwarding, m)?)?;
-    m.add_function(wrap_pyfunction!(disable_log_forwarding, m)?)?;
-    m.add_function(wrap_pyfunction!(shutdown, m)?)?;
-    m.add_function(wrap_pyfunction!(record_file, m)?)?;
-    m.add_function(wrap_pyfunction!(start_server, m)?)?;
-    m.add_function(wrap_pyfunction!(get_channel_for_topic, m)?)?;
-    m.add_class::<BaseChannel>()?;
-    m.add_class::<PyWebSocketServer>()?;
-    m.add_class::<PyMcapWriter>()?;
-    Ok(())
+mod _foxglove_py {
+    #[pymodule_export]
+    use super::disable_log_forwarding;
+    #[pymodule_export]
+    use super::enable_log_forwarding;
+    #[pymodule_export]
+    use super::get_channel_for_topic;
+    #[pymodule_export]
+    use super::record_file;
+    #[pymodule_export]
+    use super::shutdown;
+    #[pymodule_export]
+    use super::start_server;
+
+    #[pymodule_export]
+    use super::BaseChannel;
+    #[pymodule_export]
+    use super::PyMcapWriter;
+    #[pymodule_export]
+    use super::PyWebSocketServer;
 }

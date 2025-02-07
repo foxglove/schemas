@@ -19,8 +19,6 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # needed to get the previous release tag
 
       - run: corepack enable
 
@@ -39,13 +37,9 @@ jobs:
           fi
 
       - run: yarn install --immutable
-      - run: yarn bump-sdk-version "${{ env.SDK_VERSION }}"
 
-      - name: Detect previous version
-        id: previous-release
-        run: |
-          tag=$(git describe --tags --abbrev=0 --match "sdk/v*")
-          echo "tag=$tag" | tee -a $GITHUB_OUTPUT
+      - id: bump-version
+        run: yarn bump-sdk-version "${{ env.SDK_VERSION }}"
 
       - name: Commit and push branch
         run: |
@@ -64,5 +58,5 @@ jobs:
             --title "${{ env.SDK_TAG }}" \
             --target "${{ env.SDK_BRANCH }}" \
             --generate-notes \
-            --notes-start-tag "${{ steps.previous-release.outputs.tag }}" \
+            --notes-start-tag "sdk/v${{ steps.bump-version.outputs.prev-version }}" \
             --draft

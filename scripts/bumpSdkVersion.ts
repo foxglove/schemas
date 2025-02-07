@@ -1,22 +1,28 @@
-import { spawn } from "child_process";
-import fs from "fs/promises";
+import { spawnSync } from "child_process";
+import { appendFile, readFile, writeFile } from "fs/promises";
 import { glob } from "glob";
 import path from "path";
+import semver from "semver";
 
-const versionRegex = /^version\s*=\s*"[^"]*"/m;
+const versionRegex = /^version\s*=\s*"([^"]*)"/m;
 
 async function main() {
-  const newVersion = process.argv[2];
-  if (newVersion?.startsWith("v") !== true) {
+  const newVersionV = process.argv[2];
+  if (newVersionV?.startsWith("v") !== true) {
     console.log("Usage: bumpSdkVersion.ts <version>");
-    console.log("Version must start with 'v'");
+    console.log("<version> must start with 'v'");
     process.exit(1);
   }
 
-  // Remove the 'v' prefix for the actual version string
-  const versionNumber = newVersion.slice(1);
+  // Remove the 'v' prefix
+  const newVersion = newVersionV.slice(1);
+  if (!semver.valid(newVersion)) {
+    console.log("Usage: bumpSdkVersion.ts <version>");
+    console.log(`"${newVersionV}" is not a valid semver version`);
+    process.exit(1);
+  }
 
-  // Find all Cargo.toml files from workspace root
+  // Find all Cargo.toml files in the workspace
   const workspaceRoot = path.resolve(__dirname, "..");
   const cargoFiles = await glob("**/Cargo.toml", {
     ignore: ["**/target/**", "**/node_modules/**"],
@@ -25,46 +31,65 @@ async function main() {
   });
 
   let success = true;
+  let prevVersion: string | undefined;
+
   for (const cargoFile of cargoFiles) {
     console.log(`Checking ${cargoFile}...`);
-    const content = await fs.readFile(cargoFile, "utf8");
+    const content = await readFile(cargoFile, "utf8");
 
     if (!versionRegex.test(content)) {
       console.log(`  ℹ️ Skipped, does not contain version field`);
       continue;
     }
 
-    // Only update the main version field, not dependencies
-    const updatedContent = content.replace(versionRegex, `version = "${versionNumber}"`);
+    prevVersion = versionRegex.exec(content)?.[1] ?? "";
 
+    // check that newVersion is greater than prevVersion
+    if (semver.compare(newVersion, prevVersion) <= 0) {
+      console.error(
+        `  ❌ New version ${newVersion} must be greater than previous version ${prevVersion}`,
+      );
+      success = false;
+      continue;
+    }
+
+    const updatedContent = content.replace(versionRegex, `version = "${newVersion}"`);
     if (content === updatedContent) {
-      const oldVersion = versionRegex.exec(content)?.[0] ?? '""';
-      console.error(`  ❌ Version could not be updated from ${oldVersion} to "${versionNumber}"`);
+      console.error(`  ❌ Version could not be updated from "${prevVersion}" to "${newVersion}"`);
       success = false;
     } else {
-      await fs.writeFile(cargoFile, updatedContent);
-      console.log(`  ✅ Updated version in ${cargoFile} to ${versionNumber}`);
+      await writeFile(cargoFile, updatedContent);
+      console.log(`  ✅ Updated version in ${cargoFile} to ${newVersion}`);
     }
   }
 
-  if (!success) {
+  if (!success || !prevVersion) {
     console.error("\n❌ Some versions could not be updated");
     process.exit(1);
   }
 
-  // run cargo check
-  console.log("\nRunning cargo check...");
-  const cargoCheck = spawn("cargo", ["check"], {
+  // run cargo tree --workspace
+  // we don't need the output, only check the exit code
+  console.log("\nValidating Cargo.toml...");
+  const { status, stderr } = spawnSync("cargo", ["tree", "--workspace"], {
     cwd: workspaceRoot,
-    stdio: "inherit",
   });
 
-  const exitCode = await new Promise<number>((resolve) => {
-    cargoCheck.on("close", resolve);
-  });
+  if (status !== 0) {
+    console.error(stderr.toString());
+    console.error("\n❌ Failed to validate Cargo.toml");
+    process.exit(status);
+  }
 
-  if (exitCode !== 0) {
-    process.exit(exitCode);
+  console.log("\n✅ Success!");
+
+  // github action outputs
+  const githubOutput = process.env.GITHUB_OUTPUT;
+  if (githubOutput) {
+    await appendFile(
+      path.resolve(githubOutput),
+      `prev-version=${prevVersion}\nnew-version=${newVersion}\n`,
+    );
   }
 }
 

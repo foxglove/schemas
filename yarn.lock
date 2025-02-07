@@ -1513,6 +1513,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/semver@npm:^7":
+  version: 7.5.8
+  resolution: "@types/semver@npm:7.5.8"
+  checksum: 10c0/8663ff927234d1c5fcc04b33062cb2b9fcfbe0f5f351ed26c4d1e1581657deebd506b41ff7fdf89e787e3d33ce05854bc01686379b89e9c49b564c4cfa988efa
+  languageName: node
+  linkType: hard
+
 "@types/stack-utils@npm:^2.0.0":
   version: 2.0.1
   resolution: "@types/stack-utils@npm:2.0.1"
@@ -3433,6 +3440,7 @@ __metadata:
     "@types/glob": "npm:^8.1.0"
     "@types/jest": "npm:29.5.14"
     "@types/node": "npm:22.13.0"
+    "@types/semver": "npm:^7"
     "@typescript-eslint/eslint-plugin": "npm:8.22.0"
     "@typescript-eslint/parser": "npm:8.22.0"
     ajv: "npm:^8.12.0"
@@ -3451,6 +3459,7 @@ __metadata:
     prettier-plugin-toml: "npm:^2.0.1"
     protobufjs: "npm:^7.2.5"
     rimraf: "npm:^6.0.1"
+    semver: "npm:^7.7.1"
     ts-jest: "npm:29.2.5"
     ts-node: "npm:^10.9.2"
     typescript: "npm:5.7.3"
@@ -6379,6 +6388,15 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 10c0/bcd1c03209b4be7d8ca86c976a0410beba7d4ec1d49d846a4be154b958db1ff5eaee50760c1d4f4070b19dee3236b8672d3e09642c53ea23740398bba2538a2d
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.7.1":
+  version: 7.7.1
+  resolution: "semver@npm:7.7.1"
+  bin:
+    semver: bin/semver.js
+  checksum: 10c0/fd603a6fb9c399c6054015433051bdbe7b99a940a8fb44b85c2b524c4004b023d7928d47cb22154f8d054ea7ee8597f586605e05b52047f048278e4ac56ae958
   languageName: node
   linkType: hard
 

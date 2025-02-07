@@ -7,7 +7,9 @@ pub use crate::websocket::protocol::client::{
 pub use crate::websocket::protocol::server::Capability;
 #[cfg(feature = "unstable")]
 pub use crate::websocket::protocol::server::{Parameter, ParameterType, ParameterValue};
-use crate::{get_runtime_handle, Channel, FoxgloveError, LogSink, Metadata};
+use crate::{
+    get_runtime_handle, nanoseconds_since_epoch, Channel, FoxgloveError, LogSink, Metadata,
+};
 use bimap::BiHashMap;
 use bytes::{BufMut, BytesMut};
 use flume::TrySendError;
@@ -17,6 +19,7 @@ use std::collections::HashSet;
 use std::sync::atomic::Ordering::{AcqRel, Acquire, Relaxed};
 use std::sync::atomic::{AtomicBool, AtomicU32};
 use std::sync::Weak;
+use std::time::Duration;
 use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 use thiserror::Error;
 use tokio::runtime::Handle;
@@ -96,6 +99,7 @@ type WebsocketSender = SplitSink<WebSocketStream<TcpStream>, Message>;
 // Queue up to 1024 messages per connected client before dropping messages
 const DEFAULT_MESSAGE_BACKLOG_SIZE: usize = 1024;
 const DEFAULT_CONTROL_PLANE_BACKLOG_SIZE: usize = 64;
+const DEFAULT_ADVERTISE_CLOCK_PERIOD: Duration = Duration::from_millis(1000 / 60);
 
 #[derive(Error, Debug)]
 enum WSError {
@@ -111,6 +115,8 @@ pub(crate) struct ServerOptions {
     pub listener: Option<Arc<dyn ServerListener>>,
     pub capabilities: Option<HashSet<Capability>>,
     pub supported_encodings: Option<HashSet<String>>,
+    pub advertise_clock: bool,
+    pub advertise_clock_period: Option<Duration>,
     pub runtime: Option<Handle>,
 }
 
@@ -120,6 +126,8 @@ impl std::fmt::Debug for ServerOptions {
             .field("session_id", &self.session_id)
             .field("name", &self.name)
             .field("message_backlog_size", &self.message_backlog_size)
+            .field("advertise_clock", &self.advertise_clock)
+            .field("advertise_clock_period", &self.advertise_clock_period)
             .finish()
     }
 }
@@ -148,6 +156,8 @@ pub(crate) struct Server {
     supported_encodings: HashSet<String>,
     /// Token for cancelling all tasks
     cancellation_token: CancellationToken,
+    /// If set, the period at which the server should advertise the local clock.
+    advertise_clock_period: Option<Duration>,
 }
 
 /// Provides a mechanism for registering callbacks for
@@ -505,6 +515,14 @@ impl std::fmt::Debug for ConnectedClient {
 // A websocket server that implements the Foxglove WebSocket Protocol
 impl Server {
     pub fn new(weak_self: Weak<Self>, opts: ServerOptions) -> Self {
+        let mut advertise_clock_period = None;
+        let mut capabilities = opts.capabilities.unwrap_or_default();
+        if opts.advertise_clock {
+            advertise_clock_period = opts
+                .advertise_clock_period
+                .or(Some(DEFAULT_ADVERTISE_CLOCK_PERIOD));
+            capabilities.insert(Capability::Time);
+        }
         Server {
             weak_self,
             started: AtomicBool::new(false),
@@ -517,9 +535,10 @@ impl Server {
             name: opts.name.unwrap_or_default(),
             clients: CowVec::new(),
             channels: parking_lot::RwLock::new(HashMap::new()),
-            capabilities: opts.capabilities.unwrap_or_default(),
+            capabilities,
             supported_encodings: opts.supported_encodings.unwrap_or_default(),
             cancellation_token: CancellationToken::new(),
+            advertise_clock_period,
         }
     }
 
@@ -552,7 +571,19 @@ impl Server {
             .to_string();
 
         let cancellation_token = self.cancellation_token.clone();
-        let server = self.arc().clone();
+        let server = self.arc();
+
+        if let Some(period) = self.advertise_clock_period {
+            let cancellation_token = cancellation_token.clone();
+            let server = server.clone();
+            self.runtime.spawn(async move {
+                tokio::select! {
+                    () = advertise_clock(server, period) => (),
+                    () = cancellation_token.cancelled() => (),
+                }
+            });
+        }
+
         self.runtime.spawn(async move {
             tokio::select! {
                 () = handle_connections(server, listener) => (),
@@ -647,7 +678,6 @@ impl Server {
     }
 
     /// Publish the current timestamp to all clients.
-    #[cfg(feature = "unstable")]
     pub async fn broadcast_time(&self, timestamp_nanos: u64) {
         if !self.capabilities.contains(&Capability::Time) {
             tracing::error!("Server does not support time capability");
@@ -968,6 +998,16 @@ impl LogSink for Server {
 
 pub(crate) fn create_server(opts: ServerOptions) -> Arc<Server> {
     Arc::new_cyclic(|weak_self| Server::new(weak_self.clone(), opts))
+}
+
+/// Periodically advertises the local system time to websocket clients.
+async fn advertise_clock(server: Arc<Server>, period: Duration) {
+    let mut interval = tokio::time::interval(period);
+    loop {
+        interval.tick().await;
+        let now = nanoseconds_since_epoch();
+        server.broadcast_time(now).await;
+    }
 }
 
 // Spawn a new task for each incoming connection

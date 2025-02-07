@@ -20,6 +20,7 @@ async fn test_logging_to_file_and_live_sinks() {
     let port = 9998;
     let server = WebSocketServer::new()
         .bind("127.0.0.1", port)
+        .advertise_clock(false)
         .start()
         .await
         .expect("Failed to start server");

@@ -2,13 +2,14 @@
 
 use std::fmt::Debug;
 use std::sync::Arc;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use tokio::runtime::Handle;
 
 use crate::websocket::{create_server, Server, ServerOptions};
+use crate::websocket_protocol::Capability;
 #[cfg(feature = "unstable")]
-use crate::websocket::{Capability, Parameter};
+use crate::websocket_protocol::Parameter;
 use crate::{get_runtime_handle, FoxgloveError, LogContext, LogSink};
 
 /// A websocket server for live visualization.
@@ -28,6 +29,7 @@ impl Default for WebSocketServer {
             .map(|d| d.as_millis().to_string());
         let options = ServerOptions {
             session_id,
+            advertise_clock: true,
             ..ServerOptions::default()
         };
         Self {
@@ -63,11 +65,31 @@ impl WebSocketServer {
 
     /// Sets the server capabilities to advertise to the client.
     ///
-    /// By default, the server does not advertise any capabilities.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
+    /// Note that some capabilities are advertised automatically when certain features are enabled.
+    /// This method cannot be used to override those advertisements. For example, when the
+    /// [`advertise_clock`][Self::advertise_clock] feature is enabled, the server will advertise
+    /// [`Capability::Time`] in addition to any capabilities enabled with this method.
     pub fn capabilities(mut self, capabilities: impl IntoIterator<Item = Capability>) -> Self {
         self.options.capabilities = Some(capabilities.into_iter().collect());
+        self
+    }
+
+    /// Periodically advertise the local system clock to clients.
+    ///
+    /// When enabled, the server will automatically advertise [`Capability::Time`], regardless of
+    /// whether that capability was set via the [`capabilities`][Self::capabilities] method.
+    ///
+    /// By default, this feature is enabled.
+    pub fn advertise_clock(mut self, enable: bool) -> Self {
+        self.options.advertise_clock = enable;
+        self
+    }
+
+    /// Sets the rate at which to advertise the system clock to clients.
+    ///
+    /// By default, this is equivalent to 60Hz.
+    pub fn advertise_clock_period(mut self, period: Duration) -> Self {
+        self.options.advertise_clock_period = Some(period);
         self
     }
 
@@ -160,8 +182,6 @@ impl WebSocketServerHandle {
     }
 
     /// Publishes the current server timestamp to all clients.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
     pub async fn broadcast_time(&self, timestamp_nanos: u64) {
         self.0.broadcast_time(timestamp_nanos).await;
     }
@@ -189,8 +209,6 @@ pub struct WebSocketServerBlockingHandle(WebSocketServerHandle);
 
 impl WebSocketServerBlockingHandle {
     /// Publishes the current server timestamp to all clients.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
     pub fn broadcast_time(&self, timestamp_nanos: u64) {
         self.0
             .runtime()

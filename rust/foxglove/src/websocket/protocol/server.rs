@@ -14,7 +14,6 @@ use std::collections::HashSet;
 #[repr(u8)]
 pub enum BinaryOpcode {
     MessageData = 1,
-    #[cfg(feature = "unstable")]
     TimeData = 2,
     // ServiceCallResponse = 3,
     // FetchAssetResponse = 4,
@@ -124,7 +123,6 @@ pub enum Capability {
     /// This allows accelerated, slowed, or stepped control over the progress of time. If the
     /// server publishes time data, then timestamps of published messages must originate from the
     /// same time source.
-    #[cfg(feature = "unstable")]
     Time,
 }
 

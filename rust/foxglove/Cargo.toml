@@ -52,8 +52,3 @@ required-features = ["unstable"]
 name = "param-server"
 path = "examples/unstable/param-server.rs"
 required-features = ["unstable"]
-
-[[example]]
-name = "ws-stream-mcap"
-path = "examples/unstable/ws-stream-mcap.rs"
-required-features = ["unstable"]

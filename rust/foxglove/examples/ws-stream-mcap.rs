@@ -13,8 +13,9 @@ use std::time::{Duration, Instant};
 use anyhow::{anyhow, Context, Result};
 use bytes::Buf;
 use clap::Parser;
+use foxglove::websocket_protocol::Capability;
 use foxglove::{
-    Capability, Channel, ChannelBuilder, PartialMetadata, Schema, WebSocketServer,
+    Channel, ChannelBuilder, PartialMetadata, Schema, WebSocketServer,
     WebSocketServerBlockingHandle,
 };
 use mcap::records::{MessageHeader, Record, SchemaHeader};
@@ -57,10 +58,12 @@ fn main() -> Result<()> {
     })
     .expect("Failed to set SIGINT handler");
 
+    // Turn off clock advertisements; we're going to advertise time from the recording.
     let server = WebSocketServer::new()
         .name(file_name)
-        .capabilities([Capability::Time])
         .bind(&args.host, args.port)
+        .capabilities([Capability::Time])
+        .advertise_clock(false)
         .start_blocking()
         .expect("Server failed to start");
 

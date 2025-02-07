@@ -149,8 +149,12 @@ impl OptimizedPointCloudChannel {
         log_time: Option<u64>,
         sequence: Option<u32>,
     ) -> PyResult<()> {
-        let bytes_ref = msg.borrow();
-        let slice = bytes_ref.data.as_bytes(msg.py());
+        let msg_ref = msg.borrow();
+        let slice = msg_ref.data.as_bytes(msg.py());
+
+        let fields = msg_ref
+            .fields
+            .extract::<Vec<crate::py_schemas::PackedElementField>>(msg.py())?;
 
         // Safety: cast slice from &[u8] to static.
         // This is not safe if log_with_meta or we keep a copy of the Bytes object, but we don't.
@@ -160,9 +164,9 @@ impl OptimizedPointCloudChannel {
         let point_cloud = foxglove::schemas::PointCloud {
             timestamp: None,
             frame_id: "".to_string(),
-            pose: None,
-            point_stride: 0,
-            fields: vec![],
+            pose: Some(msg_ref.pose.clone().into()),
+            point_stride: msg_ref.point_stride,
+            fields: fields.into_iter().map(|f| f.into()).collect(),
             data: bytes,
         };
 

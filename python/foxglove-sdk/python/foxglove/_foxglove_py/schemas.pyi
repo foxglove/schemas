@@ -70,3 +70,15 @@ class PointCloud:
         fields: List[PackedElementField],
         data: bytes,
     ) -> "PointCloud": ...
+
+
+class OptimizedPointCloud:
+    def __new__(
+            cls,
+            timestamp: Timestamp,
+            frame_id: str,
+            pose: Pose,
+            point_stride: int,
+            fields: List[PackedElementField],
+            data: bytes,
+    ) -> "PointCloud": ...

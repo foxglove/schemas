@@ -305,6 +305,9 @@ mod _foxglove_py {
         use super::py_channels::BaseSceneUpdateChannel;
 
         #[pymodule_export]
+        use super::py_channels::OptimizedPointCloudChannel;
+
+        #[pymodule_export]
         use super::py_channels::log_point_cloud;
 
         #[pymodule_export]

@@ -11,8 +11,7 @@ import foxglove._foxglove_py
 # Channels and schemas from the pyo3-generated module
 from foxglove._foxglove_py.channels import (
     BasePointCloudChannel,
-    BaseSceneUpdateChannel,
-    log_point_cloud,
+    OptimizedPointCloudChannel,
 )
 
 from foxglove._foxglove_py.schemas import (
@@ -28,6 +27,7 @@ from foxglove._foxglove_py.schemas import (
     CubePrimitive,
     PointCloud,
     PackedElementField,
+    OptimizedPointCloud,
 )
 
 from foxglove._foxglove_py import record_file
@@ -51,7 +51,7 @@ cube_count = 0
 log_count = 1000
 
 
-def make_point_cloud() -> PointCloud:
+def make_point_cloud() -> OptimizedPointCloud:
     # todo: nested enum class may not be practical with stub gen
     FLOAT32 = PackedElementFieldType.Float32
     UINT32 = PackedElementFieldType.Uint32
@@ -67,9 +67,9 @@ def make_point_cloud() -> PointCloud:
         r, g, b, a = [120, 120, 120, 255]
         point_struct.pack_into(buffer, i * point_struct.size, x, y, z, b, g, r, a)
 
-    return PointCloud(
-        timestamp=Timestamp(seconds=int(time.time()), nanos=0),
-        frame_id="box",
+    return OptimizedPointCloud(
+        #timestamp=Timestamp(seconds=int(time.time()), nanos=0),
+        #frame_id="box",
         pose=Pose(
             position=Vector3(x=0, y=0, z=0),
             orientation=Quaternion(x=0, y=0, z=0, w=1),
@@ -85,7 +85,7 @@ def make_point_cloud() -> PointCloud:
     )
 
 
-def scene_update(channel: BaseSceneUpdateChannel) -> None:
+def scene_update(channel: OptimizedPointCloudChannel) -> None:
     cubes = [make_cube_primitive(i) for i in range(cube_count)]
 
     scene_update = SceneUpdate(
@@ -105,7 +105,7 @@ def scene_update(channel: BaseSceneUpdateChannel) -> None:
     channel.log(scene_update)
 
 
-def point_cloud(channel: BasePointCloudChannel) -> None:
+def point_cloud(channel: OptimizedPointCloudChannel) -> None:
     channel.log(make_point_cloud())
 
 
@@ -113,10 +113,10 @@ def main() -> None:
     dir = tempfile.TemporaryDirectory(prefix="foxglove-sdk-profile")
     filepath = path.join(dir.name, mcap_file) if use_temp_dir else mcap_file
     writer = record_file(filepath)
-    box_chan = BaseSceneUpdateChannel(
-        topic="/boxes", message_encoding="protobuf", metadata=None
-    )
-    point_cloud_chan = BasePointCloudChannel(
+    # box_chan = OptimizedPointCloudChannel(
+    #     topic="/boxes", message_encoding="protobuf", metadata=None
+    # )
+    point_cloud_chan = OptimizedPointCloudChannel(
         topic="/point_cloud", message_encoding="protobuf", metadata=None
     )
 
@@ -124,7 +124,7 @@ def main() -> None:
         if counter % (log_count / 10) == 0:
             print(".", end="", flush=True)
 
-        scene_update(box_chan)
+        #scene_update(box_chan)
         point_cloud(point_cloud_chan)
 
         # log_point_cloud(point_cloud_chan, make_point_cloud(), [1, 2, 3])

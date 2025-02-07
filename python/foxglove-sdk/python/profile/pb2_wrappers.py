@@ -109,9 +109,9 @@ def main() -> None:
     dir = tempfile.TemporaryDirectory(prefix="foxglove-sdk-profile")
     filepath = path.join(dir.name, mcap_file) if use_temp_dir else mcap_file
     writer = record_file(filepath)
-    box_chan = foxglove.Channel(
-        topic="/boxes", encoder=FoxgloveSchemaEncoder(), schema=SceneUpdate
-    )
+    # box_chan = foxglove.Channel(
+    #     topic="/boxes", encoder=FoxgloveSchemaEncoder(), schema=SceneUpdate
+    # )
 
     point_cloud_chan = foxglove.Channel(
         topic="/point_cloud", encoder=FoxgloveSchemaEncoder(), schema=PointCloud
@@ -121,7 +121,7 @@ def main() -> None:
         if counter % (log_count / 10) == 0:
             print(".", end="", flush=True)
 
-        scene_update(box_chan)
+        #scene_update(box_chan)
         point_cloud(point_cloud_chan)
 
     print(writer)

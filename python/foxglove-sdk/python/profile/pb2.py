@@ -70,6 +70,7 @@ def scene_update(channel: foxglove.Channel) -> None:
 def main() -> None:
     dir = tempfile.TemporaryDirectory(prefix="foxglove-sdk-profile")
     filepath = path.join(dir.name, mcap_file) if use_temp_dir else mcap_file
+    
     writer = record_file(filepath)
     server = start_server(host="localhost", port=8765)
 

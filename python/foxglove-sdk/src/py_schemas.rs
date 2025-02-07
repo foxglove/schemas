@@ -76,8 +76,8 @@ impl Color {
 #[pyclass]
 #[derive(Clone)]
 pub(crate) struct Pose {
-    position: Vector3,
-    orientation: Quaternion,
+    pub(crate) position: Option<Vector3>,
+    pub(crate) orientation: Option<Quaternion>,
 }
 
 #[pymethods]
@@ -85,17 +85,17 @@ impl Pose {
     #[new]
     fn new(position: PyRef<Vector3>, orientation: PyRef<Quaternion>) -> Self {
         Self {
-            position: Vector3 {
+            position: Some(Vector3 {
                 x: position.x,
                 y: position.y,
                 z: position.z,
-            },
-            orientation: Quaternion {
+            }),
+            orientation: Some(Quaternion {
                 x: orientation.x,
                 y: orientation.y,
                 z: orientation.z,
                 w: orientation.w,
-            },
+            }),
         }
     }
 }
@@ -458,22 +458,25 @@ impl PackedElementField {
 
 #[pyclass]
 pub(crate) struct OptimizedPointCloud {
-    // timestamp: Timestamp,
-    // frame_id: String,
-    // pose: Pose,
-    // point_stride: u32,
-    // fields: Py<PyList>,
+    //timestamp: Timestamp,
+    //frame_id: String,
+    pub(crate) pose: Pose,
+    pub(crate) point_stride: u32,
+    pub(crate) fields: Py<PyList>,
     pub(crate) data: Py<PyBytes>,
 }
 
 #[pymethods]
 impl OptimizedPointCloud {
     #[new]
-    fn new(fields: Py<PyList>, data: Py<PyBytes>) -> Self {
+    fn new(pose: Pose, point_stride: u32, fields: Py<PyList>, data: Py<PyBytes>) -> Self {
         Self {
-            // fields,
+            //timestamp: Timestamp::new(0, 0),
+            //frame_id: "".to_string(),
+            pose,
+            point_stride,
+            fields,
             data,
-            // point_stride: 0,
         }
     }
 }
@@ -566,8 +569,8 @@ impl From<Color> for foxglove::schemas::Color {
 impl From<Pose> for foxglove::schemas::Pose {
     fn from(value: Pose) -> Self {
         Self {
-            position: Some(value.position.into()),
-            orientation: Some(value.orientation.into()),
+            position: value.position.map(|p| p.into()),
+            orientation: value.orientation.map(|p| p.into()),
         }
     }
 }

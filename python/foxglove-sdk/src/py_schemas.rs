@@ -489,12 +489,12 @@ impl OptimizedPointCloud {
 #[pyclass]
 #[derive(Clone)]
 pub(crate) struct PointCloud {
-    timestamp: Timestamp,
-    frame_id: String,
-    pose: Pose,
-    point_stride: u32,
-    fields: Vec<PackedElementField>,
-    data: Vec<u8>,
+    pub(crate) timestamp: Timestamp,
+    pub(crate) frame_id: String,
+    pub(crate) pose: Pose,
+    pub(crate) point_stride: u32,
+    pub(crate) fields: Vec<PackedElementField>,
+    pub(crate) data: Vec<u8>,
 }
 
 #[pymethods]
@@ -634,13 +634,17 @@ impl From<SceneUpdate> for foxglove::schemas::SceneUpdate {
 
 impl From<PointCloud> for foxglove::schemas::PointCloud {
     fn from(value: PointCloud) -> Self {
+        // Pre-allocate vector to avoid reallocation
+        let mut fields = Vec::with_capacity(value.fields.len());
+        fields.extend(value.fields.into_iter().map(|f| f.into()));
+
         Self {
             timestamp: Some(value.timestamp.into()),
             frame_id: value.frame_id,
             pose: Some(value.pose.into()),
             point_stride: value.point_stride,
-            fields: value.fields.into_iter().map(|f| f.into()).collect(),
-            data: bytes::Bytes::from(value.data),
+            fields,
+            data: value.data.into(),
         }
     }
 }

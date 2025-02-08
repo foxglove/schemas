@@ -4,10 +4,13 @@
 //! Spike: serialize python messages on the rust side
 
 use crate::errors::PyFoxgloveError;
+use bytes::Bytes;
 use foxglove::schemas::{PointCloud, SceneUpdate};
 use foxglove::{Channel, ChannelBuilder, Encode, PartialMetadata, TypedChannel};
+use prost::bytes;
 use pyo3::types::{PyBytes, PyList};
 use pyo3::{prelude::*, py_run};
+use std::borrow::Borrow;
 use std::collections::BTreeMap;
 use std::fs::metadata;
 use std::sync::Arc;
@@ -99,21 +102,32 @@ impl BasePointCloudChannel {
         log_time: Option<u64>,
         sequence: Option<u32>,
     ) -> PyResult<()> {
-        // Encode fg schemas
-        let update = foxglove::schemas::PointCloud::from(msg);
+        // Pre-allocate vectors to avoid reallocations
+        let mut fields = Vec::with_capacity(msg.fields.len());
+        fields.extend(msg.fields.into_iter().map(|f| f.into()));
+
+        // Move data directly without cloning
+        let point_cloud = foxglove::schemas::PointCloud {
+            timestamp: Some(msg.timestamp.into()),
+            frame_id: msg.frame_id,
+            pose: Some(msg.pose.into()),
+            point_stride: msg.point_stride,
+            fields,
+            data: msg.data.into(),
+        };
 
         let metadata = PartialMetadata {
             sequence,
             log_time,
             publish_time,
         };
-        self.0.log_with_meta(&update, metadata);
+        self.0.log_with_meta(&point_cloud, metadata);
         Ok(())
     }
 }
 
 #[pyclass]
-pub(crate) struct OptimizedPointCloudChannel(Arc<Channel>);
+pub(crate) struct OptimizedPointCloudChannel(TypedChannel<PointCloud>);
 
 #[pymethods]
 impl OptimizedPointCloudChannel {
@@ -133,7 +147,7 @@ impl OptimizedPointCloudChannel {
             .message_encoding(message_encoding)
             .schema(schema)
             .metadata(metadata.unwrap_or_default())
-            .build()
+            .build_typed()
             .map_err(PyFoxgloveError::from)?;
 
         Ok(OptimizedPointCloudChannel(channel))
@@ -142,43 +156,38 @@ impl OptimizedPointCloudChannel {
     #[pyo3(signature = (msg, publish_time=None, log_time=None, sequence=None))]
     fn log<'py>(
         &self,
-        // see https://pyo3.rs/v0.23.4/class.html#no-generic-parameters -- need to generate
-        // concrete classes for each schema
         msg: Bound<'py, crate::py_schemas::OptimizedPointCloud>,
         publish_time: Option<u64>,
         log_time: Option<u64>,
         sequence: Option<u32>,
     ) -> PyResult<()> {
         let msg_ref = msg.borrow();
-        let slice = msg_ref.data.as_bytes(msg.py());
+        let py = msg.py();
 
-        let fields = msg_ref.fields.iter().map(|f| f.clone().into()).collect();
+        // Get bytes reference without copying
+        let bytes = msg_ref.data.as_bytes(py);
+        // Avoid double allocation by pre-allocating the vector
+        let mut data = Vec::with_capacity(bytes.len());
+        data.extend_from_slice(bytes);
 
-        // Safety: cast slice from &[u8] to static.
-        // This is not safe if log_with_meta or we keep a copy of the Bytes object, but we don't.
-        // It's only valid for the duration of this function.
-        let bytes = unsafe { bytes::Bytes::from_static(std::mem::transmute(slice)) };
-
+        // Create the point cloud with minimal copying
         let point_cloud = foxglove::schemas::PointCloud {
             timestamp: None,
-            frame_id: "".to_string(),
+            frame_id: String::new(),
             pose: Some(msg_ref.pose.clone().into()),
             point_stride: msg_ref.point_stride,
-            fields,
-            data: bytes,
+            fields: msg_ref.fields.iter().map(|f| f.clone().into()).collect(),
+            data: data.into(),
         };
-
-        let mut buf = Vec::new();
-        point_cloud
-            .encode(&mut buf)
-            .expect("Failed to encode SceneUpdate");
 
         let metadata = PartialMetadata {
             sequence,
             log_time,
             publish_time,
         };
-        self.0.log_with_meta(&buf, metadata);
+
+        // Use TypedChannel's log_with_meta which handles the encoding
+        self.0.log_with_meta(&point_cloud, metadata);
 
         Ok(())
     }
@@ -190,27 +199,18 @@ impl OptimizedPointCloudChannel {
 pub(crate) fn log_bytes<'py>(bytes: Bound<'py, PyBytes>) -> PyResult<()> {
     println!("[rust] bytes: {:?}", bytes);
 
+    // Pre-allocate vector to avoid reallocation
+    let bytes_ref = bytes.borrow().as_bytes();
+    let mut data = Vec::with_capacity(bytes_ref.len());
+    data.extend_from_slice(bytes_ref);
+
     let point_cloud = foxglove::schemas::PointCloud {
         timestamp: None,
-        frame_id: "".to_string(),
+        frame_id: String::new(),
         pose: None,
         point_stride: 0,
-        fields: vec![],
-        // extract copies data
-        // data: bytes.extract()?,
-        // as_bytes doesn't copy (I don't think), but to_vec does
-        // https://docs.rs/pyo3/latest/pyo3/types/trait.PyBytesMethods.html
-        // data: bytes.as_bytes().to_vec(),
-        //
-        // ...after prost takes byte references:
-        //
-        // does not live long enough:
-        // data: bytes::Bytes::from_owner(bytes.as_bytes()),
-        // escapes outside of function:
-        // data: bytes::Bytes::from(bytes.as_bytes()),
-        // data: bytes::Bytes::from_owner(b),
-        // still copies
-        data: bytes::Bytes::from(bytes.as_bytes().to_vec()),
+        fields: Vec::new(),
+        data: data.into(),
     };
 
     println!("point_cloud: {:?}", point_cloud);
@@ -227,14 +227,29 @@ pub(crate) fn log_point_cloud<'py>(
     point_cloud: Bound<'py, crate::py_schemas::PointCloud>,
     list: Bound<'py, PyList>,
 ) -> PyResult<()> {
-    println!("pointCloud: {:?}", point_cloud);
+    let point_cloud = point_cloud.borrow();
 
-    // works, but extract does a copy...
-    let point_cloud = point_cloud.extract::<crate::py_schemas::PointCloud>()?;
+    // Pre-allocate vectors to avoid reallocations
+    let mut fields = Vec::with_capacity(point_cloud.fields.len());
+    fields.extend(point_cloud.fields.iter().map(|f| f.clone().into()));
 
-    let update = foxglove::schemas::PointCloud::from(point_cloud);
+    // Create point cloud with minimal copying
+    let cloud = foxglove::schemas::PointCloud {
+        timestamp: Some(point_cloud.timestamp.clone().into()),
+        frame_id: point_cloud.frame_id.clone(),
+        pose: Some(point_cloud.pose.clone().into()),
+        point_stride: point_cloud.point_stride,
+        fields,
+        data: point_cloud.data.clone().into(),
+    };
 
-    for item in list.into_iter() {
+    // Log the point cloud
+    channel
+        .borrow()
+        .0
+        .log_with_meta(&cloud, PartialMetadata::default());
+
+    for item in list.iter() {
         println!("item: {:?}", item);
     }
 

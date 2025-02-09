@@ -2,11 +2,30 @@
 
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use std::time::Duration;
 
 use clap::Parser;
 
-#[path = "common/lib.rs"]
-mod common;
+#[derive(Debug, serde::Serialize, schemars::JsonSchema)]
+struct Message {
+    msg: String,
+    count: u32,
+}
+
+foxglove::static_typed_channel!(pub MSG_CHANNEL, "/msg", Message);
+
+pub fn log_blocking(fps: u8, stop: Arc<AtomicBool>) {
+    let mut counter: u32 = 0;
+    let duration = Duration::from_millis(1000 / u64::from(fps));
+    while !stop.load(Ordering::Relaxed) {
+        MSG_CHANNEL.log(&Message {
+            msg: "Hello, world!".to_string(),
+            count: counter,
+        });
+        std::thread::sleep(duration);
+        counter += 1;
+    }
+}
 
 #[derive(Debug, Parser)]
 struct Cli {
@@ -42,6 +61,6 @@ fn main() {
         .start_blocking()
         .expect("Server failed to start");
 
-    common::log_blocking(args.fps, done);
+    log_blocking(args.fps, done);
     server.stop();
 }

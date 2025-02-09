@@ -1,0 +1,14 @@
+[package]
+name = "foxglove-mcap-demo"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+foxglove = { path = "../../foxglove" }
+tokio = { version = "1.0", features = ["full"] }
+clap = { version = "4.5", features = ["derive"] }
+mcap = "0.14.1"
+env_logger = "0.11.5"
+schemars = "0.8.21"
+serde = { version = "1.0", features = ["derive"] }

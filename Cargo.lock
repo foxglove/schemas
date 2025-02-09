@@ -510,7 +510,6 @@ dependencies = [
  "bimap",
  "bytes",
  "clap",
- "ctrlc",
  "env_logger",
  "flume",
  "futures-util",
@@ -518,7 +517,6 @@ dependencies = [
  "parking_lot",
  "prost",
  "prost-types",
- "quaternion",
  "schemars",
  "serde",
  "serde_json",
@@ -532,6 +530,42 @@ dependencies = [
  "tokio-util",
  "tracing",
  "tracing-test",
+]
+
+[[package]]
+name = "foxglove-client-publish"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "env_logger",
+ "foxglove",
+ "serde_json",
+ "tokio",
+ "tokio-util",
+]
+
+[[package]]
+name = "foxglove-mcap-demo"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "env_logger",
+ "foxglove",
+ "mcap",
+ "schemars",
+ "serde",
+ "tokio",
+]
+
+[[package]]
+name = "foxglove-param-server"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "env_logger",
+ "foxglove",
+ "tokio",
+ "tokio-util",
 ]
 
 [[package]]
@@ -560,6 +594,32 @@ dependencies = [
  "tokio-tungstenite",
  "tokio-util",
  "walkdir",
+]
+
+[[package]]
+name = "foxglove-ws-demo"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "env_logger",
+ "foxglove",
+ "prost-types",
+ "quaternion",
+ "schemars",
+ "serde",
+ "tokio",
+]
+
+[[package]]
+name = "foxglove-ws-demo-blocking"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "ctrlc",
+ "env_logger",
+ "foxglove",
+ "schemars",
+ "serde",
 ]
 
 [[package]]
@@ -1717,6 +1777,7 @@ dependencies = [
  "bytes",
  "libc",
  "mio",
+ "parking_lot",
  "pin-project-lite",
  "signal-hook-registry",
  "socket2",

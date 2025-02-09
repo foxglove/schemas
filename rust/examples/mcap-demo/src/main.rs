@@ -3,9 +3,7 @@ use std::path::PathBuf;
 use clap::{Parser, ValueEnum};
 use foxglove::McapWriter;
 use mcap::{Compression, WriteOptions};
-
-#[path = "common/lib.rs"]
-mod common;
+use std::time::Duration;
 
 #[derive(Debug, Parser)]
 struct Cli {
@@ -42,6 +40,27 @@ impl From<CompressionArg> for Option<Compression> {
     }
 }
 
+#[derive(Debug, serde::Serialize, schemars::JsonSchema)]
+struct Message {
+    msg: String,
+    count: u32,
+}
+
+foxglove::static_typed_channel!(pub MSG_CHANNEL, "/msg", Message);
+
+pub async fn log_forever(fps: u8) {
+    let mut counter: u32 = 0;
+    let mut interval = tokio::time::interval(Duration::from_millis(1000 / u64::from(fps)));
+    loop {
+        interval.tick().await;
+        MSG_CHANNEL.log(&Message {
+            msg: "Hello, world!".to_string(),
+            count: counter,
+        });
+        counter += 1;
+    }
+}
+
 #[tokio::main]
 async fn main() {
     let env = env_logger::Env::default().default_filter_or("debug");
@@ -61,7 +80,7 @@ async fn main() {
         .create_new_buffered_file(&args.path)
         .expect("Failed to start mcap writer");
 
-    tokio::task::spawn(common::log_forever(args.fps));
+    tokio::task::spawn(log_forever(args.fps));
     tokio::signal::ctrl_c().await.ok();
     writer.close().expect("Failed to flush mcap file");
 }

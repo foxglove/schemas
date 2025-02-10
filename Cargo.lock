@@ -487,12 +487,12 @@ name = "example-mcap"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "ctrlc",
  "env_logger",
  "foxglove",
  "mcap",
  "schemars",
  "serde",
- "tokio",
 ]
 
 [[package]]

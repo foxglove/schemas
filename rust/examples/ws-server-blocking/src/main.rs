@@ -14,16 +14,16 @@ struct Message {
 
 foxglove::static_typed_channel!(pub MSG_CHANNEL, "/msg", Message);
 
-pub fn log_blocking(fps: u8, stop: Arc<AtomicBool>) {
-    let mut counter: u32 = 0;
+pub fn log_until(fps: u8, stop: Arc<AtomicBool>) {
+    let mut count: u32 = 0;
     let duration = Duration::from_millis(1000 / u64::from(fps));
     while !stop.load(Ordering::Relaxed) {
         MSG_CHANNEL.log(&Message {
             msg: "Hello, world!".to_string(),
-            count: counter,
+            count,
         });
         std::thread::sleep(duration);
-        counter += 1;
+        count += 1;
     }
 }
 
@@ -61,6 +61,6 @@ fn main() {
         .start_blocking()
         .expect("Server failed to start");
 
-    log_blocking(args.fps, done);
+    log_until(args.fps, done);
     server.stop();
 }

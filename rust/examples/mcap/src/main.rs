@@ -1,4 +1,6 @@
 use std::path::PathBuf;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
 
 use clap::{Parser, ValueEnum};
 use foxglove::McapWriter;
@@ -48,25 +50,33 @@ struct Message {
 
 foxglove::static_typed_channel!(pub MSG_CHANNEL, "/msg", Message);
 
-pub async fn log_forever(fps: u8) {
-    let mut counter: u32 = 0;
-    let mut interval = tokio::time::interval(Duration::from_millis(1000 / u64::from(fps)));
-    loop {
-        interval.tick().await;
+pub fn log_until(fps: u8, stop: Arc<AtomicBool>) {
+    let mut count: u32 = 0;
+    let duration = Duration::from_millis(1000 / u64::from(fps));
+    while !stop.load(Ordering::Relaxed) {
         MSG_CHANNEL.log(&Message {
             msg: "Hello, world!".to_string(),
-            count: counter,
+            count,
         });
-        counter += 1;
+        std::thread::sleep(duration);
+        count += 1;
     }
 }
 
-#[tokio::main]
-async fn main() {
+fn main() {
     let env = env_logger::Env::default().default_filter_or("debug");
     env_logger::init_from_env(env);
 
     let args = Cli::parse();
+
+    let done = Arc::new(AtomicBool::default());
+    ctrlc::set_handler({
+        let done = done.clone();
+        move || {
+            done.store(true, Ordering::Relaxed);
+        }
+    })
+    .expect("Failed to set SIGINT handler");
 
     if args.overwrite && args.path.exists() {
         std::fs::remove_file(&args.path).expect("Failed to remove file");
@@ -80,7 +90,6 @@ async fn main() {
         .create_new_buffered_file(&args.path)
         .expect("Failed to start mcap writer");
 
-    tokio::task::spawn(log_forever(args.fps));
-    tokio::signal::ctrl_c().await.ok();
+    log_until(args.fps, done);
     writer.close().expect("Failed to flush mcap file");
 }

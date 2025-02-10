@@ -1,11 +1,11 @@
 use std::path::PathBuf;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
 
 use clap::{Parser, ValueEnum};
 use foxglove::McapWriter;
 use mcap::{Compression, WriteOptions};
-
-#[path = "common/lib.rs"]
-mod common;
+use std::time::Duration;
 
 #[derive(Debug, Parser)]
 struct Cli {
@@ -42,12 +42,41 @@ impl From<CompressionArg> for Option<Compression> {
     }
 }
 
-#[tokio::main]
-async fn main() {
+#[derive(Debug, serde::Serialize, schemars::JsonSchema)]
+struct Message {
+    msg: String,
+    count: u32,
+}
+
+foxglove::static_typed_channel!(pub MSG_CHANNEL, "/msg", Message);
+
+fn log_until(fps: u8, stop: Arc<AtomicBool>) {
+    let mut count: u32 = 0;
+    let duration = Duration::from_millis(1000 / u64::from(fps));
+    while !stop.load(Ordering::Relaxed) {
+        MSG_CHANNEL.log(&Message {
+            msg: "Hello, world!".to_string(),
+            count,
+        });
+        std::thread::sleep(duration);
+        count += 1;
+    }
+}
+
+fn main() {
     let env = env_logger::Env::default().default_filter_or("debug");
     env_logger::init_from_env(env);
 
     let args = Cli::parse();
+
+    let done = Arc::new(AtomicBool::default());
+    ctrlc::set_handler({
+        let done = done.clone();
+        move || {
+            done.store(true, Ordering::Relaxed);
+        }
+    })
+    .expect("Failed to set SIGINT handler");
 
     if args.overwrite && args.path.exists() {
         std::fs::remove_file(&args.path).expect("Failed to remove file");
@@ -61,7 +90,6 @@ async fn main() {
         .create_new_buffered_file(&args.path)
         .expect("Failed to start mcap writer");
 
-    tokio::task::spawn(common::log_forever(args.fps));
-    tokio::signal::ctrl_c().await.ok();
+    log_until(args.fps, done);
     writer.close().expect("Failed to flush mcap file");
 }

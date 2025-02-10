@@ -2,6 +2,7 @@ import { program } from "commander";
 import fs from "fs/promises";
 import path from "path";
 import { rimraf } from "rimraf";
+import { spawnSync } from "node:child_process";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../typescript/schemas/src/internal";
 import { exportTypeScriptSchemas } from "../typescript/schemas/src/internal/exportTypeScriptSchemas";
@@ -30,10 +31,21 @@ async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write("done\n");
 }
 
-async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }) {
-  await logProgress("Removing any existing output directory", async () => {
+async function main({ clean }: { clean: boolean }) {
+  const repoRoot = path.resolve(__dirname, "..");
+  const outDir = path.resolve(repoRoot, "schemas");
+  const rosOutDir = path.resolve(repoRoot, "ros_foxglove_msgs");
+  const typescriptTypesDir = path.join(repoRoot, "typescript/schemas/src/types");
+
+  await logProgress("Removing existing output directories", async () => {
     await rimraf(outDir);
+    await rimraf(typescriptTypesDir);
   });
+
+  if (clean) {
+    // cleaning complete, don't generate new files
+    return;
+  }
 
   await logProgress("Generating JSONSchema definitions", async () => {
     await fs.mkdir(path.join(outDir, "jsonschema"), { recursive: true });
@@ -108,13 +120,11 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
   });
 
   await logProgress("Generating TypeScript definitions", async () => {
-    const typesDir = path.join(outDir, "../typescript/schemas/src/types");
-    await rimraf(typesDir);
-    await fs.mkdir(typesDir, { recursive: true });
+    await fs.mkdir(typescriptTypesDir, { recursive: true });
 
     const schemas = exportTypeScriptSchemas();
     for (const [name, source] of schemas.entries()) {
-      await fs.writeFile(path.join(typesDir, `${name}.ts`), source);
+      await fs.writeFile(path.join(typescriptTypesDir, `${name}.ts`), source);
     }
   });
 
@@ -142,11 +152,17 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
       generateMarkdown(Object.values(foxgloveMessageSchemas), Object.values(foxgloveEnumSchemas)),
     );
   });
+
+  await logProgress("Running yarn test --updateSnapshot", async () => {
+    // run the command using standard node process. forward all input to stdout and stderr
+    const result = spawnSync("yarn", ["test", "--updateSnapshot"], {
+      stdio: "inherit",
+    });
+    if (result.status !== 0) {
+      throw new Error(`yarn test failed with code ${result.status}`);
+    }
+  });
 }
 
-program
-  .requiredOption("-o, --out-dir <dir>", "output directory")
-  .requiredOption("--ros-out-dir <dir>", "output directory for additional copies of ROS msgs")
-  .action(main);
-
+program.option("--clean", "remove all generated files").action(main);
 program.parseAsync().catch(console.error);

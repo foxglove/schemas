@@ -11,7 +11,8 @@
     "lint": "eslint --report-unused-disable-directives --fix .",
     "test": "jest",
     "bump-sdk-version": "ts-node ./scripts/bumpSdkVersion.ts",
-    "update-generated-files": "ts-node --files --project tsconfig.json ./scripts/updateGeneratedFiles.ts --out-dir schemas --ros-out-dir ros_foxglove_msgs && yarn test --updateSnapshot"
+    "clean": "ts-node ./scripts/updateGeneratedFiles.ts --clean",
+    "generate": "ts-node ./scripts/updateGeneratedFiles.ts"
   },
   "devDependencies": {
     "@foxglove/eslint-plugin": "2.0.0",

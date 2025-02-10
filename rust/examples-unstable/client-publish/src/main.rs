@@ -4,7 +4,7 @@
 //!
 //! Usage:
 //! ```text
-//! cargo run --features unstable --example client-publish
+//! cargo run -p example-client-publish
 //! ```
 
 use clap::Parser;

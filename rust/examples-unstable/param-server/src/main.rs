@@ -4,7 +4,7 @@
 //!
 //! Usage:
 //! ```text
-//! cargo run --features unstable --example param-server
+//! cargo run -p example-param-server
 //! ```
 
 use std::time::{Duration, Instant};

@@ -4,11 +4,13 @@ use std::fmt::Debug;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
+use crate::websocket::service::{Service, ServiceId};
 #[cfg(feature = "unstable")]
 use crate::websocket::Parameter;
 use crate::websocket::{create_server, Capability, Server, ServerOptions, Status};
 use crate::{get_runtime_handle, FoxgloveError, LogContext, LogSink};
 use tokio::runtime::Handle;
+use tracing::warn;
 
 /// A websocket server for live visualization.
 #[must_use]
@@ -87,6 +89,23 @@ impl WebSocketServer {
         self
     }
 
+    /// Configure the set of services to advertise to clients.
+    ///
+    /// Automatically adds [`Capability::Services`] to the set of advertised capabilities.
+    ///
+    /// Note that services can by dynamically registered and unregistered later using
+    /// [`WebSocketServerHandle::add_services`] and [`WebSocketServerHandle::remove_services`].
+    pub fn services(mut self, services: impl IntoIterator<Item = Service>) -> Self {
+        self.options.services.clear();
+        for service in services {
+            let name = service.name().to_string();
+            if let Some(s) = self.options.services.insert(name.clone(), service) {
+                warn!("Redefining service {}", s.name());
+            }
+        }
+        self
+    }
+
     /// Set a session ID.
     ///
     /// This allows the client to understand if the connection is a re-connection or if it is
@@ -156,6 +175,26 @@ impl WebSocketServerHandle {
         self.0.runtime()
     }
 
+    /// Advertises support for the provided services.
+    ///
+    /// These services will be available for clients to use until they are removed with
+    /// [`remove_services`][WebSocketServerHandle::remove_services].
+    ///
+    /// This method will fail if the server was not configured with [`Capability::Services`].
+    pub async fn add_services(
+        &self,
+        services: impl IntoIterator<Item = Service>,
+    ) -> Result<(), FoxgloveError> {
+        self.0.add_services(services.into_iter().collect()).await
+    }
+
+    /// Removes services that were previously advertised.
+    pub async fn remove_services(&self, ids: impl IntoIterator<Item = ServiceId>) {
+        self.0
+            .remove_services(&ids.into_iter().collect::<Vec<_>>())
+            .await;
+    }
+
     /// Publishes the current server timestamp to all clients.
     #[doc(hidden)]
     #[cfg(feature = "unstable")]
@@ -203,6 +242,24 @@ impl WebSocketServerHandle {
 pub struct WebSocketServerBlockingHandle(WebSocketServerHandle);
 
 impl WebSocketServerBlockingHandle {
+    /// Advertises support for the provided services.
+    ///
+    /// These services will be available for clients to use until they are removed with
+    /// [`remove_services`][WebSocketServerBlockingHandle::remove_services].
+    ///
+    /// This method will fail if the server was not configured with [`Capability::Services`].
+    pub async fn add_services(
+        &self,
+        services: impl IntoIterator<Item = Service>,
+    ) -> Result<(), FoxgloveError> {
+        self.0.runtime().block_on(self.0.add_services(services))
+    }
+
+    /// Removes services that were previously advertised.
+    pub async fn remove_services(&self, ids: impl IntoIterator<Item = ServiceId>) {
+        self.0.runtime().block_on(self.0.remove_services(ids))
+    }
+
     /// Publishes the current server timestamp to all clients.
     #[doc(hidden)]
     #[cfg(feature = "unstable")]

@@ -1,0 +1,124 @@
+use std::sync::atomic::AtomicBool;
+use std::sync::Arc;
+use std::time::Duration;
+
+use anyhow::{Context, Result};
+use bytes::Bytes;
+use foxglove::websocket::service::{Request, Service, ServiceSchema, SyncHandler};
+use foxglove::websocket::{Capability, Client};
+use foxglove::Schema;
+use tracing::info;
+
+use crate::types::{IntBinRequest, IntBinResponse, SetBoolRequest, SetBoolResponse};
+use crate::Config;
+
+fn empty_schema() -> ServiceSchema {
+    ServiceSchema::new("/std_srvs/Empty")
+}
+
+fn echo_schema() -> ServiceSchema {
+    ServiceSchema::new("/custom_srvs/RawEcho")
+        .with_request("raw", Schema::new("raw", "none", b""))
+        .with_response("raw", Schema::new("raw", "none", b""))
+}
+
+fn int_bin_schema() -> ServiceSchema {
+    // Schemas can be derived from types that implement `JsonSchema` using the
+    // `Schema::json_schema()` method.
+    ServiceSchema::new("/custom_srvs/IntBinOps")
+        .with_request("json", Schema::json_schema::<IntBinRequest>())
+        .with_response("json", Schema::json_schema::<IntBinResponse>())
+}
+
+/// A stateless handler function.
+fn int_bin_handler(client: Client, req: Request) -> Result<Bytes> {
+    info!("Client {client:?}: {req:?}");
+    let service_name = req.service_name;
+    let req: IntBinRequest = serde_json::from_slice(&req.payload)?;
+
+    // Shared handlers can use `Request::service_name` to disambiguate the service endpoint.
+    // Service names are guaranteed to be unique.
+    let result = match service_name.as_str() {
+        "/IntBin/add" => req.a + req.b,
+        "/IntBin/sub" => req.a - req.b,
+        "/IntBin/mul" => req.a * req.b,
+        "/IntBin/mod" => req.a % req.b,
+        m => return Err(anyhow::anyhow!("unexpected service: {m}")),
+    };
+
+    let payload = serde_json::to_vec(&IntBinResponse { result })?;
+    Ok(payload.into())
+}
+
+/// A stateful handler implements the `SyncHandler` trait.
+#[derive(Debug, Default, Clone)]
+struct Flag(Arc<AtomicBool>);
+
+fn set_bool_schema() -> ServiceSchema {
+    ServiceSchema::new("/std_srvs/SetBool")
+        .with_request("json", Schema::json_schema::<SetBoolRequest>())
+        .with_response("json", Schema::json_schema::<SetBoolResponse>())
+}
+
+impl SyncHandler for Flag {
+    type Error = anyhow::Error;
+
+    fn call(&self, client: Client, req: Request) -> Result<Bytes, Self::Error> {
+        info!("Client {client:?}: {req:?}");
+        let req: SetBoolRequest = serde_json::from_slice(&req.payload)?;
+        self.0.store(req.data, std::sync::atomic::Ordering::Relaxed);
+        let payload = serde_json::to_vec(&SetBoolResponse {
+            success: true,
+            ..Default::default()
+        })?;
+        Ok(payload.into())
+    }
+}
+
+pub async fn main(config: Config) -> Result<()> {
+    let server = foxglove::WebSocketServer::new()
+        .name("echo")
+        .bind(&config.host, config.port)
+        .capabilities([Capability::Services])
+        .start()
+        .await
+        .context("Failed to start server")?;
+
+    let flag_a = Flag::default();
+    let flag_b = Flag::default();
+
+    server
+        .add_services([
+            // Simple services can be implemented with a closure.
+            Service::builder("/empty", empty_schema())
+                .sync_handler_fn(|_, _| anyhow::Ok(Bytes::new())),
+            // Services that have non-trivial request or response schemas can define them with
+            // `.with_request()` and `.with_response()`.
+            Service::builder("/echo", echo_schema())
+                .sync_handler_fn(|_, req| anyhow::Ok(req.payload)),
+            // Services that need to sleep (or do heavy computation) should use `tokio::spawn()`
+            // (or `tokio::task::spawn_blocking()`) to avoid blocking the client's main event loop.
+            // Unlike the `SyncHandler` implementations, the generic `Handler` is responsible for
+            // invoking `resp.respond()` to complete the request.
+            Service::builder("/sleepy", empty_schema()).handler_fn(|_, _, resp| {
+                tokio::spawn(async move {
+                    tokio::time::sleep(Duration::from_secs(1)).await;
+                    resp.respond(Ok(Bytes::new()))
+                });
+            }),
+            // A shared handler can be written as a function.
+            Service::builder("/IntBin/add", int_bin_schema()).sync_handler_fn(int_bin_handler),
+            Service::builder("/IntBin/sub", int_bin_schema()).sync_handler_fn(int_bin_handler),
+            Service::builder("/IntBin/mul", int_bin_schema()).sync_handler_fn(int_bin_handler),
+            Service::builder("/IntBin/mod", int_bin_schema()).sync_handler_fn(int_bin_handler),
+            // A stateful handler can be written as a type that implements `Handler`.
+            Service::builder("/flag_a", set_bool_schema()).handler(flag_a.clone()),
+            Service::builder("/flag_b", set_bool_schema()).handler(flag_b.clone()),
+        ])
+        .await
+        .context("Failed to register services")?;
+
+    tokio::signal::ctrl_c().await.ok();
+    server.stop().await;
+    Ok(())
+}

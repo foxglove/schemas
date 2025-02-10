@@ -175,11 +175,13 @@ impl WebSocketServerHandle {
     }
 
     /// Publishes a status message to all clients.
+    /// https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#status
     pub fn publish_status(&self, status: Status) {
         self.0.publish_status(status);
     }
 
     /// Removes status messages by id from all clients.
+    /// https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#status
     pub fn remove_status(&self, status_ids: Vec<String>) {
         self.0.remove_status(status_ids);
     }

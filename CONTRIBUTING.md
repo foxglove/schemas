@@ -7,7 +7,7 @@ Schemas are defined in [internal/schemas.ts](internal/schemas.ts). After modifyi
 We commit generated files to git for several reasons:
 
 - Ease of access for users of the protobuf/flatbuffer/etc schemas
-- Ease of importing packages (e.g. pointing cargo or npm at a specific git commit during development)
+- Ease of importing packages (e.g. pointing cargo or npm at a specific git commit)
 
 ```sh
 corepack enable  # ensure you have corepack enabled

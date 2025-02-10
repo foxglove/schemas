@@ -20,20 +20,64 @@ export function generatePrelude() {
 }
 
 /**
- * Generate a rust module which exports the given schemas.
+ * Generate a .pyi stub for the given schemas.
  */
-export function generatePymodule(enumSchemas: FoxgloveSchema[]): string {
+export function generatePymoduleStub(schemas: FoxgloveSchema[]): string {
+  const header = ["from enum import Enum", "from typing import List"].join("\n") + "\n";
+
+  const timeTypes = generateTimeTypeStubs();
+
+  const enums = schemas
+    .filter((schema) => schema.type === "enum")
+    .map((schema) => {
+      const name = enumName(schema);
+      const doc = ['    """', `    ${schema.description}`, '    """'];
+      const values = schema.values.map((value) => {
+        return `    ${constantToTitleCase(value.name)} = ${value.value}`;
+      });
+      return [`class ${name}(Enum):`, ...doc, ...values].join("\n") + "\n\n";
+    });
+
+  const classes = schemas.filter(isMessageSchema).map((schema) => {
+    const name = structName(schema.name);
+    const doc = ['    """', `    ${schema.description}`, '    """'];
+    const params = schema.fields
+      .map((field) => {
+        return `        ${field.name}: "${pythonOutputType(field)}"`;
+      })
+      .join(",\n");
+
+    return (
+      [
+        `class ${name}:`,
+        ...doc,
+        `    def __new__(`,
+        "        cls,",
+        params,
+        `    ) -> "${name}": ...`,
+      ].join("\n") + "\n\n"
+    );
+  });
+
+  return [header, ...enums, timeTypes, ...classes].join("\n");
+}
+
+/**
+ * Generate a rust module which exports the given schemas annotated with `pymodule`.
+ */
+export function generatePymodule(schemas: FoxgloveSchema[]): string {
   const header = [
     `#[pymodule]`,
     `mod schemas {`,
+    `    use pyo3::types::PyAnyMethods;`,
     `    use pyo3::types::PyModule;`,
     `    use pyo3::Bound;`,
     `    use pyo3::PyResult;`,
   ].join("\n");
 
-  const exports = enumSchemas.map((schema) => {
-    const name = schema.type === "enum" ? enumName(schema) : structName(schema.name);
-    return [`    #[pymodule_export]`, `    use super::${name};\n`].join("\n");
+  const exports = schemas.map((schema) => {
+    const name = isMessageSchema(schema) ? structName(schema.name) : enumName(schema);
+    return [`    #[pymodule_export]`, `    use super::py_schemas::${name};\n`].join("\n");
   });
 
   const init = `
@@ -53,7 +97,7 @@ export function generatePyclass(schema: FoxgloveSchema): string {
   return isMessageSchema(schema) ? generateMessageClass(schema) : generateEnumClass(schema);
 }
 
-function descriptionComments(str: string, opts: { indent?: number } = {}): string {
+function rustDoc(str: string, opts: { indent?: number } = {}): string {
   const ws = " ".repeat(opts.indent ?? 0);
   return str
     .split("\n")
@@ -65,18 +109,18 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
   const schemaFields = Array.from(schema.fields).map((field) => ({
     fieldName: safeName(field.name),
     argName: safeName(field.name),
-    description: descriptionComments(field.description, { indent: 4 }),
+    description: rustDoc(field.description, { indent: 4 }),
     field,
   }));
 
   const struct = [
-    descriptionComments(schema.description),
+    rustDoc(schema.description),
     "#[pyclass]",
     "#[derive(Clone)]",
     `pub(crate) struct ${structName(schema.name)} {`,
     ...schemaFields.map(
       ({ fieldName, description, field }) =>
-        `${description}\n    ${fieldName}: ${outputType(field)},`,
+        `${description}\n    ${fieldName}: ${rustOutputType(field)},`,
     ),
     "}\n",
   ];
@@ -86,7 +130,7 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
     `impl ${structName(schema.name)} {`,
     `    #[new]`,
     `    fn new(`,
-    ...schemaFields.map(({ argName, field }) => `        ${argName}: ${outputType(field)},`),
+    ...schemaFields.map(({ argName, field }) => `        ${argName}: ${rustOutputType(field)},`),
     `    ) -> Self {`,
     `        Self {`,
     ...schemaFields.map(({ fieldName, argName }) =>
@@ -134,7 +178,7 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
 
 function generateEnumClass(schema: FoxgloveEnumSchema): string {
   const enumLines = [
-    descriptionComments(schema.description),
+    rustDoc(schema.description),
     `#[pyclass(eq, eq_int)]`,
     `#[derive(PartialEq, Clone)]`,
     `pub(crate) enum ${enumName(schema)} {`,
@@ -175,7 +219,7 @@ function isMessageSchema(schema: FoxgloveSchema): schema is FoxgloveMessageSchem
  * Get the rust type for a field.
  * Types are assumed to be owned, and wrapped in a `Vec` if the field is an array.
  */
-function outputType(field: FoxgloveMessageField): string {
+function rustOutputType(field: FoxgloveMessageField): string {
   let type: string;
   switch (field.type.type) {
     case "primitive":
@@ -192,7 +236,7 @@ function outputType(field: FoxgloveMessageField): string {
 }
 
 /**
- * Map Foxglove primitive types to rust primitives.
+ * Map Foxglove primitive types to Rust primitives, or structs in the case of `time` and `duration`.
  */
 function rustType(foxglovePrimitive: FoxglovePrimitive): string {
   switch (foxglovePrimitive) {
@@ -206,6 +250,48 @@ function rustType(foxglovePrimitive: FoxglovePrimitive): string {
       return "bool";
     case "bytes":
       return "Vec<u8>";
+    case "time":
+      return "Timestamp";
+    case "duration":
+      return "Duration";
+  }
+}
+
+/**
+ * Get the rust type for a field.
+ * Types are assumed to be owned, and wrapped in a `Vec` if the field is an array.
+ */
+function pythonOutputType(field: FoxgloveMessageField): string {
+  let type: string;
+  switch (field.type.type) {
+    case "primitive":
+      type = pythonType(field.type.name);
+      break;
+    case "nested":
+      type = field.type.schema.name;
+      break;
+    case "enum":
+      type = enumName(field.type.enum);
+      break;
+  }
+  return field.array ? `List[${type}]` : type;
+}
+
+/**
+ * Map Foxglove primitive types to Python primitives.
+ */
+function pythonType(foxglovePrimitive: FoxglovePrimitive): string {
+  switch (foxglovePrimitive) {
+    case "string":
+      return "str";
+    case "float64":
+      return "float";
+    case "uint32":
+      return "int";
+    case "boolean":
+      return "bool";
+    case "bytes":
+      return "bytes";
     case "time":
       return "Timestamp";
     case "duration":
@@ -240,6 +326,25 @@ function structName(name: string): string {
     return "GeoJson";
   }
   return name;
+}
+
+function generateTimeTypeStubs(): string {
+  return `
+class Timestamp:
+    def __new__(
+        cls,
+        seconds: int,
+        nanos: int,
+    ) -> "Timestamp": ...
+
+
+class Duration:
+    def __new__(
+        cls,
+        seconds: int,
+        nanos: int,
+    ) -> "Duration": ...
+`;
 }
 
 /**

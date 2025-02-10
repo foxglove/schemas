@@ -27,6 +27,7 @@ import {
   generatePrelude,
   generatePyclass,
   generatePymodule,
+  generatePymoduleStub,
   generateTimeTypes,
 } from "../typescript/schemas/src/internal/generatePyclass";
 
@@ -174,6 +175,11 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     await fs.writeFile(
       path.join(dir, "module.rs"),
       generatePymodule([...enumSchemas, ...messageSchemas]),
+    );
+
+    await fs.writeFile(
+      path.join(dir, "module.pyi"),
+      generatePymoduleStub([...enumSchemas, ...messageSchemas]),
     );
 
     writer.end();

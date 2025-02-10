@@ -51,4 +51,4 @@ warn_unreachable = true
 
 [tool.black]
 include = '\.pyi?$'
-extend-exclude = "python/foxglove/_protobuf"
+extend-exclude = "python/foxglove/(_protobuf|_foxglove_py/schemas.pyi)"

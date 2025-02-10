@@ -2013,3 +2013,63 @@ impl From<Vector3> for foxglove::schemas::Vector3 {
     }
 }
 
+
+pub fn register_submodule(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
+    let module = PyModule::new(parent_module.py(), "schemas")?;
+
+    module.add_class::<Duration>()?;
+    module.add_class::<Timestamp>()?;
+    module.add_class::<LinePrimitiveLineType>()?;
+    module.add_class::<LogLevel>()?;
+    module.add_class::<SceneEntityDeletionType>()?;
+    module.add_class::<PackedElementFieldNumericType>()?;
+    module.add_class::<PointsAnnotationType>()?;
+    module.add_class::<LocationFixPositionCovarianceType>()?;
+    module.add_class::<ArrowPrimitive>()?;
+    module.add_class::<CameraCalibration>()?;
+    module.add_class::<CircleAnnotation>()?;
+    module.add_class::<Color>()?;
+    module.add_class::<CompressedImage>()?;
+    module.add_class::<CompressedVideo>()?;
+    module.add_class::<CylinderPrimitive>()?;
+    module.add_class::<CubePrimitive>()?;
+    module.add_class::<FrameTransform>()?;
+    module.add_class::<FrameTransforms>()?;
+    module.add_class::<GeoJson>()?;
+    module.add_class::<Grid>()?;
+    module.add_class::<ImageAnnotations>()?;
+    module.add_class::<KeyValuePair>()?;
+    module.add_class::<LaserScan>()?;
+    module.add_class::<LinePrimitive>()?;
+    module.add_class::<LocationFix>()?;
+    module.add_class::<Log>()?;
+    module.add_class::<SceneEntityDeletion>()?;
+    module.add_class::<SceneEntity>()?;
+    module.add_class::<SceneUpdate>()?;
+    module.add_class::<ModelPrimitive>()?;
+    module.add_class::<PackedElementField>()?;
+    module.add_class::<Point2>()?;
+    module.add_class::<Point3>()?;
+    module.add_class::<PointCloud>()?;
+    module.add_class::<PointsAnnotation>()?;
+    module.add_class::<Pose>()?;
+    module.add_class::<PoseInFrame>()?;
+    module.add_class::<PosesInFrame>()?;
+    module.add_class::<Quaternion>()?;
+    module.add_class::<RawImage>()?;
+    module.add_class::<SpherePrimitive>()?;
+    module.add_class::<TextAnnotation>()?;
+    module.add_class::<TextPrimitive>()?;
+    module.add_class::<TriangleListPrimitive>()?;
+    module.add_class::<Vector2>()?;
+    module.add_class::<Vector3>()?;
+
+    // Define as a package
+    // https://github.com/PyO3/pyo3/issues/759
+    let py = parent_module.py();
+    py.import("sys")?
+        .getattr("modules")?
+        .set_item("foxglove._foxglove_py.schemas", &module)?;
+
+    parent_module.add_submodule(&module)
+}

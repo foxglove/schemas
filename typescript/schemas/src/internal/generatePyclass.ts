@@ -66,14 +66,24 @@ export function generatePymoduleStub(schemas: FoxgloveSchema[]): string {
  * Generate a rust module which exports the given schemas annotated with `pymodule`.
  */
 export function generatePymodule(schemas: FoxgloveSchema[]): string {
-  const header = [
-    `#[pymodule]`,
-    `mod schemas {`,
-    `    use pyo3::types::PyAnyMethods;`,
-    `    use pyo3::types::PyModule;`,
-    `    use pyo3::Bound;`,
-    `    use pyo3::PyResult;`,
-  ].join("\n");
+  const header =
+    [
+      `#[pymodule]`,
+      `mod schemas {`,
+      `    use pyo3::types::PyAnyMethods;`,
+      `    use pyo3::types::PyModule;`,
+      `    use pyo3::Bound;`,
+      `    use pyo3::PyResult;`,
+    ].join("\n") + "\n";
+
+  const timeTypeExports =
+    [
+      `    #[pymodule_export]`,
+      `    use super::py_schemas::Timestamp;`,
+      ``,
+      `    #[pymodule_export]`,
+      `    use super::py_schemas::Duration;`,
+    ].join("\n") + "\n";
 
   const exports = schemas.map((schema) => {
     const name = isMessageSchema(schema) ? structName(schema.name) : enumName(schema);
@@ -83,6 +93,7 @@ export function generatePymodule(schemas: FoxgloveSchema[]): string {
   const init = `
     #[pymodule_init]
     fn init(m: &Bound<'_, PyModule>) -> PyResult<()> {
+        // Define as a package
         // https://github.com/PyO3/pyo3/issues/759
         let py = m.py();
         py.import("sys")?
@@ -90,7 +101,7 @@ export function generatePymodule(schemas: FoxgloveSchema[]): string {
             .set_item("foxglove._foxglove_py.schemas", m)
     }`;
 
-  return [header, ...exports, init, "}"].join("\n");
+  return [header, timeTypeExports, ...exports, init, "}"].join("\n");
 }
 
 export function generatePyclass(schema: FoxgloveSchema): string {
@@ -328,6 +339,9 @@ function structName(name: string): string {
   return name;
 }
 
+/**
+ * .pyi stubs for Timestamp and Duration.
+ */
 function generateTimeTypeStubs(): string {
   return `
 class Timestamp:
@@ -404,4 +418,33 @@ impl From<Duration> for prost_types::Duration {
     }
 }
 `;
+}
+
+/**
+ * Generate a rust function to register the schemas in a submodule.
+ * https://pyo3.rs/v0.23.4/module.html
+ */
+export function generateModuleRegistration(schemas: FoxgloveSchema[]): string {
+  return `
+pub fn register_submodule(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
+    let module = PyModule::new(parent_module.py(), "schemas")?;
+
+    module.add_class::<Duration>()?;
+    module.add_class::<Timestamp>()?;
+    ${schemas.map((schema) => `module.add_class::<${pyClassName(schema)}>()?;`).join("\n    ")}
+
+    // Define as a package
+    // https://github.com/PyO3/pyo3/issues/759
+    let py = parent_module.py();
+    py.import("sys")?
+        .getattr("modules")?
+        .set_item("foxglove._foxglove_py.schemas", &module)?;
+
+    parent_module.add_submodule(&module)
+}
+`;
+}
+
+function pyClassName(schema: FoxgloveSchema): string {
+  return isMessageSchema(schema) ? structName(schema.name) : enumName(schema);
 }

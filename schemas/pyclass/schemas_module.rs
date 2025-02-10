@@ -4,6 +4,13 @@ mod schemas {
     use pyo3::types::PyModule;
     use pyo3::Bound;
     use pyo3::PyResult;
+
+    #[pymodule_export]
+    use super::py_schemas::Timestamp;
+
+    #[pymodule_export]
+    use super::py_schemas::Duration;
+
     #[pymodule_export]
     use super::py_schemas::LinePrimitiveLineType;
 
@@ -139,6 +146,7 @@ mod schemas {
 
     #[pymodule_init]
     fn init(m: &Bound<'_, PyModule>) -> PyResult<()> {
+        // Define as a package
         // https://github.com/PyO3/pyo3/issues/759
         let py = m.py();
         py.import("sys")?

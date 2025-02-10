@@ -4,6 +4,13 @@ mod schemas {
     use pyo3::types::PyModule;
     use pyo3::Bound;
     use pyo3::PyResult;
+
+    #[pymodule_export]
+    use super::py_schemas::Timestamp;
+
+    #[pymodule_export]
+    use super::py_schemas::Duration;
+
     #[pymodule_export]
     use super::py_schemas::LinePrimitiveLineType;
 

@@ -24,6 +24,7 @@ import {
   foxgloveMessageSchemas,
 } from "../typescript/schemas/src/internal/schemas";
 import {
+  generateModuleRegistration,
   generatePrelude,
   generatePyclass,
   generatePymodule,
@@ -172,13 +173,15 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
       writer.write(generatePyclass(schema));
     }
 
+    writer.write(generateModuleRegistration([...enumSchemas, ...messageSchemas]));
+
     await fs.writeFile(
-      path.join(dir, "module.rs"),
+      path.join(dir, "schemas_module.rs"),
       generatePymodule([...enumSchemas, ...messageSchemas]),
     );
 
     await fs.writeFile(
-      path.join(dir, "module.pyi"),
+      path.join(dir, "schemas.pyi"),
       generatePymoduleStub([...enumSchemas, ...messageSchemas]),
     );
 

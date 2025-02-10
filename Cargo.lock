@@ -553,6 +553,7 @@ dependencies = [
  "env_logger",
  "foxglove",
  "log",
+ "prost-types",
  "pyo3",
  "pyo3-log",
  "thiserror 1.0.69",

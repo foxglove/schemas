@@ -19,6 +19,36 @@ export function generatePrelude() {
   return outputSections.join("\n") + "\n\n";
 }
 
+/**
+ * Generate a rust module which exports the given schemas.
+ */
+export function generatePymodule(enumSchemas: FoxgloveSchema[]): string {
+  const header = [
+    `#[pymodule]`,
+    `mod schemas {`,
+    `    use pyo3::types::PyModule;`,
+    `    use pyo3::Bound;`,
+    `    use pyo3::PyResult;`,
+  ].join("\n");
+
+  const exports = enumSchemas.map((schema) => {
+    const name = schema.type === "enum" ? enumName(schema) : structName(schema.name);
+    return [`    #[pymodule_export]`, `    use super::${name};\n`].join("\n");
+  });
+
+  const init = `
+    #[pymodule_init]
+    fn init(m: &Bound<'_, PyModule>) -> PyResult<()> {
+        // https://github.com/PyO3/pyo3/issues/759
+        let py = m.py();
+        py.import("sys")?
+            .getattr("modules")?
+            .set_item("foxglove._foxglove_py.schemas", m)
+    }`;
+
+  return [header, ...exports, init, "}"].join("\n");
+}
+
 export function generatePyclass(schema: FoxgloveSchema): string {
   return isMessageSchema(schema) ? generateMessageClass(schema) : generateEnumClass(schema);
 }

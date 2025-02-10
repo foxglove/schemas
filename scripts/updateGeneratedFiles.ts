@@ -26,6 +26,7 @@ import {
 import {
   generatePrelude,
   generatePyclass,
+  generatePymodule,
   generateTimeTypes,
 } from "../typescript/schemas/src/internal/generatePyclass";
 
@@ -154,21 +155,28 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
       throw new Error("Failed to create pyclass directory");
     }
 
-    const file = await fs.open(path.join(dir, "foxglove.rs"), "w");
-    const ws = file.createWriteStream();
-    ws.write(generatePrelude());
+    const schemasFile = await fs.open(path.join(dir, "schemas.rs"), "w");
+    const writer = schemasFile.createWriteStream();
+    writer.write(generatePrelude());
 
-    for (const enumSchema of Object.values(foxgloveEnumSchemas)) {
-      ws.write(generatePyclass(enumSchema));
+    const enumSchemas = Object.values(foxgloveEnumSchemas);
+    for (const enumSchema of enumSchemas) {
+      writer.write(generatePyclass(enumSchema));
     }
 
-    ws.write(generateTimeTypes());
+    writer.write(generateTimeTypes());
 
-    for (const schema of Object.values(foxgloveMessageSchemas)) {
-      ws.write(generatePyclass(schema));
+    const messageSchemas = Object.values(foxgloveMessageSchemas);
+    for (const schema of messageSchemas) {
+      writer.write(generatePyclass(schema));
     }
 
-    ws.end();
+    await fs.writeFile(
+      path.join(dir, "module.rs"),
+      generatePymodule([...enumSchemas, ...messageSchemas]),
+    );
+
+    writer.end();
   });
 }
 

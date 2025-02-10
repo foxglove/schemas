@@ -507,6 +507,7 @@ dependencies = [
  "arc-swap",
  "assert_matches",
  "base64",
+ "bimap",
  "bytes",
  "clap",
  "ctrlc",

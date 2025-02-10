@@ -41,7 +41,7 @@ async fn test_logging_to_file_and_live_sinks() {
         ws_stream
     };
 
-    // FG-9877: allow the server to handle the connection before creating the channel
+    // FG-10395 replace this with something more precise
     tokio::time::sleep(Duration::from_millis(100)).await;
 
     let channel = ChannelBuilder::new("/test-topic")
@@ -103,6 +103,7 @@ async fn test_logging_to_file_and_live_sinks() {
             .expect("Failed to subscribe");
 
         // Let subscription register before publishing
+        // FG-10395 replace this with something more precise
         tokio::time::sleep(Duration::from_millis(100)).await;
     }
 
@@ -122,7 +123,7 @@ async fn test_logging_to_file_and_live_sinks() {
 
         channel.log(&msg);
 
-        // Ensure message has arrived
+        // FG-10395 replace this with something more precise
         tokio::time::sleep(Duration::from_millis(100)).await;
 
         let writer = handle.close().expect("Failed to flush log");

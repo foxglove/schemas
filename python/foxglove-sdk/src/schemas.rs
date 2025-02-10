@@ -68,7 +68,6 @@ pub(crate) enum LocationFixPositionCovarianceType {
     Known = 3,
 }
 
-
 #[pyclass]
 #[derive(Clone)]
 pub struct Timestamp {
@@ -157,7 +156,6 @@ impl ArrowPrimitive {
     }
 }
 
-
 impl From<ArrowPrimitive> for foxglove::schemas::ArrowPrimitive {
     fn from(value: ArrowPrimitive) -> Self {
         Self {
@@ -184,54 +182,54 @@ pub(crate) struct CameraCalibration {
     /// Image height
     height: u32,
     /// Name of distortion model
-    /// 
+    ///
     /// Supported parameters: `plumb_bob` (k1, k2, p1, p2, k3) and `rational_polynomial` (k1, k2, p1, p2, k3, k4, k5, k6). Distortion models are based on [OpenCV's](https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html) [pinhole camera model](https://en.wikipedia.org/wiki/Distortion_%28optics%29#Software_correction). This is the same [implementation used by ROS](http://docs.ros.org/en/diamondback/api/image_geometry/html/c++/pinhole__camera__model_8cpp_source.html)
     distortion_model: String,
     /// Distortion parameters
     D: Vec<f64>,
     /// Intrinsic camera matrix (3x3 row-major matrix)
-    /// 
+    ///
     /// A 3x3 row-major matrix for the raw (distorted) image.
-    /// 
+    ///
     /// Projects 3D points in the camera coordinate frame to 2D pixel coordinates using the focal lengths (fx, fy) and principal point (cx, cy).
-    /// 
+    ///
     /// ```
     ///     [fx  0 cx]
     /// K = [ 0 fy cy]
     ///     [ 0  0  1]
     /// ```
-    /// 
+    ///
     K: Vec<f64>,
     /// Rectification matrix (stereo cameras only, 3x3 row-major matrix)
-    /// 
+    ///
     /// A rotation matrix aligning the camera coordinate system to the ideal stereo image plane so that epipolar lines in both stereo images are parallel.
     R: Vec<f64>,
     /// Projection/camera matrix (3x4 row-major matrix)
-    /// 
+    ///
     /// ```
     ///     [fx'  0  cx' Tx]
     /// P = [ 0  fy' cy' Ty]
     ///     [ 0   0   1   0]
     /// ```
-    /// 
+    ///
     /// By convention, this matrix specifies the intrinsic (camera) matrix of the processed (rectified) image. That is, the left 3x3 portion is the normal camera intrinsic matrix for the rectified image.
-    /// 
+    ///
     /// It projects 3D points in the camera coordinate frame to 2D pixel coordinates using the focal lengths (fx', fy') and principal point (cx', cy') - these may differ from the values in K.
-    /// 
+    ///
     /// For monocular cameras, Tx = Ty = 0. Normally, monocular cameras will also have R = the identity and P[1:3,1:3] = K.
-    /// 
+    ///
     /// For a stereo pair, the fourth column [Tx Ty 0]' is related to the position of the optical center of the second camera in the first camera's frame. We assume Tz = 0 so both cameras are in the same stereo image plane. The first camera always has Tx = Ty = 0. For the right (second) camera of a horizontal stereo pair, Ty = 0 and Tx = -fx' * B, where B is the baseline between the cameras.
-    /// 
+    ///
     /// Given a 3D point [X Y Z]', the projection (x, y) of the point onto the rectified image is given by:
-    /// 
+    ///
     /// ```
     /// [u v w]' = P * [X Y Z 1]'
     ///        x = u / w
     ///        y = v / w
     /// ```
-    /// 
+    ///
     /// This holds for both images of a stereo pair.
-    /// 
+    ///
     P: Vec<f64>,
 }
 
@@ -262,7 +260,6 @@ impl CameraCalibration {
         }
     }
 }
-
 
 impl From<CameraCalibration> for foxglove::schemas::CameraCalibration {
     fn from(value: CameraCalibration) -> Self {
@@ -321,7 +318,6 @@ impl CircleAnnotation {
     }
 }
 
-
 impl From<CircleAnnotation> for foxglove::schemas::CircleAnnotation {
     fn from(value: CircleAnnotation) -> Self {
         Self {
@@ -352,21 +348,10 @@ pub(crate) struct Color {
 #[pymethods]
 impl Color {
     #[new]
-    fn new(
-        r: f64,
-        g: f64,
-        b: f64,
-        a: f64,
-    ) -> Self {
-        Self {
-            r,
-            g,
-            b,
-            a,
-        }
+    fn new(r: f64, g: f64, b: f64, a: f64) -> Self {
+        Self { r, g, b, a }
     }
 }
-
 
 impl From<Color> for foxglove::schemas::Color {
     fn from(value: Color) -> Self {
@@ -390,7 +375,7 @@ pub(crate) struct CompressedImage {
     /// Compressed image data
     data: Vec<u8>,
     /// Image format
-    /// 
+    ///
     /// Supported values: image media types supported by Chrome, such as `webp`, `jpeg`, `png`
     format: String,
 }
@@ -398,12 +383,7 @@ pub(crate) struct CompressedImage {
 #[pymethods]
 impl CompressedImage {
     #[new]
-    fn new(
-        timestamp: Timestamp,
-        frame_id: String,
-        data: Vec<u8>,
-        format: String,
-    ) -> Self {
+    fn new(timestamp: Timestamp, frame_id: String, data: Vec<u8>, format: String) -> Self {
         Self {
             timestamp,
             frame_id,
@@ -412,7 +392,6 @@ impl CompressedImage {
         }
     }
 }
-
 
 impl From<CompressedImage> for foxglove::schemas::CompressedImage {
     fn from(value: CompressedImage) -> Self {
@@ -432,37 +411,37 @@ pub(crate) struct CompressedVideo {
     /// Timestamp of video frame
     timestamp: Timestamp,
     /// Frame of reference for the video.
-    /// 
+    ///
     /// The origin of the frame is the optical center of the camera. +x points to the right in the video, +y points down, and +z points into the plane of the video.
     frame_id: String,
     /// Compressed video frame data.
-    /// 
+    ///
     /// For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove does not support video streams that include B frames because they require lookahead.
-    /// 
+    ///
     /// Specifically, the requirements for different `format` values are:
-    /// 
+    ///
     /// - `h264`
     ///   - Use Annex B formatted data
     ///   - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame
     ///   - Each message containing a key frame (IDR) must also include a SPS NAL unit
-    /// 
+    ///
     /// - `h265` (HEVC)
     ///   - Use Annex B formatted data
     ///   - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame
     ///   - Each message containing a key frame (IRAP) must also include relevant VPS/SPS/PPS NAL units
-    /// 
+    ///
     /// - `vp9`
     ///   - Each CompressedVideo message should contain exactly one video frame
-    /// 
+    ///
     /// - `av1`
     ///   - Use the "Low overhead bitstream format" (section 5.2)
     ///   - Each CompressedVideo message should contain enough OBUs to decode exactly one video frame
     ///   - Each message containing a key frame must also include a Sequence Header OBU
     data: Vec<u8>,
     /// Video format.
-    /// 
+    ///
     /// Supported values: `h264`, `h265`, `vp9`, `av1`.
-    /// 
+    ///
     /// Note: compressed video support is subject to hardware limitations and patent licensing, so not all encodings may be supported on all platforms. See more about [H.265 support](https://caniuse.com/hevc), [VP9 support](https://caniuse.com/webm), and [AV1 support](https://caniuse.com/av1).
     format: String,
 }
@@ -470,12 +449,7 @@ pub(crate) struct CompressedVideo {
 #[pymethods]
 impl CompressedVideo {
     #[new]
-    fn new(
-        timestamp: Timestamp,
-        frame_id: String,
-        data: Vec<u8>,
-        format: String,
-    ) -> Self {
+    fn new(timestamp: Timestamp, frame_id: String, data: Vec<u8>, format: String) -> Self {
         Self {
             timestamp,
             frame_id,
@@ -484,7 +458,6 @@ impl CompressedVideo {
         }
     }
 }
-
 
 impl From<CompressedVideo> for foxglove::schemas::CompressedVideo {
     fn from(value: CompressedVideo) -> Self {
@@ -516,13 +489,7 @@ pub(crate) struct CylinderPrimitive {
 #[pymethods]
 impl CylinderPrimitive {
     #[new]
-    fn new(
-        pose: Pose,
-        size: Vector3,
-        bottom_scale: f64,
-        top_scale: f64,
-        color: Color,
-    ) -> Self {
+    fn new(pose: Pose, size: Vector3, bottom_scale: f64, top_scale: f64, color: Color) -> Self {
         Self {
             pose,
             size,
@@ -532,7 +499,6 @@ impl CylinderPrimitive {
         }
     }
 }
-
 
 impl From<CylinderPrimitive> for foxglove::schemas::CylinderPrimitive {
     fn from(value: CylinderPrimitive) -> Self {
@@ -561,19 +527,10 @@ pub(crate) struct CubePrimitive {
 #[pymethods]
 impl CubePrimitive {
     #[new]
-    fn new(
-        pose: Pose,
-        size: Vector3,
-        color: Color,
-    ) -> Self {
-        Self {
-            pose,
-            size,
-            color,
-        }
+    fn new(pose: Pose, size: Vector3, color: Color) -> Self {
+        Self { pose, size, color }
     }
 }
-
 
 impl From<CubePrimitive> for foxglove::schemas::CubePrimitive {
     fn from(value: CubePrimitive) -> Self {
@@ -621,7 +578,6 @@ impl FrameTransform {
     }
 }
 
-
 impl From<FrameTransform> for foxglove::schemas::FrameTransform {
     fn from(value: FrameTransform) -> Self {
         Self {
@@ -645,15 +601,10 @@ pub(crate) struct FrameTransforms {
 #[pymethods]
 impl FrameTransforms {
     #[new]
-    fn new(
-        transforms: Vec<FrameTransform>,
-    ) -> Self {
-        Self {
-            transforms,
-        }
+    fn new(transforms: Vec<FrameTransform>) -> Self {
+        Self { transforms }
     }
 }
-
 
 impl From<FrameTransforms> for foxglove::schemas::FrameTransforms {
     fn from(value: FrameTransforms) -> Self {
@@ -674,15 +625,10 @@ pub(crate) struct GeoJson {
 #[pymethods]
 impl GeoJson {
     #[new]
-    fn new(
-        geojson: String,
-    ) -> Self {
-        Self {
-            geojson,
-        }
+    fn new(geojson: String) -> Self {
+        Self { geojson }
     }
 }
-
 
 impl From<GeoJson> for foxglove::schemas::GeoJson {
     fn from(value: GeoJson) -> Self {
@@ -744,7 +690,6 @@ impl Grid {
     }
 }
 
-
 impl From<Grid> for foxglove::schemas::Grid {
     fn from(value: Grid) -> Self {
         Self {
@@ -789,7 +734,6 @@ impl ImageAnnotations {
     }
 }
 
-
 impl From<ImageAnnotations> for foxglove::schemas::ImageAnnotations {
     fn from(value: ImageAnnotations) -> Self {
         Self {
@@ -813,17 +757,10 @@ pub(crate) struct KeyValuePair {
 #[pymethods]
 impl KeyValuePair {
     #[new]
-    fn new(
-        key: String,
-        value: String,
-    ) -> Self {
-        Self {
-            key,
-            value,
-        }
+    fn new(key: String, value: String) -> Self {
+        Self { key, value }
     }
 }
-
 
 impl From<KeyValuePair> for foxglove::schemas::KeyValuePair {
     fn from(value: KeyValuePair) -> Self {
@@ -878,7 +815,6 @@ impl LaserScan {
     }
 }
 
-
 impl From<LaserScan> for foxglove::schemas::LaserScan {
     fn from(value: LaserScan) -> Self {
         Self {
@@ -912,7 +848,7 @@ pub(crate) struct LinePrimitive {
     /// Per-point colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.
     colors: Vec<Color>,
     /// Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
-    /// 
+    ///
     /// If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
     indices: Vec<u32>,
 }
@@ -942,7 +878,6 @@ impl LinePrimitive {
         }
     }
 }
-
 
 impl From<LinePrimitive> for foxglove::schemas::LinePrimitive {
     fn from(value: LinePrimitive) -> Self {
@@ -1003,7 +938,6 @@ impl LocationFix {
     }
 }
 
-
 impl From<LocationFix> for foxglove::schemas::LocationFix {
     fn from(value: LocationFix) -> Self {
         Self {
@@ -1058,7 +992,6 @@ impl Log {
     }
 }
 
-
 impl From<Log> for foxglove::schemas::Log {
     fn from(value: Log) -> Self {
         Self {
@@ -1087,11 +1020,7 @@ pub(crate) struct SceneEntityDeletion {
 #[pymethods]
 impl SceneEntityDeletion {
     #[new]
-    fn new(
-        timestamp: Timestamp,
-        r#type: SceneEntityDeletionType,
-        id: String,
-    ) -> Self {
+    fn new(timestamp: Timestamp, r#type: SceneEntityDeletionType, id: String) -> Self {
         Self {
             timestamp,
             r#type,
@@ -1099,7 +1028,6 @@ impl SceneEntityDeletion {
         }
     }
 }
-
 
 impl From<SceneEntityDeletion> for foxglove::schemas::SceneEntityDeletion {
     fn from(value: SceneEntityDeletion) -> Self {
@@ -1183,7 +1111,6 @@ impl SceneEntity {
     }
 }
 
-
 impl From<SceneEntity> for foxglove::schemas::SceneEntity {
     fn from(value: SceneEntity) -> Self {
         Self {
@@ -1218,17 +1145,13 @@ pub(crate) struct SceneUpdate {
 #[pymethods]
 impl SceneUpdate {
     #[new]
-    fn new(
-        deletions: Vec<SceneEntityDeletion>,
-        entities: Vec<SceneEntity>,
-    ) -> Self {
+    fn new(deletions: Vec<SceneEntityDeletion>, entities: Vec<SceneEntity>) -> Self {
         Self {
             deletions,
             entities,
         }
     }
 }
-
 
 impl From<SceneUpdate> for foxglove::schemas::SceneUpdate {
     fn from(value: SceneUpdate) -> Self {
@@ -1283,7 +1206,6 @@ impl ModelPrimitive {
     }
 }
 
-
 impl From<ModelPrimitive> for foxglove::schemas::ModelPrimitive {
     fn from(value: ModelPrimitive) -> Self {
         Self {
@@ -1313,11 +1235,7 @@ pub(crate) struct PackedElementField {
 #[pymethods]
 impl PackedElementField {
     #[new]
-    fn new(
-        name: String,
-        offset: u32,
-        r#type: PackedElementFieldNumericType,
-    ) -> Self {
+    fn new(name: String, offset: u32, r#type: PackedElementFieldNumericType) -> Self {
         Self {
             name,
             offset,
@@ -1325,7 +1243,6 @@ impl PackedElementField {
         }
     }
 }
-
 
 impl From<PackedElementField> for foxglove::schemas::PackedElementField {
     fn from(value: PackedElementField) -> Self {
@@ -1350,17 +1267,10 @@ pub(crate) struct Point2 {
 #[pymethods]
 impl Point2 {
     #[new]
-    fn new(
-        x: f64,
-        y: f64,
-    ) -> Self {
-        Self {
-            x,
-            y,
-        }
+    fn new(x: f64, y: f64) -> Self {
+        Self { x, y }
     }
 }
-
 
 impl From<Point2> for foxglove::schemas::Point2 {
     fn from(value: Point2) -> Self {
@@ -1386,19 +1296,10 @@ pub(crate) struct Point3 {
 #[pymethods]
 impl Point3 {
     #[new]
-    fn new(
-        x: f64,
-        y: f64,
-        z: f64,
-    ) -> Self {
-        Self {
-            x,
-            y,
-            z,
-        }
+    fn new(x: f64, y: f64, z: f64) -> Self {
+        Self { x, y, z }
     }
 }
-
 
 impl From<Point3> for foxglove::schemas::Point3 {
     fn from(value: Point3) -> Self {
@@ -1449,7 +1350,6 @@ impl PointCloud {
         }
     }
 }
-
 
 impl From<PointCloud> for foxglove::schemas::PointCloud {
     fn from(value: PointCloud) -> Self {
@@ -1509,7 +1409,6 @@ impl PointsAnnotation {
     }
 }
 
-
 impl From<PointsAnnotation> for foxglove::schemas::PointsAnnotation {
     fn from(value: PointsAnnotation) -> Self {
         Self {
@@ -1537,17 +1436,13 @@ pub(crate) struct Pose {
 #[pymethods]
 impl Pose {
     #[new]
-    fn new(
-        position: Vector3,
-        orientation: Quaternion,
-    ) -> Self {
+    fn new(position: Vector3, orientation: Quaternion) -> Self {
         Self {
             position,
             orientation,
         }
     }
 }
-
 
 impl From<Pose> for foxglove::schemas::Pose {
     fn from(value: Pose) -> Self {
@@ -1573,11 +1468,7 @@ pub(crate) struct PoseInFrame {
 #[pymethods]
 impl PoseInFrame {
     #[new]
-    fn new(
-        timestamp: Timestamp,
-        frame_id: String,
-        pose: Pose,
-    ) -> Self {
+    fn new(timestamp: Timestamp, frame_id: String, pose: Pose) -> Self {
         Self {
             timestamp,
             frame_id,
@@ -1585,7 +1476,6 @@ impl PoseInFrame {
         }
     }
 }
-
 
 impl From<PoseInFrame> for foxglove::schemas::PoseInFrame {
     fn from(value: PoseInFrame) -> Self {
@@ -1612,11 +1502,7 @@ pub(crate) struct PosesInFrame {
 #[pymethods]
 impl PosesInFrame {
     #[new]
-    fn new(
-        timestamp: Timestamp,
-        frame_id: String,
-        poses: Vec<Pose>,
-    ) -> Self {
+    fn new(timestamp: Timestamp, frame_id: String, poses: Vec<Pose>) -> Self {
         Self {
             timestamp,
             frame_id,
@@ -1624,7 +1510,6 @@ impl PosesInFrame {
         }
     }
 }
-
 
 impl From<PosesInFrame> for foxglove::schemas::PosesInFrame {
     fn from(value: PosesInFrame) -> Self {
@@ -1653,21 +1538,10 @@ pub(crate) struct Quaternion {
 #[pymethods]
 impl Quaternion {
     #[new]
-    fn new(
-        x: f64,
-        y: f64,
-        z: f64,
-        w: f64,
-    ) -> Self {
-        Self {
-            x,
-            y,
-            z,
-            w,
-        }
+    fn new(x: f64, y: f64, z: f64, w: f64) -> Self {
+        Self { x, y, z, w }
     }
 }
-
 
 impl From<Quaternion> for foxglove::schemas::Quaternion {
     fn from(value: Quaternion) -> Self {
@@ -1693,7 +1567,7 @@ pub(crate) struct RawImage {
     /// Image height
     height: u32,
     /// Encoding of the raw image data
-    /// 
+    ///
     /// Supported values: `8UC1`, `8UC3`, `16UC1` (little endian), `32FC1` (little endian), `bayer_bggr8`, `bayer_gbrg8`, `bayer_grbg8`, `bayer_rggb8`, `bgr8`, `bgra8`, `mono8`, `mono16`, `rgb8`, `rgba8`, `uyvy` or `yuv422`, `yuyv` or `yuv422_yuy2`
     encoding: String,
     /// Byte length of a single row
@@ -1726,7 +1600,6 @@ impl RawImage {
     }
 }
 
-
 impl From<RawImage> for foxglove::schemas::RawImage {
     fn from(value: RawImage) -> Self {
         Self {
@@ -1756,19 +1629,10 @@ pub(crate) struct SpherePrimitive {
 #[pymethods]
 impl SpherePrimitive {
     #[new]
-    fn new(
-        pose: Pose,
-        size: Vector3,
-        color: Color,
-    ) -> Self {
-        Self {
-            pose,
-            size,
-            color,
-        }
+    fn new(pose: Pose, size: Vector3, color: Color) -> Self {
+        Self { pose, size, color }
     }
 }
-
 
 impl From<SpherePrimitive> for foxglove::schemas::SpherePrimitive {
     fn from(value: SpherePrimitive) -> Self {
@@ -1820,7 +1684,6 @@ impl TextAnnotation {
         }
     }
 }
-
 
 impl From<TextAnnotation> for foxglove::schemas::TextAnnotation {
     fn from(value: TextAnnotation) -> Self {
@@ -1875,7 +1738,6 @@ impl TextPrimitive {
     }
 }
 
-
 impl From<TextPrimitive> for foxglove::schemas::TextPrimitive {
     fn from(value: TextPrimitive) -> Self {
         Self {
@@ -1902,7 +1764,7 @@ pub(crate) struct TriangleListPrimitive {
     /// Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.
     colors: Vec<Color>,
     /// Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
-    /// 
+    ///
     /// If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
     indices: Vec<u32>,
 }
@@ -1926,7 +1788,6 @@ impl TriangleListPrimitive {
         }
     }
 }
-
 
 impl From<TriangleListPrimitive> for foxglove::schemas::TriangleListPrimitive {
     fn from(value: TriangleListPrimitive) -> Self {
@@ -1953,17 +1814,10 @@ pub(crate) struct Vector2 {
 #[pymethods]
 impl Vector2 {
     #[new]
-    fn new(
-        x: f64,
-        y: f64,
-    ) -> Self {
-        Self {
-            x,
-            y,
-        }
+    fn new(x: f64, y: f64) -> Self {
+        Self { x, y }
     }
 }
-
 
 impl From<Vector2> for foxglove::schemas::Vector2 {
     fn from(value: Vector2) -> Self {
@@ -1989,19 +1843,10 @@ pub(crate) struct Vector3 {
 #[pymethods]
 impl Vector3 {
     #[new]
-    fn new(
-        x: f64,
-        y: f64,
-        z: f64,
-    ) -> Self {
-        Self {
-            x,
-            y,
-            z,
-        }
+    fn new(x: f64, y: f64, z: f64) -> Self {
+        Self { x, y, z }
     }
 }
-
 
 impl From<Vector3> for foxglove::schemas::Vector3 {
     fn from(value: Vector3) -> Self {
@@ -2012,7 +1857,6 @@ impl From<Vector3> for foxglove::schemas::Vector3 {
         }
     }
 }
-
 
 pub fn register_submodule(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let module = PyModule::new(parent_module.py(), "schemas")?;

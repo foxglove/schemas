@@ -1,4 +1,4 @@
-use std::{fs, path::Path};
+use std::{fs, path::Path, process::Command};
 
 // Deprecated. PB serialization will happen on the Rust side.
 fn compile_protos() {
@@ -34,6 +34,20 @@ fn compile_protos() {
     fs::write(init_path, init_imports.join("\n") + "\n").unwrap();
 }
 
+fn rustfmt(file: &Path) {
+    let mut command = Command::new("cargo");
+    command
+        .arg("fmt")
+        .arg("--")
+        .arg(format!("{}", file.display()));
+
+    let status = command.status().expect("cargo fmt should have run");
+
+    if !status.success() {
+        panic!("cargo fmt failed");
+    }
+}
+
 fn import_schemas() {
     let src_dir = Path::new("../../schemas/pyclass");
     let rust_dir = Path::new("src");
@@ -46,12 +60,13 @@ fn import_schemas() {
     let dest = Path::join(rust_dir, "schemas.rs");
     println!("cargo:rerun-if-changed={}", src.display());
     fs::copy(&src, &dest).expect("schemas.rs should be copied by build script");
+    rustfmt(&dest);
 
     // python stub interface
     let src = Path::join(src_dir, "schemas.pyi");
     let dest = Path::join(python_dir, "_foxglove_py/schemas.pyi");
     println!("cargo:rerun-if-changed={}", src.display());
-    fs::copy(src, dest).expect("schemas.pyi should be copied by build script");
+    fs::copy(&src, &dest).expect("schemas.pyi should be copied by build script");
 }
 
 fn main() {

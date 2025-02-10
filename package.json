@@ -7,12 +7,12 @@
   ],
   "scripts": {
     "build": "tsc -b",
-    "lint:ci": "eslint --report-unused-disable-directives .",
-    "lint": "eslint --report-unused-disable-directives --fix .",
-    "test": "jest",
     "bump-sdk-version": "ts-node ./scripts/bumpSdkVersion.ts",
     "clean": "ts-node ./scripts/updateGeneratedFiles.ts --clean",
-    "generate": "ts-node ./scripts/updateGeneratedFiles.ts"
+    "generate": "ts-node ./scripts/generate.ts",
+    "lint:ci": "eslint --report-unused-disable-directives .",
+    "lint": "eslint --report-unused-disable-directives --fix .",
+    "test": "jest"
   },
   "devDependencies": {
     "@foxglove/eslint-plugin": "2.0.0",

@@ -43,7 +43,7 @@ fn import_schemas() {
 
     // pyo3 schema definitions
     let src = Path::join(src_dir, "schemas.rs");
-    let dest = Path::join(rust_dir, "py_schemas.rs");
+    let dest = Path::join(rust_dir, "schemas.rs");
     println!("cargo:rerun-if-changed={}", src.display());
     fs::copy(&src, &dest).expect("schemas.rs should be copied by build script");
 

@@ -19,7 +19,7 @@ static_typed_channel!(pub TF_CHANNEL, "/tf", FrameTransform);
 static_typed_channel!(pub MSG_CHANNEL, "/msg", Message);
 
 #[allow(dead_code)]
-pub async fn log_forever(fps: u8) {
+async fn log_forever(fps: u8) {
     let mut counter: u32 = 0;
     let mut interval = tokio::time::interval(Duration::from_millis(1000 / u64::from(fps)));
     loop {
@@ -29,7 +29,7 @@ pub async fn log_forever(fps: u8) {
     }
 }
 
-pub fn log(counter: u32) {
+fn log(counter: u32) {
     MSG_CHANNEL.log(&Message {
         msg: "Hello, world!".to_string(),
         count: counter,

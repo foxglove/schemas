@@ -50,7 +50,7 @@ struct Message {
 
 foxglove::static_typed_channel!(pub MSG_CHANNEL, "/msg", Message);
 
-pub fn log_until(fps: u8, stop: Arc<AtomicBool>) {
+fn log_until(fps: u8, stop: Arc<AtomicBool>) {
     let mut count: u32 = 0;
     let duration = Duration::from_millis(1000 / u64::from(fps));
     while !stop.load(Ordering::Relaxed) {

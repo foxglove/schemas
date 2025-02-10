@@ -39,6 +39,8 @@ async function main({ clean }: { clean: boolean }) {
 
   await logProgress("Removing existing output directories", async () => {
     await rimraf(outDir);
+    await rimraf(path.join(rosOutDir, "ros1"));
+    await rimraf(path.join(rosOutDir, "ros2"));
     await rimraf(typescriptTypesDir);
   });
 

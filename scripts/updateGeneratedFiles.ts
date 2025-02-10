@@ -20,10 +20,6 @@ import {
 } from "../typescript/schemas/src/internal/generateOmgIdl";
 import { generateProto } from "../typescript/schemas/src/internal/generateProto";
 import {
-  foxgloveEnumSchemas,
-  foxgloveMessageSchemas,
-} from "../typescript/schemas/src/internal/schemas";
-import {
   generateModuleRegistration,
   generatePrelude,
   generatePyclass,
@@ -31,6 +27,10 @@ import {
   generatePymoduleStub,
   generateTimeTypes,
 } from "../typescript/schemas/src/internal/generatePyclass";
+import {
+  foxgloveEnumSchemas,
+  foxgloveMessageSchemas,
+} from "../typescript/schemas/src/internal/schemas";
 
 async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write(`${message}... `);

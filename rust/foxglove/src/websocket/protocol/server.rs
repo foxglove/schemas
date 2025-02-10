@@ -90,7 +90,7 @@ pub enum ServerMessage {
     },
 }
 
-#[derive(Serialize_repr)]
+#[derive(Debug, Copy, Clone, Serialize_repr)]
 #[repr(u8)]
 pub enum StatusLevel {
     #[allow(dead_code)]
@@ -100,14 +100,29 @@ pub enum StatusLevel {
     Error = 2,
 }
 
-#[derive(Serialize)]
+#[derive(Debug, Clone, Serialize)]
 #[serde(tag = "op")]
 #[serde(rename = "status")]
 pub struct Status {
-    pub level: StatusLevel,
-    pub message: String,
+    pub(crate) level: StatusLevel,
+    pub(crate) message: String,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,
+    pub(crate) id: Option<String>,
+}
+
+impl Status {
+    pub fn new(level: StatusLevel, message: String) -> Self {
+        Self {
+            level,
+            message,
+            id: None,
+        }
+    }
+
+    pub fn with_id(mut self, id: String) -> Self {
+        self.id = Some(id);
+        self
+    }
 }
 
 #[derive(Serialize)]

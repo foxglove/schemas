@@ -4,12 +4,11 @@ use std::fmt::Debug;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use tokio::runtime::Handle;
-
-use crate::websocket::{create_server, Server, ServerOptions};
+use crate::websocket::{create_server, Server, ServerOptions, Status};
 #[cfg(feature = "unstable")]
 use crate::websocket::{Capability, Parameter};
 use crate::{get_runtime_handle, FoxgloveError, LogContext, LogSink};
+use tokio::runtime::Handle;
 
 /// A websocket server for live visualization.
 #[must_use]
@@ -176,14 +175,8 @@ impl WebSocketServerHandle {
     }
 
     /// Publishes a status message to all clients.
-    pub fn publish_status(
-        &self,
-        level: crate::websocket::StatusLevel,
-        message: impl Into<String>,
-        id: Option<impl Into<String>>,
-    ) {
-        self.0
-            .publish_status(level, message.into(), id.map(|id| id.into()));
+    pub fn publish_status(&self, status: Status) {
+        self.0.publish_status(status);
     }
 
     /// Removes status messages by id from all clients.

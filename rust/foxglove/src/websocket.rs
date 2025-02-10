@@ -4,7 +4,7 @@ use crate::websocket::protocol::client::Subscription;
 pub use crate::websocket::protocol::client::{
     ClientChannel, ClientChannelId, ClientMessage, SubscriptionId,
 };
-pub use crate::websocket::protocol::server::{Capability, StatusLevel};
+pub use crate::websocket::protocol::server::{Capability, Status, StatusLevel};
 #[cfg(feature = "unstable")]
 pub use crate::websocket::protocol::server::{Parameter, ParameterType, ParameterValue};
 use crate::{get_runtime_handle, Channel, FoxgloveError, LogSink, Metadata};
@@ -247,22 +247,17 @@ impl ConnectedClient {
         )
     }
 
-    /// Send an ad hoc error status message to the client, with the given message.
-    fn send_error(&self, message: String) {
-        self.send_status(StatusLevel::Error, message, None);
-    }
-
-    /// Send an ad hoc warning status message to the client, with the given message.
-    #[allow(dead_code)]
-    fn send_warning(&self, message: String) {
-        self.send_status(StatusLevel::Warning, message, None);
-    }
-
-    /// Send a status message to the client.
-    fn send_status(&self, level: StatusLevel, message: String, id: Option<String>) {
-        let status = protocol::server::Status { level, message, id };
-        let message = Message::text(serde_json::to_string(&status).unwrap());
-        self.send_data_lossy(message, MAX_SEND_RETRIES);
+    /// Send the message on the control plane, disconnecting the client if the channel is full.
+    fn send_control_msg(&self, message: Message) -> bool {
+        if let Err(TrySendError::Full(_)) = self.control_plane_tx.try_send(message) {
+            // TODO disconnect the slow client FG-10441
+            tracing::error!(
+                "Client control plane is full for {}, dropping message",
+                self.addr
+            );
+            return false;
+        }
+        true
     }
 
     fn handle_binary_message(&self, message: Message) {
@@ -500,26 +495,26 @@ impl ConnectedClient {
 
     /// Send an ad hoc error status message to the client, with the given message.
     fn send_error(&self, message: String) {
-        self.send_status(protocol::server::StatusLevel::Error, message, None);
+        self.send_status(Status::new(StatusLevel::Error, message));
     }
 
     /// Send an ad hoc warning status message to the client, with the given message.
+    #[allow(dead_code)]
     fn send_warning(&self, message: String) {
-        self.send_status(protocol::server::StatusLevel::Warning, message, None);
+        self.send_status(Status::new(StatusLevel::Warning, message));
     }
 
-    fn send_status(
-        &self,
-        level: protocol::server::StatusLevel,
-        message: String,
-        id: Option<String>,
-    ) {
-        let status = protocol::server::Status { level, message, id };
+    /// Send a status message to the client.
+    fn send_status(&self, status: Status) {
         let message = Message::text(serde_json::to_string(&status).unwrap());
-        // If the message can't be sent, or the outbox is full, log a warning and continue.
-        self.data_plane_tx.try_send(message).unwrap_or_else(|err| {
-            tracing::warn!("Failed to send status to client {}: {err}", self.addr)
-        });
+        match status.level {
+            StatusLevel::Info => {
+                self.send_data_lossy(message, MAX_SEND_RETRIES);
+            }
+            _ => {
+                self.send_control_msg(message);
+            }
+        }
     }
 }
 
@@ -634,13 +629,7 @@ impl Server {
 
         let clients = self.clients.get();
         for client in clients.iter() {
-            if let Err(err) = client
-                .control_plane_tx
-                .send_async(Message::text(message.clone()))
-                .await
-            {
-                tracing::error!("Error advertising channel to client {}: {err}", client.addr);
-            } else {
+            if client.send_control_msg(Message::text(message.clone())) {
                 tracing::info!(
                     "Advertised channel {} with id {} to client {}",
                     channel.topic,
@@ -657,16 +646,7 @@ impl Server {
         let message = protocol::server::unadvertise(channel_id);
         let clients = self.clients.get();
         for client in clients.iter() {
-            if let Err(err) = client
-                .control_plane_tx
-                .send_async(Message::text(message.clone()))
-                .await
-            {
-                tracing::error!(
-                    "Error unadvertising channel to client {}: {err}",
-                    client.addr
-                );
-            } else {
+            if client.send_control_msg(Message::text(message.clone())) {
                 tracing::info!(
                     "Unadvertised channel with id {} to client {}",
                     channel_id,
@@ -692,9 +672,7 @@ impl Server {
 
         let clients = self.clients.get();
         for client in clients.iter() {
-            if let Err(err) = client.control_plane_tx.send_async(message.clone()).await {
-                tracing::error!("Failed to send time to client {}: {err}", client.addr);
-            }
+            client.send_control_msg(message.clone());
         }
     }
 
@@ -723,26 +701,15 @@ impl Server {
             if client_addr.is_some_and(|addr| addr != client.addr) {
                 continue;
             }
-            if let Err(err) = client
-                .control_plane_tx
-                .send_async(Message::text(message.clone()))
-                .await
-            {
-                tracing::error!(
-                    "Failed to send parameter values to client {}: {err}",
-                    client.addr
-                );
-            }
+            client.send_control_msg(Message::text(message.clone()));
         }
     }
 
     /// Send a message to all clients.
-    pub fn publish_status(&self, level: StatusLevel, message: String, id: Option<String>) {
-        let status = protocol::server::Status { level, message, id };
-        let message = Message::text(serde_json::to_string(&status).unwrap());
+    pub fn publish_status(&self, status: Status) {
         let clients = self.clients.get();
         for client in clients.iter() {
-            client.send_data_lossy(message.clone(), MAX_SEND_RETRIES);
+            client.send_status(status.clone());
         }
     }
 
@@ -752,7 +719,7 @@ impl Server {
         let message = Message::text(serde_json::to_string(&remove).unwrap());
         let clients = self.clients.get();
         for client in clients.iter() {
-            client.send_data_lossy(message.clone(), MAX_SEND_RETRIES);
+            client.send_control_msg(message.clone());
         }
     }
 

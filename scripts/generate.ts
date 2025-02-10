@@ -33,8 +33,8 @@ async function logProgress(message: string, body: () => Promise<void>) {
 
 async function main({ clean }: { clean: boolean }) {
   const repoRoot = path.resolve(__dirname, "..");
-  const outDir = path.resolve(repoRoot, "schemas");
-  const rosOutDir = path.resolve(repoRoot, "ros_foxglove_msgs");
+  const outDir = path.join(repoRoot, "schemas");
+  const rosOutDir = path.join(repoRoot, "ros_foxglove_msgs");
   const typescriptTypesDir = path.join(repoRoot, "typescript/schemas/src/types");
 
   await logProgress("Removing existing output directories", async () => {

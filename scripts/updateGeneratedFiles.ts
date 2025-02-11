@@ -33,6 +33,8 @@ async function logProgress(message: string, body: () => Promise<void>) {
 async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }) {
   await logProgress("Removing any existing output directory", async () => {
     await rimraf(outDir);
+    await rimraf(path.join(rosOutDir, "ros1"));
+    await rimraf(path.join(rosOutDir, "ros2"));
   });
 
   await logProgress("Generating JSONSchema definitions", async () => {

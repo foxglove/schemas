@@ -134,10 +134,10 @@ impl ArrowPrimitive {
     ) -> Self {
         Self(foxglove::schemas::ArrowPrimitive {
             pose: Some(pose.into()),
-            shaft_length: shaft_length,
-            shaft_diameter: shaft_diameter,
-            head_length: head_length,
-            head_diameter: head_diameter,
+            shaft_length,
+            shaft_diameter,
+            head_length,
+            head_diameter,
             color: Some(color.into()),
         })
     }
@@ -169,10 +169,10 @@ impl CameraCalibration {
     ) -> Self {
         Self(foxglove::schemas::CameraCalibration {
             timestamp: Some(timestamp.into()),
-            frame_id: frame_id,
-            width: width,
-            height: height,
-            distortion_model: distortion_model,
+            frame_id,
+            width,
+            height,
+            distortion_model,
             d: D,
             k: K,
             r: R,
@@ -205,8 +205,8 @@ impl CircleAnnotation {
         Self(foxglove::schemas::CircleAnnotation {
             timestamp: Some(timestamp.into()),
             position: Some(position.into()),
-            diameter: diameter,
-            thickness: thickness,
+            diameter,
+            thickness,
             fill_color: Some(fill_color.into()),
             outline_color: Some(outline_color.into()),
         })
@@ -227,12 +227,7 @@ pub(crate) struct Color(foxglove::schemas::Color);
 impl Color {
     #[new]
     fn new(r: f64, g: f64, b: f64, a: f64) -> Self {
-        Self(foxglove::schemas::Color {
-            r: r,
-            g: g,
-            b: b,
-            a: a,
-        })
+        Self(foxglove::schemas::Color { r, g, b, a })
     }
 }
 
@@ -252,9 +247,9 @@ impl CompressedImage {
     fn new(timestamp: Timestamp, frame_id: String, data: Vec<u8>, format: String) -> Self {
         Self(foxglove::schemas::CompressedImage {
             timestamp: Some(timestamp.into()),
-            frame_id: frame_id,
-            data: data,
-            format: format,
+            frame_id,
+            data,
+            format,
         })
     }
 }
@@ -275,9 +270,9 @@ impl CompressedVideo {
     fn new(timestamp: Timestamp, frame_id: String, data: Vec<u8>, format: String) -> Self {
         Self(foxglove::schemas::CompressedVideo {
             timestamp: Some(timestamp.into()),
-            frame_id: frame_id,
-            data: data,
-            format: format,
+            frame_id,
+            data,
+            format,
         })
     }
 }
@@ -299,8 +294,8 @@ impl CylinderPrimitive {
         Self(foxglove::schemas::CylinderPrimitive {
             pose: Some(pose.into()),
             size: Some(size.into()),
-            bottom_scale: bottom_scale,
-            top_scale: top_scale,
+            bottom_scale,
+            top_scale,
             color: Some(color.into()),
         })
     }
@@ -350,8 +345,8 @@ impl FrameTransform {
     ) -> Self {
         Self(foxglove::schemas::FrameTransform {
             timestamp: Some(timestamp.into()),
-            parent_frame_id: parent_frame_id,
-            child_frame_id: child_frame_id,
+            parent_frame_id,
+            child_frame_id,
             translation: Some(translation.into()),
             rotation: Some(rotation.into()),
         })
@@ -392,7 +387,7 @@ pub(crate) struct GeoJson(foxglove::schemas::GeoJson);
 impl GeoJson {
     #[new]
     fn new(geojson: String) -> Self {
-        Self(foxglove::schemas::GeoJson { geojson: geojson })
+        Self(foxglove::schemas::GeoJson { geojson })
     }
 }
 
@@ -422,14 +417,14 @@ impl Grid {
     ) -> Self {
         Self(foxglove::schemas::Grid {
             timestamp: Some(timestamp.into()),
-            frame_id: frame_id,
+            frame_id,
             pose: Some(pose.into()),
-            column_count: column_count,
+            column_count,
             cell_size: Some(cell_size.into()),
-            row_stride: row_stride,
-            cell_stride: cell_stride,
+            row_stride,
+            cell_stride,
             fields: fields.into_iter().map(|x| x.into()).collect(),
-            data: data,
+            data,
         })
     }
 }
@@ -474,10 +469,7 @@ pub(crate) struct KeyValuePair(foxglove::schemas::KeyValuePair);
 impl KeyValuePair {
     #[new]
     fn new(key: String, value: String) -> Self {
-        Self(foxglove::schemas::KeyValuePair {
-            key: key,
-            value: value,
-        })
+        Self(foxglove::schemas::KeyValuePair { key, value })
     }
 }
 
@@ -505,12 +497,12 @@ impl LaserScan {
     ) -> Self {
         Self(foxglove::schemas::LaserScan {
             timestamp: Some(timestamp.into()),
-            frame_id: frame_id,
+            frame_id,
             pose: Some(pose.into()),
-            start_angle: start_angle,
-            end_angle: end_angle,
-            ranges: ranges,
-            intensities: intensities,
+            start_angle,
+            end_angle,
+            ranges,
+            intensities,
         })
     }
 }
@@ -541,12 +533,12 @@ impl LinePrimitive {
         Self(foxglove::schemas::LinePrimitive {
             r#type: r#type as i32,
             pose: Some(pose.into()),
-            thickness: thickness,
-            scale_invariant: scale_invariant,
+            thickness,
+            scale_invariant,
             points: points.into_iter().map(|x| x.into()).collect(),
             color: Some(color.into()),
             colors: colors.into_iter().map(|x| x.into()).collect(),
-            indices: indices,
+            indices,
         })
     }
 }
@@ -575,11 +567,11 @@ impl LocationFix {
     ) -> Self {
         Self(foxglove::schemas::LocationFix {
             timestamp: Some(timestamp.into()),
-            frame_id: frame_id,
-            latitude: latitude,
-            longitude: longitude,
-            altitude: altitude,
-            position_covariance: position_covariance,
+            frame_id,
+            latitude,
+            longitude,
+            altitude,
+            position_covariance,
             position_covariance_type: position_covariance_type as i32,
         })
     }
@@ -609,10 +601,10 @@ impl Log {
         Self(foxglove::schemas::Log {
             timestamp: Some(timestamp.into()),
             level: level as i32,
-            message: message,
-            name: name,
-            file: file,
-            line: line,
+            message,
+            name,
+            file,
+            line,
         })
     }
 }
@@ -634,7 +626,7 @@ impl SceneEntityDeletion {
         Self(foxglove::schemas::SceneEntityDeletion {
             timestamp: Some(timestamp.into()),
             r#type: r#type as i32,
-            id: id,
+            id,
         })
     }
 }
@@ -670,10 +662,10 @@ impl SceneEntity {
     ) -> Self {
         Self(foxglove::schemas::SceneEntity {
             timestamp: Some(timestamp.into()),
-            frame_id: frame_id,
-            id: id,
+            frame_id,
+            id,
             lifetime: Some(lifetime.into()),
-            frame_locked: frame_locked,
+            frame_locked,
             metadata: metadata.into_iter().map(|x| x.into()).collect(),
             arrows: arrows.into_iter().map(|x| x.into()).collect(),
             cubes: cubes.into_iter().map(|x| x.into()).collect(),
@@ -734,10 +726,10 @@ impl ModelPrimitive {
             pose: Some(pose.into()),
             scale: Some(scale.into()),
             color: Some(color.into()),
-            override_color: override_color,
-            url: url,
-            media_type: media_type,
-            data: data,
+            override_color,
+            url,
+            media_type,
+            data,
         })
     }
 }
@@ -757,8 +749,8 @@ impl PackedElementField {
     #[new]
     fn new(name: String, offset: u32, r#type: PackedElementFieldNumericType) -> Self {
         Self(foxglove::schemas::PackedElementField {
-            name: name,
-            offset: offset,
+            name,
+            offset,
             r#type: r#type as i32,
         })
     }
@@ -778,7 +770,7 @@ pub(crate) struct Point2(foxglove::schemas::Point2);
 impl Point2 {
     #[new]
     fn new(x: f64, y: f64) -> Self {
-        Self(foxglove::schemas::Point2 { x: x, y: y })
+        Self(foxglove::schemas::Point2 { x, y })
     }
 }
 
@@ -796,7 +788,7 @@ pub(crate) struct Point3(foxglove::schemas::Point3);
 impl Point3 {
     #[new]
     fn new(x: f64, y: f64, z: f64) -> Self {
-        Self(foxglove::schemas::Point3 { x: x, y: y, z: z })
+        Self(foxglove::schemas::Point3 { x, y, z })
     }
 }
 
@@ -823,11 +815,11 @@ impl PointCloud {
     ) -> Self {
         Self(foxglove::schemas::PointCloud {
             timestamp: Some(timestamp.into()),
-            frame_id: frame_id,
+            frame_id,
             pose: Some(pose.into()),
-            point_stride: point_stride,
+            point_stride,
             fields: fields.into_iter().map(|x| x.into()).collect(),
-            data: data,
+            data,
         })
     }
 }
@@ -861,7 +853,7 @@ impl PointsAnnotation {
             outline_color: Some(outline_color.into()),
             outline_colors: outline_colors.into_iter().map(|x| x.into()).collect(),
             fill_color: Some(fill_color.into()),
-            thickness: thickness,
+            thickness,
         })
     }
 }
@@ -903,7 +895,7 @@ impl PoseInFrame {
     fn new(timestamp: Timestamp, frame_id: String, pose: Pose) -> Self {
         Self(foxglove::schemas::PoseInFrame {
             timestamp: Some(timestamp.into()),
-            frame_id: frame_id,
+            frame_id,
             pose: Some(pose.into()),
         })
     }
@@ -925,7 +917,7 @@ impl PosesInFrame {
     fn new(timestamp: Timestamp, frame_id: String, poses: Vec<Pose>) -> Self {
         Self(foxglove::schemas::PosesInFrame {
             timestamp: Some(timestamp.into()),
-            frame_id: frame_id,
+            frame_id,
             poses: poses.into_iter().map(|x| x.into()).collect(),
         })
     }
@@ -945,12 +937,7 @@ pub(crate) struct Quaternion(foxglove::schemas::Quaternion);
 impl Quaternion {
     #[new]
     fn new(x: f64, y: f64, z: f64, w: f64) -> Self {
-        Self(foxglove::schemas::Quaternion {
-            x: x,
-            y: y,
-            z: z,
-            w: w,
-        })
+        Self(foxglove::schemas::Quaternion { x, y, z, w })
     }
 }
 
@@ -978,12 +965,12 @@ impl RawImage {
     ) -> Self {
         Self(foxglove::schemas::RawImage {
             timestamp: Some(timestamp.into()),
-            frame_id: frame_id,
-            width: width,
-            height: height,
-            encoding: encoding,
-            step: step,
-            data: data,
+            frame_id,
+            width,
+            height,
+            encoding,
+            step,
+            data,
         })
     }
 }
@@ -1034,8 +1021,8 @@ impl TextAnnotation {
         Self(foxglove::schemas::TextAnnotation {
             timestamp: Some(timestamp.into()),
             position: Some(position.into()),
-            text: text,
-            font_size: font_size,
+            text,
+            font_size,
             text_color: Some(text_color.into()),
             background_color: Some(background_color.into()),
         })
@@ -1065,11 +1052,11 @@ impl TextPrimitive {
     ) -> Self {
         Self(foxglove::schemas::TextPrimitive {
             pose: Some(pose.into()),
-            billboard: billboard,
-            font_size: font_size,
-            scale_invariant: scale_invariant,
+            billboard,
+            font_size,
+            scale_invariant,
             color: Some(color.into()),
-            text: text,
+            text,
         })
     }
 }
@@ -1099,7 +1086,7 @@ impl TriangleListPrimitive {
             points: points.into_iter().map(|x| x.into()).collect(),
             color: Some(color.into()),
             colors: colors.into_iter().map(|x| x.into()).collect(),
-            indices: indices,
+            indices,
         })
     }
 }
@@ -1118,7 +1105,7 @@ pub(crate) struct Vector2(foxglove::schemas::Vector2);
 impl Vector2 {
     #[new]
     fn new(x: f64, y: f64) -> Self {
-        Self(foxglove::schemas::Vector2 { x: x, y: y })
+        Self(foxglove::schemas::Vector2 { x, y })
     }
 }
 
@@ -1136,7 +1123,7 @@ pub(crate) struct Vector3(foxglove::schemas::Vector3);
 impl Vector3 {
     #[new]
     fn new(x: f64, y: f64, z: f64) -> Self {
-        Self(foxglove::schemas::Vector3 { x: x, y: y, z: z })
+        Self(foxglove::schemas::Vector3 { x, y, z })
     }
 }
 

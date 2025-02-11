@@ -168,6 +168,15 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
     }
   }
 
+  function fieldAssignment(field: FoxgloveMessageField): string {
+    const name = protoName(field.name);
+    const value = fieldValue(field);
+    if (name === value) {
+      return name;
+    }
+    return `${name}: ${value}`;
+  }
+
   const impl = [
     "#[pymethods]",
     `impl ${className} {`,
@@ -176,7 +185,7 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
     ...schemaFields.map(({ argName, field }) => `        ${argName}: ${rustOutputType(field)},`),
     `    ) -> Self {`,
     `        Self(foxglove::schemas::${className} {`,
-    schemaFields.map(({ field }) => `            ${protoName(field.name)}: ${fieldValue(field)},`).join("\n"),
+    schemaFields.map(({ field }) => `            ${fieldAssignment(field)},`).join("\n"),
     "        })",
     "    }",
     "}\n\n",

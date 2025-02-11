@@ -1,3 +1,5 @@
+use pyo3::prelude::*;
+
 #[pymodule]
 mod schemas {
     use pyo3::types::PyAnyMethods;
@@ -6,142 +8,142 @@ mod schemas {
     use pyo3::PyResult;
 
     #[pymodule_export]
-    use super::py_schemas::Timestamp;
+    use crate::schemas::Timestamp;
 
     #[pymodule_export]
-    use super::py_schemas::Duration;
+    use crate::schemas::Duration;
 
     #[pymodule_export]
-    use super::py_schemas::LinePrimitiveLineType;
+    use crate::schemas::LinePrimitiveLineType;
 
     #[pymodule_export]
-    use super::py_schemas::LogLevel;
+    use crate::schemas::LogLevel;
 
     #[pymodule_export]
-    use super::py_schemas::SceneEntityDeletionType;
+    use crate::schemas::SceneEntityDeletionType;
 
     #[pymodule_export]
-    use super::py_schemas::PackedElementFieldNumericType;
+    use crate::schemas::PackedElementFieldNumericType;
 
     #[pymodule_export]
-    use super::py_schemas::PointsAnnotationType;
+    use crate::schemas::PointsAnnotationType;
 
     #[pymodule_export]
-    use super::py_schemas::LocationFixPositionCovarianceType;
+    use crate::schemas::LocationFixPositionCovarianceType;
 
     #[pymodule_export]
-    use super::py_schemas::ArrowPrimitive;
+    use crate::schemas::ArrowPrimitive;
 
     #[pymodule_export]
-    use super::py_schemas::CameraCalibration;
+    use crate::schemas::CameraCalibration;
 
     #[pymodule_export]
-    use super::py_schemas::CircleAnnotation;
+    use crate::schemas::CircleAnnotation;
 
     #[pymodule_export]
-    use super::py_schemas::Color;
+    use crate::schemas::Color;
 
     #[pymodule_export]
-    use super::py_schemas::CompressedImage;
+    use crate::schemas::CompressedImage;
 
     #[pymodule_export]
-    use super::py_schemas::CompressedVideo;
+    use crate::schemas::CompressedVideo;
 
     #[pymodule_export]
-    use super::py_schemas::CylinderPrimitive;
+    use crate::schemas::CylinderPrimitive;
 
     #[pymodule_export]
-    use super::py_schemas::CubePrimitive;
+    use crate::schemas::CubePrimitive;
 
     #[pymodule_export]
-    use super::py_schemas::FrameTransform;
+    use crate::schemas::FrameTransform;
 
     #[pymodule_export]
-    use super::py_schemas::FrameTransforms;
+    use crate::schemas::FrameTransforms;
 
     #[pymodule_export]
-    use super::py_schemas::GeoJson;
+    use crate::schemas::GeoJson;
 
     #[pymodule_export]
-    use super::py_schemas::Grid;
+    use crate::schemas::Grid;
 
     #[pymodule_export]
-    use super::py_schemas::ImageAnnotations;
+    use crate::schemas::ImageAnnotations;
 
     #[pymodule_export]
-    use super::py_schemas::KeyValuePair;
+    use crate::schemas::KeyValuePair;
 
     #[pymodule_export]
-    use super::py_schemas::LaserScan;
+    use crate::schemas::LaserScan;
 
     #[pymodule_export]
-    use super::py_schemas::LinePrimitive;
+    use crate::schemas::LinePrimitive;
 
     #[pymodule_export]
-    use super::py_schemas::LocationFix;
+    use crate::schemas::LocationFix;
 
     #[pymodule_export]
-    use super::py_schemas::Log;
+    use crate::schemas::Log;
 
     #[pymodule_export]
-    use super::py_schemas::SceneEntityDeletion;
+    use crate::schemas::SceneEntityDeletion;
 
     #[pymodule_export]
-    use super::py_schemas::SceneEntity;
+    use crate::schemas::SceneEntity;
 
     #[pymodule_export]
-    use super::py_schemas::SceneUpdate;
+    use crate::schemas::SceneUpdate;
 
     #[pymodule_export]
-    use super::py_schemas::ModelPrimitive;
+    use crate::schemas::ModelPrimitive;
 
     #[pymodule_export]
-    use super::py_schemas::PackedElementField;
+    use crate::schemas::PackedElementField;
 
     #[pymodule_export]
-    use super::py_schemas::Point2;
+    use crate::schemas::Point2;
 
     #[pymodule_export]
-    use super::py_schemas::Point3;
+    use crate::schemas::Point3;
 
     #[pymodule_export]
-    use super::py_schemas::PointCloud;
+    use crate::schemas::PointCloud;
 
     #[pymodule_export]
-    use super::py_schemas::PointsAnnotation;
+    use crate::schemas::PointsAnnotation;
 
     #[pymodule_export]
-    use super::py_schemas::Pose;
+    use crate::schemas::Pose;
 
     #[pymodule_export]
-    use super::py_schemas::PoseInFrame;
+    use crate::schemas::PoseInFrame;
 
     #[pymodule_export]
-    use super::py_schemas::PosesInFrame;
+    use crate::schemas::PosesInFrame;
 
     #[pymodule_export]
-    use super::py_schemas::Quaternion;
+    use crate::schemas::Quaternion;
 
     #[pymodule_export]
-    use super::py_schemas::RawImage;
+    use crate::schemas::RawImage;
 
     #[pymodule_export]
-    use super::py_schemas::SpherePrimitive;
+    use crate::schemas::SpherePrimitive;
 
     #[pymodule_export]
-    use super::py_schemas::TextAnnotation;
+    use crate::schemas::TextAnnotation;
 
     #[pymodule_export]
-    use super::py_schemas::TextPrimitive;
+    use crate::schemas::TextPrimitive;
 
     #[pymodule_export]
-    use super::py_schemas::TriangleListPrimitive;
+    use crate::schemas::TriangleListPrimitive;
 
     #[pymodule_export]
-    use super::py_schemas::Vector2;
+    use crate::schemas::Vector2;
 
     #[pymodule_export]
-    use super::py_schemas::Vector3;
+    use crate::schemas::Vector3;
 
     #[pymodule_init]
     fn init(m: &Bound<'_, PyModule>) -> PyResult<()> {

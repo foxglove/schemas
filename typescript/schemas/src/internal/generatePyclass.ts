@@ -92,6 +92,7 @@ export function generatePymoduleStub(schemas: FoxgloveSchema[]): string {
 export function generatePymodule(schemas: FoxgloveSchema[]): string {
   const header =
     [
+      `use pyo3::prelude::*;\n`,
       `#[pymodule]`,
       `mod schemas {`,
       `    use pyo3::types::PyAnyMethods;`,
@@ -103,15 +104,15 @@ export function generatePymodule(schemas: FoxgloveSchema[]): string {
   const timeTypeExports =
     [
       `    #[pymodule_export]`,
-      `    use super::py_schemas::Timestamp;`,
+      `    use crate::schemas::Timestamp;`,
       ``,
       `    #[pymodule_export]`,
-      `    use super::py_schemas::Duration;`,
+      `    use crate::schemas::Duration;`,
     ].join("\n") + "\n";
 
   const exports = schemas.map((schema) => {
     const name = isMessageSchema(schema) ? structName(schema.name) : enumName(schema);
-    return [`    #[pymodule_export]`, `    use super::py_schemas::${name};\n`].join("\n");
+    return [`    #[pymodule_export]`, `    use crate::schemas::${name};\n`].join("\n");
   });
 
   const init = `

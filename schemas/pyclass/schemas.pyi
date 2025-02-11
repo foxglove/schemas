@@ -1,87 +1,6 @@
 from enum import Enum
 from typing import List
 
-class LinePrimitiveLineType(Enum):
-    """
-    An enumeration indicating how input points should be interpreted to create lines
-    """
-    LineStrip = 0
-    LineLoop = 1
-    LineList = 2
-
-
-class LogLevel(Enum):
-    """
-    Log level
-    """
-    Unknown = 0
-    Debug = 1
-    Info = 2
-    Warning = 3
-    Error = 4
-    Fatal = 5
-
-
-class SceneEntityDeletionType(Enum):
-    """
-    An enumeration indicating which entities should match a SceneEntityDeletion command
-    """
-    MatchingId = 0
-    All = 1
-
-
-class PackedElementFieldNumericType(Enum):
-    """
-    Numeric type
-    """
-    Unknown = 0
-    Uint8 = 1
-    Int8 = 2
-    Uint16 = 3
-    Int16 = 4
-    Uint32 = 5
-    Int32 = 6
-    Float32 = 7
-    Float64 = 8
-
-
-class PointsAnnotationType(Enum):
-    """
-    Type of points annotation
-    """
-    Unknown = 0
-    Points = 1
-    LineLoop = 2
-    LineStrip = 3
-    LineList = 4
-
-
-class LocationFixPositionCovarianceType(Enum):
-    """
-    Type of position covariance
-    """
-    Unknown = 0
-    Approximated = 1
-    DiagonalKnown = 2
-    Known = 3
-
-
-
-class Timestamp:
-    def __new__(
-        cls,
-        seconds: int,
-        nanos: int,
-    ) -> "Timestamp": ...
-
-
-class Duration:
-    def __new__(
-        cls,
-        seconds: int,
-        nanos: int,
-    ) -> "Duration": ...
-
 class ArrowPrimitive:
     """
     A primitive representing an arrow
@@ -169,6 +88,18 @@ class CompressedVideo:
     ) -> "CompressedVideo": ...
 
 
+class CubePrimitive:
+    """
+    A primitive representing a cube or rectangular prism
+    """
+    def __new__(
+        cls,
+        pose: "Pose",
+        size: "Vector3",
+        color: "Color"
+    ) -> "CubePrimitive": ...
+
+
 class CylinderPrimitive:
     """
     A primitive representing a cylinder, elliptic cylinder, or truncated cone
@@ -183,17 +114,16 @@ class CylinderPrimitive:
     ) -> "CylinderPrimitive": ...
 
 
-class CubePrimitive:
+
+class Duration:
     """
-    A primitive representing a cube or rectangular prism
+    A duration in seconds and nanoseconds
     """
     def __new__(
         cls,
-        pose: "Pose",
-        size: "Vector3",
-        color: "Color"
-    ) -> "CubePrimitive": ...
-
+        seconds: int,
+        nanos: int,
+    ) -> "Duration": ...
 
 class FrameTransform:
     """
@@ -303,6 +233,15 @@ class LinePrimitive:
     ) -> "LinePrimitive": ...
 
 
+class LinePrimitiveLineType(Enum):
+    """
+    An enumeration indicating how input points should be interpreted to create lines
+    """
+    LineStrip = 0
+    LineLoop = 1
+    LineList = 2
+
+
 class LocationFix:
     """
     A navigation satellite fix for any Global Navigation Satellite System
@@ -317,6 +256,16 @@ class LocationFix:
         position_covariance: "List[float]",
         position_covariance_type: "LocationFixPositionCovarianceType"
     ) -> "LocationFix": ...
+
+
+class LocationFixPositionCovarianceType(Enum):
+    """
+    Type of position covariance
+    """
+    Unknown = 0
+    Approximated = 1
+    DiagonalKnown = 2
+    Known = 3
 
 
 class Log:
@@ -334,50 +283,16 @@ class Log:
     ) -> "Log": ...
 
 
-class SceneEntityDeletion:
+class LogLevel(Enum):
     """
-    Command to remove previously published entities
+    Log level
     """
-    def __new__(
-        cls,
-        timestamp: "Timestamp",
-        type: "SceneEntityDeletionType",
-        id: "str"
-    ) -> "SceneEntityDeletion": ...
-
-
-class SceneEntity:
-    """
-    A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
-    """
-    def __new__(
-        cls,
-        timestamp: "Timestamp",
-        frame_id: "str",
-        id: "str",
-        lifetime: "Duration",
-        frame_locked: "bool",
-        metadata: "List[KeyValuePair]",
-        arrows: "List[ArrowPrimitive]",
-        cubes: "List[CubePrimitive]",
-        spheres: "List[SpherePrimitive]",
-        cylinders: "List[CylinderPrimitive]",
-        lines: "List[LinePrimitive]",
-        triangles: "List[TriangleListPrimitive]",
-        texts: "List[TextPrimitive]",
-        models: "List[ModelPrimitive]"
-    ) -> "SceneEntity": ...
-
-
-class SceneUpdate:
-    """
-    An update to the entities displayed in a 3D scene
-    """
-    def __new__(
-        cls,
-        deletions: "List[SceneEntityDeletion]",
-        entities: "List[SceneEntity]"
-    ) -> "SceneUpdate": ...
+    Unknown = 0
+    Debug = 1
+    Info = 2
+    Warning = 3
+    Error = 4
+    Fatal = 5
 
 
 class ModelPrimitive:
@@ -406,6 +321,21 @@ class PackedElementField:
         offset: "int",
         type: "PackedElementFieldNumericType"
     ) -> "PackedElementField": ...
+
+
+class PackedElementFieldNumericType(Enum):
+    """
+    Numeric type
+    """
+    Unknown = 0
+    Uint8 = 1
+    Int8 = 2
+    Uint16 = 3
+    Int16 = 4
+    Uint32 = 5
+    Int32 = 6
+    Float32 = 7
+    Float64 = 8
 
 
 class Point2:
@@ -460,6 +390,17 @@ class PointsAnnotation:
         fill_color: "Color",
         thickness: "float"
     ) -> "PointsAnnotation": ...
+
+
+class PointsAnnotationType(Enum):
+    """
+    Type of points annotation
+    """
+    Unknown = 0
+    Points = 1
+    LineLoop = 2
+    LineStrip = 3
+    LineList = 4
 
 
 class Pose:
@@ -526,6 +467,60 @@ class RawImage:
     ) -> "RawImage": ...
 
 
+class SceneEntity:
+    """
+    A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
+    """
+    def __new__(
+        cls,
+        timestamp: "Timestamp",
+        frame_id: "str",
+        id: "str",
+        lifetime: "Duration",
+        frame_locked: "bool",
+        metadata: "List[KeyValuePair]",
+        arrows: "List[ArrowPrimitive]",
+        cubes: "List[CubePrimitive]",
+        spheres: "List[SpherePrimitive]",
+        cylinders: "List[CylinderPrimitive]",
+        lines: "List[LinePrimitive]",
+        triangles: "List[TriangleListPrimitive]",
+        texts: "List[TextPrimitive]",
+        models: "List[ModelPrimitive]"
+    ) -> "SceneEntity": ...
+
+
+class SceneEntityDeletion:
+    """
+    Command to remove previously published entities
+    """
+    def __new__(
+        cls,
+        timestamp: "Timestamp",
+        type: "SceneEntityDeletionType",
+        id: "str"
+    ) -> "SceneEntityDeletion": ...
+
+
+class SceneEntityDeletionType(Enum):
+    """
+    An enumeration indicating which entities should match a SceneEntityDeletion command
+    """
+    MatchingId = 0
+    All = 1
+
+
+class SceneUpdate:
+    """
+    An update to the entities displayed in a 3D scene
+    """
+    def __new__(
+        cls,
+        deletions: "List[SceneEntityDeletion]",
+        entities: "List[SceneEntity]"
+    ) -> "SceneUpdate": ...
+
+
 class SpherePrimitive:
     """
     A primitive representing a sphere or ellipsoid
@@ -567,6 +562,17 @@ class TextPrimitive:
         text: "str"
     ) -> "TextPrimitive": ...
 
+
+
+class Timestamp:
+    """
+    A timestamp in seconds and nanoseconds
+    """
+    def __new__(
+        cls,
+        seconds: int,
+        nanos: int,
+    ) -> "Timestamp": ...
 
 class TriangleListPrimitive:
     """

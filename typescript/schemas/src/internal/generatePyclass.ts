@@ -51,7 +51,10 @@ export function generatePymoduleStub(schemas: FoxgloveSchema[]): string {
       const values = schema.values.map((value) => {
         return `    ${constantToTitleCase(value.name)} = ${value.value}`;
       });
-      return [`class ${name}(Enum):`, ...doc, ...values].join("\n") + "\n\n";
+      return {
+        name,
+        source: [`class ${name}(Enum):`, ...doc, ...values].join("\n") + "\n\n",
+      };
     });
 
   const classes = schemas.filter(isMessageSchema).map((schema) => {
@@ -63,19 +66,24 @@ export function generatePymoduleStub(schemas: FoxgloveSchema[]): string {
       })
       .join(",\n");
 
-    return (
-      [
+    return {
+      name,
+      source: [
         `class ${name}:`,
         ...doc,
         `    def __new__(`,
         "        cls,",
         params,
         `    ) -> "${name}": ...`,
-      ].join("\n") + "\n\n"
-    );
+      ].join("\n") + "\n\n",
+    };
   });
 
-  return [header, ...enums, timeTypes, ...classes].join("\n");
+  const definitions = [...enums, ...classes, ...timeTypes]
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(({ source }) => source);
+
+  return [header, ...definitions].join("\n");
 }
 
 /**
@@ -339,8 +347,8 @@ function structName(name: string): string {
 /**
  * .pyi stubs for Timestamp and Duration.
  */
-function generateTimeTypeStubs(): string {
-  return `
+function generateTimeTypeStubs(): { name: string, source: string }[] {
+  const timestamp = `
 class Timestamp:
     """
     A timestamp in seconds and nanoseconds
@@ -350,8 +358,9 @@ class Timestamp:
         seconds: int,
         nanos: int,
     ) -> "Timestamp": ...
+`;
 
-
+  const duration = `
 class Duration:
     """
     A duration in seconds and nanoseconds
@@ -362,6 +371,8 @@ class Duration:
         nanos: int,
     ) -> "Duration": ...
 `;
+
+  return [{ name: "Timestamp", source: timestamp }, { name: "Duration", source: duration }];
 }
 
 /**

@@ -471,6 +471,68 @@ dependencies = [
 ]
 
 [[package]]
+name = "example-client-publish"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "env_logger",
+ "foxglove",
+ "serde_json",
+ "tokio",
+ "tokio-util",
+]
+
+[[package]]
+name = "example-mcap"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "ctrlc",
+ "env_logger",
+ "foxglove",
+ "mcap",
+ "schemars",
+ "serde",
+]
+
+[[package]]
+name = "example-param-server"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "env_logger",
+ "foxglove",
+ "tokio",
+ "tokio-util",
+]
+
+[[package]]
+name = "example-ws-server"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "env_logger",
+ "foxglove",
+ "prost-types",
+ "quaternion",
+ "schemars",
+ "serde",
+ "tokio",
+]
+
+[[package]]
+name = "example-ws-server-blocking"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "ctrlc",
+ "env_logger",
+ "foxglove",
+ "schemars",
+ "serde",
+]
+
+[[package]]
 name = "fastrand"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -510,7 +572,6 @@ dependencies = [
  "bimap",
  "bytes",
  "clap",
- "ctrlc",
  "env_logger",
  "flume",
  "futures-util",
@@ -518,7 +579,6 @@ dependencies = [
  "parking_lot",
  "prost",
  "prost-types",
- "quaternion",
  "schemars",
  "serde",
  "serde_json",
@@ -1717,6 +1777,7 @@ dependencies = [
  "bytes",
  "libc",
  "mio",
+ "parking_lot",
  "pin-project-lite",
  "signal-hook-registry",
  "socket2",

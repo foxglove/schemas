@@ -127,7 +127,10 @@ jobs:
           - docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-iron-ros-base-latest
             ros_distribution: iron
             ros_version: 2
-          - docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-rolling-ros-base-latest
+          - docker_image: rostooling/setup-ros-docker:ubuntu-noble-ros-jazzy-ros-base-latest
+            ros_distribution: jazzy
+            ros_version: 2
+          - docker_image: rostooling/setup-ros-docker:ubuntu-noble-ros-rolling-ros-base-latest
             ros_distribution: rolling
             ros_version: 2
     name: "ROS ${{ matrix.ros_distribution }}"
@@ -154,7 +157,7 @@ jobs:
           sudo pip install pydocstyle==6.1.1
 
       - name: Downgrade pytest as a workaround for https://github.com/scientific-python/pytest-doctestplus/issues/240
-        if: matrix.ros_distribution == 'humble' || matrix.ros_distribution == 'iron' || matrix.ros_distribution == 'rolling'
+        if: matrix.ros_distribution == 'humble' || matrix.ros_distribution == 'iron'
         run: |
           sudo pip install pytest==8.0.2
 

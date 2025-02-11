@@ -10,7 +10,7 @@ cargo run --bin foxglove-proto-gen
 
 ### Run the example server
 
-1. `cargo run --features unstable --example ws-server`
+1. `cargo run -p example-ws-server`
 2. Open the Foxglove desktop app
 3. From the dashboard, click "Open connection..."
 4. Confirm the WebSocket URL and click "Open"

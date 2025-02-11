@@ -40,7 +40,7 @@ fn log(counter: u32) {
         entities: vec![SceneEntity {
             frame_id: "box".to_string(),
             id: "box_1".to_string(),
-            lifetime: Some(prost_types::Duration {
+            lifetime: Some(foxglove::schemas::Duration {
                 seconds: 10,
                 nanos: 0,
             }),

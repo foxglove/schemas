@@ -2,6 +2,7 @@
 //! Serializations are derived for testing.
 
 use crate::channel::ChannelId;
+use crate::Parameter;
 use serde::{Deserialize, Serialize};
 
 type Error = Box<dyn std::error::Error>;
@@ -74,6 +75,20 @@ pub enum ClientMessage {
     },
     Unadvertise {
         channel_ids: Vec<ClientChannelId>,
+    },
+    GetParameters {
+        parameter_names: Vec<String>,
+        request_id: Option<String>,
+    },
+    SetParameters {
+        parameters: Vec<Parameter>,
+        request_id: Option<String>,
+    },
+    SubscribeParameterUpdates {
+        parameter_names: Vec<String>,
+    },
+    UnsubscribeParameterUpdates {
+        parameter_names: Vec<String>,
     },
 }
 

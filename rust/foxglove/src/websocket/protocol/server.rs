@@ -34,7 +34,7 @@ pub struct Advertisement<'a> {
 
 /// A parameter type.
 #[cfg(feature = "unstable")]
-#[derive(Serialize)]
+#[derive(Debug, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ParameterType {
     /// A byte array, encoded as a base64-encoded string.
@@ -48,7 +48,7 @@ pub enum ParameterType {
 /// A parameter value.
 #[cfg(feature = "unstable")]
 #[serde_as]
-#[derive(Serialize)]
+#[derive(Debug, PartialEq, Serialize)]
 #[serde(untagged)]
 pub enum ParameterValue {
     /// A decimal or integer value.
@@ -65,7 +65,7 @@ pub enum ParameterValue {
 
 /// Informs the client about a parameter.
 #[cfg(feature = "unstable")]
-#[derive(Serialize)]
+#[derive(Debug, PartialEq, Serialize)]
 pub struct Parameter {
     /// The name of the parameter.
     pub name: String,
@@ -82,11 +82,11 @@ pub struct Parameter {
 #[serde(tag = "op")]
 #[serde(rename_all = "camelCase")]
 #[serde(rename_all_fields = "camelCase")]
-pub enum ServerMessage {
+pub enum ServerMessage<'a> {
     ParameterValues {
         #[serde(skip_serializing_if = "Option::is_none")]
-        id: Option<String>,
-        parameters: Vec<Parameter>,
+        id: Option<&'a str>,
+        parameters: &'a Vec<Parameter>,
     },
 }
 
@@ -185,8 +185,8 @@ pub fn unadvertise(channel_id: ChannelId) -> String {
 
 #[cfg(feature = "unstable")]
 pub fn parameters_json(
-    parameters: Vec<Parameter>,
-    id: Option<String>,
+    parameters: &Vec<Parameter>,
+    id: Option<&str>,
 ) -> Result<String, FoxgloveError> {
     serde_json::to_value(&ServerMessage::ParameterValues { parameters, id })
         .map(|value| value.to_string())

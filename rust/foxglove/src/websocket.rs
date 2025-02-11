@@ -171,6 +171,28 @@ pub trait ServerListener: Send + Sync {
     fn on_client_advertise(&self, _client: Client, _channel: ClientChannelView) {}
     /// Callback invoked when a client unadvertises a client channel. Requires the "clientPublish" capability.
     fn on_client_unadvertise(&self, _client: Client, _channel: ClientChannelView) {}
+    /// Callback invoked when a client requests parameters. Requires the "parameters" capability.
+    fn on_get_parameters(
+        &self,
+        _client: Client,
+        _param_names: Vec<String>,
+        _request_id: Option<&str>,
+    ) -> Vec<Parameter> {
+        Vec::new()
+    }
+    /// Callback invoked when a client sets parameters. Requires the "parameters" capability.
+    fn on_set_parameters(
+        &self,
+        _client: Client,
+        _parameters: Vec<Parameter>,
+        _request_id: Option<&str>,
+    ) -> Vec<Parameter> {
+        Vec::new()
+    }
+    /// Callback invoked when a client subscribes to parameters. Requires the "parameters" capability.
+    fn on_parameters_subscribe(&self, _client: Client, _param_names: Vec<String>) {}
+    /// Callback invoked when a client unsubscribes from parameters. Requires the "parameters" capability.
+    fn on_parameters_unsubscribe(&self, _client: Client, _param_names: Vec<String>) {}
 }
 
 /// A connected client session with the websocket server.
@@ -187,6 +209,8 @@ struct ConnectedClient {
     subscriptions: parking_lot::Mutex<BiHashMap<ChannelId, SubscriptionId>>,
     /// Channels advertised by this client
     advertised_channels: parking_lot::Mutex<HashMap<ClientChannelId, Arc<ClientChannel>>>,
+    /// Parameters subscribed to by this client
+    subscribed_parameters: parking_lot::Mutex<HashSet<String>>,
     /// Optional callback handler for a server implementation
     server_listener: Option<Arc<dyn ServerListener>>,
     server: Weak<Server>,
@@ -227,6 +251,24 @@ impl ConnectedClient {
             }
             Ok(ClientMessage::Unadvertise { channel_ids }) => {
                 self.on_unadvertise(channel_ids);
+            }
+            Ok(ClientMessage::GetParameters {
+                parameter_names,
+                request_id,
+            }) => {
+                self.on_get_parameters(parameter_names, request_id);
+            }
+            Ok(ClientMessage::SetParameters {
+                parameters,
+                request_id,
+            }) => {
+                self.on_set_parameters(parameters, request_id);
+            }
+            Ok(ClientMessage::SubscribeParameterUpdates { parameter_names }) => {
+                self.on_parameters_subscribe(parameter_names);
+            }
+            Ok(ClientMessage::UnsubscribeParameterUpdates { parameter_names }) => {
+                self.on_parameters_unsubscribe(parameter_names);
             }
             _ => {
                 tracing::error!("Unsupported message from {}: {message}", self.addr);
@@ -467,6 +509,44 @@ impl ConnectedClient {
             }
         }
     }
+
+    fn on_get_parameters(&self, param_names: Vec<String>, request_id: Option<String>) {
+        if let Some(handler) = self.server_listener.as_ref() {
+            let request_id = request_id.map(String::as_str);
+            let parameters = handler.on_get_parameters(Client(self), param_names, request_id);
+            match protocol::server::parameters_json(&parameters, request_id) {
+                Ok(message) => {
+                    let _ = self.control_plane_tx.try_send(Message::text(message));
+                }
+                Err(err) => {
+                    tracing::error!("Failed to serialize parameter values: {err}");
+                }
+            }
+        }
+    }
+
+    fn on_set_parameters(&self, parameters: Vec<Parameter>, request_id: Option<String>) {
+        if let Some(handler) = self.server_listener.as_ref() {
+            let request_id = request_id.map(String::as_str);
+            let updated_parameters =
+                handler.on_set_parameters(Client(self), parameters, request_id);
+            // Send the updated_parameters back to the client if request_id is provided.
+            // This is the behavior of the reference Python server implementation.
+            if request_id.is_some() {
+                match protocol::server::parameters_json(&updated_parameters, request_id) {
+                    Ok(message) => {
+                        let _ = self.control_plane_tx.try_send(Message::text(message));
+                    }
+                    Err(err) => {
+                        tracing::error!("Failed to serialize parameter values: {err}");
+                    }
+                }
+            }
+            self.update_parameters(updated_parameters);
+        }
+    }
+
+    fn update_parameters(&self, parameters: Vec<Parameter>) {}
 
     /// Send an ad hoc error status message to the client, with the given message.
     fn send_error(&self, message: String) {
@@ -750,6 +830,7 @@ impl Server {
             control_plane_rx: ctrl_rx,
             subscriptions: parking_lot::Mutex::new(BiHashMap::new()),
             advertised_channels: parking_lot::Mutex::new(HashMap::new()),
+            subscribed_parameters: parking_lot::Mutex::new(HashSet::new()),
             server_listener: self.listener.clone(),
             server: self.weak_self.clone(),
         });

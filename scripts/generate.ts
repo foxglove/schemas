@@ -39,8 +39,13 @@ async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write("done\n");
 }
 
-async function main({ clean }: { clean: boolean }) {
-  const repoRoot = path.resolve(__dirname, "..");
+const repoRoot = path.resolve(__dirname, "..");
+
+const pythonSdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
+const pythonSdkSourceRoot = path.join(pythonSdkRoot, "src", "generated");
+const pythonSdkStub = path.join(pythonSdkRoot, "python", "foxglove", "_foxglove_py", "schemas.pyi");
+
+async function main({ clean, includeSdk }: { clean: boolean; includeSdk: boolean }) {
   const outDir = path.join(repoRoot, "schemas");
   const rosOutDir = path.join(repoRoot, "ros_foxglove_msgs");
   const typescriptTypesDir = path.join(repoRoot, "typescript/schemas/src/types");
@@ -50,6 +55,11 @@ async function main({ clean }: { clean: boolean }) {
     await rimraf(path.join(rosOutDir, "ros1"));
     await rimraf(path.join(rosOutDir, "ros2"));
     await rimraf(typescriptTypesDir);
+
+    if (includeSdk || clean) {
+      await rimraf(pythonSdkSourceRoot);
+      await rimraf(pythonSdkStub);
+    }
   });
 
   if (clean) {
@@ -163,39 +173,35 @@ async function main({ clean }: { clean: boolean }) {
     );
   });
 
-  await logProgress("Generating Pyclass definitions", async () => {
-    // Pyclass definitions are generated specifically for the SDK, and are not stored in ./schemas
-    const sdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
+  if (includeSdk) {
+    await generateSdkTypes();
+  }
 
+  await logProgress("Running yarn test --updateSnapshot", async () => {
+    const result = spawnSync("yarn", ["test", "--updateSnapshot"], {
+      stdio: "inherit",
+    });
+    if (result.status !== 0) {
+      throw new Error(`yarn test failed with code ${result.status ?? "unknown"}`);
+    }
+  });
+}
+
+/**
+ * Generate schemas and supporting source for the Foxglove SDK, if `--include-sdk` is provided.
+ * These are exported to the SDK directory, and not stored with general-purpose schemas.
+ * Requires rust and python dependencies to be installed.
+ */
+async function generateSdkTypes() {
+  await logProgress("Generating Pyclass definitions", async () => {
     // Ignore stdout from spawned commands, but keep stderr
     const spawnOpts: CommonSpawnOptions = { stdio: ["ignore", "pipe", "pipe"] };
-    // Check for tooling dependencies; skip generation if missing
-    try {
-      spawnSync("cargo", ["fmt", "--version"], spawnOpts);
-    } catch {
-      console.warn("Failed to run rustfmt; skipping pyclass generation");
-      return;
-    }
 
-    try {
-      spawnSync("poetry", ["run", "black", "--version"], spawnOpts);
-    } catch {
-      console.warn("Failed to run `black` with poetry; skipping pyclass generation");
-      return;
-    }
-
-    const rustDir = path.join(sdkRoot, "src", "generated");
-    const stubDir = path.join(sdkRoot, "python", "foxglove", "_foxglove_py");
-
-    const schemasFile = path.join(rustDir, "schemas.rs");
-    const pymoduleFile = path.join(rustDir, "schemas_module.rs");
-    const pyiStub = path.join(stubDir, "schemas.pyi");
-
-    // Rust source is re-generated from scratch.
+    // Source files (.rs) are re-generated.
     // Stub file is placed into the existing hierarchy.
-    await rimraf(rustDir);
-    await fs.mkdir(rustDir, { recursive: true });
-    await rimraf(pyiStub);
+    const schemasFile = path.join(pythonSdkSourceRoot, "schemas.rs");
+    const pymoduleFile = path.join(pythonSdkSourceRoot, "schemas_module.rs");
+    await fs.mkdir(pythonSdkSourceRoot, { recursive: true });
 
     // Schemas file
     const writer = (await fs.open(schemasFile, "wx")).createWriteStream();
@@ -222,31 +228,24 @@ async function main({ clean }: { clean: boolean }) {
       spawnSync("cargo", ["fmt", "--", path.resolve(schemasFile)], spawnOpts);
       spawnSync("cargo", ["fmt", "--", path.resolve(pymoduleFile)], spawnOpts);
     } catch (err) {
-      console.error("Failed to format rust output");
+      console.error("Failed to format rust output using `cargo fmt`");
       console.error(err);
     }
 
     // Pyi stub file
-    await fs.writeFile(pyiStub, generatePymoduleStub([...enumSchemas, ...messageSchemas]));
+    await fs.writeFile(pythonSdkStub, generatePymoduleStub([...enumSchemas, ...messageSchemas]));
     try {
-      spawnSync("poetry", ["run", "black", path.resolve(pyiStub)], spawnOpts);
+      spawnSync("poetry", ["run", "black", path.resolve(pythonSdkStub)], spawnOpts);
     } catch (err) {
-      console.error("Failed to format python output");
+      console.error("Failed to format python output using `poetry run black`");
       console.error(err);
     }
 
     writer.end();
   });
-
-  await logProgress("Running yarn test --updateSnapshot", async () => {
-    const result = spawnSync("yarn", ["test", "--updateSnapshot"], {
-      stdio: "inherit",
-    });
-    if (result.status !== 0) {
-      throw new Error(`yarn test failed with code ${result.status ?? "unknown"}`);
-    }
-  });
 }
 
-program.option("--clean", "remove all generated files").action(main);
+program.option("--clean", "remove all generated files");
+program.option("--include-sdk", "generate files for the Foxglove SDK");
+program.action(main);
 program.parseAsync().catch(console.error);

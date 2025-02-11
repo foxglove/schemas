@@ -143,7 +143,6 @@ mod schemas {
     #[pymodule_export]
     use super::py_schemas::Vector3;
 
-
     #[pymodule_init]
     fn init(m: &Bound<'_, PyModule>) -> PyResult<()> {
         // Define as a package

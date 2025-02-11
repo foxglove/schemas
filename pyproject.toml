@@ -10,11 +10,3 @@ package-mode = false
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.1.1"
 black = "^25.1.0"
-
-[tool.black]
-extend-exclude = '''
-(
-  schemas/pyclass/schemas.pyi
-  | python/foxglove-sdk/python/foxglove/_foxglove_py/schemas.pyi
-)
-'''

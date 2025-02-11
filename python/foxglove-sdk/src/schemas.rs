@@ -112,7 +112,6 @@ impl Duration {
 impl From<Duration> for prost_types::Duration {
     fn from(value: Duration) -> Self {
         Self {
-            // todo: prost should likely be configured to use unsigned types
             seconds: value.seconds.try_into().unwrap_or_default(),
             nanos: value.nanos.try_into().unwrap_or_default(),
         }

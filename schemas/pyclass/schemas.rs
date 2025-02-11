@@ -70,7 +70,6 @@ pub(crate) enum LocationFixPositionCovarianceType {
     Known = 3,
 }
 
-
 #[pyclass]
 #[derive(Clone)]
 pub struct Timestamp {
@@ -144,7 +143,6 @@ impl ArrowPrimitive {
     }
 }
 
-
 impl From<ArrowPrimitive> for foxglove::schemas::ArrowPrimitive {
     fn from(value: ArrowPrimitive) -> Self {
         value.0
@@ -183,7 +181,6 @@ impl CameraCalibration {
     }
 }
 
-
 impl From<CameraCalibration> for foxglove::schemas::CameraCalibration {
     fn from(value: CameraCalibration) -> Self {
         value.0
@@ -216,7 +213,6 @@ impl CircleAnnotation {
     }
 }
 
-
 impl From<CircleAnnotation> for foxglove::schemas::CircleAnnotation {
     fn from(value: CircleAnnotation) -> Self {
         value.0
@@ -230,12 +226,7 @@ pub(crate) struct Color(foxglove::schemas::Color);
 #[pymethods]
 impl Color {
     #[new]
-    fn new(
-        r: f64,
-        g: f64,
-        b: f64,
-        a: f64,
-    ) -> Self {
+    fn new(r: f64, g: f64, b: f64, a: f64) -> Self {
         Self(foxglove::schemas::Color {
             r: r,
             g: g,
@@ -244,7 +235,6 @@ impl Color {
         })
     }
 }
-
 
 impl From<Color> for foxglove::schemas::Color {
     fn from(value: Color) -> Self {
@@ -259,12 +249,7 @@ pub(crate) struct CompressedImage(foxglove::schemas::CompressedImage);
 #[pymethods]
 impl CompressedImage {
     #[new]
-    fn new(
-        timestamp: Timestamp,
-        frame_id: String,
-        data: Vec<u8>,
-        format: String,
-    ) -> Self {
+    fn new(timestamp: Timestamp, frame_id: String, data: Vec<u8>, format: String) -> Self {
         Self(foxglove::schemas::CompressedImage {
             timestamp: Some(timestamp.into()),
             frame_id: frame_id,
@@ -273,7 +258,6 @@ impl CompressedImage {
         })
     }
 }
-
 
 impl From<CompressedImage> for foxglove::schemas::CompressedImage {
     fn from(value: CompressedImage) -> Self {
@@ -288,12 +272,7 @@ pub(crate) struct CompressedVideo(foxglove::schemas::CompressedVideo);
 #[pymethods]
 impl CompressedVideo {
     #[new]
-    fn new(
-        timestamp: Timestamp,
-        frame_id: String,
-        data: Vec<u8>,
-        format: String,
-    ) -> Self {
+    fn new(timestamp: Timestamp, frame_id: String, data: Vec<u8>, format: String) -> Self {
         Self(foxglove::schemas::CompressedVideo {
             timestamp: Some(timestamp.into()),
             frame_id: frame_id,
@@ -302,7 +281,6 @@ impl CompressedVideo {
         })
     }
 }
-
 
 impl From<CompressedVideo> for foxglove::schemas::CompressedVideo {
     fn from(value: CompressedVideo) -> Self {
@@ -317,13 +295,7 @@ pub(crate) struct CylinderPrimitive(foxglove::schemas::CylinderPrimitive);
 #[pymethods]
 impl CylinderPrimitive {
     #[new]
-    fn new(
-        pose: Pose,
-        size: Vector3,
-        bottom_scale: f64,
-        top_scale: f64,
-        color: Color,
-    ) -> Self {
+    fn new(pose: Pose, size: Vector3, bottom_scale: f64, top_scale: f64, color: Color) -> Self {
         Self(foxglove::schemas::CylinderPrimitive {
             pose: Some(pose.into()),
             size: Some(size.into()),
@@ -333,7 +305,6 @@ impl CylinderPrimitive {
         })
     }
 }
-
 
 impl From<CylinderPrimitive> for foxglove::schemas::CylinderPrimitive {
     fn from(value: CylinderPrimitive) -> Self {
@@ -348,11 +319,7 @@ pub(crate) struct CubePrimitive(foxglove::schemas::CubePrimitive);
 #[pymethods]
 impl CubePrimitive {
     #[new]
-    fn new(
-        pose: Pose,
-        size: Vector3,
-        color: Color,
-    ) -> Self {
+    fn new(pose: Pose, size: Vector3, color: Color) -> Self {
         Self(foxglove::schemas::CubePrimitive {
             pose: Some(pose.into()),
             size: Some(size.into()),
@@ -360,7 +327,6 @@ impl CubePrimitive {
         })
     }
 }
-
 
 impl From<CubePrimitive> for foxglove::schemas::CubePrimitive {
     fn from(value: CubePrimitive) -> Self {
@@ -392,7 +358,6 @@ impl FrameTransform {
     }
 }
 
-
 impl From<FrameTransform> for foxglove::schemas::FrameTransform {
     fn from(value: FrameTransform) -> Self {
         value.0
@@ -406,15 +371,12 @@ pub(crate) struct FrameTransforms(foxglove::schemas::FrameTransforms);
 #[pymethods]
 impl FrameTransforms {
     #[new]
-    fn new(
-        transforms: Vec<FrameTransform>,
-    ) -> Self {
+    fn new(transforms: Vec<FrameTransform>) -> Self {
         Self(foxglove::schemas::FrameTransforms {
             transforms: transforms.into_iter().map(|x| x.into()).collect(),
         })
     }
 }
-
 
 impl From<FrameTransforms> for foxglove::schemas::FrameTransforms {
     fn from(value: FrameTransforms) -> Self {
@@ -429,15 +391,10 @@ pub(crate) struct GeoJson(foxglove::schemas::GeoJson);
 #[pymethods]
 impl GeoJson {
     #[new]
-    fn new(
-        geojson: String,
-    ) -> Self {
-        Self(foxglove::schemas::GeoJson {
-            geojson: geojson,
-        })
+    fn new(geojson: String) -> Self {
+        Self(foxglove::schemas::GeoJson { geojson: geojson })
     }
 }
-
 
 impl From<GeoJson> for foxglove::schemas::GeoJson {
     fn from(value: GeoJson) -> Self {
@@ -477,7 +434,6 @@ impl Grid {
     }
 }
 
-
 impl From<Grid> for foxglove::schemas::Grid {
     fn from(value: Grid) -> Self {
         value.0
@@ -504,7 +460,6 @@ impl ImageAnnotations {
     }
 }
 
-
 impl From<ImageAnnotations> for foxglove::schemas::ImageAnnotations {
     fn from(value: ImageAnnotations) -> Self {
         value.0
@@ -518,17 +473,13 @@ pub(crate) struct KeyValuePair(foxglove::schemas::KeyValuePair);
 #[pymethods]
 impl KeyValuePair {
     #[new]
-    fn new(
-        key: String,
-        value: String,
-    ) -> Self {
+    fn new(key: String, value: String) -> Self {
         Self(foxglove::schemas::KeyValuePair {
             key: key,
             value: value,
         })
     }
 }
-
 
 impl From<KeyValuePair> for foxglove::schemas::KeyValuePair {
     fn from(value: KeyValuePair) -> Self {
@@ -563,7 +514,6 @@ impl LaserScan {
         })
     }
 }
-
 
 impl From<LaserScan> for foxglove::schemas::LaserScan {
     fn from(value: LaserScan) -> Self {
@@ -601,7 +551,6 @@ impl LinePrimitive {
     }
 }
 
-
 impl From<LinePrimitive> for foxglove::schemas::LinePrimitive {
     fn from(value: LinePrimitive) -> Self {
         value.0
@@ -636,7 +585,6 @@ impl LocationFix {
     }
 }
 
-
 impl From<LocationFix> for foxglove::schemas::LocationFix {
     fn from(value: LocationFix) -> Self {
         value.0
@@ -669,7 +617,6 @@ impl Log {
     }
 }
 
-
 impl From<Log> for foxglove::schemas::Log {
     fn from(value: Log) -> Self {
         value.0
@@ -683,11 +630,7 @@ pub(crate) struct SceneEntityDeletion(foxglove::schemas::SceneEntityDeletion);
 #[pymethods]
 impl SceneEntityDeletion {
     #[new]
-    fn new(
-        timestamp: Timestamp,
-        r#type: SceneEntityDeletionType,
-        id: String,
-    ) -> Self {
+    fn new(timestamp: Timestamp, r#type: SceneEntityDeletionType, id: String) -> Self {
         Self(foxglove::schemas::SceneEntityDeletion {
             timestamp: Some(timestamp.into()),
             r#type: r#type as i32,
@@ -695,7 +638,6 @@ impl SceneEntityDeletion {
         })
     }
 }
-
 
 impl From<SceneEntityDeletion> for foxglove::schemas::SceneEntityDeletion {
     fn from(value: SceneEntityDeletion) -> Self {
@@ -745,7 +687,6 @@ impl SceneEntity {
     }
 }
 
-
 impl From<SceneEntity> for foxglove::schemas::SceneEntity {
     fn from(value: SceneEntity) -> Self {
         value.0
@@ -759,17 +700,13 @@ pub(crate) struct SceneUpdate(foxglove::schemas::SceneUpdate);
 #[pymethods]
 impl SceneUpdate {
     #[new]
-    fn new(
-        deletions: Vec<SceneEntityDeletion>,
-        entities: Vec<SceneEntity>,
-    ) -> Self {
+    fn new(deletions: Vec<SceneEntityDeletion>, entities: Vec<SceneEntity>) -> Self {
         Self(foxglove::schemas::SceneUpdate {
             deletions: deletions.into_iter().map(|x| x.into()).collect(),
             entities: entities.into_iter().map(|x| x.into()).collect(),
         })
     }
 }
-
 
 impl From<SceneUpdate> for foxglove::schemas::SceneUpdate {
     fn from(value: SceneUpdate) -> Self {
@@ -805,7 +742,6 @@ impl ModelPrimitive {
     }
 }
 
-
 impl From<ModelPrimitive> for foxglove::schemas::ModelPrimitive {
     fn from(value: ModelPrimitive) -> Self {
         value.0
@@ -819,11 +755,7 @@ pub(crate) struct PackedElementField(foxglove::schemas::PackedElementField);
 #[pymethods]
 impl PackedElementField {
     #[new]
-    fn new(
-        name: String,
-        offset: u32,
-        r#type: PackedElementFieldNumericType,
-    ) -> Self {
+    fn new(name: String, offset: u32, r#type: PackedElementFieldNumericType) -> Self {
         Self(foxglove::schemas::PackedElementField {
             name: name,
             offset: offset,
@@ -831,7 +763,6 @@ impl PackedElementField {
         })
     }
 }
-
 
 impl From<PackedElementField> for foxglove::schemas::PackedElementField {
     fn from(value: PackedElementField) -> Self {
@@ -846,17 +777,10 @@ pub(crate) struct Point2(foxglove::schemas::Point2);
 #[pymethods]
 impl Point2 {
     #[new]
-    fn new(
-        x: f64,
-        y: f64,
-    ) -> Self {
-        Self(foxglove::schemas::Point2 {
-            x: x,
-            y: y,
-        })
+    fn new(x: f64, y: f64) -> Self {
+        Self(foxglove::schemas::Point2 { x: x, y: y })
     }
 }
-
 
 impl From<Point2> for foxglove::schemas::Point2 {
     fn from(value: Point2) -> Self {
@@ -871,19 +795,10 @@ pub(crate) struct Point3(foxglove::schemas::Point3);
 #[pymethods]
 impl Point3 {
     #[new]
-    fn new(
-        x: f64,
-        y: f64,
-        z: f64,
-    ) -> Self {
-        Self(foxglove::schemas::Point3 {
-            x: x,
-            y: y,
-            z: z,
-        })
+    fn new(x: f64, y: f64, z: f64) -> Self {
+        Self(foxglove::schemas::Point3 { x: x, y: y, z: z })
     }
 }
-
 
 impl From<Point3> for foxglove::schemas::Point3 {
     fn from(value: Point3) -> Self {
@@ -916,7 +831,6 @@ impl PointCloud {
         })
     }
 }
-
 
 impl From<PointCloud> for foxglove::schemas::PointCloud {
     fn from(value: PointCloud) -> Self {
@@ -952,7 +866,6 @@ impl PointsAnnotation {
     }
 }
 
-
 impl From<PointsAnnotation> for foxglove::schemas::PointsAnnotation {
     fn from(value: PointsAnnotation) -> Self {
         value.0
@@ -966,17 +879,13 @@ pub(crate) struct Pose(foxglove::schemas::Pose);
 #[pymethods]
 impl Pose {
     #[new]
-    fn new(
-        position: Vector3,
-        orientation: Quaternion,
-    ) -> Self {
+    fn new(position: Vector3, orientation: Quaternion) -> Self {
         Self(foxglove::schemas::Pose {
             position: Some(position.into()),
             orientation: Some(orientation.into()),
         })
     }
 }
-
 
 impl From<Pose> for foxglove::schemas::Pose {
     fn from(value: Pose) -> Self {
@@ -991,11 +900,7 @@ pub(crate) struct PoseInFrame(foxglove::schemas::PoseInFrame);
 #[pymethods]
 impl PoseInFrame {
     #[new]
-    fn new(
-        timestamp: Timestamp,
-        frame_id: String,
-        pose: Pose,
-    ) -> Self {
+    fn new(timestamp: Timestamp, frame_id: String, pose: Pose) -> Self {
         Self(foxglove::schemas::PoseInFrame {
             timestamp: Some(timestamp.into()),
             frame_id: frame_id,
@@ -1003,7 +908,6 @@ impl PoseInFrame {
         })
     }
 }
-
 
 impl From<PoseInFrame> for foxglove::schemas::PoseInFrame {
     fn from(value: PoseInFrame) -> Self {
@@ -1018,11 +922,7 @@ pub(crate) struct PosesInFrame(foxglove::schemas::PosesInFrame);
 #[pymethods]
 impl PosesInFrame {
     #[new]
-    fn new(
-        timestamp: Timestamp,
-        frame_id: String,
-        poses: Vec<Pose>,
-    ) -> Self {
+    fn new(timestamp: Timestamp, frame_id: String, poses: Vec<Pose>) -> Self {
         Self(foxglove::schemas::PosesInFrame {
             timestamp: Some(timestamp.into()),
             frame_id: frame_id,
@@ -1030,7 +930,6 @@ impl PosesInFrame {
         })
     }
 }
-
 
 impl From<PosesInFrame> for foxglove::schemas::PosesInFrame {
     fn from(value: PosesInFrame) -> Self {
@@ -1045,12 +944,7 @@ pub(crate) struct Quaternion(foxglove::schemas::Quaternion);
 #[pymethods]
 impl Quaternion {
     #[new]
-    fn new(
-        x: f64,
-        y: f64,
-        z: f64,
-        w: f64,
-    ) -> Self {
+    fn new(x: f64, y: f64, z: f64, w: f64) -> Self {
         Self(foxglove::schemas::Quaternion {
             x: x,
             y: y,
@@ -1059,7 +953,6 @@ impl Quaternion {
         })
     }
 }
-
 
 impl From<Quaternion> for foxglove::schemas::Quaternion {
     fn from(value: Quaternion) -> Self {
@@ -1095,7 +988,6 @@ impl RawImage {
     }
 }
 
-
 impl From<RawImage> for foxglove::schemas::RawImage {
     fn from(value: RawImage) -> Self {
         value.0
@@ -1109,11 +1001,7 @@ pub(crate) struct SpherePrimitive(foxglove::schemas::SpherePrimitive);
 #[pymethods]
 impl SpherePrimitive {
     #[new]
-    fn new(
-        pose: Pose,
-        size: Vector3,
-        color: Color,
-    ) -> Self {
+    fn new(pose: Pose, size: Vector3, color: Color) -> Self {
         Self(foxglove::schemas::SpherePrimitive {
             pose: Some(pose.into()),
             size: Some(size.into()),
@@ -1121,7 +1009,6 @@ impl SpherePrimitive {
         })
     }
 }
-
 
 impl From<SpherePrimitive> for foxglove::schemas::SpherePrimitive {
     fn from(value: SpherePrimitive) -> Self {
@@ -1155,7 +1042,6 @@ impl TextAnnotation {
     }
 }
 
-
 impl From<TextAnnotation> for foxglove::schemas::TextAnnotation {
     fn from(value: TextAnnotation) -> Self {
         value.0
@@ -1188,7 +1074,6 @@ impl TextPrimitive {
     }
 }
 
-
 impl From<TextPrimitive> for foxglove::schemas::TextPrimitive {
     fn from(value: TextPrimitive) -> Self {
         value.0
@@ -1219,7 +1104,6 @@ impl TriangleListPrimitive {
     }
 }
 
-
 impl From<TriangleListPrimitive> for foxglove::schemas::TriangleListPrimitive {
     fn from(value: TriangleListPrimitive) -> Self {
         value.0
@@ -1233,17 +1117,10 @@ pub(crate) struct Vector2(foxglove::schemas::Vector2);
 #[pymethods]
 impl Vector2 {
     #[new]
-    fn new(
-        x: f64,
-        y: f64,
-    ) -> Self {
-        Self(foxglove::schemas::Vector2 {
-            x: x,
-            y: y,
-        })
+    fn new(x: f64, y: f64) -> Self {
+        Self(foxglove::schemas::Vector2 { x: x, y: y })
     }
 }
-
 
 impl From<Vector2> for foxglove::schemas::Vector2 {
     fn from(value: Vector2) -> Self {
@@ -1258,26 +1135,16 @@ pub(crate) struct Vector3(foxglove::schemas::Vector3);
 #[pymethods]
 impl Vector3 {
     #[new]
-    fn new(
-        x: f64,
-        y: f64,
-        z: f64,
-    ) -> Self {
-        Self(foxglove::schemas::Vector3 {
-            x: x,
-            y: y,
-            z: z,
-        })
+    fn new(x: f64, y: f64, z: f64) -> Self {
+        Self(foxglove::schemas::Vector3 { x: x, y: y, z: z })
     }
 }
-
 
 impl From<Vector3> for foxglove::schemas::Vector3 {
     fn from(value: Vector3) -> Self {
         value.0
     }
 }
-
 
 pub fn register_submodule(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let module = PyModule::new(parent_module.py(), "schemas")?;

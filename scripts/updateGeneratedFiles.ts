@@ -161,15 +161,15 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     const execOpts: ExecFileSyncOptions = { stdio: ["ignore", "pipe", "pipe"] };
     // Check for tooling dependencies; skip generation if missing
     try {
-      await execFileSync("cargo", ["fmt", "--version"], execOpts);
-    } catch (_) {
+      execFileSync("cargo", ["fmt", "--version"], execOpts);
+    } catch {
       console.warn("Failed to run rustfmt; skipping pyclass generation");
       return;
     }
 
     try {
-      await execFileSync("poetry", ["run", "black", "--version"]);
-    } catch (_) {
+      execFileSync("poetry", ["run", "black", "--version"]);
+    } catch {
       console.warn("Failed to run `black` with poetry; skipping pyclass generation");
       return;
     }
@@ -209,8 +209,8 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     await fs.writeFile(pymoduleFile, generatePymodule([...enumSchemas, ...messageSchemas]));
 
     try {
-      await execFileSync("cargo", ["fmt", "--", path.resolve(schemasFile)], execOpts);
-      await execFileSync("cargo", ["fmt", "--", path.resolve(pymoduleFile)], execOpts);
+      execFileSync("cargo", ["fmt", "--", path.resolve(schemasFile)], execOpts);
+      execFileSync("cargo", ["fmt", "--", path.resolve(pymoduleFile)], execOpts);
     } catch (err) {
       console.error("Failed to format rust output");
       console.error(err);
@@ -219,7 +219,7 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
     // Pyi stub file
     await fs.writeFile(pyiStub, generatePymoduleStub([...enumSchemas, ...messageSchemas]));
     try {
-      await execFileSync("poetry", ["run", "black", path.resolve(pyiStub)], execOpts);
+      execFileSync("poetry", ["run", "black", path.resolve(pyiStub)], execOpts);
     } catch (err) {
       console.error("Failed to format python output");
       console.error(err);

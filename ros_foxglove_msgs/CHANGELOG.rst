@@ -2,6 +2,10 @@
 Changelog for package foxglove_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.1.0 (2025-02-11)
+------------------
+* Remove invalid generated schemas from package
+
 3.0.1 (2024-12-10)
 ------------------
 * Updating distortion model description

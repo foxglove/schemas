@@ -4,10 +4,15 @@
 
 Schemas are defined in [internal/schemas.ts](internal/schemas.ts). After modifying this file, you will need to regenerate the language-specific definitions.
 
+We commit generated files to git for several reasons:
+
+- Ease of access for users of the protobuf/flatbuffer/etc schemas
+- Ease of importing packages (e.g. pointing cargo or npm at a specific git commit)
+
 ```sh
 corepack enable  # ensure you have corepack enabled
 yarn install     # install dependencies
-yarn update-generated-files
+yarn generate    # regenerate files
 ```
 
 Remember to publish new versions of all libraries!
@@ -43,4 +48,11 @@ The following is a modified version of [bloom release instructions](https://wiki
 3. Push the newly created commit and tag
 4. Run `bloom-release foxglove_msgs --ros-distro humble`, for each distro you want to publish the release to. Follow the prompts, and the script will automatically make a PR to the [ros/rosdistro](https://github.com/ros/rosdistro) repo.
 
-Packages will be available via apt after the [next sync](https://discourse.ros.org/c/release/16). View package build status prior to the sync at: [melodic](http://repositories.ros.org/status_page/ros_melodic_default.html?q=foxglove), [noetic](http://repositories.ros.org/status_page/ros_noetic_default.html?q=foxglove), [foxy](http://repo.ros2.org/status_page/ros_foxy_default.html?q=foxglove), [galactic](http://repo.ros2.org/status_page/ros_galactic_default.html?q=foxglove), [humble](http://repo.ros2.org/status_page/ros_humble_default.html?q=foxglove), [iron](http://repo.ros2.org/status_page/ros_iron_default.html?q=foxglove), [rolling](http://repo.ros2.org/status_page/ros_rolling_default.html?q=foxglove)
+Packages will be available via apt after the [next sync](https://discourse.ros.org/c/release/16). View package build status prior to the sync at:
+[noetic](http://repositories.ros.org/status_page/ros_noetic_default.html?q=foxglove),
+[foxy](http://repo.ros2.org/status_page/ros_foxy_default.html?q=foxglove),
+[galactic](http://repo.ros2.org/status_page/ros_galactic_default.html?q=foxglove),
+[humble](http://repo.ros2.org/status_page/ros_humble_default.html?q=foxglove),
+[iron](http://repo.ros2.org/status_page/ros_iron_default.html?q=foxglove),
+[jazzy](http://repo.ros2.org/status_page/ros_jazzy_default.html?q=foxglove),
+[rolling](http://repo.ros2.org/status_page/ros_rolling_default.html?q=foxglove)

@@ -14,3 +14,4 @@ mod foxglove;
 mod impls;
 
 pub use self::foxglove::*;
+pub use prost_types::{Duration, Timestamp};

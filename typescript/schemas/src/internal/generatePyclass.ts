@@ -117,14 +117,14 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
     switch (field.type.type) {
       case "primitive":
         if (field.type.name === "time" || field.type.name === "duration") {
-          return `Some(${safeName(field.name)}.into())`;
+          return `${safeName(field.name)}.map(Into::into)`;
         }
         return safeName(field.name);
       case "nested":
         if (field.array != undefined) {
           return `${safeName(field.name)}.into_iter().map(|x| x.into()).collect()`;
         }
-        return `Some(${safeName(field.name)}.into())`;
+        return `${safeName(field.name)}.map(Into::into)`;
       case "enum":
         return `${safeName(field.name)} as i32`;
     }
@@ -139,10 +139,13 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
     return `${name}: ${value}`;
   }
 
+  const signature = schemaFields.map(({ argName, field }) => `${argName}=${defaultValue(field)}`).join(", ");
+
   const impl = [
     "#[pymethods]",
     `impl ${className} {`,
     `    #[new]`,
+    `    #[pyo3(signature = (${signature}) )]`,
     `    fn new(`,
     ...schemaFields.map(({ argName, field }) => `        ${argName}: ${rustOutputType(field)},`),
     `    ) -> Self {`,
@@ -206,21 +209,25 @@ function isMessageSchema(schema: FoxgloveSchema): schema is FoxgloveMessageSchem
 /**
  * Get the rust type for a field.
  * Types are assumed to be owned, and wrapped in a `Vec` if the field is an array.
+ * Nested types are optional, unless the field is an array.
  */
 function rustOutputType(field: FoxgloveMessageField): string {
+  const isVec = field.array != undefined;
   let type: string;
   switch (field.type.type) {
     case "primitive":
       type = rustType(field.type.name);
       break;
     case "nested":
-      type = field.type.schema.name;
+      // Don't wrap in an optional if part of a Vec
+      type = isVec ? field.type.schema.name : `Option<${field.type.schema.name}>`;
       break;
     case "enum":
       type = enumName(field.type.enum);
       break;
   }
-  return field.array != undefined ? `Vec<${type}>` : type;
+
+  return isVec ? `Vec<${type}>` : type;
 }
 
 /**
@@ -239,15 +246,14 @@ function rustType(foxglovePrimitive: FoxglovePrimitive): string {
     case "bytes":
       return "Vec<u8>";
     case "time":
-      return "Timestamp";
+      return "Option<Timestamp>";
     case "duration":
-      return "Duration";
+      return "Option<Duration>";
   }
 }
 
 /**
- * Get the rust type for a field.
- * Types are assumed to be owned, and wrapped in a `Vec` if the field is an array.
+ * Get the Python type for a field.
  */
 function pythonOutputType(field: FoxgloveMessageField): string {
   let type: string;
@@ -263,6 +269,38 @@ function pythonOutputType(field: FoxgloveMessageField): string {
       break;
   }
   return field.array != undefined ? `List[${type}]` : type;
+}
+
+/**
+ * Get the Python default for a field; used in constructor signatures.
+ */
+function defaultValue(field: FoxgloveMessageField): string {
+  if (field.array != undefined) {
+    return "vec![]";
+  }
+  switch (field.type.type) {
+    case "primitive":
+      switch (field.type.name) {
+        case "string":
+          return `"".to_string()`;
+        case "float64":
+          return "0.0";
+        case "uint32":
+          return "0";
+        case "boolean":
+          return "false";
+        case "bytes":
+          return "vec![]";
+        case "time":
+        case "duration":
+          return "None";
+      }
+    case "nested":
+      return "None";
+    case "enum":
+      const value = constantToTitleCase(field.type.enum.values[0]!.name);
+      return `${enumName(field.type.enum)}::${value}`;
+  }
 }
 
 /**
@@ -363,8 +401,12 @@ pub struct Timestamp {
 #[pymethods]
 impl Timestamp {
     #[new]
-    fn new(seconds: i64, nanos: i32) -> Self {
-        Self { seconds, nanos }
+    #[pyo3(signature = (seconds=0, nanos=None))]
+    fn new(seconds: i64, nanos: Option<i32>) -> Self {
+        Self {
+            seconds,
+            nanos: nanos.unwrap_or_default(),
+        }
     }
 }
 
@@ -387,8 +429,12 @@ pub struct Duration {
 #[pymethods]
 impl Duration {
     #[new]
-    fn new(seconds: u64, nanos: u32) -> Self {
-        Self { seconds, nanos }
+    #[pyo3(signature = (seconds=0, nanos=None))]
+    fn new(seconds: u64, nanos: Option<u32>) -> Self {
+        Self {
+            seconds,
+            nanos: nanos.unwrap_or_default(),
+        }
     }
 }
 

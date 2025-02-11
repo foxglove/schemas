@@ -491,10 +491,10 @@ impl ${channelClass} {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
+    pub fn log_with_meta(
         &self,
         msg: &schemas::${schemaClass},
-        opts: Bound<'py, PartialMetadata>,
+        opts: Bound<'_, PartialMetadata>,
     ) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());

@@ -62,10 +62,10 @@ impl CameraCalibrationChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
+    pub fn log_with_meta(
         &self,
         msg: &schemas::CameraCalibration,
-        opts: Bound<'py, PartialMetadata>,
+        opts: Bound<'_, PartialMetadata>,
     ) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
@@ -87,11 +87,7 @@ impl CircleAnnotationChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::CircleAnnotation,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::CircleAnnotation, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -112,7 +108,7 @@ impl ColorChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::Color, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::Color, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -133,11 +129,7 @@ impl CompressedImageChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::CompressedImage,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::CompressedImage, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -158,11 +150,7 @@ impl CompressedVideoChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::CompressedVideo,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::CompressedVideo, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -183,11 +171,7 @@ impl FrameTransformChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::FrameTransform,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::FrameTransform, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -208,11 +192,7 @@ impl FrameTransformsChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::FrameTransforms,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::FrameTransforms, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -233,7 +213,7 @@ impl GeoJsonChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::GeoJson, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::GeoJson, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -254,7 +234,7 @@ impl GridChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::Grid, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::Grid, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -275,11 +255,7 @@ impl ImageAnnotationsChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::ImageAnnotations,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::ImageAnnotations, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -300,11 +276,7 @@ impl KeyValuePairChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::KeyValuePair,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::KeyValuePair, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -325,7 +297,7 @@ impl LaserScanChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::LaserScan, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::LaserScan, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -346,11 +318,7 @@ impl LocationFixChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::LocationFix,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::LocationFix, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -371,7 +339,7 @@ impl LogChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::Log, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::Log, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -392,10 +360,10 @@ impl SceneEntityDeletionChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
+    pub fn log_with_meta(
         &self,
         msg: &schemas::SceneEntityDeletion,
-        opts: Bound<'py, PartialMetadata>,
+        opts: Bound<'_, PartialMetadata>,
     ) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
@@ -417,11 +385,7 @@ impl SceneEntityChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::SceneEntity,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::SceneEntity, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -442,11 +406,7 @@ impl SceneUpdateChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::SceneUpdate,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::SceneUpdate, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -467,10 +427,10 @@ impl PackedElementFieldChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
+    pub fn log_with_meta(
         &self,
         msg: &schemas::PackedElementField,
-        opts: Bound<'py, PartialMetadata>,
+        opts: Bound<'_, PartialMetadata>,
     ) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
@@ -492,7 +452,7 @@ impl Point2Channel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::Point2, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::Point2, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -513,7 +473,7 @@ impl Point3Channel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::Point3, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::Point3, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -534,7 +494,7 @@ impl PointCloudChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::PointCloud, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::PointCloud, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -555,11 +515,7 @@ impl PointsAnnotationChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::PointsAnnotation,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::PointsAnnotation, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -580,7 +536,7 @@ impl PoseChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::Pose, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::Pose, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -601,11 +557,7 @@ impl PoseInFrameChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::PoseInFrame,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::PoseInFrame, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -626,11 +578,7 @@ impl PosesInFrameChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::PosesInFrame,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::PosesInFrame, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -651,7 +599,7 @@ impl QuaternionChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::Quaternion, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::Quaternion, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -672,7 +620,7 @@ impl RawImageChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::RawImage, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::RawImage, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -693,11 +641,7 @@ impl TextAnnotationChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(
-        &self,
-        msg: &schemas::TextAnnotation,
-        opts: Bound<'py, PartialMetadata>,
-    ) {
+    pub fn log_with_meta(&self, msg: &schemas::TextAnnotation, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -718,7 +662,7 @@ impl Vector2Channel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::Vector2, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::Vector2, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }
@@ -739,7 +683,7 @@ impl Vector3Channel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta<'py>(&self, msg: &schemas::Vector3, opts: Bound<'py, PartialMetadata>) {
+    pub fn log_with_meta(&self, msg: &schemas::Vector3, opts: Bound<'_, PartialMetadata>) {
         let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
     }

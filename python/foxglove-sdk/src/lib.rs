@@ -205,7 +205,7 @@ fn _foxglove_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<PyMcapWriter>()?;
 
     // Register the schemas module
-    // A declarative submodule is generated in schemas/pyclass/module.rs, but this is currently
+    // A declarative submodule is created in generated/schemas_module.rs, but this is currently
     // easier to work with and function modules haven't yet been deprecated.
     schemas::register_submodule(m)?;
 

@@ -39,16 +39,21 @@ async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write("done\n");
 }
 
-const repoRoot = path.resolve(__dirname, "..");
-
-const pythonSdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
-const pythonSdkSourceRoot = path.join(pythonSdkRoot, "src", "generated");
-const pythonSdkStub = path.join(pythonSdkRoot, "python", "foxglove", "_foxglove_py", "schemas.pyi");
-
 async function main({ clean }: { clean: boolean }) {
+  const repoRoot = path.resolve(__dirname, "..");
   const outDir = path.join(repoRoot, "schemas");
   const rosOutDir = path.join(repoRoot, "ros_foxglove_msgs");
   const typescriptTypesDir = path.join(repoRoot, "typescript/schemas/src/types");
+
+  const pythonSdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
+  const pythonSdkSourceRoot = path.join(pythonSdkRoot, "src", "generated");
+  const pythonSdkStub = path.join(
+    pythonSdkRoot,
+    "python",
+    "foxglove",
+    "_foxglove_py",
+    "schemas.pyi",
+  );
 
   await logProgress("Removing existing output directories", async () => {
     await rimraf(outDir);

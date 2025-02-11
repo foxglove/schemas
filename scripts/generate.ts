@@ -1,5 +1,5 @@
 import { program } from "commander";
-import { execFileSync, ExecFileSyncOptions, spawnSync } from "node:child_process";
+import { CommonSpawnOptions, spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { rimraf } from "rimraf";
@@ -165,21 +165,20 @@ async function main({ clean }: { clean: boolean }) {
 
   await logProgress("Generating Pyclass definitions", async () => {
     // Pyclass definitions are generated specifically for the SDK, and are not stored in ./schemas
-    const repoRoot = path.resolve(__dirname, "..");
     const sdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
 
     // Ignore stdout from spawned commands, but keep stderr
-    const execOpts: ExecFileSyncOptions = { stdio: ["ignore", "pipe", "pipe"] };
+    const spawnOpts: CommonSpawnOptions = { stdio: ["ignore", "pipe", "pipe"] };
     // Check for tooling dependencies; skip generation if missing
     try {
-      execFileSync("cargo", ["fmt", "--version"], execOpts);
+      spawnSync("cargo", ["fmt", "--version"], spawnOpts);
     } catch {
       console.warn("Failed to run rustfmt; skipping pyclass generation");
       return;
     }
 
     try {
-      execFileSync("poetry", ["run", "black", "--version"]);
+      spawnSync("poetry", ["run", "black", "--version"], spawnOpts);
     } catch {
       console.warn("Failed to run `black` with poetry; skipping pyclass generation");
       return;
@@ -220,8 +219,8 @@ async function main({ clean }: { clean: boolean }) {
     await fs.writeFile(pymoduleFile, generatePymodule([...enumSchemas, ...messageSchemas]));
 
     try {
-      execFileSync("cargo", ["fmt", "--", path.resolve(schemasFile)], execOpts);
-      execFileSync("cargo", ["fmt", "--", path.resolve(pymoduleFile)], execOpts);
+      spawnSync("cargo", ["fmt", "--", path.resolve(schemasFile)], spawnOpts);
+      spawnSync("cargo", ["fmt", "--", path.resolve(pymoduleFile)], spawnOpts);
     } catch (err) {
       console.error("Failed to format rust output");
       console.error(err);
@@ -230,7 +229,7 @@ async function main({ clean }: { clean: boolean }) {
     // Pyi stub file
     await fs.writeFile(pyiStub, generatePymoduleStub([...enumSchemas, ...messageSchemas]));
     try {
-      execFileSync("poetry", ["run", "black", path.resolve(pyiStub)], execOpts);
+      spawnSync("poetry", ["run", "black", path.resolve(pyiStub)], spawnOpts);
     } catch (err) {
       console.error("Failed to format python output");
       console.error(err);

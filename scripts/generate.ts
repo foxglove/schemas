@@ -1,8 +1,8 @@
 import { program } from "commander";
 import fs from "fs/promises";
+import { spawnSync } from "node:child_process";
 import path from "path";
 import { rimraf } from "rimraf";
-import { spawnSync } from "node:child_process";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../typescript/schemas/src/internal";
 import { exportTypeScriptSchemas } from "../typescript/schemas/src/internal/exportTypeScriptSchemas";
@@ -45,7 +45,7 @@ async function main({ clean }: { clean: boolean }) {
   });
 
   if (clean) {
-    // cleaning complete, don't generate new files
+    // we're all done here
     return;
   }
 
@@ -156,12 +156,11 @@ async function main({ clean }: { clean: boolean }) {
   });
 
   await logProgress("Running yarn test --updateSnapshot", async () => {
-    // run the command using standard node process. forward all input to stdout and stderr
     const result = spawnSync("yarn", ["test", "--updateSnapshot"], {
       stdio: "inherit",
     });
     if (result.status !== 0) {
-      throw new Error(`yarn test failed with code ${result.status}`);
+      throw new Error(`yarn test failed with code ${result.status ?? "unknown"}`);
     }
   });
 }

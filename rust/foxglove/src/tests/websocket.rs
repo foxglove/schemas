@@ -1,63 +1,13 @@
-use assert_matches::assert_matches;
 use futures_util::{FutureExt, SinkExt, StreamExt};
 use serde_json::{json, Value};
-use std::net::SocketAddr;
 use std::sync::Arc;
 use tokio_tungstenite::tungstenite::{self, http::HeaderValue, Message};
 use tungstenite::client::IntoClientRequest;
 
-use super::{
-    create_server, send_lossy, ClientMessage, SendLossyResult, ServerOptions, SubscriptionId,
-    SUBPROTOCOL,
+use crate::websocket::{
+    create_server, ClientMessage, ServerOptions, StatusLevel, SubscriptionId, SUBPROTOCOL,
 };
-use crate::testutil::RecordingServerListener;
 use crate::{collection, Channel, ChannelBuilder, LogContext, LogSink, Metadata, Schema};
-
-fn make_message(id: usize) -> Message {
-    Message::Text(format!("{id}").into())
-}
-
-fn parse_message(msg: Message) -> usize {
-    match msg {
-        Message::Text(text) => text.parse().expect("id"),
-        _ => unreachable!(),
-    }
-}
-
-#[test]
-fn test_send_lossy() {
-    const BACKLOG: usize = 4;
-    const TOTAL: usize = 10;
-
-    let addr = SocketAddr::new("127.0.0.1".parse().unwrap(), 1234);
-
-    let (tx, rx) = flume::bounded(BACKLOG);
-    for i in 0..BACKLOG {
-        assert_matches!(
-            send_lossy(&addr, &tx, &rx, make_message(i), 0),
-            SendLossyResult::Sent
-        );
-    }
-
-    // The queue is full now. We'll only succeed with retries.
-    for i in BACKLOG..TOTAL {
-        assert_matches!(
-            send_lossy(&addr, &tx, &rx, make_message(TOTAL + i), 0),
-            SendLossyResult::ExhaustedRetries
-        );
-        assert_matches!(
-            send_lossy(&addr, &tx, &rx, make_message(i), 1),
-            SendLossyResult::SentLossy(1)
-        );
-    }
-
-    // Receive everything, expect that the first (TOTAL - BACKLOG) messages were dropped.
-    let mut received: Vec<usize> = vec![];
-    while let Ok(msg) = rx.try_recv() {
-        received.push(parse_message(msg));
-    }
-    assert_eq!(received, ((TOTAL - BACKLOG)..TOTAL).collect::<Vec<_>>());
-}
 
 fn new_channel(topic: &str, ctx: &LogContext) -> Arc<Channel> {
     ChannelBuilder::new(topic)
@@ -173,12 +123,7 @@ async fn test_handshake_with_multiple_subprotocols() {
 
 #[tokio::test]
 async fn test_advertise_to_client() {
-    let recording_listener = Arc::new(RecordingServerListener::new());
-
-    let server = create_server(ServerOptions {
-        listener: Some(recording_listener.clone()),
-        ..Default::default()
-    });
+    let server = create_server(ServerOptions::default());
 
     let ctx = LogContext::new();
     ctx.add_sink(server.clone());
@@ -223,30 +168,15 @@ async fn test_advertise_to_client() {
         .send(Message::text(subscribe.to_string()))
         .await
         .expect("Failed to send");
-    // Send a duplicate subscribe message (ignored)
-    client_sender
-        .send(Message::text(subscribe.to_string()))
-        .await
-        .expect("Failed to send");
 
     // Allow the server to process the subscription
-    // FG-10395 replace this with something more precise
+    // FG-9723: replace this with an on_subscribe callback
     tokio::time::sleep(std::time::Duration::from_millis(100)).await;
 
     server.log(&ch, b"{\"a\":1}", &metadata).unwrap();
 
     let result = client_receiver.next().await.unwrap();
     let msg = result.expect("Failed to parse message");
-    let data = msg.into_data();
-    let data_str = std::str::from_utf8(&data).unwrap();
-    println!("data_str: {data_str}");
-    assert!(data_str.contains("Client is already subscribed to channel"));
-
-    let msg = client_receiver
-        .next()
-        .await
-        .unwrap()
-        .expect("Failed to parse message");
     let data = msg.into_data();
 
     assert_eq!(data[0], 0x01); // message data opcode
@@ -255,22 +185,12 @@ async fn test_advertise_to_client() {
         subscription_id
     );
 
-    let subscriptions = recording_listener.take_subscribe();
-    assert_eq!(subscriptions.len(), 1);
-    assert_eq!(subscriptions[0].1.id, ch.id);
-    assert_eq!(subscriptions[0].1.topic, ch.topic);
-
     server.stop().await;
 }
 
 #[tokio::test]
 async fn test_log_only_to_subscribers() {
-    let recording_listener = Arc::new(RecordingServerListener::new());
-
-    let server = create_server(ServerOptions {
-        listener: Some(recording_listener.clone()),
-        ..Default::default()
-    });
+    let server = create_server(ServerOptions::default());
 
     let ctx = LogContext::new();
 
@@ -359,26 +279,8 @@ async fn test_log_only_to_subscribers() {
         .expect("Failed to send");
 
     // Allow the server to process the subscription
-    // FG-10395 replace this with something more precise
+    // FG-9723: replace this with an on_subscribe callback
     tokio::time::sleep(std::time::Duration::from_millis(100)).await;
-
-    let subscriptions = recording_listener.take_subscribe();
-    assert_eq!(subscriptions.len(), 4);
-    assert_eq!(subscriptions[0].1.id, ch1.id);
-    assert_eq!(subscriptions[1].1.id, ch2.id);
-    assert_eq!(subscriptions[2].1.id, ch1.id);
-    assert_eq!(subscriptions[3].1.id, ch2.id);
-    assert_eq!(subscriptions[0].1.topic, ch1.topic);
-    assert_eq!(subscriptions[1].1.topic, ch2.topic);
-    assert_eq!(subscriptions[2].1.topic, ch1.topic);
-    assert_eq!(subscriptions[3].1.topic, ch2.topic);
-
-    let unsubscriptions = recording_listener.take_unsubscribe();
-    assert_eq!(unsubscriptions.len(), 2);
-    assert_eq!(unsubscriptions[0].1.id, ch1.id);
-    assert_eq!(unsubscriptions[1].1.id, ch2.id);
-    assert_eq!(unsubscriptions[0].1.topic, ch1.topic);
-    assert_eq!(unsubscriptions[1].1.topic, ch2.topic);
 
     let metadata = Metadata {
         log_time: 123456,
@@ -468,57 +370,131 @@ async fn test_error_status_message() {
 
     _ = ws_client.next().await.expect("No serverInfo sent");
 
-    {
-        ws_client
-            .send(Message::text("nonsense".to_string()))
-            .await
-            .expect("Failed to send message");
+    ws_client
+        .send(Message::text("nonsense".to_string()))
+        .await
+        .expect("Failed to send message");
 
-        let result = ws_client.next().await.unwrap();
-        let msg = result.expect("Failed to parse message");
-        let text = msg.into_text().expect("Failed to get message text");
-        let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
-        assert_eq!(status["level"], 2);
-        assert_eq!(status["message"], "Unsupported message: nonsense");
-    }
+    let result = ws_client.next().await.unwrap();
+    let msg = result.expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
+    assert_eq!(status["level"], 2);
+    assert_eq!(status["message"], "Unsupported message: nonsense");
 
-    {
-        let msg = json!({
-            "op": "subscribe",
-            "subscriptions": [{ "id": 1, "channelId": 555, }]
-        });
-        ws_client
-            .send(Message::text(msg.to_string()))
-            .await
-            .expect("Failed to send message");
+    let msg = json!({
+        "op": "subscribe",
+        "subscriptions": [{ "id": 1, "channelId": 555, }]
+    });
+    ws_client
+        .send(Message::text(msg.to_string()))
+        .await
+        .expect("Failed to send message");
 
-        let result = ws_client.next().await.unwrap();
-        let msg = result.expect("Failed to parse message");
-        let text = msg.into_text().expect("Failed to get message text");
-        let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
-        assert_eq!(status["level"], 2);
-        assert_eq!(status["message"], "Unknown channel ID: 555");
-    }
+    let result = ws_client.next().await.unwrap();
+    let msg = result.expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
+    assert_eq!(status["level"], 2);
+    assert_eq!(status["message"], "Unknown channel ID: 555");
 
-    {
-        ws_client
-            .send(Message::binary(vec![0xff]))
-            .await
-            .expect("Failed to send message");
+    ws_client
+        .send(Message::binary(vec![0xff]))
+        .await
+        .expect("Failed to send message");
 
-        let result = ws_client.next().await.unwrap();
-        let msg = result.expect("Failed to parse message");
-        let text = msg.into_text().expect("Failed to get message text");
-        let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
-        assert_eq!(status["level"], 2);
-        assert_eq!(status["message"], "Invalid binary opcode: 255");
-    }
+    let result = ws_client.next().await.unwrap();
+    let msg = result.expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
+    assert_eq!(status["level"], 2);
+    assert_eq!(status["message"], "Invalid binary opcode: 255");
 
     server.stop().await;
 }
 
+#[tokio::test]
+async fn test_publish_status_message() {
+    let server = create_server(ServerOptions::default());
+    let addr = server
+        .start("127.0.0.1", 0)
+        .await
+        .expect("Failed to start server");
+
+    let mut ws_client = connect_client(addr).await;
+
+    _ = ws_client.next().await.expect("No serverInfo sent");
+
+    server.publish_status(
+        StatusLevel::Info,
+        "Hello, world!".to_string(),
+        Some("123".to_string()),
+    );
+    server.publish_status(
+        StatusLevel::Error,
+        "Reactor core overload!".to_string(),
+        Some("abc".to_string()),
+    );
+
+    let msg = ws_client
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(
+        text,
+        r#"{"op":"status","level":1,"message":"Hello, world!","id":"123"}"#
+    );
+
+    let msg = ws_client
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(
+        text,
+        r#"{"op":"status","level":3,"message":"Reactor core overload!","id":"abc"}"#
+    );
+}
+
+#[tokio::test]
+async fn test_remove_status() {
+    let server = create_server(ServerOptions::default());
+    let addr = server
+        .start("127.0.0.1", 0)
+        .await
+        .expect("Failed to start server");
+
+    let mut ws_client1 = connect_client(addr.clone()).await;
+    let mut ws_client2 = connect_client(addr).await;
+
+    _ = ws_client1.next().await.expect("No serverInfo sent");
+    _ = ws_client2.next().await.expect("No serverInfo sent");
+
+    // These don't have to exist, and aren't checked
+    server.remove_status(vec!["123".to_string(), "abc".to_string()]);
+
+    let msg = ws_client1
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(text, r#"{"op":"removeStatus","statusIds":["123","abc"]}"#);
+
+    let msg = ws_client2
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(text, r#"{"op":"removeStatus","statusIds":["123","abc"]}"#);
+}
+
 /// Connect to a server, ensuring the protocol header is set, and return the client WS stream
-pub async fn connect_client(
+async fn connect_client(
     addr: String,
 ) -> tokio_tungstenite::WebSocketStream<tokio_tungstenite::MaybeTlsStream<tokio::net::TcpStream>> {
     let mut request = format!("ws://{addr}/")

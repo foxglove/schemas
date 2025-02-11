@@ -121,7 +121,7 @@ impl BaseChannel {
 }
 
 #[pyclass]
-#[derive(Clone)]
+#[derive(Clone, Default)]
 struct PartialMetadata(foxglove::PartialMetadata);
 
 #[pymethods]
@@ -140,12 +140,6 @@ impl PartialMetadata {
 impl From<PartialMetadata> for foxglove::PartialMetadata {
     fn from(value: PartialMetadata) -> Self {
         value.0
-    }
-}
-
-impl Default for PartialMetadata {
-    fn default() -> Self {
-        Self(foxglove::PartialMetadata::default())
     }
 }
 

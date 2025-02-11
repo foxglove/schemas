@@ -121,21 +121,7 @@ impl From<Duration> for prost_types::Duration {
 /// A primitive representing an arrow
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct ArrowPrimitive {
-    /// Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.
-    pose: Pose,
-    /// Length of the arrow shaft
-    shaft_length: f64,
-    /// Diameter of the arrow shaft
-    shaft_diameter: f64,
-    /// Length of the arrow head
-    head_length: f64,
-    /// Diameter of the arrow head
-    head_diameter: f64,
-    /// Color of the arrow
-    color: Color,
-}
-
+pub(crate) struct ArrowPrimitive(foxglove::schemas::ArrowPrimitive);
 #[pymethods]
 impl ArrowPrimitive {
     #[new]
@@ -147,94 +133,27 @@ impl ArrowPrimitive {
         head_diameter: f64,
         color: Color,
     ) -> Self {
-        Self {
-            pose,
-            shaft_length,
-            shaft_diameter,
-            head_length,
-            head_diameter,
-            color,
-        }
+        Self(foxglove::schemas::ArrowPrimitive {
+            pose: Some(pose.into()),
+            shaft_length: shaft_length,
+            shaft_diameter: shaft_diameter,
+            head_length: head_length,
+            head_diameter: head_diameter,
+            color: Some(color.into()),
+        })
     }
 }
 
 impl From<ArrowPrimitive> for foxglove::schemas::ArrowPrimitive {
     fn from(value: ArrowPrimitive) -> Self {
-        Self {
-            pose: Some(value.pose.into()),
-            shaft_length: value.shaft_length,
-            shaft_diameter: value.shaft_diameter,
-            head_length: value.head_length,
-            head_diameter: value.head_diameter,
-            color: Some(value.color.into()),
-        }
+        value.0
     }
 }
 
 /// Camera calibration parameters
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct CameraCalibration {
-    /// Timestamp of calibration data
-    timestamp: Timestamp,
-    /// Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
-    frame_id: String,
-    /// Image width
-    width: u32,
-    /// Image height
-    height: u32,
-    /// Name of distortion model
-    ///
-    /// Supported parameters: `plumb_bob` (k1, k2, p1, p2, k3) and `rational_polynomial` (k1, k2, p1, p2, k3, k4, k5, k6). Distortion models are based on [OpenCV's](https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html) [pinhole camera model](https://en.wikipedia.org/wiki/Distortion_%28optics%29#Software_correction). This is the same [implementation used by ROS](http://docs.ros.org/en/diamondback/api/image_geometry/html/c++/pinhole__camera__model_8cpp_source.html)
-    distortion_model: String,
-    /// Distortion parameters
-    D: Vec<f64>,
-    /// Intrinsic camera matrix (3x3 row-major matrix)
-    ///
-    /// A 3x3 row-major matrix for the raw (distorted) image.
-    ///
-    /// Projects 3D points in the camera coordinate frame to 2D pixel coordinates using the focal lengths (fx, fy) and principal point (cx, cy).
-    ///
-    /// ```
-    ///     [fx  0 cx]
-    /// K = [ 0 fy cy]
-    ///     [ 0  0  1]
-    /// ```
-    ///
-    K: Vec<f64>,
-    /// Rectification matrix (stereo cameras only, 3x3 row-major matrix)
-    ///
-    /// A rotation matrix aligning the camera coordinate system to the ideal stereo image plane so that epipolar lines in both stereo images are parallel.
-    R: Vec<f64>,
-    /// Projection/camera matrix (3x4 row-major matrix)
-    ///
-    /// ```
-    ///     [fx'  0  cx' Tx]
-    /// P = [ 0  fy' cy' Ty]
-    ///     [ 0   0   1   0]
-    /// ```
-    ///
-    /// By convention, this matrix specifies the intrinsic (camera) matrix of the processed (rectified) image. That is, the left 3x3 portion is the normal camera intrinsic matrix for the rectified image.
-    ///
-    /// It projects 3D points in the camera coordinate frame to 2D pixel coordinates using the focal lengths (fx', fy') and principal point (cx', cy') - these may differ from the values in K.
-    ///
-    /// For monocular cameras, Tx = Ty = 0. Normally, monocular cameras will also have R = the identity and P[1:3,1:3] = K.
-    ///
-    /// For a stereo pair, the fourth column [Tx Ty 0]' is related to the position of the optical center of the second camera in the first camera's frame. We assume Tz = 0 so both cameras are in the same stereo image plane. The first camera always has Tx = Ty = 0. For the right (second) camera of a horizontal stereo pair, Ty = 0 and Tx = -fx' * B, where B is the baseline between the cameras.
-    ///
-    /// Given a 3D point [X Y Z]', the projection (x, y) of the point onto the rectified image is given by:
-    ///
-    /// ```
-    /// [u v w]' = P * [X Y Z 1]'
-    ///        x = u / w
-    ///        y = v / w
-    /// ```
-    ///
-    /// This holds for both images of a stereo pair.
-    ///
-    P: Vec<f64>,
-}
-
+pub(crate) struct CameraCalibration(foxglove::schemas::CameraCalibration);
 #[pymethods]
 impl CameraCalibration {
     #[new]
@@ -249,55 +168,30 @@ impl CameraCalibration {
         R: Vec<f64>,
         P: Vec<f64>,
     ) -> Self {
-        Self {
-            timestamp,
-            frame_id,
-            width,
-            height,
-            distortion_model,
-            D,
-            K,
-            R,
-            P,
-        }
+        Self(foxglove::schemas::CameraCalibration {
+            timestamp: Some(timestamp.into()),
+            frame_id: frame_id,
+            width: width,
+            height: height,
+            distortion_model: distortion_model,
+            d: D,
+            k: K,
+            r: R,
+            p: P,
+        })
     }
 }
 
 impl From<CameraCalibration> for foxglove::schemas::CameraCalibration {
     fn from(value: CameraCalibration) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            frame_id: value.frame_id,
-            width: value.width,
-            height: value.height,
-            distortion_model: value.distortion_model,
-            d: value.D,
-            k: value.K,
-            r: value.R,
-            p: value.P,
-        }
+        value.0
     }
 }
 
 /// A circle annotation on a 2D image
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct CircleAnnotation {
-    /// Timestamp of circle
-    timestamp: Timestamp,
-    /// Center of the circle in 2D image coordinates (pixels).
-    /// The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
-    position: Point2,
-    /// Circle diameter in pixels
-    diameter: f64,
-    /// Line thickness in pixels
-    thickness: f64,
-    /// Fill color
-    fill_color: Color,
-    /// Outline color
-    outline_color: Color,
-}
-
+pub(crate) struct CircleAnnotation(foxglove::schemas::CircleAnnotation);
 #[pymethods]
 impl CircleAnnotation {
     #[new]
@@ -309,257 +203,142 @@ impl CircleAnnotation {
         fill_color: Color,
         outline_color: Color,
     ) -> Self {
-        Self {
-            timestamp,
-            position,
-            diameter,
-            thickness,
-            fill_color,
-            outline_color,
-        }
+        Self(foxglove::schemas::CircleAnnotation {
+            timestamp: Some(timestamp.into()),
+            position: Some(position.into()),
+            diameter: diameter,
+            thickness: thickness,
+            fill_color: Some(fill_color.into()),
+            outline_color: Some(outline_color.into()),
+        })
     }
 }
 
 impl From<CircleAnnotation> for foxglove::schemas::CircleAnnotation {
     fn from(value: CircleAnnotation) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            position: Some(value.position.into()),
-            diameter: value.diameter,
-            thickness: value.thickness,
-            fill_color: Some(value.fill_color.into()),
-            outline_color: Some(value.outline_color.into()),
-        }
+        value.0
     }
 }
 
 /// A color in RGBA format
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct Color {
-    /// Red value between 0 and 1
-    r: f64,
-    /// Green value between 0 and 1
-    g: f64,
-    /// Blue value between 0 and 1
-    b: f64,
-    /// Alpha value between 0 and 1
-    a: f64,
-}
-
+pub(crate) struct Color(foxglove::schemas::Color);
 #[pymethods]
 impl Color {
     #[new]
     fn new(r: f64, g: f64, b: f64, a: f64) -> Self {
-        Self { r, g, b, a }
+        Self(foxglove::schemas::Color {
+            r: r,
+            g: g,
+            b: b,
+            a: a,
+        })
     }
 }
 
 impl From<Color> for foxglove::schemas::Color {
     fn from(value: Color) -> Self {
-        Self {
-            r: value.r,
-            g: value.g,
-            b: value.b,
-            a: value.a,
-        }
+        value.0
     }
 }
 
 /// A compressed image
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct CompressedImage {
-    /// Timestamp of image
-    timestamp: Timestamp,
-    /// Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
-    frame_id: String,
-    /// Compressed image data
-    data: Vec<u8>,
-    /// Image format
-    ///
-    /// Supported values: image media types supported by Chrome, such as `webp`, `jpeg`, `png`
-    format: String,
-}
-
+pub(crate) struct CompressedImage(foxglove::schemas::CompressedImage);
 #[pymethods]
 impl CompressedImage {
     #[new]
     fn new(timestamp: Timestamp, frame_id: String, data: Vec<u8>, format: String) -> Self {
-        Self {
-            timestamp,
-            frame_id,
-            data,
-            format,
-        }
+        Self(foxglove::schemas::CompressedImage {
+            timestamp: Some(timestamp.into()),
+            frame_id: frame_id,
+            data: data,
+            format: format,
+        })
     }
 }
 
 impl From<CompressedImage> for foxglove::schemas::CompressedImage {
     fn from(value: CompressedImage) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            frame_id: value.frame_id,
-            data: value.data,
-            format: value.format,
-        }
+        value.0
     }
 }
 
 /// A single frame of a compressed video bitstream
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct CompressedVideo {
-    /// Timestamp of video frame
-    timestamp: Timestamp,
-    /// Frame of reference for the video.
-    ///
-    /// The origin of the frame is the optical center of the camera. +x points to the right in the video, +y points down, and +z points into the plane of the video.
-    frame_id: String,
-    /// Compressed video frame data.
-    ///
-    /// For packet-based video codecs this data must begin and end on packet boundaries (no partial packets), and must contain enough video packets to decode exactly one image (either a keyframe or delta frame). Note: Foxglove does not support video streams that include B frames because they require lookahead.
-    ///
-    /// Specifically, the requirements for different `format` values are:
-    ///
-    /// - `h264`
-    ///   - Use Annex B formatted data
-    ///   - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame
-    ///   - Each message containing a key frame (IDR) must also include a SPS NAL unit
-    ///
-    /// - `h265` (HEVC)
-    ///   - Use Annex B formatted data
-    ///   - Each CompressedVideo message should contain enough NAL units to decode exactly one video frame
-    ///   - Each message containing a key frame (IRAP) must also include relevant VPS/SPS/PPS NAL units
-    ///
-    /// - `vp9`
-    ///   - Each CompressedVideo message should contain exactly one video frame
-    ///
-    /// - `av1`
-    ///   - Use the "Low overhead bitstream format" (section 5.2)
-    ///   - Each CompressedVideo message should contain enough OBUs to decode exactly one video frame
-    ///   - Each message containing a key frame must also include a Sequence Header OBU
-    data: Vec<u8>,
-    /// Video format.
-    ///
-    /// Supported values: `h264`, `h265`, `vp9`, `av1`.
-    ///
-    /// Note: compressed video support is subject to hardware limitations and patent licensing, so not all encodings may be supported on all platforms. See more about [H.265 support](https://caniuse.com/hevc), [VP9 support](https://caniuse.com/webm), and [AV1 support](https://caniuse.com/av1).
-    format: String,
-}
-
+pub(crate) struct CompressedVideo(foxglove::schemas::CompressedVideo);
 #[pymethods]
 impl CompressedVideo {
     #[new]
     fn new(timestamp: Timestamp, frame_id: String, data: Vec<u8>, format: String) -> Self {
-        Self {
-            timestamp,
-            frame_id,
-            data,
-            format,
-        }
+        Self(foxglove::schemas::CompressedVideo {
+            timestamp: Some(timestamp.into()),
+            frame_id: frame_id,
+            data: data,
+            format: format,
+        })
     }
 }
 
 impl From<CompressedVideo> for foxglove::schemas::CompressedVideo {
     fn from(value: CompressedVideo) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            frame_id: value.frame_id,
-            data: value.data,
-            format: value.format,
-        }
+        value.0
     }
 }
 
 /// A primitive representing a cylinder, elliptic cylinder, or truncated cone
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct CylinderPrimitive {
-    /// Position of the center of the cylinder and orientation of the cylinder. The flat face(s) are perpendicular to the z-axis.
-    pose: Pose,
-    /// Size of the cylinder's bounding box
-    size: Vector3,
-    /// 0-1, ratio of the diameter of the cylinder's bottom face (min z) to the bottom of the bounding box
-    bottom_scale: f64,
-    /// 0-1, ratio of the diameter of the cylinder's top face (max z) to the top of the bounding box
-    top_scale: f64,
-    /// Color of the cylinder
-    color: Color,
-}
-
+pub(crate) struct CylinderPrimitive(foxglove::schemas::CylinderPrimitive);
 #[pymethods]
 impl CylinderPrimitive {
     #[new]
     fn new(pose: Pose, size: Vector3, bottom_scale: f64, top_scale: f64, color: Color) -> Self {
-        Self {
-            pose,
-            size,
-            bottom_scale,
-            top_scale,
-            color,
-        }
+        Self(foxglove::schemas::CylinderPrimitive {
+            pose: Some(pose.into()),
+            size: Some(size.into()),
+            bottom_scale: bottom_scale,
+            top_scale: top_scale,
+            color: Some(color.into()),
+        })
     }
 }
 
 impl From<CylinderPrimitive> for foxglove::schemas::CylinderPrimitive {
     fn from(value: CylinderPrimitive) -> Self {
-        Self {
-            pose: Some(value.pose.into()),
-            size: Some(value.size.into()),
-            bottom_scale: value.bottom_scale,
-            top_scale: value.top_scale,
-            color: Some(value.color.into()),
-        }
+        value.0
     }
 }
 
 /// A primitive representing a cube or rectangular prism
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct CubePrimitive {
-    /// Position of the center of the cube and orientation of the cube
-    pose: Pose,
-    /// Size of the cube along each axis
-    size: Vector3,
-    /// Color of the cube
-    color: Color,
-}
-
+pub(crate) struct CubePrimitive(foxglove::schemas::CubePrimitive);
 #[pymethods]
 impl CubePrimitive {
     #[new]
     fn new(pose: Pose, size: Vector3, color: Color) -> Self {
-        Self { pose, size, color }
+        Self(foxglove::schemas::CubePrimitive {
+            pose: Some(pose.into()),
+            size: Some(size.into()),
+            color: Some(color.into()),
+        })
     }
 }
 
 impl From<CubePrimitive> for foxglove::schemas::CubePrimitive {
     fn from(value: CubePrimitive) -> Self {
-        Self {
-            pose: Some(value.pose.into()),
-            size: Some(value.size.into()),
-            color: Some(value.color.into()),
-        }
+        value.0
     }
 }
 
 /// A transform between two reference frames in 3D space
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct FrameTransform {
-    /// Timestamp of transform
-    timestamp: Timestamp,
-    /// Name of the parent frame
-    parent_frame_id: String,
-    /// Name of the child frame
-    child_frame_id: String,
-    /// Translation component of the transform
-    translation: Vector3,
-    /// Rotation component of the transform
-    rotation: Quaternion,
-}
-
+pub(crate) struct FrameTransform(foxglove::schemas::FrameTransform);
 #[pymethods]
 impl FrameTransform {
     #[new]
@@ -570,100 +349,64 @@ impl FrameTransform {
         translation: Vector3,
         rotation: Quaternion,
     ) -> Self {
-        Self {
-            timestamp,
-            parent_frame_id,
-            child_frame_id,
-            translation,
-            rotation,
-        }
+        Self(foxglove::schemas::FrameTransform {
+            timestamp: Some(timestamp.into()),
+            parent_frame_id: parent_frame_id,
+            child_frame_id: child_frame_id,
+            translation: Some(translation.into()),
+            rotation: Some(rotation.into()),
+        })
     }
 }
 
 impl From<FrameTransform> for foxglove::schemas::FrameTransform {
     fn from(value: FrameTransform) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            parent_frame_id: value.parent_frame_id,
-            child_frame_id: value.child_frame_id,
-            translation: Some(value.translation.into()),
-            rotation: Some(value.rotation.into()),
-        }
+        value.0
     }
 }
 
 /// An array of FrameTransform messages
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct FrameTransforms {
-    /// Array of transforms
-    transforms: Vec<FrameTransform>,
-}
-
+pub(crate) struct FrameTransforms(foxglove::schemas::FrameTransforms);
 #[pymethods]
 impl FrameTransforms {
     #[new]
     fn new(transforms: Vec<FrameTransform>) -> Self {
-        Self { transforms }
+        Self(foxglove::schemas::FrameTransforms {
+            transforms: transforms.into_iter().map(|x| x.into()).collect(),
+        })
     }
 }
 
 impl From<FrameTransforms> for foxglove::schemas::FrameTransforms {
     fn from(value: FrameTransforms) -> Self {
-        Self {
-            transforms: value.transforms.into_iter().map(|x| x.into()).collect(),
-        }
+        value.0
     }
 }
 
 /// GeoJSON data for annotating maps
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct GeoJson {
-    /// GeoJSON data encoded as a UTF-8 string
-    geojson: String,
-}
-
+pub(crate) struct GeoJson(foxglove::schemas::GeoJson);
 #[pymethods]
 impl GeoJson {
     #[new]
     fn new(geojson: String) -> Self {
-        Self { geojson }
+        Self(foxglove::schemas::GeoJson { geojson: geojson })
     }
 }
 
 impl From<GeoJson> for foxglove::schemas::GeoJson {
     fn from(value: GeoJson) -> Self {
-        Self {
-            geojson: value.geojson,
-        }
+        value.0
     }
 }
 
 /// A 2D grid of data
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct Grid {
-    /// Timestamp of grid
-    timestamp: Timestamp,
-    /// Frame of reference
-    frame_id: String,
-    /// Origin of grid's corner relative to frame of reference; grid is positioned in the x-y plane relative to this origin
-    pose: Pose,
-    /// Number of grid columns
-    column_count: u32,
-    /// Size of single grid cell along x and y axes, relative to `pose`
-    cell_size: Vector2,
-    /// Number of bytes between rows in `data`
-    row_stride: u32,
-    /// Number of bytes between cells within a row in `data`
-    cell_stride: u32,
-    /// Fields in `data`. `red`, `green`, `blue`, and `alpha` are optional for customizing the grid's color.
-    fields: Vec<PackedElementField>,
-    /// Grid cell data, interpreted using `fields`, in row-major (y-major) order
-    data: Vec<u8>,
-}
-
+pub(crate) struct Grid(foxglove::schemas::Grid);
 #[pymethods]
 impl Grid {
     #[new]
@@ -678,48 +421,30 @@ impl Grid {
         fields: Vec<PackedElementField>,
         data: Vec<u8>,
     ) -> Self {
-        Self {
-            timestamp,
-            frame_id,
-            pose,
-            column_count,
-            cell_size,
-            row_stride,
-            cell_stride,
-            fields,
-            data,
-        }
+        Self(foxglove::schemas::Grid {
+            timestamp: Some(timestamp.into()),
+            frame_id: frame_id,
+            pose: Some(pose.into()),
+            column_count: column_count,
+            cell_size: Some(cell_size.into()),
+            row_stride: row_stride,
+            cell_stride: cell_stride,
+            fields: fields.into_iter().map(|x| x.into()).collect(),
+            data: data,
+        })
     }
 }
 
 impl From<Grid> for foxglove::schemas::Grid {
     fn from(value: Grid) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            frame_id: value.frame_id,
-            pose: Some(value.pose.into()),
-            column_count: value.column_count,
-            cell_size: Some(value.cell_size.into()),
-            row_stride: value.row_stride,
-            cell_stride: value.cell_stride,
-            fields: value.fields.into_iter().map(|x| x.into()).collect(),
-            data: value.data,
-        }
+        value.0
     }
 }
 
 /// Array of annotations for a 2D image
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct ImageAnnotations {
-    /// Circle annotations
-    circles: Vec<CircleAnnotation>,
-    /// Points annotations
-    points: Vec<PointsAnnotation>,
-    /// Text annotations
-    texts: Vec<TextAnnotation>,
-}
-
+pub(crate) struct ImageAnnotations(foxglove::schemas::ImageAnnotations);
 #[pymethods]
 impl ImageAnnotations {
     #[new]
@@ -728,71 +453,45 @@ impl ImageAnnotations {
         points: Vec<PointsAnnotation>,
         texts: Vec<TextAnnotation>,
     ) -> Self {
-        Self {
-            circles,
-            points,
-            texts,
-        }
+        Self(foxglove::schemas::ImageAnnotations {
+            circles: circles.into_iter().map(|x| x.into()).collect(),
+            points: points.into_iter().map(|x| x.into()).collect(),
+            texts: texts.into_iter().map(|x| x.into()).collect(),
+        })
     }
 }
 
 impl From<ImageAnnotations> for foxglove::schemas::ImageAnnotations {
     fn from(value: ImageAnnotations) -> Self {
-        Self {
-            circles: value.circles.into_iter().map(|x| x.into()).collect(),
-            points: value.points.into_iter().map(|x| x.into()).collect(),
-            texts: value.texts.into_iter().map(|x| x.into()).collect(),
-        }
+        value.0
     }
 }
 
 /// A key with its associated value
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct KeyValuePair {
-    /// Key
-    key: String,
-    /// Value
-    value: String,
-}
-
+pub(crate) struct KeyValuePair(foxglove::schemas::KeyValuePair);
 #[pymethods]
 impl KeyValuePair {
     #[new]
     fn new(key: String, value: String) -> Self {
-        Self { key, value }
+        Self(foxglove::schemas::KeyValuePair {
+            key: key,
+            value: value,
+        })
     }
 }
 
 impl From<KeyValuePair> for foxglove::schemas::KeyValuePair {
     fn from(value: KeyValuePair) -> Self {
-        Self {
-            key: value.key,
-            value: value.value,
-        }
+        value.0
     }
 }
 
 /// A single scan from a planar laser range-finder
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct LaserScan {
-    /// Timestamp of scan
-    timestamp: Timestamp,
-    /// Frame of reference
-    frame_id: String,
-    /// Origin of scan relative to frame of reference; points are positioned in the x-y plane relative to this origin; angles are interpreted as counterclockwise rotations around the z axis with 0 rad being in the +x direction
-    pose: Pose,
-    /// Bearing of first point, in radians
-    start_angle: f64,
-    /// Bearing of last point, in radians
-    end_angle: f64,
-    /// Distance of detections from origin; assumed to be at equally-spaced angles between `start_angle` and `end_angle`
-    ranges: Vec<f64>,
-    /// Intensity of detections
-    intensities: Vec<f64>,
-}
-
+pub(crate) struct LaserScan(foxglove::schemas::LaserScan);
 #[pymethods]
 impl LaserScan {
     #[new]
@@ -805,56 +504,28 @@ impl LaserScan {
         ranges: Vec<f64>,
         intensities: Vec<f64>,
     ) -> Self {
-        Self {
-            timestamp,
-            frame_id,
-            pose,
-            start_angle,
-            end_angle,
-            ranges,
-            intensities,
-        }
+        Self(foxglove::schemas::LaserScan {
+            timestamp: Some(timestamp.into()),
+            frame_id: frame_id,
+            pose: Some(pose.into()),
+            start_angle: start_angle,
+            end_angle: end_angle,
+            ranges: ranges,
+            intensities: intensities,
+        })
     }
 }
 
 impl From<LaserScan> for foxglove::schemas::LaserScan {
     fn from(value: LaserScan) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            frame_id: value.frame_id,
-            pose: Some(value.pose.into()),
-            start_angle: value.start_angle,
-            end_angle: value.end_angle,
-            ranges: value.ranges,
-            intensities: value.intensities,
-        }
+        value.0
     }
 }
 
 /// A primitive representing a series of points connected by lines
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct LinePrimitive {
-    /// Drawing primitive to use for lines
-    r#type: LinePrimitiveLineType,
-    /// Origin of lines relative to reference frame
-    pose: Pose,
-    /// Line thickness
-    thickness: f64,
-    /// Indicates whether `thickness` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
-    scale_invariant: bool,
-    /// Points along the line
-    points: Vec<Point3>,
-    /// Solid color to use for the whole line. One of `color` or `colors` must be provided.
-    color: Color,
-    /// Per-point colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.
-    colors: Vec<Color>,
-    /// Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
-    ///
-    /// If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
-    indices: Vec<u32>,
-}
-
+pub(crate) struct LinePrimitive(foxglove::schemas::LinePrimitive);
 #[pymethods]
 impl LinePrimitive {
     #[new]
@@ -868,54 +539,29 @@ impl LinePrimitive {
         colors: Vec<Color>,
         indices: Vec<u32>,
     ) -> Self {
-        Self {
-            r#type,
-            pose,
-            thickness,
-            scale_invariant,
-            points,
-            color,
-            colors,
-            indices,
-        }
+        Self(foxglove::schemas::LinePrimitive {
+            r#type: r#type as i32,
+            pose: Some(pose.into()),
+            thickness: thickness,
+            scale_invariant: scale_invariant,
+            points: points.into_iter().map(|x| x.into()).collect(),
+            color: Some(color.into()),
+            colors: colors.into_iter().map(|x| x.into()).collect(),
+            indices: indices,
+        })
     }
 }
 
 impl From<LinePrimitive> for foxglove::schemas::LinePrimitive {
     fn from(value: LinePrimitive) -> Self {
-        Self {
-            r#type: value.r#type as i32,
-            pose: Some(value.pose.into()),
-            thickness: value.thickness,
-            scale_invariant: value.scale_invariant,
-            points: value.points.into_iter().map(|x| x.into()).collect(),
-            color: Some(value.color.into()),
-            colors: value.colors.into_iter().map(|x| x.into()).collect(),
-            indices: value.indices,
-        }
+        value.0
     }
 }
 
 /// A navigation satellite fix for any Global Navigation Satellite System
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct LocationFix {
-    /// Timestamp of the message
-    timestamp: Timestamp,
-    /// Frame for the sensor. Latitude and longitude readings are at the origin of the frame.
-    frame_id: String,
-    /// Latitude in degrees
-    latitude: f64,
-    /// Longitude in degrees
-    longitude: f64,
-    /// Altitude in meters
-    altitude: f64,
-    /// Position covariance (m^2) defined relative to a tangential plane through the reported position. The components are East, North, and Up (ENU), in row-major order.
-    position_covariance: Vec<f64>,
-    /// If `position_covariance` is available, `position_covariance_type` must be set to indicate the type of covariance.
-    position_covariance_type: LocationFixPositionCovarianceType,
-}
-
+pub(crate) struct LocationFix(foxglove::schemas::LocationFix);
 #[pymethods]
 impl LocationFix {
     #[new]
@@ -928,50 +574,28 @@ impl LocationFix {
         position_covariance: Vec<f64>,
         position_covariance_type: LocationFixPositionCovarianceType,
     ) -> Self {
-        Self {
-            timestamp,
-            frame_id,
-            latitude,
-            longitude,
-            altitude,
-            position_covariance,
-            position_covariance_type,
-        }
+        Self(foxglove::schemas::LocationFix {
+            timestamp: Some(timestamp.into()),
+            frame_id: frame_id,
+            latitude: latitude,
+            longitude: longitude,
+            altitude: altitude,
+            position_covariance: position_covariance,
+            position_covariance_type: position_covariance_type as i32,
+        })
     }
 }
 
 impl From<LocationFix> for foxglove::schemas::LocationFix {
     fn from(value: LocationFix) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            frame_id: value.frame_id,
-            latitude: value.latitude,
-            longitude: value.longitude,
-            altitude: value.altitude,
-            position_covariance: value.position_covariance,
-            position_covariance_type: value.position_covariance_type as i32,
-        }
+        value.0
     }
 }
 
 /// A log message
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct Log {
-    /// Timestamp of log message
-    timestamp: Timestamp,
-    /// Log level
-    level: LogLevel,
-    /// Log message
-    message: String,
-    /// Process or node name
-    name: String,
-    /// Filename
-    file: String,
-    /// Line number in the file
-    line: u32,
-}
-
+pub(crate) struct Log(foxglove::schemas::Log);
 #[pymethods]
 impl Log {
     #[new]
@@ -983,98 +607,49 @@ impl Log {
         file: String,
         line: u32,
     ) -> Self {
-        Self {
-            timestamp,
-            level,
-            message,
-            name,
-            file,
-            line,
-        }
+        Self(foxglove::schemas::Log {
+            timestamp: Some(timestamp.into()),
+            level: level as i32,
+            message: message,
+            name: name,
+            file: file,
+            line: line,
+        })
     }
 }
 
 impl From<Log> for foxglove::schemas::Log {
     fn from(value: Log) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            level: value.level as i32,
-            message: value.message,
-            name: value.name,
-            file: value.file,
-            line: value.line,
-        }
+        value.0
     }
 }
 
 /// Command to remove previously published entities
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct SceneEntityDeletion {
-    /// Timestamp of the deletion. Only matching entities earlier than this timestamp will be deleted.
-    timestamp: Timestamp,
-    /// Type of deletion action to perform
-    r#type: SceneEntityDeletionType,
-    /// Identifier which must match if `type` is `MATCHING_ID`.
-    id: String,
-}
-
+pub(crate) struct SceneEntityDeletion(foxglove::schemas::SceneEntityDeletion);
 #[pymethods]
 impl SceneEntityDeletion {
     #[new]
     fn new(timestamp: Timestamp, r#type: SceneEntityDeletionType, id: String) -> Self {
-        Self {
-            timestamp,
-            r#type,
-            id,
-        }
+        Self(foxglove::schemas::SceneEntityDeletion {
+            timestamp: Some(timestamp.into()),
+            r#type: r#type as i32,
+            id: id,
+        })
     }
 }
 
 impl From<SceneEntityDeletion> for foxglove::schemas::SceneEntityDeletion {
     fn from(value: SceneEntityDeletion) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            r#type: value.r#type as i32,
-            id: value.id,
-        }
+        value.0
     }
 }
 
 /// A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct SceneEntity {
-    /// Timestamp of the entity
-    timestamp: Timestamp,
-    /// Frame of reference
-    frame_id: String,
-    /// Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`.
-    id: String,
-    /// Length of time (relative to `timestamp`) after which the entity should be automatically removed. Zero value indicates the entity should remain visible until it is replaced or deleted.
-    lifetime: Duration,
-    /// Whether the entity should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
-    frame_locked: bool,
-    /// Additional user-provided metadata associated with the entity. Keys must be unique.
-    metadata: Vec<KeyValuePair>,
-    /// Arrow primitives
-    arrows: Vec<ArrowPrimitive>,
-    /// Cube primitives
-    cubes: Vec<CubePrimitive>,
-    /// Sphere primitives
-    spheres: Vec<SpherePrimitive>,
-    /// Cylinder primitives
-    cylinders: Vec<CylinderPrimitive>,
-    /// Line primitives
-    lines: Vec<LinePrimitive>,
-    /// Triangle list primitives
-    triangles: Vec<TriangleListPrimitive>,
-    /// Text primitives
-    texts: Vec<TextPrimitive>,
-    /// Model primitives
-    models: Vec<ModelPrimitive>,
-}
-
+pub(crate) struct SceneEntity(foxglove::schemas::SceneEntity);
 #[pymethods]
 impl SceneEntity {
     #[new]
@@ -1094,96 +669,56 @@ impl SceneEntity {
         texts: Vec<TextPrimitive>,
         models: Vec<ModelPrimitive>,
     ) -> Self {
-        Self {
-            timestamp,
-            frame_id,
-            id,
-            lifetime,
-            frame_locked,
-            metadata,
-            arrows,
-            cubes,
-            spheres,
-            cylinders,
-            lines,
-            triangles,
-            texts,
-            models,
-        }
+        Self(foxglove::schemas::SceneEntity {
+            timestamp: Some(timestamp.into()),
+            frame_id: frame_id,
+            id: id,
+            lifetime: Some(lifetime.into()),
+            frame_locked: frame_locked,
+            metadata: metadata.into_iter().map(|x| x.into()).collect(),
+            arrows: arrows.into_iter().map(|x| x.into()).collect(),
+            cubes: cubes.into_iter().map(|x| x.into()).collect(),
+            spheres: spheres.into_iter().map(|x| x.into()).collect(),
+            cylinders: cylinders.into_iter().map(|x| x.into()).collect(),
+            lines: lines.into_iter().map(|x| x.into()).collect(),
+            triangles: triangles.into_iter().map(|x| x.into()).collect(),
+            texts: texts.into_iter().map(|x| x.into()).collect(),
+            models: models.into_iter().map(|x| x.into()).collect(),
+        })
     }
 }
 
 impl From<SceneEntity> for foxglove::schemas::SceneEntity {
     fn from(value: SceneEntity) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            frame_id: value.frame_id,
-            id: value.id,
-            lifetime: Some(value.lifetime.into()),
-            frame_locked: value.frame_locked,
-            metadata: value.metadata.into_iter().map(|x| x.into()).collect(),
-            arrows: value.arrows.into_iter().map(|x| x.into()).collect(),
-            cubes: value.cubes.into_iter().map(|x| x.into()).collect(),
-            spheres: value.spheres.into_iter().map(|x| x.into()).collect(),
-            cylinders: value.cylinders.into_iter().map(|x| x.into()).collect(),
-            lines: value.lines.into_iter().map(|x| x.into()).collect(),
-            triangles: value.triangles.into_iter().map(|x| x.into()).collect(),
-            texts: value.texts.into_iter().map(|x| x.into()).collect(),
-            models: value.models.into_iter().map(|x| x.into()).collect(),
-        }
+        value.0
     }
 }
 
 /// An update to the entities displayed in a 3D scene
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct SceneUpdate {
-    /// Scene entities to delete
-    deletions: Vec<SceneEntityDeletion>,
-    /// Scene entities to add or replace
-    entities: Vec<SceneEntity>,
-}
-
+pub(crate) struct SceneUpdate(foxglove::schemas::SceneUpdate);
 #[pymethods]
 impl SceneUpdate {
     #[new]
     fn new(deletions: Vec<SceneEntityDeletion>, entities: Vec<SceneEntity>) -> Self {
-        Self {
-            deletions,
-            entities,
-        }
+        Self(foxglove::schemas::SceneUpdate {
+            deletions: deletions.into_iter().map(|x| x.into()).collect(),
+            entities: entities.into_iter().map(|x| x.into()).collect(),
+        })
     }
 }
 
 impl From<SceneUpdate> for foxglove::schemas::SceneUpdate {
     fn from(value: SceneUpdate) -> Self {
-        Self {
-            deletions: value.deletions.into_iter().map(|x| x.into()).collect(),
-            entities: value.entities.into_iter().map(|x| x.into()).collect(),
-        }
+        value.0
     }
 }
 
 /// A primitive representing a 3D model file loaded from an external URL or embedded data
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct ModelPrimitive {
-    /// Origin of model relative to reference frame
-    pose: Pose,
-    /// Scale factor to apply to the model along each axis
-    scale: Vector3,
-    /// Solid color to use for the whole model if `override_color` is true.
-    color: Color,
-    /// Whether to use the color specified in `color` instead of any materials embedded in the original model.
-    override_color: bool,
-    /// URL pointing to model file. One of `url` or `data` should be provided.
-    url: String,
-    /// [Media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of embedded model (e.g. `model/gltf-binary`). Required if `data` is provided instead of `url`. Overrides the inferred media type if `url` is provided.
-    media_type: String,
-    /// Embedded model. One of `url` or `data` should be provided. If `data` is provided, `media_type` must be set to indicate the type of the data.
-    data: Vec<u8>,
-}
-
+pub(crate) struct ModelPrimitive(foxglove::schemas::ModelPrimitive);
 #[pymethods]
 impl ModelPrimitive {
     #[new]
@@ -1196,141 +731,86 @@ impl ModelPrimitive {
         media_type: String,
         data: Vec<u8>,
     ) -> Self {
-        Self {
-            pose,
-            scale,
-            color,
-            override_color,
-            url,
-            media_type,
-            data,
-        }
+        Self(foxglove::schemas::ModelPrimitive {
+            pose: Some(pose.into()),
+            scale: Some(scale.into()),
+            color: Some(color.into()),
+            override_color: override_color,
+            url: url,
+            media_type: media_type,
+            data: data,
+        })
     }
 }
 
 impl From<ModelPrimitive> for foxglove::schemas::ModelPrimitive {
     fn from(value: ModelPrimitive) -> Self {
-        Self {
-            pose: Some(value.pose.into()),
-            scale: Some(value.scale.into()),
-            color: Some(value.color.into()),
-            override_color: value.override_color,
-            url: value.url,
-            media_type: value.media_type,
-            data: value.data,
-        }
+        value.0
     }
 }
 
 /// A field present within each element in a byte array of packed elements.
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct PackedElementField {
-    /// Name of the field
-    name: String,
-    /// Byte offset from start of data buffer
-    offset: u32,
-    /// Type of data in the field. Integers are stored using little-endian byte order.
-    r#type: PackedElementFieldNumericType,
-}
-
+pub(crate) struct PackedElementField(foxglove::schemas::PackedElementField);
 #[pymethods]
 impl PackedElementField {
     #[new]
     fn new(name: String, offset: u32, r#type: PackedElementFieldNumericType) -> Self {
-        Self {
-            name,
-            offset,
-            r#type,
-        }
+        Self(foxglove::schemas::PackedElementField {
+            name: name,
+            offset: offset,
+            r#type: r#type as i32,
+        })
     }
 }
 
 impl From<PackedElementField> for foxglove::schemas::PackedElementField {
     fn from(value: PackedElementField) -> Self {
-        Self {
-            name: value.name,
-            offset: value.offset,
-            r#type: value.r#type as i32,
-        }
+        value.0
     }
 }
 
 /// A point representing a position in 2D space
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct Point2 {
-    /// x coordinate position
-    x: f64,
-    /// y coordinate position
-    y: f64,
-}
-
+pub(crate) struct Point2(foxglove::schemas::Point2);
 #[pymethods]
 impl Point2 {
     #[new]
     fn new(x: f64, y: f64) -> Self {
-        Self { x, y }
+        Self(foxglove::schemas::Point2 { x: x, y: y })
     }
 }
 
 impl From<Point2> for foxglove::schemas::Point2 {
     fn from(value: Point2) -> Self {
-        Self {
-            x: value.x,
-            y: value.y,
-        }
+        value.0
     }
 }
 
 /// A point representing a position in 3D space
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct Point3 {
-    /// x coordinate position
-    x: f64,
-    /// y coordinate position
-    y: f64,
-    /// z coordinate position
-    z: f64,
-}
-
+pub(crate) struct Point3(foxglove::schemas::Point3);
 #[pymethods]
 impl Point3 {
     #[new]
     fn new(x: f64, y: f64, z: f64) -> Self {
-        Self { x, y, z }
+        Self(foxglove::schemas::Point3 { x: x, y: y, z: z })
     }
 }
 
 impl From<Point3> for foxglove::schemas::Point3 {
     fn from(value: Point3) -> Self {
-        Self {
-            x: value.x,
-            y: value.y,
-            z: value.z,
-        }
+        value.0
     }
 }
 
 /// A collection of N-dimensional points, which may contain additional fields with information like normals, intensity, etc.
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct PointCloud {
-    /// Timestamp of point cloud
-    timestamp: Timestamp,
-    /// Frame of reference
-    frame_id: String,
-    /// The origin of the point cloud relative to the frame of reference
-    pose: Pose,
-    /// Number of bytes between points in the `data`
-    point_stride: u32,
-    /// Fields in `data`. At least 2 coordinate fields from `x`, `y`, and `z` are required for each point's position; `red`, `green`, `blue`, and `alpha` are optional for customizing each point's color.
-    fields: Vec<PackedElementField>,
-    /// Point data, interpreted using `fields`
-    data: Vec<u8>,
-}
-
+pub(crate) struct PointCloud(foxglove::schemas::PointCloud);
 #[pymethods]
 impl PointCloud {
     #[new]
@@ -1342,51 +822,27 @@ impl PointCloud {
         fields: Vec<PackedElementField>,
         data: Vec<u8>,
     ) -> Self {
-        Self {
-            timestamp,
-            frame_id,
-            pose,
-            point_stride,
-            fields,
-            data,
-        }
+        Self(foxglove::schemas::PointCloud {
+            timestamp: Some(timestamp.into()),
+            frame_id: frame_id,
+            pose: Some(pose.into()),
+            point_stride: point_stride,
+            fields: fields.into_iter().map(|x| x.into()).collect(),
+            data: data,
+        })
     }
 }
 
 impl From<PointCloud> for foxglove::schemas::PointCloud {
     fn from(value: PointCloud) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            frame_id: value.frame_id,
-            pose: Some(value.pose.into()),
-            point_stride: value.point_stride,
-            fields: value.fields.into_iter().map(|x| x.into()).collect(),
-            data: value.data,
-        }
+        value.0
     }
 }
 
 /// An array of points on a 2D image
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct PointsAnnotation {
-    /// Timestamp of annotation
-    timestamp: Timestamp,
-    /// Type of points annotation to draw
-    r#type: PointsAnnotationType,
-    /// Points in 2D image coordinates (pixels).
-    /// These coordinates use the top-left corner of the top-left pixel of the image as the origin.
-    points: Vec<Point2>,
-    /// Outline color
-    outline_color: Color,
-    /// Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`, `LINE_STRIP` or `LINE_LOOP`.
-    outline_colors: Vec<Color>,
-    /// Fill color
-    fill_color: Color,
-    /// Stroke thickness in pixels
-    thickness: f64,
-}
-
+pub(crate) struct PointsAnnotation(foxglove::schemas::PointsAnnotation);
 #[pymethods]
 impl PointsAnnotation {
     #[new]
@@ -1399,185 +855,116 @@ impl PointsAnnotation {
         fill_color: Color,
         thickness: f64,
     ) -> Self {
-        Self {
-            timestamp,
-            r#type,
-            points,
-            outline_color,
-            outline_colors,
-            fill_color,
-            thickness,
-        }
+        Self(foxglove::schemas::PointsAnnotation {
+            timestamp: Some(timestamp.into()),
+            r#type: r#type as i32,
+            points: points.into_iter().map(|x| x.into()).collect(),
+            outline_color: Some(outline_color.into()),
+            outline_colors: outline_colors.into_iter().map(|x| x.into()).collect(),
+            fill_color: Some(fill_color.into()),
+            thickness: thickness,
+        })
     }
 }
 
 impl From<PointsAnnotation> for foxglove::schemas::PointsAnnotation {
     fn from(value: PointsAnnotation) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            r#type: value.r#type as i32,
-            points: value.points.into_iter().map(|x| x.into()).collect(),
-            outline_color: Some(value.outline_color.into()),
-            outline_colors: value.outline_colors.into_iter().map(|x| x.into()).collect(),
-            fill_color: Some(value.fill_color.into()),
-            thickness: value.thickness,
-        }
+        value.0
     }
 }
 
 /// A position and orientation for an object or reference frame in 3D space
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct Pose {
-    /// Point denoting position in 3D space
-    position: Vector3,
-    /// Quaternion denoting orientation in 3D space
-    orientation: Quaternion,
-}
-
+pub(crate) struct Pose(foxglove::schemas::Pose);
 #[pymethods]
 impl Pose {
     #[new]
     fn new(position: Vector3, orientation: Quaternion) -> Self {
-        Self {
-            position,
-            orientation,
-        }
+        Self(foxglove::schemas::Pose {
+            position: Some(position.into()),
+            orientation: Some(orientation.into()),
+        })
     }
 }
 
 impl From<Pose> for foxglove::schemas::Pose {
     fn from(value: Pose) -> Self {
-        Self {
-            position: Some(value.position.into()),
-            orientation: Some(value.orientation.into()),
-        }
+        value.0
     }
 }
 
 /// A timestamped pose for an object or reference frame in 3D space
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct PoseInFrame {
-    /// Timestamp of pose
-    timestamp: Timestamp,
-    /// Frame of reference for pose position and orientation
-    frame_id: String,
-    /// Pose in 3D space
-    pose: Pose,
-}
-
+pub(crate) struct PoseInFrame(foxglove::schemas::PoseInFrame);
 #[pymethods]
 impl PoseInFrame {
     #[new]
     fn new(timestamp: Timestamp, frame_id: String, pose: Pose) -> Self {
-        Self {
-            timestamp,
-            frame_id,
-            pose,
-        }
+        Self(foxglove::schemas::PoseInFrame {
+            timestamp: Some(timestamp.into()),
+            frame_id: frame_id,
+            pose: Some(pose.into()),
+        })
     }
 }
 
 impl From<PoseInFrame> for foxglove::schemas::PoseInFrame {
     fn from(value: PoseInFrame) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            frame_id: value.frame_id,
-            pose: Some(value.pose.into()),
-        }
+        value.0
     }
 }
 
 /// An array of timestamped poses for an object or reference frame in 3D space
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct PosesInFrame {
-    /// Timestamp of pose
-    timestamp: Timestamp,
-    /// Frame of reference for pose position and orientation
-    frame_id: String,
-    /// Poses in 3D space
-    poses: Vec<Pose>,
-}
-
+pub(crate) struct PosesInFrame(foxglove::schemas::PosesInFrame);
 #[pymethods]
 impl PosesInFrame {
     #[new]
     fn new(timestamp: Timestamp, frame_id: String, poses: Vec<Pose>) -> Self {
-        Self {
-            timestamp,
-            frame_id,
-            poses,
-        }
+        Self(foxglove::schemas::PosesInFrame {
+            timestamp: Some(timestamp.into()),
+            frame_id: frame_id,
+            poses: poses.into_iter().map(|x| x.into()).collect(),
+        })
     }
 }
 
 impl From<PosesInFrame> for foxglove::schemas::PosesInFrame {
     fn from(value: PosesInFrame) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            frame_id: value.frame_id,
-            poses: value.poses.into_iter().map(|x| x.into()).collect(),
-        }
+        value.0
     }
 }
 
 /// A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct Quaternion {
-    /// x value
-    x: f64,
-    /// y value
-    y: f64,
-    /// z value
-    z: f64,
-    /// w value
-    w: f64,
-}
-
+pub(crate) struct Quaternion(foxglove::schemas::Quaternion);
 #[pymethods]
 impl Quaternion {
     #[new]
     fn new(x: f64, y: f64, z: f64, w: f64) -> Self {
-        Self { x, y, z, w }
+        Self(foxglove::schemas::Quaternion {
+            x: x,
+            y: y,
+            z: z,
+            w: w,
+        })
     }
 }
 
 impl From<Quaternion> for foxglove::schemas::Quaternion {
     fn from(value: Quaternion) -> Self {
-        Self {
-            x: value.x,
-            y: value.y,
-            z: value.z,
-            w: value.w,
-        }
+        value.0
     }
 }
 
 /// A raw image
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct RawImage {
-    /// Timestamp of image
-    timestamp: Timestamp,
-    /// Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
-    frame_id: String,
-    /// Image width
-    width: u32,
-    /// Image height
-    height: u32,
-    /// Encoding of the raw image data
-    ///
-    /// Supported values: `8UC1`, `8UC3`, `16UC1` (little endian), `32FC1` (little endian), `bayer_bggr8`, `bayer_gbrg8`, `bayer_grbg8`, `bayer_rggb8`, `bgr8`, `bgra8`, `mono8`, `mono16`, `rgb8`, `rgba8`, `uyvy` or `yuv422`, `yuyv` or `yuv422_yuy2`
-    encoding: String,
-    /// Byte length of a single row
-    step: u32,
-    /// Raw image data
-    data: Vec<u8>,
-}
-
+pub(crate) struct RawImage(foxglove::schemas::RawImage);
 #[pymethods]
 impl RawImage {
     #[new]
@@ -1590,81 +977,50 @@ impl RawImage {
         step: u32,
         data: Vec<u8>,
     ) -> Self {
-        Self {
-            timestamp,
-            frame_id,
-            width,
-            height,
-            encoding,
-            step,
-            data,
-        }
+        Self(foxglove::schemas::RawImage {
+            timestamp: Some(timestamp.into()),
+            frame_id: frame_id,
+            width: width,
+            height: height,
+            encoding: encoding,
+            step: step,
+            data: data,
+        })
     }
 }
 
 impl From<RawImage> for foxglove::schemas::RawImage {
     fn from(value: RawImage) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            frame_id: value.frame_id,
-            width: value.width,
-            height: value.height,
-            encoding: value.encoding,
-            step: value.step,
-            data: value.data,
-        }
+        value.0
     }
 }
 
 /// A primitive representing a sphere or ellipsoid
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct SpherePrimitive {
-    /// Position of the center of the sphere and orientation of the sphere
-    pose: Pose,
-    /// Size (diameter) of the sphere along each axis
-    size: Vector3,
-    /// Color of the sphere
-    color: Color,
-}
-
+pub(crate) struct SpherePrimitive(foxglove::schemas::SpherePrimitive);
 #[pymethods]
 impl SpherePrimitive {
     #[new]
     fn new(pose: Pose, size: Vector3, color: Color) -> Self {
-        Self { pose, size, color }
+        Self(foxglove::schemas::SpherePrimitive {
+            pose: Some(pose.into()),
+            size: Some(size.into()),
+            color: Some(color.into()),
+        })
     }
 }
 
 impl From<SpherePrimitive> for foxglove::schemas::SpherePrimitive {
     fn from(value: SpherePrimitive) -> Self {
-        Self {
-            pose: Some(value.pose.into()),
-            size: Some(value.size.into()),
-            color: Some(value.color.into()),
-        }
+        value.0
     }
 }
 
 /// A text label on a 2D image
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct TextAnnotation {
-    /// Timestamp of annotation
-    timestamp: Timestamp,
-    /// Bottom-left origin of the text label in 2D image coordinates (pixels).
-    /// The coordinate uses the top-left corner of the top-left pixel of the image as the origin.
-    position: Point2,
-    /// Text to display
-    text: String,
-    /// Font size in pixels
-    font_size: f64,
-    /// Text color
-    text_color: Color,
-    /// Background fill color
-    background_color: Color,
-}
-
+pub(crate) struct TextAnnotation(foxglove::schemas::TextAnnotation);
 #[pymethods]
 impl TextAnnotation {
     #[new]
@@ -1676,48 +1032,27 @@ impl TextAnnotation {
         text_color: Color,
         background_color: Color,
     ) -> Self {
-        Self {
-            timestamp,
-            position,
-            text,
-            font_size,
-            text_color,
-            background_color,
-        }
+        Self(foxglove::schemas::TextAnnotation {
+            timestamp: Some(timestamp.into()),
+            position: Some(position.into()),
+            text: text,
+            font_size: font_size,
+            text_color: Some(text_color.into()),
+            background_color: Some(background_color.into()),
+        })
     }
 }
 
 impl From<TextAnnotation> for foxglove::schemas::TextAnnotation {
     fn from(value: TextAnnotation) -> Self {
-        Self {
-            timestamp: Some(value.timestamp.into()),
-            position: Some(value.position.into()),
-            text: value.text,
-            font_size: value.font_size,
-            text_color: Some(value.text_color.into()),
-            background_color: Some(value.background_color.into()),
-        }
+        value.0
     }
 }
 
 /// A primitive representing a text label
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct TextPrimitive {
-    /// Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x.
-    pose: Pose,
-    /// Whether the text should respect `pose.orientation` (false) or always face the camera (true)
-    billboard: bool,
-    /// Font size (height of one line of text)
-    font_size: f64,
-    /// Indicates whether `font_size` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
-    scale_invariant: bool,
-    /// Color of the text
-    color: Color,
-    /// Text
-    text: String,
-}
-
+pub(crate) struct TextPrimitive(foxglove::schemas::TextPrimitive);
 #[pymethods]
 impl TextPrimitive {
     #[new]
@@ -1729,48 +1064,27 @@ impl TextPrimitive {
         color: Color,
         text: String,
     ) -> Self {
-        Self {
-            pose,
-            billboard,
-            font_size,
-            scale_invariant,
-            color,
-            text,
-        }
+        Self(foxglove::schemas::TextPrimitive {
+            pose: Some(pose.into()),
+            billboard: billboard,
+            font_size: font_size,
+            scale_invariant: scale_invariant,
+            color: Some(color.into()),
+            text: text,
+        })
     }
 }
 
 impl From<TextPrimitive> for foxglove::schemas::TextPrimitive {
     fn from(value: TextPrimitive) -> Self {
-        Self {
-            pose: Some(value.pose.into()),
-            billboard: value.billboard,
-            font_size: value.font_size,
-            scale_invariant: value.scale_invariant,
-            color: Some(value.color.into()),
-            text: value.text,
-        }
+        value.0
     }
 }
 
 /// A primitive representing a set of triangles or a surface tiled by triangles
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct TriangleListPrimitive {
-    /// Origin of triangles relative to reference frame
-    pose: Pose,
-    /// Vertices to use for triangles, interpreted as a list of triples (0-1-2, 3-4-5, ...)
-    points: Vec<Point3>,
-    /// Solid color to use for the whole shape. One of `color` or `colors` must be provided.
-    color: Color,
-    /// Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.
-    colors: Vec<Color>,
-    /// Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
-    ///
-    /// If omitted or empty, indexing will not be used. This default behavior is equivalent to specifying [0, 1, ..., N-1] for the indices (where N is the number of `points` provided).
-    indices: Vec<u32>,
-}
-
+pub(crate) struct TriangleListPrimitive(foxglove::schemas::TriangleListPrimitive);
 #[pymethods]
 impl TriangleListPrimitive {
     #[new]
@@ -1781,82 +1095,55 @@ impl TriangleListPrimitive {
         colors: Vec<Color>,
         indices: Vec<u32>,
     ) -> Self {
-        Self {
-            pose,
-            points,
-            color,
-            colors,
-            indices,
-        }
+        Self(foxglove::schemas::TriangleListPrimitive {
+            pose: Some(pose.into()),
+            points: points.into_iter().map(|x| x.into()).collect(),
+            color: Some(color.into()),
+            colors: colors.into_iter().map(|x| x.into()).collect(),
+            indices: indices,
+        })
     }
 }
 
 impl From<TriangleListPrimitive> for foxglove::schemas::TriangleListPrimitive {
     fn from(value: TriangleListPrimitive) -> Self {
-        Self {
-            pose: Some(value.pose.into()),
-            points: value.points.into_iter().map(|x| x.into()).collect(),
-            color: Some(value.color.into()),
-            colors: value.colors.into_iter().map(|x| x.into()).collect(),
-            indices: value.indices,
-        }
+        value.0
     }
 }
 
 /// A vector in 2D space that represents a direction only
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct Vector2 {
-    /// x coordinate length
-    x: f64,
-    /// y coordinate length
-    y: f64,
-}
-
+pub(crate) struct Vector2(foxglove::schemas::Vector2);
 #[pymethods]
 impl Vector2 {
     #[new]
     fn new(x: f64, y: f64) -> Self {
-        Self { x, y }
+        Self(foxglove::schemas::Vector2 { x: x, y: y })
     }
 }
 
 impl From<Vector2> for foxglove::schemas::Vector2 {
     fn from(value: Vector2) -> Self {
-        Self {
-            x: value.x,
-            y: value.y,
-        }
+        value.0
     }
 }
 
 /// A vector in 3D space that represents a direction only
 #[pyclass]
 #[derive(Clone)]
-pub(crate) struct Vector3 {
-    /// x coordinate length
-    x: f64,
-    /// y coordinate length
-    y: f64,
-    /// z coordinate length
-    z: f64,
-}
-
+pub(crate) struct Vector3(foxglove::schemas::Vector3);
 #[pymethods]
 impl Vector3 {
     #[new]
     fn new(x: f64, y: f64, z: f64) -> Self {
-        Self { x, y, z }
+        Self(foxglove::schemas::Vector3 { x: x, y: y, z: z })
     }
 }
 
 impl From<Vector3> for foxglove::schemas::Vector3 {
     fn from(value: Vector3) -> Self {
-        Self {
-            x: value.x,
-            y: value.y,
-            z: value.z,
-        }
+        value.0
     }
 }
 

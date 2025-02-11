@@ -6,6 +6,9 @@ import {
   FoxgloveSchema,
 } from "./types";
 
+/**
+ * Generate the module header for pyclass definitions.
+ */
 export function generatePrelude(): string {
   const docs = [
     `//! Definitions for well-known Foxglove schemas`,
@@ -23,6 +26,13 @@ export function generatePrelude(): string {
   const outputSections = [docs.join("\n"), imports.join("\n")];
 
   return outputSections.join("\n") + "\n\n";
+}
+
+/**
+ * Generate a `pyclass`-annotated struct or enum definition for the given schema.
+ */
+export function generatePyclass(schema: FoxgloveSchema): string {
+  return isMessageSchema(schema) ? generateMessageClass(schema) : generateEnumClass(schema);
 }
 
 /**
@@ -110,10 +120,6 @@ export function generatePymodule(schemas: FoxgloveSchema[]): string {
   return [header, timeTypeExports, ...exports, init, "}"].join("\n");
 }
 
-export function generatePyclass(schema: FoxgloveSchema): string {
-  return isMessageSchema(schema) ? generateMessageClass(schema) : generateEnumClass(schema);
-}
-
 function rustDoc(str: string, opts: { indent?: number } = {}): string {
   const ws = " ".repeat(opts.indent ?? 0);
   return str
@@ -123,69 +129,55 @@ function rustDoc(str: string, opts: { indent?: number } = {}): string {
 }
 
 function generateMessageClass(schema: FoxgloveMessageSchema): string {
+  const className = structName(schema.name);
   const schemaFields = Array.from(schema.fields).map((field) => ({
     fieldName: safeName(field.name),
     argName: safeName(field.name),
     description: rustDoc(field.description, { indent: 4 }),
     field,
   }));
-
   const struct = [
     rustDoc(schema.description),
     "#[pyclass]",
     "#[derive(Clone)]",
-    `pub(crate) struct ${structName(schema.name)} {`,
-    ...schemaFields.map(
-      ({ fieldName, description, field }) =>
-        `${description}\n    ${fieldName}: ${rustOutputType(field)},`,
-    ),
-    "}\n",
+    `pub(crate) struct ${className}(foxglove::schemas::${className});`,
   ];
+
+  function fieldValue(field: FoxgloveMessageField): string {
+    switch (field.type.type) {
+      case "primitive":
+        if (field.type.name === "time" || field.type.name === "duration") {
+          return `Some(${safeName(field.name)}.into())`;
+        }
+        return safeName(field.name);
+      case "nested":
+        if (field.array != undefined) {
+          return `${safeName(field.name)}.into_iter().map(|x| x.into()).collect()`;
+        }
+        return `Some(${safeName(field.name)}.into())`;
+      case "enum":
+        return `${safeName(field.name)} as i32`;
+    }
+  }
 
   const impl = [
     "#[pymethods]",
-    `impl ${structName(schema.name)} {`,
+    `impl ${className} {`,
     `    #[new]`,
     `    fn new(`,
     ...schemaFields.map(({ argName, field }) => `        ${argName}: ${rustOutputType(field)},`),
     `    ) -> Self {`,
-    `        Self {`,
-    ...schemaFields.map(({ fieldName, argName }) =>
-      argName === fieldName
-        ? // shorthand initialization
-          `            ${fieldName},`
-        : `            ${fieldName}: ${argName},`,
-    ),
-    "        }",
+    `        Self(foxglove::schemas::${className} {`,
+    schemaFields.map(({ field }) => `            ${protoName(field.name)}: ${fieldValue(field)},`).join("\n"),
+    "        })",
     "    }",
     "}\n\n",
   ];
 
-  function from(field: FoxgloveMessageField) {
-    switch (field.type.type) {
-      case "primitive":
-        if (field.type.name === "time" || field.type.name === "duration") {
-          return `Some(value.${safeName(field.name)}.into())`;
-        }
-        return `value.${safeName(field.name)}`;
-      case "nested":
-        if (field.array != undefined) {
-          return `value.${safeName(field.name)}.into_iter().map(|x| x.into()).collect()`;
-        }
-        return `Some(value.${safeName(field.name)}.into())`;
-      case "enum":
-        return `value.${safeName(field.name)} as i32`;
-    }
-  }
-
   const fromTrait = [
     `impl From<${structName(schema.name)}> for foxglove::schemas::${structName(schema.name)} {`,
     `    fn from(value: ${structName(schema.name)}) -> Self {`,
-    `        Self {`,
-    ...schemaFields.map(
-      ({ fieldName, field }) => `            ${protoName(fieldName)}: ${from(field)},`,
-    ),
-    `        }`,
+    `        value.0`,
     `    }`,
     `}\n\n`,
   ];
@@ -321,7 +313,7 @@ function protoName(name: string): string {
     // Schemas may include single-letter capitals; generated proto structs use lowercase
     return name.toLowerCase();
   }
-  return name;
+  return safeName(name);
 }
 
 function capitalize(str: string): string {
@@ -350,6 +342,9 @@ function structName(name: string): string {
 function generateTimeTypeStubs(): string {
   return `
 class Timestamp:
+    """
+    A timestamp in seconds and nanoseconds
+    """
     def __new__(
         cls,
         seconds: int,
@@ -358,6 +353,9 @@ class Timestamp:
 
 
 class Duration:
+    """
+    A duration in seconds and nanoseconds
+    """
     def __new__(
         cls,
         seconds: int,
@@ -415,7 +413,6 @@ impl Duration {
 impl From<Duration> for prost_types::Duration {
     fn from(value: Duration) -> Self {
         Self {
-            // todo: prost should likely be configured to use unsigned types
             seconds: value.seconds.try_into().unwrap_or_default(),
             nanos: value.nanos.try_into().unwrap_or_default(),
         }

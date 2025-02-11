@@ -162,7 +162,6 @@ async function main({ clean }: { clean: boolean }) {
       generateMarkdown(Object.values(foxgloveMessageSchemas), Object.values(foxgloveEnumSchemas)),
     );
   });
-<<<<<<< HEAD:scripts/updateGeneratedFiles.ts
 
   await logProgress("Generating Pyclass definitions", async () => {
     // Pyclass definitions are generated specifically for the SDK, and are not stored in ./schemas

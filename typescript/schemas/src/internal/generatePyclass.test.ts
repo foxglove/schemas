@@ -17,175 +17,92 @@ describe("generatePyclass", () => {
 
   it("generates an enum", () => {
     expect(generatePyclass(exampleEnum)).toMatchInlineSnapshot(`
-      "/// An example enum
-      #[pyclass(eq, eq_int)]
-      #[derive(PartialEq, Clone)]
-      pub(crate) enum ExampleMessageExampleEnum {
-          A = 0,
-          B = 1,
-      }
+        "/// An example enum
+        #[pyclass(eq, eq_int)]
+        #[derive(PartialEq, Clone)]
+        pub(crate) enum ExampleMessageExampleEnum {
+            A = 0,
+            B = 1,
+        }
 
-      "
-      `);
+        "
+        `);
   });
 
   it("generates a struct from a message", () => {
     expect(generatePyclass(exampleMessage)).toMatchInlineSnapshot(`
-      "/// An example type
-      #[pyclass]
-      #[derive(Clone)]
-      pub(crate) struct ExampleMessage {
-          /// duration field
-          field_duration: Duration,
-          /// time field
-          field_time: Timestamp,
-          /// boolean field
-          field_boolean: bool,
-          /// bytes field
-          field_bytes: Vec<u8>,
-          /// float64 field
-          field_float64: f64,
-          /// uint32 field
-          field_uint32: u32,
-          /// string field
-          field_string: String,
-          /// duration array field
-          field_duration_array: Vec<Duration>,
-          /// time array field
-          field_time_array: Vec<Timestamp>,
-          /// boolean array field
-          field_boolean_array: Vec<bool>,
-          /// bytes array field
-          field_bytes_array: Vec<Vec<u8>>,
-          /// float64 array field
-          field_float64_array: Vec<f64>,
-          /// uint32 array field
-          field_uint32_array: Vec<u32>,
-          /// string array field
-          field_string_array: Vec<String>,
-          /// duration fixed-length array field
-          field_duration_fixed_array: Vec<Duration>,
-          /// time fixed-length array field
-          field_time_fixed_array: Vec<Timestamp>,
-          /// boolean fixed-length array field
-          field_boolean_fixed_array: Vec<bool>,
-          /// bytes fixed-length array field
-          field_bytes_fixed_array: Vec<Vec<u8>>,
-          /// float64 fixed-length array field
-          field_float64_fixed_array: Vec<f64>,
-          /// uint32 fixed-length array field
-          field_uint32_fixed_array: Vec<u32>,
-          /// string fixed-length array field
-          field_string_fixed_array: Vec<String>,
-          /// An enum field
-          field_enum: ExampleMessageExampleEnum,
-          /// An enum array field
-          field_enum_array: Vec<ExampleMessageExampleEnum>,
-          /// A nested field
-          field_nested: NestedMessage,
-          /// A nested array field
-          /// With
-          /// a
-          /// very
-          /// long
-          /// description
-          field_nested_array: Vec<NestedMessage>,
-      }
-
-      #[pymethods]
-      impl ExampleMessage {
-          #[new]
-          fn new(
-              field_duration: Duration,
-              field_time: Timestamp,
-              field_boolean: bool,
-              field_bytes: Vec<u8>,
-              field_float64: f64,
-              field_uint32: u32,
-              field_string: String,
-              field_duration_array: Vec<Duration>,
-              field_time_array: Vec<Timestamp>,
-              field_boolean_array: Vec<bool>,
-              field_bytes_array: Vec<Vec<u8>>,
-              field_float64_array: Vec<f64>,
-              field_uint32_array: Vec<u32>,
-              field_string_array: Vec<String>,
-              field_duration_fixed_array: Vec<Duration>,
-              field_time_fixed_array: Vec<Timestamp>,
-              field_boolean_fixed_array: Vec<bool>,
-              field_bytes_fixed_array: Vec<Vec<u8>>,
-              field_float64_fixed_array: Vec<f64>,
-              field_uint32_fixed_array: Vec<u32>,
-              field_string_fixed_array: Vec<String>,
-              field_enum: ExampleMessageExampleEnum,
-              field_enum_array: Vec<ExampleMessageExampleEnum>,
-              field_nested: NestedMessage,
-              field_nested_array: Vec<NestedMessage>,
-          ) -> Self {
-              Self {
-                  field_duration,
-                  field_time,
-                  field_boolean,
-                  field_bytes,
-                  field_float64,
-                  field_uint32,
-                  field_string,
-                  field_duration_array,
-                  field_time_array,
-                  field_boolean_array,
-                  field_bytes_array,
-                  field_float64_array,
-                  field_uint32_array,
-                  field_string_array,
-                  field_duration_fixed_array,
-                  field_time_fixed_array,
-                  field_boolean_fixed_array,
-                  field_bytes_fixed_array,
-                  field_float64_fixed_array,
-                  field_uint32_fixed_array,
-                  field_string_fixed_array,
-                  field_enum,
-                  field_enum_array,
-                  field_nested,
-                  field_nested_array,
-              }
-          }
-      }
+        "/// An example type
+        #[pyclass]
+        #[derive(Clone)]
+        pub(crate) struct ExampleMessage(foxglove::schemas::ExampleMessage);
+        #[pymethods]
+        impl ExampleMessage {
+            #[new]
+            fn new(
+                field_duration: Duration,
+                field_time: Timestamp,
+                field_boolean: bool,
+                field_bytes: Vec<u8>,
+                field_float64: f64,
+                field_uint32: u32,
+                field_string: String,
+                field_duration_array: Vec<Duration>,
+                field_time_array: Vec<Timestamp>,
+                field_boolean_array: Vec<bool>,
+                field_bytes_array: Vec<Vec<u8>>,
+                field_float64_array: Vec<f64>,
+                field_uint32_array: Vec<u32>,
+                field_string_array: Vec<String>,
+                field_duration_fixed_array: Vec<Duration>,
+                field_time_fixed_array: Vec<Timestamp>,
+                field_boolean_fixed_array: Vec<bool>,
+                field_bytes_fixed_array: Vec<Vec<u8>>,
+                field_float64_fixed_array: Vec<f64>,
+                field_uint32_fixed_array: Vec<u32>,
+                field_string_fixed_array: Vec<String>,
+                field_enum: ExampleMessageExampleEnum,
+                field_enum_array: Vec<ExampleMessageExampleEnum>,
+                field_nested: NestedMessage,
+                field_nested_array: Vec<NestedMessage>,
+            ) -> Self {
+                Self(foxglove::schemas::ExampleMessage {
+                    field_duration: Some(field_duration.into()),
+                    field_time: Some(field_time.into()),
+                    field_boolean: field_boolean,
+                    field_bytes: field_bytes,
+                    field_float64: field_float64,
+                    field_uint32: field_uint32,
+                    field_string: field_string,
+                    field_duration_array: Some(field_duration_array.into()),
+                    field_time_array: Some(field_time_array.into()),
+                    field_boolean_array: field_boolean_array,
+                    field_bytes_array: field_bytes_array,
+                    field_float64_array: field_float64_array,
+                    field_uint32_array: field_uint32_array,
+                    field_string_array: field_string_array,
+                    field_duration_fixed_array: Some(field_duration_fixed_array.into()),
+                    field_time_fixed_array: Some(field_time_fixed_array.into()),
+                    field_boolean_fixed_array: field_boolean_fixed_array,
+                    field_bytes_fixed_array: field_bytes_fixed_array,
+                    field_float64_fixed_array: field_float64_fixed_array,
+                    field_uint32_fixed_array: field_uint32_fixed_array,
+                    field_string_fixed_array: field_string_fixed_array,
+                    field_enum: field_enum as i32,
+                    field_enum_array: field_enum_array as i32,
+                    field_nested: Some(field_nested.into()),
+                    field_nested_array: field_nested_array.into_iter().map(|x| x.into()).collect(),
+                })
+            }
+        }
 
 
-      impl From<ExampleMessage> for foxglove::schemas::ExampleMessage {
-          fn from(value: ExampleMessage) -> Self {
-              Self {
-                  field_duration: Some(value.field_duration.into()),
-                  field_time: Some(value.field_time.into()),
-                  field_boolean: value.field_boolean,
-                  field_bytes: value.field_bytes,
-                  field_float64: value.field_float64,
-                  field_uint32: value.field_uint32,
-                  field_string: value.field_string,
-                  field_duration_array: Some(value.field_duration_array.into()),
-                  field_time_array: Some(value.field_time_array.into()),
-                  field_boolean_array: value.field_boolean_array,
-                  field_bytes_array: value.field_bytes_array,
-                  field_float64_array: value.field_float64_array,
-                  field_uint32_array: value.field_uint32_array,
-                  field_string_array: value.field_string_array,
-                  field_duration_fixed_array: Some(value.field_duration_fixed_array.into()),
-                  field_time_fixed_array: Some(value.field_time_fixed_array.into()),
-                  field_boolean_fixed_array: value.field_boolean_fixed_array,
-                  field_bytes_fixed_array: value.field_bytes_fixed_array,
-                  field_float64_fixed_array: value.field_float64_fixed_array,
-                  field_uint32_fixed_array: value.field_uint32_fixed_array,
-                  field_string_fixed_array: value.field_string_fixed_array,
-                  field_enum: value.field_enum as i32,
-                  field_enum_array: value.field_enum_array as i32,
-                  field_nested: Some(value.field_nested.into()),
-                  field_nested_array: value.field_nested_array.into_iter().map(|x| x.into()).collect(),
-              }
-          }
-      }
+        impl From<ExampleMessage> for foxglove::schemas::ExampleMessage {
+            fn from(value: ExampleMessage) -> Self {
+                value.0
+            }
+        }
 
-      "
-      `);
+        "
+        `);
   });
 });

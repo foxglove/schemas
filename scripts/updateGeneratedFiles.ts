@@ -153,6 +153,10 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
   });
 
   await logProgress("Generating Pyclass definitions", async () => {
+    // Pyclass definitions are generated specifically for the SDK, and are not stored in ./schemas
+    const repoRoot = path.resolve(__dirname, "..");
+    const sdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
+
     // Ignore stdout from spawned commands, but keep stderr
     const execOpts: ExecFileSyncOptions = { stdio: ["ignore", "pipe", "pipe"] };
     // Check for tooling dependencies; skip generation if missing
@@ -170,12 +174,17 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
       return;
     }
 
-    const dir = await fs.mkdir(path.join(outDir, "pyclass"), { recursive: true });
-    if (dir == undefined) {
-      throw new Error("Failed to create pyclass directory");
-    }
+    const rustDir = path.join(sdkRoot, "src");
+    const stubDir = path.join(sdkRoot, "python", "foxglove", "_foxglove_py");
 
-    const schemasFile = path.join(dir, "schemas.rs");
+    const schemasFile = path.join(rustDir, "schemas.rs");
+    const pymoduleFile = path.join(rustDir, "schemas_module.rs");
+    const pyiStub = path.join(stubDir, "schemas.pyi");
+    await rimraf(schemasFile);
+    await rimraf(pymoduleFile);
+    await rimraf(pyiStub);
+
+    // Schemas file
     const writer = (await fs.open(schemasFile, "wx")).createWriteStream();
     writer.write(generatePrelude());
 
@@ -193,18 +202,18 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
 
     writer.write(generateModuleRegistration([...enumSchemas, ...messageSchemas]));
 
-    const schemasModule = path.join(dir, "schemas_module.rs");
-    await fs.writeFile(schemasModule, generatePymodule([...enumSchemas, ...messageSchemas]));
+    // Pymodule file
+    await fs.writeFile(pymoduleFile, generatePymodule([...enumSchemas, ...messageSchemas]));
 
     try {
       await execFileSync("cargo", ["fmt", "--", path.resolve(schemasFile)], execOpts);
-      await execFileSync("cargo", ["fmt", "--", path.resolve(schemasModule)], execOpts);
+      await execFileSync("cargo", ["fmt", "--", path.resolve(pymoduleFile)], execOpts);
     } catch (err) {
       console.error("Failed to format rust output");
       console.error(err);
     }
 
-    const pyiStub = path.join(dir, "schemas.pyi");
+    // Pyi stub file
     await fs.writeFile(pyiStub, generatePymoduleStub([...enumSchemas, ...messageSchemas]));
     try {
       await execFileSync("poetry", ["run", "black", path.resolve(pyiStub)], execOpts);

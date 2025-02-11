@@ -34,27 +34,6 @@ fn compile_protos() {
     fs::write(init_path, init_imports.join("\n") + "\n").unwrap();
 }
 
-fn import_schemas() {
-    let src_dir = Path::new("../../schemas/pyclass");
-    let rust_dir = Path::new("src");
-    let python_dir = Path::new("python/foxglove");
-
-    fs::create_dir_all(rust_dir).unwrap();
-
-    // pyo3 schema definitions
-    let src = Path::join(src_dir, "schemas.rs");
-    let dest = Path::join(rust_dir, "schemas.rs");
-    println!("cargo:rerun-if-changed={}", src.display());
-    fs::copy(&src, &dest).expect("schemas.rs should be copied by build script");
-
-    // python stub interface
-    let src = Path::join(src_dir, "schemas.pyi");
-    let dest = Path::join(python_dir, "_foxglove_py/schemas.pyi");
-    println!("cargo:rerun-if-changed={}", src.display());
-    fs::copy(&src, &dest).expect("schemas.pyi should be copied by build script");
-}
-
 fn main() {
     compile_protos();
-    import_schemas();
 }

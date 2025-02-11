@@ -13,7 +13,9 @@ use std::sync::Arc;
 use std::time;
 
 mod errors;
-mod schemas;
+mod generated;
+
+use generated::schemas;
 
 #[pyclass]
 struct BaseChannel(Arc<Channel>);

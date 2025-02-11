@@ -174,14 +174,17 @@ async function main({ outDir, rosOutDir }: { outDir: string; rosOutDir: string }
       return;
     }
 
-    const rustDir = path.join(sdkRoot, "src");
+    const rustDir = path.join(sdkRoot, "src", "generated");
     const stubDir = path.join(sdkRoot, "python", "foxglove", "_foxglove_py");
 
     const schemasFile = path.join(rustDir, "schemas.rs");
     const pymoduleFile = path.join(rustDir, "schemas_module.rs");
     const pyiStub = path.join(stubDir, "schemas.pyi");
-    await rimraf(schemasFile);
-    await rimraf(pymoduleFile);
+
+    // Rust source is re-generated from scratch.
+    // Stub file is placed into the existing hierarchy.
+    await rimraf(rustDir);
+    await fs.mkdir(rustDir, { recursive: true });
     await rimraf(pyiStub);
 
     // Schemas file

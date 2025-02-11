@@ -184,7 +184,10 @@ impl WebSocketServerHandle {
     }
 
     /// Removes status messages by id from all clients.
-    /// https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#status
+    ///
+    /// For more information, refer to the [Remove Status][remove-status] message specification.
+    ///
+    /// [remove-status]: https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#remove-status
     pub fn remove_status(&self, status_ids: Vec<String>) {
         self.0.remove_status(status_ids);
     }

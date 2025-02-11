@@ -36,24 +36,7 @@ tracing.workspace = true
 anyhow = "1.0.95"
 assert_matches = "1.5.0"
 clap = { version = "4.5", features = ["derive"] }
-ctrlc = "3.4.5"
 env_logger = "0.11.5"
 futures-util = "0.3.31"
-quaternion = "2.0.0"
 tempfile = "3.15.0"
 tracing-test = "0.2.5"
-
-[[example]]
-name = "client-publish"
-path = "examples/unstable/client-publish.rs"
-required-features = ["unstable"]
-
-[[example]]
-name = "param-server"
-path = "examples/unstable/param-server.rs"
-required-features = ["unstable"]
-
-[[example]]
-name = "ws-stream-mcap"
-path = "examples/unstable/ws-stream-mcap.rs"
-required-features = ["unstable"]

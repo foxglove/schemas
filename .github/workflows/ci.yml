@@ -83,7 +83,7 @@ jobs:
 
       - name: Ensure generated files are up to date
         run: |
-          yarn generate --include-sdk
+          yarn generate
           git add --all
           changes=$(git status --porcelain)
           if [ -n "$changes" ]; then

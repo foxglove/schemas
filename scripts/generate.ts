@@ -45,7 +45,7 @@ const pythonSdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
 const pythonSdkSourceRoot = path.join(pythonSdkRoot, "src", "generated");
 const pythonSdkStub = path.join(pythonSdkRoot, "python", "foxglove", "_foxglove_py", "schemas.pyi");
 
-async function main({ clean, includeSdk }: { clean: boolean; includeSdk: boolean }) {
+async function main({ clean }: { clean: boolean }) {
   const outDir = path.join(repoRoot, "schemas");
   const rosOutDir = path.join(repoRoot, "ros_foxglove_msgs");
   const typescriptTypesDir = path.join(repoRoot, "typescript/schemas/src/types");
@@ -55,11 +55,8 @@ async function main({ clean, includeSdk }: { clean: boolean; includeSdk: boolean
     await rimraf(path.join(rosOutDir, "ros1"));
     await rimraf(path.join(rosOutDir, "ros2"));
     await rimraf(typescriptTypesDir);
-
-    if (includeSdk || clean) {
-      await rimraf(pythonSdkSourceRoot);
-      await rimraf(pythonSdkStub);
-    }
+    await rimraf(pythonSdkSourceRoot);
+    await rimraf(pythonSdkStub);
   });
 
   if (clean) {
@@ -173,26 +170,9 @@ async function main({ clean, includeSdk }: { clean: boolean; includeSdk: boolean
     );
   });
 
-  if (includeSdk) {
-    await generateSdkTypes();
-  }
-
-  await logProgress("Running yarn test --updateSnapshot", async () => {
-    const result = spawnSync("yarn", ["test", "--updateSnapshot"], {
-      stdio: "inherit",
-    });
-    if (result.status !== 0) {
-      throw new Error(`yarn test failed with code ${result.status ?? "unknown"}`);
-    }
-  });
-}
-
-/**
- * Generate schemas and supporting source for the Foxglove SDK, if `--include-sdk` is provided.
- * These are exported to the SDK directory, and not stored with general-purpose schemas.
- * Requires rust and python dependencies to be installed.
- */
-async function generateSdkTypes() {
+  // Generate schemas and supporting source for the Foxglove SDK
+  // These are exported to the SDK directory, and not stored with general-purpose schemas.
+  // Requires rust and python dependencies to be installed.
   await logProgress("Generating Pyclass definitions", async () => {
     // Ignore stdout from spawned commands, but keep stderr
     const spawnOpts: CommonSpawnOptions = { stdio: ["ignore", "pipe", "pipe"] };
@@ -243,9 +223,17 @@ async function generateSdkTypes() {
 
     writer.end();
   });
+
+  await logProgress("Running yarn test --updateSnapshot", async () => {
+    const result = spawnSync("yarn", ["test", "--updateSnapshot"], {
+      stdio: "inherit",
+    });
+    if (result.status !== 0) {
+      throw new Error(`yarn test failed with code ${result.status ?? "unknown"}`);
+    }
+  });
 }
 
 program.option("--clean", "remove all generated files");
-program.option("--include-sdk", "generate files for the Foxglove SDK");
 program.action(main);
 program.parseAsync().catch(console.error);

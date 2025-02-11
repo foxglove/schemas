@@ -175,7 +175,10 @@ impl WebSocketServerHandle {
     }
 
     /// Publishes a status message to all clients.
-    /// https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#status
+    ///
+    /// For more information, refer to the [Status][status] message specification.
+    ///
+    /// [status]: https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#status
     pub fn publish_status(&self, status: Status) {
         self.0.publish_status(status);
     }

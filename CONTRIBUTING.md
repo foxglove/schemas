@@ -4,10 +4,15 @@
 
 Schemas are defined in [internal/schemas.ts](internal/schemas.ts). After modifying this file, you will need to regenerate the language-specific definitions.
 
+We commit generated files to git for several reasons:
+
+- Ease of access for users of the protobuf/flatbuffer/etc schemas
+- Ease of importing packages (e.g. pointing cargo or npm at a specific git commit)
+
 ```sh
 corepack enable  # ensure you have corepack enabled
 yarn install     # install dependencies
-yarn update-generated-files
+yarn generate    # regenerate files
 ```
 
 Remember to publish new versions of all libraries!

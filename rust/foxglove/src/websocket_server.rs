@@ -223,6 +223,24 @@ impl WebSocketServerBlockingHandle {
             .block_on(self.0.publish_parameter_values(parameters))
     }
 
+    /// Publishes a status message to all clients.
+    ///
+    /// For more information, refer to the [Status][status] message specification.
+    ///
+    /// [status]: https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#status
+    pub fn publish_status(&self, status: Status) {
+        self.0.publish_status(status);
+    }
+
+    /// Removes status messages by id from all clients.
+    ///
+    /// For more information, refer to the [Remove Status][remove-status] message specification.
+    ///
+    /// [remove-status]: https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#remove-status
+    pub fn remove_status(&self, status_ids: Vec<String>) {
+        self.0.remove_status(status_ids);
+    }
+
     /// Gracefully shutdown the websocket server.
     pub fn stop(self) {
         self.0.runtime().clone().block_on(self.0.stop());

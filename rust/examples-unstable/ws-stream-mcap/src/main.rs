@@ -13,8 +13,9 @@ use std::time::{Duration, Instant};
 use anyhow::{anyhow, Context, Result};
 use bytes::Buf;
 use clap::Parser;
+use foxglove::websocket::Capability;
 use foxglove::{
-    Capability, Channel, ChannelBuilder, PartialMetadata, Schema, WebSocketServer,
+    Channel, ChannelBuilder, PartialMetadata, Schema, WebSocketServer,
     WebSocketServerBlockingHandle,
 };
 use mcap::records::{MessageHeader, Record, SchemaHeader};

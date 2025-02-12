@@ -34,8 +34,7 @@ def main() -> None:
     box_chan = SceneUpdateChannel("/boxes")
     tf_chan = FrameTransformChannel("/tf")
 
-    # Log JSON messages using the JsonEncoder.
-    # A ProtobufEncoder is also available.
+    # Log arbitrary messages
     sin_chan = foxglove.Channel(
         topic="/sine", encoder=foxglove.JsonEncoder(), schema=plot_schema
     )

@@ -2,14 +2,12 @@ use crate::channel::Channel;
 use crate::channel::ChannelId;
 use crate::FoxgloveError;
 use base64::prelude::*;
+use serde::Deserialize;
 use serde::Serialize;
 use serde_json::json;
 use serde_repr::Serialize_repr;
-#[cfg(feature = "unstable")]
 use serde_with::{base64::Base64, serde_as};
-#[cfg(feature = "unstable")]
-use std::collections::HashMap;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 #[repr(u8)]
 pub enum BinaryOpcode {
@@ -33,8 +31,7 @@ pub struct Advertisement<'a> {
 }
 
 /// A parameter type.
-#[cfg(feature = "unstable")]
-#[derive(Serialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum ParameterType {
     /// A byte array, encoded as a base64-encoded string.
@@ -46,9 +43,8 @@ pub enum ParameterType {
 }
 
 /// A parameter value.
-#[cfg(feature = "unstable")]
 #[serde_as]
-#[derive(Serialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum ParameterValue {
     /// A decimal or integer value.
@@ -64,8 +60,7 @@ pub enum ParameterValue {
 }
 
 /// Informs the client about a parameter.
-#[cfg(feature = "unstable")]
-#[derive(Serialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Parameter {
     /// The name of the parameter.
     pub name: String,

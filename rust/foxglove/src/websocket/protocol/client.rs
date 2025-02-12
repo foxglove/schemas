@@ -6,6 +6,8 @@ use bytes::{Buf, Bytes};
 use serde::{Deserialize, Serialize};
 use tokio_tungstenite::tungstenite::Message;
 
+use super::server::Parameter;
+
 #[derive(Debug, thiserror::Error)]
 pub(crate) enum ParseError {
     #[error("Unexpected message type")]
@@ -258,16 +260,8 @@ pub(crate) struct GetParameters {
 #[derive(Debug, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct SetParameters {
-    pub parameters: Vec<SetParameter>,
+    pub parameters: Vec<Parameter>,
     pub id: Option<String>,
-}
-
-#[derive(Debug, Deserialize, PartialEq)]
-#[serde(rename_all = "camelCase")]
-pub(crate) struct SetParameter {
-    pub name: String,
-    pub value: Option<serde_json::Value>,
-    pub r#type: Option<String>,
 }
 
 // https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#subscribe-parameter-update
@@ -324,6 +318,7 @@ pub(crate) struct FetchAsset {
 
 #[cfg(test)]
 mod tests {
+    use super::super::server::{ParameterType, ParameterValue};
     use super::*;
 
     use assert_matches::assert_matches;
@@ -499,30 +494,35 @@ mod tests {
             parsed,
             ClientMessage::SetParameters(SetParameters {
                 parameters: vec![
-                    SetParameter {
+                    Parameter {
                         name: "/int_param".into(),
-                        value: Some(json!(3)),
+                        value: Some(ParameterValue::Number(3.0)),
                         r#type: None
                     },
-                    SetParameter {
+                    Parameter {
                         name: "/float_param".into(),
-                        value: Some(json!(4.1)),
+                        value: Some(ParameterValue::Number(4.1)),
                         r#type: None
                     },
-                    SetParameter {
+                    Parameter {
                         name: "/byte_array_param".into(),
-                        value: Some(json!("QUJDRA==")),
-                        r#type: Some("byte_array".into()),
+                        value: Some(ParameterValue::String(b"ABCD".to_vec())),
+                        r#type: Some(ParameterType::ByteArray),
                     },
-                    SetParameter {
+                    Parameter {
                         name: "/float_param_int".into(),
-                        value: Some(json!(3)),
-                        r#type: Some("float64".into()),
+                        value: Some(ParameterValue::Number(3.0)),
+                        r#type: Some(ParameterType::Float64),
                     },
-                    SetParameter {
+                    Parameter {
                         name: "/float_array_param".into(),
-                        value: Some(json!([1.1, 2, 3.3])),
-                        r#type: Some("float64_array".into()),
+                        value: Some(ParameterValue::Array(
+                            [1.1, 2.0, 3.3]
+                                .into_iter()
+                                .map(ParameterValue::Number)
+                                .collect()
+                        )),
+                        r#type: Some(ParameterType::Float64Array),
                     },
                 ],
                 id: Some("request-456".into()),

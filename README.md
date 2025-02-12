@@ -63,13 +63,30 @@ Repo: [foxglove/ws-protocol](https://github.com/foxglove/ws-protocol/tree/main/c
 <td>foxglove_msgs</td>
 <td>
 
-[![ROS Noetic version](https://img.shields.io/ros/v/noetic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#noetic)<br/>
-[![ROS Humble version](https://img.shields.io/ros/v/humble/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#humble)<br/>
-[![ROS Jazzy version](https://img.shields.io/ros/v/jazzy/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#jazzy)<br/>
-[![ROS Rolling version](https://img.shields.io/ros/v/rolling/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/github-foxglove-schemas/#rolling)
+[![ROS Noetic version](https://img.shields.io/ros/v/noetic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs#noetic)<br/>
+[![ROS Humble version](https://img.shields.io/ros/v/humble/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs#humble)<br/>
+[![ROS Jazzy version](https://img.shields.io/ros/v/jazzy/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs#jazzy)<br/>
+[![ROS Rolling version](https://img.shields.io/ros/v/rolling/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs#rolling)
 
 </td>
 <td>Foxglove message definitions for ROS 1 and ROS 2</td>
+</tr>
+<tr>
+<td>foxglove_bridge</td>
+<td>
+
+[![ROS Noetic version](https://img.shields.io/ros/v/noetic/foxglove_bridge)](https://index.ros.org/p/foxglove_bridge#noetic)<br/>
+[![ROS Humble version](https://img.shields.io/ros/v/humble/foxglove_bridge)](https://index.ros.org/p/foxglove_bridge#humble)<br/>
+[![ROS Jazzy version](https://img.shields.io/ros/v/jazzy/foxglove_bridge)](https://index.ros.org/p/foxglove_bridge#jazzy)<br/>
+[![ROS Rolling version](https://img.shields.io/ros/v/rolling/foxglove_bridge)](https://index.ros.org/p/foxglove_bridge#rolling)
+
+</td>
+<td>
+
+ROS WebSocket bridge using the Foxglove WebSocket protocol.<br/>
+Repo: [foxglove/ros-foxglove-bridge](https://github.com/foxglove/ros-foxglove-bridge)
+
+</td>
 </tr>
 <tr><td><strong>TypeScript</strong></td><td></td><td></td></tr>
 <tr>

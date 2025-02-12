@@ -45,7 +45,7 @@ async function logProgressLn(message: string, body: () => Promise<void>) {
   process.stderr.write("done\n");
 }
 
-async function exec(command: string, args: string[], { cwd }: SpawnOptions) {
+async function exec(command: string, args: string[], { cwd }: Pick<SpawnOptions, "cwd">) {
   process.stderr.write(`  ==> ${command} ${args.join(" ")}\n`);
 
   await new Promise<void>((resolve, reject) => {
@@ -201,16 +201,17 @@ async function main({ clean }: { clean: boolean }) {
     );
   });
 
+  // This must run before generating the Pyclass definitions
+  await logProgressLn("Generating Rust code", async () => {
+    await exec("cargo", ["run", "--bin", "foxglove-proto-gen"], {
+      cwd: path.join(repoRoot, "rust"),
+    });
+  });
+
   // Generate schemas and supporting source for the Foxglove SDK
   // These are exported to the SDK directory, and not stored with general-purpose schemas.
   // Requires rust and python dependencies to be installed.
-  await logProgress("Generating Pyclass definitions", async () => {
-    const spawnOpts: SpawnOptions = {
-      cwd: repoRoot,
-      // Ignore stdout from spawned commands, but keep stderr
-      stdio: ["ignore", "pipe", "pipe"],
-    };
-
+  await logProgressLn("Generating Pyclass definitions", async () => {
     // Source files (.rs) are re-generated.
     // Stub file is placed into the existing hierarchy.
     const schemasFile = path.join(pythonSdkGeneratedRoot, "schemas.rs");
@@ -237,17 +238,11 @@ async function main({ clean }: { clean: boolean }) {
 
     await finished(writer);
 
-    await exec("cargo", ["fmt", "--", path.resolve(schemasFile)], spawnOpts);
+    await exec("cargo", ["fmt", "--", path.resolve(schemasFile)], { cwd: repoRoot });
 
     // Pyi stub file
     await fs.writeFile(pythonSdkStub, generatePymoduleStub([...enumSchemas, ...messageSchemas]));
-    await exec("poetry", ["run", "black", path.resolve(pythonSdkStub)], spawnOpts);
-  });
-
-  await logProgressLn("Generating Rust code", async () => {
-    await exec("cargo", ["run", "--bin", "foxglove-proto-gen"], {
-      cwd: path.join(repoRoot, "rust"),
-    });
+    await exec("poetry", ["run", "black", path.resolve(pythonSdkStub)], { cwd: repoRoot });
   });
 
   await logProgressLn("Updating Jest snapshots", async () => {

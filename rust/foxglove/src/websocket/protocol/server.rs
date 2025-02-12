@@ -213,7 +213,7 @@ pub fn parameters_json(
 ) -> Result<String, FoxgloveError> {
     serde_json::to_value(&ServerMessage::ParameterValues { parameters, id })
         .map(|value| value.to_string())
-        .map_err(FoxgloveError::JSONError)
+        .map_err(FoxgloveError::JsonError)
 }
 
 #[cfg(test)]

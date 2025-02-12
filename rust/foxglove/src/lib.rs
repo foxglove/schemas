@@ -226,13 +226,13 @@ pub enum FoxgloveError {
     DuplicateChannel(String),
     /// An I/O error.
     #[error(transparent)]
-    IOError(#[from] std::io::Error),
+    IoError(#[from] std::io::Error),
     /// An error related to MCAP encoding.
     #[error("MCAP error: {0}")]
-    MCAPError(#[from] mcap::McapError),
+    McapError(#[from] mcap::McapError),
     /// An error related to JSON encoding.
     #[doc(hidden)]
     #[cfg(feature = "unstable")]
     #[error(transparent)]
-    JSONError(#[from] serde_json::Error),
+    JsonError(#[from] serde_json::Error),
 }

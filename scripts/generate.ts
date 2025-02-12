@@ -24,7 +24,6 @@ import {
   generateModuleRegistration,
   generatePrelude,
   generatePyclass,
-  generatePymodule,
   generatePymoduleStub,
   generateTimeTypes,
 } from "../typescript/schemas/src/internal/generatePyclass";
@@ -46,7 +45,7 @@ async function main({ clean }: { clean: boolean }) {
   const typescriptTypesDir = path.join(repoRoot, "typescript/schemas/src/types");
 
   const pythonSdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
-  const pythonSdkSourceRoot = path.join(pythonSdkRoot, "src", "generated");
+  const pythonSdkGeneratedRoot = path.join(pythonSdkRoot, "src", "generated");
   const pythonSdkStub = path.join(
     pythonSdkRoot,
     "python",
@@ -60,7 +59,7 @@ async function main({ clean }: { clean: boolean }) {
     await rimraf(path.join(rosOutDir, "ros1"));
     await rimraf(path.join(rosOutDir, "ros2"));
     await rimraf(typescriptTypesDir);
-    await rimraf(pythonSdkSourceRoot);
+    await rimraf(pythonSdkGeneratedRoot);
     await rimraf(pythonSdkStub);
   });
 
@@ -184,9 +183,8 @@ async function main({ clean }: { clean: boolean }) {
 
     // Source files (.rs) are re-generated.
     // Stub file is placed into the existing hierarchy.
-    const schemasFile = path.join(pythonSdkSourceRoot, "schemas.rs");
-    const pymoduleFile = path.join(pythonSdkSourceRoot, "schemas_module.rs");
-    await fs.mkdir(pythonSdkSourceRoot, { recursive: true });
+    const schemasFile = path.join(pythonSdkGeneratedRoot, "schemas.rs");
+    await fs.mkdir(pythonSdkGeneratedRoot, { recursive: true });
 
     // Schemas file
     const writer = (await fs.open(schemasFile, "wx")).createWriteStream();
@@ -205,28 +203,29 @@ async function main({ clean }: { clean: boolean }) {
     }
 
     writer.write(generateModuleRegistration([...enumSchemas, ...messageSchemas]));
-
-    // Pymodule file
-    await fs.writeFile(pymoduleFile, generatePymodule([...enumSchemas, ...messageSchemas]));
+    writer.end();
 
     try {
-      spawnSync("cargo", ["fmt", "--", path.resolve(schemasFile)], spawnOpts);
-      spawnSync("cargo", ["fmt", "--", path.resolve(pymoduleFile)], spawnOpts);
+      const result = spawnSync("cargo", ["fmt", "--", path.resolve(schemasFile)], spawnOpts);
+      if (result.status !== 0) {
+        throw new Error(`\'cargo fmt\' exited with status ${result.status}`);
+      }
     } catch (err) {
       console.error("Failed to format rust output using `cargo fmt`");
-      console.error(err);
+      throw err;
     }
 
     // Pyi stub file
     await fs.writeFile(pythonSdkStub, generatePymoduleStub([...enumSchemas, ...messageSchemas]));
     try {
-      spawnSync("poetry", ["run", "black", path.resolve(pythonSdkStub)], spawnOpts);
+      const result = spawnSync("poetry", ["run", "black", path.resolve(pythonSdkStub)], spawnOpts);
+      if (result.status !== 0) {
+        throw new Error(`\'poetry run black\' exited with status ${result.status}`);
+      }
     } catch (err) {
       console.error("Failed to format python output using `poetry run black`");
-      console.error(err);
+      throw err;
     }
-
-    writer.end();
   });
 
   await logProgress("Running yarn test --updateSnapshot", async () => {

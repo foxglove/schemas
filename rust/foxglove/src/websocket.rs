@@ -740,9 +740,7 @@ impl Server {
     /// Sets a new session ID and notifies all clients, causing them to reset their state.
     /// If no session ID is provided, generates a new one based on the current timestamp.
     pub fn clear_session(&self, new_session_id: Option<String>) {
-        *self.session_id.write() = new_session_id
-            .map(Into::into)
-            .unwrap_or_else(Self::generate_session_id);
+        *self.session_id.write() = new_session_id.unwrap_or_else(Self::generate_session_id);
 
         let info_message = protocol::server::server_info(
             &self.session_id.read(),

@@ -132,7 +132,7 @@ pub(crate) struct ArrowPrimitive(pub(crate) foxglove::schemas::ArrowPrimitive);
 #[pymethods]
 impl ArrowPrimitive {
     #[new]
-    #[pyo3(signature = (pose=None, shaft_length=0.0, shaft_diameter=0.0, head_length=0.0, head_diameter=0.0, color=None) )]
+    #[pyo3(signature = (*, pose=None, shaft_length=0.0, shaft_diameter=0.0, head_length=0.0, head_diameter=0.0, color=None) )]
     fn new(
         pose: Option<Pose>,
         shaft_length: f64,
@@ -165,7 +165,7 @@ pub(crate) struct CameraCalibration(pub(crate) foxglove::schemas::CameraCalibrat
 #[pymethods]
 impl CameraCalibration {
     #[new]
-    #[pyo3(signature = (timestamp=None, frame_id="".to_string(), width=0, height=0, distortion_model="".to_string(), D=vec![], K=vec![], R=vec![], P=vec![]) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), width=0, height=0, distortion_model="".to_string(), D=vec![], K=vec![], R=vec![], P=vec![]) )]
     fn new(
         timestamp: Option<Timestamp>,
         frame_id: String,
@@ -204,7 +204,7 @@ pub(crate) struct CircleAnnotation(pub(crate) foxglove::schemas::CircleAnnotatio
 #[pymethods]
 impl CircleAnnotation {
     #[new]
-    #[pyo3(signature = (timestamp=None, position=None, diameter=0.0, thickness=0.0, fill_color=None, outline_color=None) )]
+    #[pyo3(signature = (*, timestamp=None, position=None, diameter=0.0, thickness=0.0, fill_color=None, outline_color=None) )]
     fn new(
         timestamp: Option<Timestamp>,
         position: Option<Point2>,
@@ -237,7 +237,7 @@ pub(crate) struct Color(pub(crate) foxglove::schemas::Color);
 #[pymethods]
 impl Color {
     #[new]
-    #[pyo3(signature = (r=0.0, g=0.0, b=0.0, a=0.0) )]
+    #[pyo3(signature = (*, r=0.0, g=0.0, b=0.0, a=0.0) )]
     fn new(r: f64, g: f64, b: f64, a: f64) -> Self {
         Self(foxglove::schemas::Color { r, g, b, a })
     }
@@ -256,7 +256,7 @@ pub(crate) struct CompressedImage(pub(crate) foxglove::schemas::CompressedImage)
 #[pymethods]
 impl CompressedImage {
     #[new]
-    #[pyo3(signature = (timestamp=None, frame_id="".to_string(), data=vec![], format="".to_string()) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), data=vec![], format="".to_string()) )]
     fn new(timestamp: Option<Timestamp>, frame_id: String, data: Vec<u8>, format: String) -> Self {
         Self(foxglove::schemas::CompressedImage {
             timestamp: timestamp.map(Into::into),
@@ -280,7 +280,7 @@ pub(crate) struct CompressedVideo(pub(crate) foxglove::schemas::CompressedVideo)
 #[pymethods]
 impl CompressedVideo {
     #[new]
-    #[pyo3(signature = (timestamp=None, frame_id="".to_string(), data=vec![], format="".to_string()) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), data=vec![], format="".to_string()) )]
     fn new(timestamp: Option<Timestamp>, frame_id: String, data: Vec<u8>, format: String) -> Self {
         Self(foxglove::schemas::CompressedVideo {
             timestamp: timestamp.map(Into::into),
@@ -304,7 +304,7 @@ pub(crate) struct CylinderPrimitive(pub(crate) foxglove::schemas::CylinderPrimit
 #[pymethods]
 impl CylinderPrimitive {
     #[new]
-    #[pyo3(signature = (pose=None, size=None, bottom_scale=0.0, top_scale=0.0, color=None) )]
+    #[pyo3(signature = (*, pose=None, size=None, bottom_scale=0.0, top_scale=0.0, color=None) )]
     fn new(
         pose: Option<Pose>,
         size: Option<Vector3>,
@@ -335,7 +335,7 @@ pub(crate) struct CubePrimitive(pub(crate) foxglove::schemas::CubePrimitive);
 #[pymethods]
 impl CubePrimitive {
     #[new]
-    #[pyo3(signature = (pose=None, size=None, color=None) )]
+    #[pyo3(signature = (*, pose=None, size=None, color=None) )]
     fn new(pose: Option<Pose>, size: Option<Vector3>, color: Option<Color>) -> Self {
         Self(foxglove::schemas::CubePrimitive {
             pose: pose.map(Into::into),
@@ -358,7 +358,7 @@ pub(crate) struct FrameTransform(pub(crate) foxglove::schemas::FrameTransform);
 #[pymethods]
 impl FrameTransform {
     #[new]
-    #[pyo3(signature = (timestamp=None, parent_frame_id="".to_string(), child_frame_id="".to_string(), translation=None, rotation=None) )]
+    #[pyo3(signature = (*, timestamp=None, parent_frame_id="".to_string(), child_frame_id="".to_string(), translation=None, rotation=None) )]
     fn new(
         timestamp: Option<Timestamp>,
         parent_frame_id: String,
@@ -389,7 +389,7 @@ pub(crate) struct FrameTransforms(pub(crate) foxglove::schemas::FrameTransforms)
 #[pymethods]
 impl FrameTransforms {
     #[new]
-    #[pyo3(signature = (transforms=vec![]) )]
+    #[pyo3(signature = (*, transforms=vec![]) )]
     fn new(transforms: Vec<FrameTransform>) -> Self {
         Self(foxglove::schemas::FrameTransforms {
             transforms: transforms.into_iter().map(|x| x.into()).collect(),
@@ -410,7 +410,7 @@ pub(crate) struct GeoJson(pub(crate) foxglove::schemas::GeoJson);
 #[pymethods]
 impl GeoJson {
     #[new]
-    #[pyo3(signature = (geojson="".to_string()) )]
+    #[pyo3(signature = (*, geojson="".to_string()) )]
     fn new(geojson: String) -> Self {
         Self(foxglove::schemas::GeoJson { geojson })
     }
@@ -429,7 +429,7 @@ pub(crate) struct Grid(pub(crate) foxglove::schemas::Grid);
 #[pymethods]
 impl Grid {
     #[new]
-    #[pyo3(signature = (timestamp=None, frame_id="".to_string(), pose=None, column_count=0, cell_size=None, row_stride=0, cell_stride=0, fields=vec![], data=vec![]) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), pose=None, column_count=0, cell_size=None, row_stride=0, cell_stride=0, fields=vec![], data=vec![]) )]
     fn new(
         timestamp: Option<Timestamp>,
         frame_id: String,
@@ -468,7 +468,7 @@ pub(crate) struct ImageAnnotations(pub(crate) foxglove::schemas::ImageAnnotation
 #[pymethods]
 impl ImageAnnotations {
     #[new]
-    #[pyo3(signature = (circles=vec![], points=vec![], texts=vec![]) )]
+    #[pyo3(signature = (*, circles=vec![], points=vec![], texts=vec![]) )]
     fn new(
         circles: Vec<CircleAnnotation>,
         points: Vec<PointsAnnotation>,
@@ -495,7 +495,7 @@ pub(crate) struct KeyValuePair(pub(crate) foxglove::schemas::KeyValuePair);
 #[pymethods]
 impl KeyValuePair {
     #[new]
-    #[pyo3(signature = (key="".to_string(), value="".to_string()) )]
+    #[pyo3(signature = (*, key="".to_string(), value="".to_string()) )]
     fn new(key: String, value: String) -> Self {
         Self(foxglove::schemas::KeyValuePair { key, value })
     }
@@ -514,7 +514,7 @@ pub(crate) struct LaserScan(pub(crate) foxglove::schemas::LaserScan);
 #[pymethods]
 impl LaserScan {
     #[new]
-    #[pyo3(signature = (timestamp=None, frame_id="".to_string(), pose=None, start_angle=0.0, end_angle=0.0, ranges=vec![], intensities=vec![]) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), pose=None, start_angle=0.0, end_angle=0.0, ranges=vec![], intensities=vec![]) )]
     fn new(
         timestamp: Option<Timestamp>,
         frame_id: String,
@@ -549,7 +549,7 @@ pub(crate) struct LinePrimitive(pub(crate) foxglove::schemas::LinePrimitive);
 #[pymethods]
 impl LinePrimitive {
     #[new]
-    #[pyo3(signature = (r#type=LinePrimitiveLineType::LineStrip, pose=None, thickness=0.0, scale_invariant=false, points=vec![], color=None, colors=vec![], indices=vec![]) )]
+    #[pyo3(signature = (*, r#type=LinePrimitiveLineType::LineStrip, pose=None, thickness=0.0, scale_invariant=false, points=vec![], color=None, colors=vec![], indices=vec![]) )]
     fn new(
         r#type: LinePrimitiveLineType,
         pose: Option<Pose>,
@@ -586,7 +586,7 @@ pub(crate) struct LocationFix(pub(crate) foxglove::schemas::LocationFix);
 #[pymethods]
 impl LocationFix {
     #[new]
-    #[pyo3(signature = (timestamp=None, frame_id="".to_string(), latitude=0.0, longitude=0.0, altitude=0.0, position_covariance=vec![], position_covariance_type=LocationFixPositionCovarianceType::Unknown) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), latitude=0.0, longitude=0.0, altitude=0.0, position_covariance=vec![], position_covariance_type=LocationFixPositionCovarianceType::Unknown) )]
     fn new(
         timestamp: Option<Timestamp>,
         frame_id: String,
@@ -621,7 +621,7 @@ pub(crate) struct Log(pub(crate) foxglove::schemas::Log);
 #[pymethods]
 impl Log {
     #[new]
-    #[pyo3(signature = (timestamp=None, level=LogLevel::Unknown, message="".to_string(), name="".to_string(), file="".to_string(), line=0) )]
+    #[pyo3(signature = (*, timestamp=None, level=LogLevel::Unknown, message="".to_string(), name="".to_string(), file="".to_string(), line=0) )]
     fn new(
         timestamp: Option<Timestamp>,
         level: LogLevel,
@@ -654,7 +654,7 @@ pub(crate) struct SceneEntityDeletion(pub(crate) foxglove::schemas::SceneEntityD
 #[pymethods]
 impl SceneEntityDeletion {
     #[new]
-    #[pyo3(signature = (timestamp=None, r#type=SceneEntityDeletionType::MatchingId, id="".to_string()) )]
+    #[pyo3(signature = (*, timestamp=None, r#type=SceneEntityDeletionType::MatchingId, id="".to_string()) )]
     fn new(timestamp: Option<Timestamp>, r#type: SceneEntityDeletionType, id: String) -> Self {
         Self(foxglove::schemas::SceneEntityDeletion {
             timestamp: timestamp.map(Into::into),
@@ -677,7 +677,7 @@ pub(crate) struct SceneEntity(pub(crate) foxglove::schemas::SceneEntity);
 #[pymethods]
 impl SceneEntity {
     #[new]
-    #[pyo3(signature = (timestamp=None, frame_id="".to_string(), id="".to_string(), lifetime=None, frame_locked=false, metadata=vec![], arrows=vec![], cubes=vec![], spheres=vec![], cylinders=vec![], lines=vec![], triangles=vec![], texts=vec![], models=vec![]) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), id="".to_string(), lifetime=None, frame_locked=false, metadata=vec![], arrows=vec![], cubes=vec![], spheres=vec![], cylinders=vec![], lines=vec![], triangles=vec![], texts=vec![], models=vec![]) )]
     fn new(
         timestamp: Option<Timestamp>,
         frame_id: String,
@@ -726,7 +726,7 @@ pub(crate) struct SceneUpdate(pub(crate) foxglove::schemas::SceneUpdate);
 #[pymethods]
 impl SceneUpdate {
     #[new]
-    #[pyo3(signature = (deletions=vec![], entities=vec![]) )]
+    #[pyo3(signature = (*, deletions=vec![], entities=vec![]) )]
     fn new(deletions: Vec<SceneEntityDeletion>, entities: Vec<SceneEntity>) -> Self {
         Self(foxglove::schemas::SceneUpdate {
             deletions: deletions.into_iter().map(|x| x.into()).collect(),
@@ -748,7 +748,7 @@ pub(crate) struct ModelPrimitive(pub(crate) foxglove::schemas::ModelPrimitive);
 #[pymethods]
 impl ModelPrimitive {
     #[new]
-    #[pyo3(signature = (pose=None, scale=None, color=None, override_color=false, url="".to_string(), media_type="".to_string(), data=vec![]) )]
+    #[pyo3(signature = (*, pose=None, scale=None, color=None, override_color=false, url="".to_string(), media_type="".to_string(), data=vec![]) )]
     fn new(
         pose: Option<Pose>,
         scale: Option<Vector3>,
@@ -783,7 +783,7 @@ pub(crate) struct PackedElementField(pub(crate) foxglove::schemas::PackedElement
 #[pymethods]
 impl PackedElementField {
     #[new]
-    #[pyo3(signature = (name="".to_string(), offset=0, r#type=PackedElementFieldNumericType::Unknown) )]
+    #[pyo3(signature = (*, name="".to_string(), offset=0, r#type=PackedElementFieldNumericType::Unknown) )]
     fn new(name: String, offset: u32, r#type: PackedElementFieldNumericType) -> Self {
         Self(foxglove::schemas::PackedElementField {
             name,
@@ -806,7 +806,7 @@ pub(crate) struct Point2(pub(crate) foxglove::schemas::Point2);
 #[pymethods]
 impl Point2 {
     #[new]
-    #[pyo3(signature = (x=0.0, y=0.0) )]
+    #[pyo3(signature = (*, x=0.0, y=0.0) )]
     fn new(x: f64, y: f64) -> Self {
         Self(foxglove::schemas::Point2 { x, y })
     }
@@ -825,7 +825,7 @@ pub(crate) struct Point3(pub(crate) foxglove::schemas::Point3);
 #[pymethods]
 impl Point3 {
     #[new]
-    #[pyo3(signature = (x=0.0, y=0.0, z=0.0) )]
+    #[pyo3(signature = (*, x=0.0, y=0.0, z=0.0) )]
     fn new(x: f64, y: f64, z: f64) -> Self {
         Self(foxglove::schemas::Point3 { x, y, z })
     }
@@ -844,7 +844,7 @@ pub(crate) struct PointCloud(pub(crate) foxglove::schemas::PointCloud);
 #[pymethods]
 impl PointCloud {
     #[new]
-    #[pyo3(signature = (timestamp=None, frame_id="".to_string(), pose=None, point_stride=0, fields=vec![], data=vec![]) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), pose=None, point_stride=0, fields=vec![], data=vec![]) )]
     fn new(
         timestamp: Option<Timestamp>,
         frame_id: String,
@@ -877,7 +877,7 @@ pub(crate) struct PointsAnnotation(pub(crate) foxglove::schemas::PointsAnnotatio
 #[pymethods]
 impl PointsAnnotation {
     #[new]
-    #[pyo3(signature = (timestamp=None, r#type=PointsAnnotationType::Unknown, points=vec![], outline_color=None, outline_colors=vec![], fill_color=None, thickness=0.0) )]
+    #[pyo3(signature = (*, timestamp=None, r#type=PointsAnnotationType::Unknown, points=vec![], outline_color=None, outline_colors=vec![], fill_color=None, thickness=0.0) )]
     fn new(
         timestamp: Option<Timestamp>,
         r#type: PointsAnnotationType,
@@ -912,7 +912,7 @@ pub(crate) struct Pose(pub(crate) foxglove::schemas::Pose);
 #[pymethods]
 impl Pose {
     #[new]
-    #[pyo3(signature = (position=None, orientation=None) )]
+    #[pyo3(signature = (*, position=None, orientation=None) )]
     fn new(position: Option<Vector3>, orientation: Option<Quaternion>) -> Self {
         Self(foxglove::schemas::Pose {
             position: position.map(Into::into),
@@ -934,7 +934,7 @@ pub(crate) struct PoseInFrame(pub(crate) foxglove::schemas::PoseInFrame);
 #[pymethods]
 impl PoseInFrame {
     #[new]
-    #[pyo3(signature = (timestamp=None, frame_id="".to_string(), pose=None) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), pose=None) )]
     fn new(timestamp: Option<Timestamp>, frame_id: String, pose: Option<Pose>) -> Self {
         Self(foxglove::schemas::PoseInFrame {
             timestamp: timestamp.map(Into::into),
@@ -957,7 +957,7 @@ pub(crate) struct PosesInFrame(pub(crate) foxglove::schemas::PosesInFrame);
 #[pymethods]
 impl PosesInFrame {
     #[new]
-    #[pyo3(signature = (timestamp=None, frame_id="".to_string(), poses=vec![]) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), poses=vec![]) )]
     fn new(timestamp: Option<Timestamp>, frame_id: String, poses: Vec<Pose>) -> Self {
         Self(foxglove::schemas::PosesInFrame {
             timestamp: timestamp.map(Into::into),
@@ -980,7 +980,7 @@ pub(crate) struct Quaternion(pub(crate) foxglove::schemas::Quaternion);
 #[pymethods]
 impl Quaternion {
     #[new]
-    #[pyo3(signature = (x=0.0, y=0.0, z=0.0, w=0.0) )]
+    #[pyo3(signature = (*, x=0.0, y=0.0, z=0.0, w=0.0) )]
     fn new(x: f64, y: f64, z: f64, w: f64) -> Self {
         Self(foxglove::schemas::Quaternion { x, y, z, w })
     }
@@ -999,7 +999,7 @@ pub(crate) struct RawImage(pub(crate) foxglove::schemas::RawImage);
 #[pymethods]
 impl RawImage {
     #[new]
-    #[pyo3(signature = (timestamp=None, frame_id="".to_string(), width=0, height=0, encoding="".to_string(), step=0, data=vec![]) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), width=0, height=0, encoding="".to_string(), step=0, data=vec![]) )]
     fn new(
         timestamp: Option<Timestamp>,
         frame_id: String,
@@ -1034,7 +1034,7 @@ pub(crate) struct SpherePrimitive(pub(crate) foxglove::schemas::SpherePrimitive)
 #[pymethods]
 impl SpherePrimitive {
     #[new]
-    #[pyo3(signature = (pose=None, size=None, color=None) )]
+    #[pyo3(signature = (*, pose=None, size=None, color=None) )]
     fn new(pose: Option<Pose>, size: Option<Vector3>, color: Option<Color>) -> Self {
         Self(foxglove::schemas::SpherePrimitive {
             pose: pose.map(Into::into),
@@ -1057,7 +1057,7 @@ pub(crate) struct TextAnnotation(pub(crate) foxglove::schemas::TextAnnotation);
 #[pymethods]
 impl TextAnnotation {
     #[new]
-    #[pyo3(signature = (timestamp=None, position=None, text="".to_string(), font_size=0.0, text_color=None, background_color=None) )]
+    #[pyo3(signature = (*, timestamp=None, position=None, text="".to_string(), font_size=0.0, text_color=None, background_color=None) )]
     fn new(
         timestamp: Option<Timestamp>,
         position: Option<Point2>,
@@ -1090,7 +1090,7 @@ pub(crate) struct TextPrimitive(pub(crate) foxglove::schemas::TextPrimitive);
 #[pymethods]
 impl TextPrimitive {
     #[new]
-    #[pyo3(signature = (pose=None, billboard=false, font_size=0.0, scale_invariant=false, color=None, text="".to_string()) )]
+    #[pyo3(signature = (*, pose=None, billboard=false, font_size=0.0, scale_invariant=false, color=None, text="".to_string()) )]
     fn new(
         pose: Option<Pose>,
         billboard: bool,
@@ -1123,7 +1123,7 @@ pub(crate) struct TriangleListPrimitive(pub(crate) foxglove::schemas::TriangleLi
 #[pymethods]
 impl TriangleListPrimitive {
     #[new]
-    #[pyo3(signature = (pose=None, points=vec![], color=None, colors=vec![], indices=vec![]) )]
+    #[pyo3(signature = (*, pose=None, points=vec![], color=None, colors=vec![], indices=vec![]) )]
     fn new(
         pose: Option<Pose>,
         points: Vec<Point3>,
@@ -1154,7 +1154,7 @@ pub(crate) struct Vector2(pub(crate) foxglove::schemas::Vector2);
 #[pymethods]
 impl Vector2 {
     #[new]
-    #[pyo3(signature = (x=0.0, y=0.0) )]
+    #[pyo3(signature = (*, x=0.0, y=0.0) )]
     fn new(x: f64, y: f64) -> Self {
         Self(foxglove::schemas::Vector2 { x, y })
     }
@@ -1173,7 +1173,7 @@ pub(crate) struct Vector3(pub(crate) foxglove::schemas::Vector3);
 #[pymethods]
 impl Vector3 {
     #[new]
-    #[pyo3(signature = (x=0.0, y=0.0, z=0.0) )]
+    #[pyo3(signature = (*, x=0.0, y=0.0, z=0.0) )]
     fn new(x: f64, y: f64, z: f64) -> Self {
         Self(foxglove::schemas::Vector3 { x, y, z })
     }

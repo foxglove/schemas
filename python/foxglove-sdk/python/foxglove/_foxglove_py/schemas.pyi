@@ -9,6 +9,7 @@ class ArrowPrimitive:
 
     def __new__(
         cls,
+        *,
         pose: "Pose",
         shaft_length: "float",
         shaft_diameter: "float",
@@ -24,6 +25,7 @@ class CameraCalibration:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         frame_id: "str",
         width: "int",
@@ -42,6 +44,7 @@ class CircleAnnotation:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         position: "Point2",
         diameter: "float",
@@ -55,7 +58,7 @@ class Color:
     A color in RGBA format
     """
 
-    def __new__(cls, r: "float", g: "float", b: "float", a: "float") -> "Color": ...
+    def __new__(cls, *, r: "float", g: "float", b: "float", a: "float") -> "Color": ...
 
 class CompressedImage:
     """
@@ -63,7 +66,7 @@ class CompressedImage:
     """
 
     def __new__(
-        cls, timestamp: "Timestamp", frame_id: "str", data: "bytes", format: "str"
+        cls, *, timestamp: "Timestamp", frame_id: "str", data: "bytes", format: "str"
     ) -> "CompressedImage": ...
 
 class CompressedVideo:
@@ -72,7 +75,7 @@ class CompressedVideo:
     """
 
     def __new__(
-        cls, timestamp: "Timestamp", frame_id: "str", data: "bytes", format: "str"
+        cls, *, timestamp: "Timestamp", frame_id: "str", data: "bytes", format: "str"
     ) -> "CompressedVideo": ...
 
 class CubePrimitive:
@@ -81,7 +84,7 @@ class CubePrimitive:
     """
 
     def __new__(
-        cls, pose: "Pose", size: "Vector3", color: "Color"
+        cls, *, pose: "Pose", size: "Vector3", color: "Color"
     ) -> "CubePrimitive": ...
 
 class CylinderPrimitive:
@@ -91,6 +94,7 @@ class CylinderPrimitive:
 
     def __new__(
         cls,
+        *,
         pose: "Pose",
         size: "Vector3",
         bottom_scale: "float",
@@ -116,6 +120,7 @@ class FrameTransform:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         parent_frame_id: "str",
         child_frame_id: "str",
@@ -128,14 +133,14 @@ class FrameTransforms:
     An array of FrameTransform messages
     """
 
-    def __new__(cls, transforms: "List[FrameTransform]") -> "FrameTransforms": ...
+    def __new__(cls, *, transforms: "List[FrameTransform]") -> "FrameTransforms": ...
 
 class GeoJson:
     """
     GeoJSON data for annotating maps
     """
 
-    def __new__(cls, geojson: "str") -> "GeoJson": ...
+    def __new__(cls, *, geojson: "str") -> "GeoJson": ...
 
 class Grid:
     """
@@ -144,6 +149,7 @@ class Grid:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         frame_id: "str",
         pose: "Pose",
@@ -162,6 +168,7 @@ class ImageAnnotations:
 
     def __new__(
         cls,
+        *,
         circles: "List[CircleAnnotation]",
         points: "List[PointsAnnotation]",
         texts: "List[TextAnnotation]",
@@ -172,7 +179,7 @@ class KeyValuePair:
     A key with its associated value
     """
 
-    def __new__(cls, key: "str", value: "str") -> "KeyValuePair": ...
+    def __new__(cls, *, key: "str", value: "str") -> "KeyValuePair": ...
 
 class LaserScan:
     """
@@ -181,6 +188,7 @@ class LaserScan:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         frame_id: "str",
         pose: "Pose",
@@ -197,6 +205,7 @@ class LinePrimitive:
 
     def __new__(
         cls,
+        *,
         type: "LinePrimitiveLineType",
         pose: "Pose",
         thickness: "float",
@@ -223,6 +232,7 @@ class LocationFix:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         frame_id: "str",
         latitude: "float",
@@ -249,6 +259,7 @@ class Log:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         level: "LogLevel",
         message: "str",
@@ -276,6 +287,7 @@ class ModelPrimitive:
 
     def __new__(
         cls,
+        *,
         pose: "Pose",
         scale: "Vector3",
         color: "Color",
@@ -291,7 +303,7 @@ class PackedElementField:
     """
 
     def __new__(
-        cls, name: "str", offset: "int", type: "PackedElementFieldNumericType"
+        cls, *, name: "str", offset: "int", type: "PackedElementFieldNumericType"
     ) -> "PackedElementField": ...
 
 class PackedElementFieldNumericType(Enum):
@@ -314,14 +326,14 @@ class Point2:
     A point representing a position in 2D space
     """
 
-    def __new__(cls, x: "float", y: "float") -> "Point2": ...
+    def __new__(cls, *, x: "float", y: "float") -> "Point2": ...
 
 class Point3:
     """
     A point representing a position in 3D space
     """
 
-    def __new__(cls, x: "float", y: "float", z: "float") -> "Point3": ...
+    def __new__(cls, *, x: "float", y: "float", z: "float") -> "Point3": ...
 
 class PointCloud:
     """
@@ -330,6 +342,7 @@ class PointCloud:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         frame_id: "str",
         pose: "Pose",
@@ -345,6 +358,7 @@ class PointsAnnotation:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         type: "PointsAnnotationType",
         points: "List[Point2]",
@@ -370,7 +384,7 @@ class Pose:
     A position and orientation for an object or reference frame in 3D space
     """
 
-    def __new__(cls, position: "Vector3", orientation: "Quaternion") -> "Pose": ...
+    def __new__(cls, *, position: "Vector3", orientation: "Quaternion") -> "Pose": ...
 
 class PoseInFrame:
     """
@@ -378,7 +392,7 @@ class PoseInFrame:
     """
 
     def __new__(
-        cls, timestamp: "Timestamp", frame_id: "str", pose: "Pose"
+        cls, *, timestamp: "Timestamp", frame_id: "str", pose: "Pose"
     ) -> "PoseInFrame": ...
 
 class PosesInFrame:
@@ -387,7 +401,7 @@ class PosesInFrame:
     """
 
     def __new__(
-        cls, timestamp: "Timestamp", frame_id: "str", poses: "List[Pose]"
+        cls, *, timestamp: "Timestamp", frame_id: "str", poses: "List[Pose]"
     ) -> "PosesInFrame": ...
 
 class Quaternion:
@@ -396,7 +410,7 @@ class Quaternion:
     """
 
     def __new__(
-        cls, x: "float", y: "float", z: "float", w: "float"
+        cls, *, x: "float", y: "float", z: "float", w: "float"
     ) -> "Quaternion": ...
 
 class RawImage:
@@ -406,6 +420,7 @@ class RawImage:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         frame_id: "str",
         width: "int",
@@ -422,6 +437,7 @@ class SceneEntity:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         frame_id: "str",
         id: "str",
@@ -444,7 +460,7 @@ class SceneEntityDeletion:
     """
 
     def __new__(
-        cls, timestamp: "Timestamp", type: "SceneEntityDeletionType", id: "str"
+        cls, *, timestamp: "Timestamp", type: "SceneEntityDeletionType", id: "str"
     ) -> "SceneEntityDeletion": ...
 
 class SceneEntityDeletionType(Enum):
@@ -461,7 +477,7 @@ class SceneUpdate:
     """
 
     def __new__(
-        cls, deletions: "List[SceneEntityDeletion]", entities: "List[SceneEntity]"
+        cls, *, deletions: "List[SceneEntityDeletion]", entities: "List[SceneEntity]"
     ) -> "SceneUpdate": ...
 
 class SpherePrimitive:
@@ -470,7 +486,7 @@ class SpherePrimitive:
     """
 
     def __new__(
-        cls, pose: "Pose", size: "Vector3", color: "Color"
+        cls, *, pose: "Pose", size: "Vector3", color: "Color"
     ) -> "SpherePrimitive": ...
 
 class TextAnnotation:
@@ -480,6 +496,7 @@ class TextAnnotation:
 
     def __new__(
         cls,
+        *,
         timestamp: "Timestamp",
         position: "Point2",
         text: "str",
@@ -495,6 +512,7 @@ class TextPrimitive:
 
     def __new__(
         cls,
+        *,
         pose: "Pose",
         billboard: "bool",
         font_size: "float",
@@ -521,6 +539,7 @@ class TriangleListPrimitive:
 
     def __new__(
         cls,
+        *,
         pose: "Pose",
         points: "List[Point3]",
         color: "Color",
@@ -533,11 +552,11 @@ class Vector2:
     A vector in 2D space that represents a direction only
     """
 
-    def __new__(cls, x: "float", y: "float") -> "Vector2": ...
+    def __new__(cls, *, x: "float", y: "float") -> "Vector2": ...
 
 class Vector3:
     """
     A vector in 3D space that represents a direction only
     """
 
-    def __new__(cls, x: "float", y: "float", z: "float") -> "Vector3": ...
+    def __new__(cls, *, x: "float", y: "float", z: "float") -> "Vector3": ...

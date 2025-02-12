@@ -6,19 +6,114 @@ Visit [Foxglove Docs](https://docs.foxglove.dev/) to get started.
 
 ## Packages
 
-| Package                     | Version                                                                                                                         | Description                                                                                                                                                                 |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Python**                  |                                                                                                                                 |                                                                                                                                                                             |
-| foxglove-schemas-flatbuffer | [![pypi version](https://shields.io/pypi/v/foxglove-schemas-flatbuffer)](https://pypi.org/project/foxglove-schemas-flatbuffer/) | Compiled flatbuffers                                                                                                                                                        |
-| foxglove-schemas-protobuf   | [![pypi version](https://shields.io/pypi/v/foxglove-schemas-protobuf)](https://pypi.org/project/foxglove-schemas-protobuf/)     | Compiled protocol buffers                                                                                                                                                   |
-| foxglove-websocket          | [![pypi version](https://shields.io/pypi/v/foxglove-websocket)](https://pypi.org/project/foxglove-websocket/)                   | Python implementation of the WebSocket protocol<br/>Repo: [foxglove/ws-protocol](https://github.com/foxglove/ws-protocol/tree/main/python)                                  |
-| **C++**                     |                                                                                                                                 |                                                                                                                                                                             |
-| foxglove-websocket          | [![conan version](https://img.shields.io/conan/v/foxglove-websocket)](https://conan.io/center/recipes/foxglove-websocket)       | C++ implementation of the WebSocket protocol<br/>Repo: [foxglove/ws-protocol](https://github.com/foxglove/ws-protocol/tree/main/cpp)                                        |
-| **ROS**                     |                                                                                                                                 |                                                                                                                                                                             |
-| foxglove_msgs               | [![ros version](https://img.shields.io/ros/v/rolling/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs/)                    | Foxglove message definitions for ROS 1 and ROS 2                                                                                                                            |
-| **TypeScript**              |                                                                                                                                 |                                                                                                                                                                             |
-| @foxglove/schemas           | [![npm version](https://img.shields.io/npm/v/@foxglove/schemas)](https://www.npmjs.com/package/@foxglove/schemas)               | Foxglove schemas for JavaScript / TypeScript                                                                                                                                |
-| @foxglove/ws-protocol       | [![npm version](https://img.shields.io/npm/v/@foxglove/ws-protocol)](https://www.npmjs.com/package/@foxglove/ws-protocol)       | JavaScript / TypeScript implementation of the WebSocket protocol<br/>Repo: [foxglove/ws-protocol](https://github.com/foxglove/ws-protocol/tree/main/typescript/ws-protocol) |
+<table>
+<thead>
+<tr><th>Package</th><th>Version</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Python</strong></td><td></td><td></td></tr>
+<tr>
+<td>foxglove-schemas-flatbuffer</td>
+<td>
+
+[![pypi version](https://shields.io/pypi/v/foxglove-schemas-flatbuffer)](https://pypi.org/project/foxglove-schemas-flatbuffer/)
+
+</td>
+<td>Compiled flatbuffers</td>
+</tr>
+<tr>
+<td>foxglove-schemas-protobuf</td>
+<td>
+
+[![pypi version](https://shields.io/pypi/v/foxglove-schemas-protobuf)](https://pypi.org/project/foxglove-schemas-protobuf/)
+
+</td>
+<td>Compiled protocol buffers</td>
+</tr>
+<tr>
+<td>foxglove-websocket</td>
+<td>
+
+[![pypi version](https://shields.io/pypi/v/foxglove-websocket)](https://pypi.org/project/foxglove-websocket/)
+
+</td>
+<td>
+
+Python implementation of the WebSocket protocol<br/>Repo: [foxglove/ws-protocol](https://github.com/foxglove/ws-protocol/tree/main/python)
+
+</td>
+</tr>
+<tr><td><strong>C++</strong></td><td></td><td></td></tr>
+<tr>
+<td>foxglove-websocket</td>
+<td>
+
+[![conan version](https://img.shields.io/conan/v/foxglove-websocket)](https://conan.io/center/recipes/foxglove-websocket)
+
+</td>
+<td>
+
+C++ implementation of the WebSocket protocol<br/>
+Repo: [foxglove/ws-protocol](https://github.com/foxglove/ws-protocol/tree/main/cpp)
+
+</td>
+</tr>
+<tr><td><strong>ROS</strong></td><td></td><td></td></tr>
+<tr>
+<td>foxglove_msgs</td>
+<td>
+
+[![ROS Noetic version](https://img.shields.io/ros/v/noetic/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs#noetic)<br/>
+[![ROS Humble version](https://img.shields.io/ros/v/humble/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs#humble)<br/>
+[![ROS Jazzy version](https://img.shields.io/ros/v/jazzy/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs#jazzy)<br/>
+[![ROS Rolling version](https://img.shields.io/ros/v/rolling/foxglove_msgs)](https://index.ros.org/p/foxglove_msgs#rolling)
+
+</td>
+<td>Foxglove message definitions for ROS 1 and ROS 2</td>
+</tr>
+<tr>
+<td>foxglove_bridge</td>
+<td>
+
+[![ROS Noetic version](https://img.shields.io/ros/v/noetic/foxglove_bridge)](https://index.ros.org/p/foxglove_bridge#noetic)<br/>
+[![ROS Humble version](https://img.shields.io/ros/v/humble/foxglove_bridge)](https://index.ros.org/p/foxglove_bridge#humble)<br/>
+[![ROS Jazzy version](https://img.shields.io/ros/v/jazzy/foxglove_bridge)](https://index.ros.org/p/foxglove_bridge#jazzy)<br/>
+[![ROS Rolling version](https://img.shields.io/ros/v/rolling/foxglove_bridge)](https://index.ros.org/p/foxglove_bridge#rolling)
+
+</td>
+<td>
+
+ROS implementation of the WebSocket protocol<br/>
+Repo: [foxglove/ros-foxglove-bridge](https://github.com/foxglove/ros-foxglove-bridge)
+
+</td>
+</tr>
+<tr><td><strong>JavaScript / TypeScript</strong></td><td></td><td></td></tr>
+<tr>
+<td>@foxglove/schemas</td>
+<td>
+
+[![npm version](https://img.shields.io/npm/v/@foxglove/schemas)](https://www.npmjs.com/package/@foxglove/schemas)
+
+</td>
+<td>Foxglove schemas for TypeScript</td>
+</tr>
+<tr>
+<td>@foxglove/ws-protocol</td>
+<td>
+
+[![npm version](https://img.shields.io/npm/v/@foxglove/ws-protocol)](https://www.npmjs.com/package/@foxglove/ws-protocol)
+
+</td>
+<td>
+
+TypeScript implementation of the WebSocket protocol<br/>
+Repo: [foxglove/ws-protocol](https://github.com/foxglove/ws-protocol/tree/main/typescript/ws-protocol)
+
+</td>
+</tr>
+</tbody>
+</table>
 
 ### Other
 

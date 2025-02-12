@@ -1,11 +1,7 @@
 import json
-from base64 import b64encode
 from abc import ABC, abstractmethod
 
-from google.protobuf.message import Message as ProtoMessage
-from .schemas_utils import build_file_descriptor_set
-
-from typing import Any, Type, Tuple
+from typing import Any, Tuple
 
 
 class Encoder(ABC):
@@ -27,28 +23,6 @@ class Encoder(ABC):
     def get_schema_info(self, schema: Any) -> Tuple[str, str, bytes]:
         """Returns (schema_name, schema_encoding, schema_str)."""
         pass
-
-
-class ProtobufEncoder(Encoder):
-    """Encoder for Protobuf messages."""
-
-    def __init__(self) -> None:
-        super().__init__(encoding="protobuf", schema_encoding="protobuf")
-
-    def encode(self, msg: ProtoMessage) -> bytes:
-        if not isinstance(msg, ProtoMessage):
-            raise TypeError("Message must be a protobuf message.")
-        return msg.SerializeToString()
-
-    def get_schema_info(self, schema: Type[ProtoMessage]) -> Tuple[str, str, bytes]:
-        if not issubclass(schema, ProtoMessage):
-            raise TypeError("Schema must be a subclass of protobuf Message.")
-        schema_name: str = schema.DESCRIPTOR.full_name
-        schema_encoding: str = self.schema_encoding
-        schema_str: bytes = b64encode(
-            build_file_descriptor_set(schema).SerializeToString()
-        )
-        return schema_name, schema_encoding, schema_str
 
 
 class JsonEncoder(Encoder):

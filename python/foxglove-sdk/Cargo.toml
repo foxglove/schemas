@@ -11,8 +11,9 @@ crate-type = ["cdylib"]
 [dependencies]
 env_logger = "0.11.5"
 log = "0.4.22"
-pyo3 = "0.22.0"
-pyo3-log = "0.11.0"
+prost-types = "0.13"
+pyo3 = "0.23.0"
+pyo3-log = "0.12.0"
 foxglove = { path = "../../rust/foxglove" }
 thiserror.workspace = true
 tokio-tungstenite.workspace = true

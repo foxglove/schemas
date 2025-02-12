@@ -34,11 +34,6 @@ jobs:
       - name: Install common dependencies
         uses: ./.github/actions/common-deps
 
-      - uses: arduino/setup-protoc@v3
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          version: "29.x"
-
       - run: pipx install poetry
       - run: poetry check --strict
       - run: poetry install
@@ -112,6 +107,10 @@ jobs:
             target: ppc64le
     steps:
       - uses: actions/checkout@v4
+      # rustfmt is used on generated rust schemas for the SDK
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rustfmt
       - uses: actions/setup-python@v5
         with:
           python-version: "3.9"

@@ -1,7 +1,7 @@
 use errors::PyFoxgloveError;
 use foxglove::{
-    Channel, ChannelBuilder, LogContext, McapWriter, McapWriterHandle, PartialMetadata, Schema,
-    WebSocketServer, WebSocketServerBlockingHandle,
+    Channel, ChannelBuilder, LogContext, McapWriter, McapWriterHandle, Schema, WebSocketServer,
+    WebSocketServerBlockingHandle,
 };
 use log::LevelFilter;
 use pyo3::exceptions::PyValueError;
@@ -13,6 +13,10 @@ use std::sync::Arc;
 use std::time;
 
 mod errors;
+mod generated;
+
+use generated::channels;
+use generated::schemas;
 
 #[pyclass]
 struct BaseChannel(Arc<Channel>);
@@ -51,7 +55,6 @@ impl Drop for PyMcapWriter {
     }
 }
 
-#[pymethods]
 impl PyMcapWriter {
     fn close(&mut self) -> PyResult<()> {
         if let Some(writer) = self.0.take() {
@@ -117,13 +120,36 @@ impl BaseChannel {
         log_time: Option<u64>,
         sequence: Option<u32>,
     ) -> PyResult<()> {
-        let metadata = PartialMetadata {
+        let metadata = foxglove::PartialMetadata {
             sequence,
             log_time,
             publish_time,
         };
         self.0.log_with_meta(msg, metadata);
         Ok(())
+    }
+}
+
+#[pyclass]
+#[derive(Clone, Default)]
+struct PartialMetadata(foxglove::PartialMetadata);
+
+#[pymethods]
+impl PartialMetadata {
+    #[new]
+    #[pyo3(signature = (sequence=None, log_time=None, publish_time=None))]
+    fn new(sequence: Option<u32>, log_time: Option<u64>, publish_time: Option<u64>) -> Self {
+        Self(foxglove::PartialMetadata {
+            sequence,
+            log_time,
+            publish_time,
+        })
+    }
+}
+
+impl From<PartialMetadata> for foxglove::PartialMetadata {
+    fn from(value: PartialMetadata) -> Self {
+        value.0
     }
 }
 
@@ -210,5 +236,12 @@ fn _foxglove_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<BaseChannel>()?;
     m.add_class::<PyWebSocketServer>()?;
     m.add_class::<PyMcapWriter>()?;
+    m.add_class::<PartialMetadata>()?;
+
+    // Register the schema & channel modules
+    // A declarative submodule is created in generated/schemas_module.rs, but this is currently
+    // easier to work with and function modules haven't yet been deprecated.
+    schemas::register_submodule(m)?;
+    channels::register_submodule(m)?;
     Ok(())
 }

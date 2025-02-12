@@ -1,23 +1,24 @@
 from typing import List, Optional, Tuple
 
 class MCAPWriter:
-    def __init__(self) -> None: ...
+    def __new__(cls) -> "MCAPWriter": ...
+    def close(self) -> None: ...
 
 class WebSocketServer:
-    def __init__(self) -> None: ...
+    def __new__(cls) -> "WebSocketServer": ...
     def stop(self) -> None: ...
     def clear_session(self, session_id: Optional[str] = None) -> None: ...
 
 class BaseChannel:
-    def __init__(
-        self,
+    def __new__(
+        cls,
         topic: str,
         message_encoding: str,
         schema_name: Optional[str] = None,
         schema_encoding: Optional[str] = None,
         schema_data: Optional[bytes] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
-    ) -> None: ...
+    ) -> "BaseChannel": ...
     def log(
         self,
         msg: bytes,
@@ -25,6 +26,14 @@ class BaseChannel:
         log_time: Optional[int] = None,
         sequence: Optional[int] = None,
     ) -> None: ...
+
+class PartialMetadata:
+    def __new__(
+        cls,
+        sequence: Optional[int] = None,
+        log_time: Optional[int] = None,
+        publish_time: Optional[int] = None,
+    ) -> "PartialMetadata": ...
 
 def start_server(
     name: Optional[str] = None,

@@ -10,10 +10,8 @@
 use clap::Parser;
 use foxglove::schemas::log::Level;
 use foxglove::schemas::Log;
-use foxglove::{
-    Capability, Client, ClientChannelView, PartialMetadata, ServerListener, TypedChannel,
-    WebSocketServer,
-};
+use foxglove::websocket::{Capability, Client, ClientChannelView, ServerListener};
+use foxglove::{PartialMetadata, TypedChannel, WebSocketServer};
 use std::sync::Arc;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use tokio_util::sync::CancellationToken;

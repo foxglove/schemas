@@ -1,8 +1,8 @@
 use crate::channel::ChannelId;
 use crate::cow_vec::CowVec;
-use crate::websocket::protocol::client::Subscription;
-pub use crate::websocket::protocol::client::{
-    ClientChannel, ClientChannelId, ClientMessage, SubscriptionId,
+pub use crate::websocket::protocol::client::ClientChannelId;
+use crate::websocket::protocol::client::{
+    ClientChannel, ClientMessage, Subscription, SubscriptionId,
 };
 pub use crate::websocket::protocol::server::{Capability, Status, StatusLevel};
 #[cfg(feature = "unstable")]
@@ -198,40 +198,30 @@ impl ConnectedClient {
     ///
     /// Standard protocol messages (such as Close) should be handled upstream.
     fn handle_message(&self, message: Message) {
-        if message.is_binary() {
-            self.handle_binary_message(message);
-        } else {
-            self.handle_text_message(message);
-        }
-    }
-
-    fn handle_text_message(&self, message: Message) {
-        let Ok(message) = message.to_text() else {
-            tracing::error!("Received invalid message from {}", self.addr);
-            self.send_error(format!("Invalid message: {message}"));
-            return;
+        let msg = match ClientMessage::parse_message(message) {
+            Ok(Some(msg)) => msg,
+            Ok(None) => {
+                tracing::debug!("Received empty binary message from {}", self.addr);
+                return;
+            }
+            Err(err) => {
+                tracing::error!("Invalid message from {}: {err}", self.addr);
+                self.send_error(format!("Invalid message: {err}"));
+                return;
+            }
         };
         let Some(server) = self.server.upgrade() else {
-            tracing::error!("Server closed");
             return;
         };
-
-        match serde_json::from_str::<ClientMessage>(message) {
-            Ok(ClientMessage::Subscribe { subscriptions }) => {
-                self.on_subscribe(server, subscriptions);
-            }
-            Ok(ClientMessage::Unsubscribe { subscription_ids }) => {
-                self.on_unsubscribe(server, subscription_ids);
-            }
-            Ok(ClientMessage::Advertise { channels }) => {
-                self.on_advertise(server, channels);
-            }
-            Ok(ClientMessage::Unadvertise { channel_ids }) => {
-                self.on_unadvertise(channel_ids);
-            }
+        match msg {
+            ClientMessage::Subscribe(msg) => self.on_subscribe(server, msg.subscriptions),
+            ClientMessage::Unsubscribe(msg) => self.on_unsubscribe(server, msg.subscription_ids),
+            ClientMessage::Advertise(msg) => self.on_advertise(server, msg.channels),
+            ClientMessage::Unadvertise(msg) => self.on_unadvertise(msg.channel_ids),
+            ClientMessage::MessageData(msg) => self.on_message_data(msg),
             _ => {
-                tracing::error!("Unsupported message from {}: {message}", self.addr);
-                self.send_error(format!("Unsupported message: {message}"));
+                tracing::error!("Unsupported message from {}: {}", self.addr, msg.op());
+                self.send_error(format!("Unsupported message: {}", msg.op()));
             }
         }
     }
@@ -260,56 +250,29 @@ impl ConnectedClient {
         true
     }
 
-    fn handle_binary_message(&self, message: Message) {
-        if message.is_empty() {
-            tracing::debug!("Received empty binary message from {}", self.addr);
-            return;
-        }
-
-        let msg_bytes = message.into_data();
-        let opcode = protocol::client::BinaryOpcode::from_repr(msg_bytes[0]);
-        match opcode {
-            Some(protocol::client::BinaryOpcode::MessageData) => {
-                match protocol::client::parse_binary_message(&msg_bytes) {
-                    Ok((channel_id, payload)) => {
-                        let client_channel = {
-                            let advertised_channels = self.advertised_channels.lock();
-                            let Some(channel) = advertised_channels.get(&channel_id) else {
-                                tracing::error!(
-                                    "Received message for unknown channel: {}",
-                                    channel_id
-                                );
-                                self.send_error(format!("Unknown channel ID: {}", channel_id));
-                                // Do not forward to server listener
-                                return;
-                            };
-                            channel.clone()
-                        };
-                        // Call the handler after releasing the advertised_channels lock
-                        if let Some(handler) = self.server_listener.as_ref() {
-                            handler.on_message_data(
-                                Client(self),
-                                ClientChannelView {
-                                    id: client_channel.id,
-                                    topic: &client_channel.topic,
-                                },
-                                payload,
-                            );
-                        }
-                    }
-                    Err(err) => {
-                        tracing::error!("Failed to parse binary message: {err}");
-                        self.send_error(format!("Failed to parse binary message: {err}"));
-                    }
-                }
-            }
-            Some(_) => {
-                tracing::error!("Opcode not yet implemented: {}", msg_bytes[0]);
-            }
-            None => {
-                tracing::error!("Invalid binary opcode: {}", msg_bytes[0]);
-                self.send_error(format!("Invalid binary opcode: {}", msg_bytes[0]));
-            }
+    fn on_message_data(&self, message: protocol::client::ClientMessageData) {
+        let channel_id = message.channel_id;
+        let payload = message.payload;
+        let client_channel = {
+            let advertised_channels = self.advertised_channels.lock();
+            let Some(channel) = advertised_channels.get(&channel_id) else {
+                tracing::error!("Received message for unknown channel: {}", channel_id);
+                self.send_error(format!("Unknown channel ID: {}", channel_id));
+                // Do not forward to server listener
+                return;
+            };
+            channel.clone()
+        };
+        // Call the handler after releasing the advertised_channels lock
+        if let Some(handler) = self.server_listener.as_ref() {
+            handler.on_message_data(
+                Client(self),
+                ClientChannelView {
+                    id: client_channel.id,
+                    topic: &client_channel.topic,
+                },
+                &payload,
+            );
         }
     }
 

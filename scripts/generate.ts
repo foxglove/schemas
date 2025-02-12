@@ -56,6 +56,8 @@ async function exec(command: string, args: string[], { cwd }: Pick<SpawnOptions,
 
     child.on("close", (code: number) => {
       if (code !== 0) {
+        const fullCommand = `${command} ${args.join(" ")}`;
+        console.error(`Command failed: \`${fullCommand}\``);
         reject(new Error(`${command} failed with exit code ${code}`));
       } else {
         resolve();

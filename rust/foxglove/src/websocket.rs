@@ -1,3 +1,5 @@
+//! Websocket functionality
+
 use crate::channel::ChannelId;
 use crate::cow_vec::CowVec;
 pub use crate::websocket::protocol::client::ClientChannelId;

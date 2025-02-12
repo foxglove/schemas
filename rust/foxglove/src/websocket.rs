@@ -4,7 +4,7 @@ use crate::websocket::protocol::client::Subscription;
 pub use crate::websocket::protocol::client::{
     ClientChannel, ClientChannelId, ClientMessage, SubscriptionId,
 };
-pub use crate::websocket::protocol::server::Capability;
+pub use crate::websocket::protocol::server::{Capability, Status, StatusLevel};
 #[cfg(feature = "unstable")]
 pub use crate::websocket::protocol::server::{Parameter, ParameterType, ParameterValue};
 use crate::{get_runtime_handle, Channel, FoxgloveError, LogSink, Metadata};
@@ -90,6 +90,7 @@ impl ChannelView<'_> {
 }
 
 pub(crate) const SUBPROTOCOL: &str = "foxglove.sdk.v1";
+const MAX_SEND_RETRIES: usize = 10;
 
 type WebsocketSender = SplitSink<WebSocketStream<TcpStream>, Message>;
 
@@ -233,6 +234,30 @@ impl ConnectedClient {
                 self.send_error(format!("Unsupported message: {message}"));
             }
         }
+    }
+
+    /// Send the message on the data plane, dropping up to retries older messages to make room, if necessary.
+    fn send_data_lossy(&self, message: Message, retries: usize) -> SendLossyResult {
+        send_lossy(
+            &self.addr,
+            &self.data_plane_tx,
+            &self.data_plane_rx,
+            message,
+            retries,
+        )
+    }
+
+    /// Send the message on the control plane, disconnecting the client if the channel is full.
+    fn send_control_msg(&self, message: Message) -> bool {
+        if let Err(TrySendError::Full(_)) = self.control_plane_tx.try_send(message) {
+            // TODO disconnect the slow client FG-10441
+            tracing::error!(
+                "Client control plane is full for {}, dropping message",
+                self.addr
+            );
+            return false;
+        }
+        true
     }
 
     fn handle_binary_message(&self, message: Message) {
@@ -470,26 +495,26 @@ impl ConnectedClient {
 
     /// Send an ad hoc error status message to the client, with the given message.
     fn send_error(&self, message: String) {
-        self.send_status(protocol::server::StatusLevel::Error, message, None);
+        self.send_status(Status::new(StatusLevel::Error, message));
     }
 
     /// Send an ad hoc warning status message to the client, with the given message.
+    #[allow(dead_code)]
     fn send_warning(&self, message: String) {
-        self.send_status(protocol::server::StatusLevel::Warning, message, None);
+        self.send_status(Status::new(StatusLevel::Warning, message));
     }
 
-    fn send_status(
-        &self,
-        level: protocol::server::StatusLevel,
-        message: String,
-        id: Option<String>,
-    ) {
-        let status = protocol::server::Status { level, message, id };
+    /// Send a status message to the client.
+    fn send_status(&self, status: Status) {
         let message = Message::text(serde_json::to_string(&status).unwrap());
-        // If the message can't be sent, or the outbox is full, log a warning and continue.
-        self.data_plane_tx.try_send(message).unwrap_or_else(|err| {
-            tracing::warn!("Failed to send status to client {}: {err}", self.addr)
-        });
+        match status.level {
+            StatusLevel::Info => {
+                self.send_data_lossy(message, MAX_SEND_RETRIES);
+            }
+            _ => {
+                self.send_control_msg(message);
+            }
+        }
     }
 }
 
@@ -604,13 +629,7 @@ impl Server {
 
         let clients = self.clients.get();
         for client in clients.iter() {
-            if let Err(err) = client
-                .control_plane_tx
-                .send_async(Message::text(message.clone()))
-                .await
-            {
-                tracing::error!("Error advertising channel to client {}: {err}", client.addr);
-            } else {
+            if client.send_control_msg(Message::text(message.clone())) {
                 tracing::info!(
                     "Advertised channel {} with id {} to client {}",
                     channel.topic,
@@ -627,16 +646,7 @@ impl Server {
         let message = protocol::server::unadvertise(channel_id);
         let clients = self.clients.get();
         for client in clients.iter() {
-            if let Err(err) = client
-                .control_plane_tx
-                .send_async(Message::text(message.clone()))
-                .await
-            {
-                tracing::error!(
-                    "Error unadvertising channel to client {}: {err}",
-                    client.addr
-                );
-            } else {
+            if client.send_control_msg(Message::text(message.clone())) {
                 tracing::info!(
                     "Unadvertised channel with id {} to client {}",
                     channel_id,
@@ -662,9 +672,7 @@ impl Server {
 
         let clients = self.clients.get();
         for client in clients.iter() {
-            if let Err(err) = client.control_plane_tx.send_async(message.clone()).await {
-                tracing::error!("Failed to send time to client {}: {err}", client.addr);
-            }
+            client.send_control_msg(message.clone());
         }
     }
 
@@ -693,16 +701,25 @@ impl Server {
             if client_addr.is_some_and(|addr| addr != client.addr) {
                 continue;
             }
-            if let Err(err) = client
-                .control_plane_tx
-                .send_async(Message::text(message.clone()))
-                .await
-            {
-                tracing::error!(
-                    "Failed to send parameter values to client {}: {err}",
-                    client.addr
-                );
-            }
+            client.send_control_msg(Message::text(message.clone()));
+        }
+    }
+
+    /// Send a message to all clients.
+    pub fn publish_status(&self, status: Status) {
+        let clients = self.clients.get();
+        for client in clients.iter() {
+            client.send_status(status.clone());
+        }
+    }
+
+    /// Remove status messages by id from all clients.
+    pub fn remove_status(&self, status_ids: Vec<String>) {
+        let remove = protocol::server::RemoveStatus { status_ids };
+        let message = Message::text(serde_json::to_string(&remove).unwrap());
+        let clients = self.clients.get();
+        for client in clients.iter() {
+            client.send_control_msg(message.clone());
         }
     }
 
@@ -869,6 +886,7 @@ impl Server {
 #[derive(Debug, Clone, Copy)]
 enum SendLossyResult {
     Sent,
+    #[allow(dead_code)]
     SentLossy(usize),
     ExhaustedRetries,
 }
@@ -881,19 +899,34 @@ enum SendLossyResult {
 /// in this manner, this function returns `SendLossyResult::SentLossy(dropped)`. If the maximum
 /// number of retries is reached, it returns `SendLossyResult::ExhaustedRetries`.
 fn send_lossy(
+    client_addr: &SocketAddr,
     tx: &flume::Sender<Message>,
     rx: &flume::Receiver<Message>,
     mut message: Message,
     retries: usize,
 ) -> SendLossyResult {
+    // If the queue is full, drop the oldest message(s). We do this because the websocket
+    // client is falling behind, and we either start dropping messages, or we'll end up
+    // buffering until we run out of memory. There's no point in that because the client is
+    // unlikely to catch up and be able to consume the messages.
     let mut dropped = 0;
     loop {
         match (dropped, tx.try_send(message)) {
             (0, Ok(_)) => return SendLossyResult::Sent,
-            (dropped, Ok(_)) => return SendLossyResult::SentLossy(dropped),
+            (dropped, Ok(_)) => {
+                tracing::warn!(
+                    "outbox for client {} full, dropped {dropped} messages",
+                    client_addr
+                );
+                return SendLossyResult::SentLossy(dropped);
+            }
             (_, Err(TrySendError::Disconnected(_))) => unreachable!("we're holding rx"),
             (_, Err(TrySendError::Full(rejected))) => {
                 if dropped >= retries {
+                    tracing::warn!(
+                        "outbox for client {} full, dropping message after 10 attempts",
+                        client_addr
+                    );
                     return SendLossyResult::ExhaustedRetries;
                 }
                 message = rejected;
@@ -928,23 +961,7 @@ impl LogSink for Server {
 
             let message = Message::binary(buf);
 
-            // If the queue is full, drop the oldest message(s). We do this because the websocket
-            // client is falling behind, and we either start dropping messages, or we'll end up
-            // buffering until we run out of memory. There's no point in that because the client is
-            // unlikely to catch up and be able to consume the messages.
-            match send_lossy(&client.data_plane_tx, &client.data_plane_rx, message, 10) {
-                SendLossyResult::Sent => (),
-                SendLossyResult::SentLossy(dropped) => tracing::warn!(
-                    "outbox for client {} full, dropped {dropped} messages",
-                    client.addr
-                ),
-                SendLossyResult::ExhaustedRetries => {
-                    tracing::warn!(
-                        "outbox for client {} full, dropping message after 10 attempts",
-                        client.addr
-                    )
-                }
-            };
+            client.send_data_lossy(message, MAX_SEND_RETRIES);
         }
         Ok(())
     }

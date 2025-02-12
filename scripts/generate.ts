@@ -1,5 +1,5 @@
 import { program } from "commander";
-import { CommonSpawnOptions, spawnSync } from "node:child_process";
+import { SpawnOptions, spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { finished } from "node:stream/promises";
@@ -39,6 +39,31 @@ async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write("done\n");
 }
 
+async function logProgressLn(message: string, body: () => Promise<void>) {
+  process.stderr.write(`${message}...\n`);
+  await body();
+  process.stderr.write("done\n");
+}
+
+async function exec(command: string, args: string[], { cwd }: SpawnOptions) {
+  process.stderr.write(`  ==> ${command} ${args.join(" ")}\n`);
+
+  await new Promise<void>((resolve, reject) => {
+    const child = spawn(command, args, {
+      stdio: "inherit",
+      cwd,
+    });
+
+    child.on("close", (code: number) => {
+      if (code !== 0) {
+        reject(new Error(`${command} failed with exit code ${code}`));
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
 async function main({ clean }: { clean: boolean }) {
   const repoRoot = path.resolve(__dirname, "..");
   const outDir = path.join(repoRoot, "schemas");
@@ -60,6 +85,7 @@ async function main({ clean }: { clean: boolean }) {
     await rimraf(path.join(rosOutDir, "ros1"));
     await rimraf(path.join(rosOutDir, "ros2"));
     await rimraf(typescriptTypesDir);
+    await rimraf(path.join(repoRoot, "rust/foxglove/src/schemas"));
     await rimraf(pythonSdkGeneratedRoot);
     await rimraf(pythonSdkStub);
   });
@@ -179,8 +205,11 @@ async function main({ clean }: { clean: boolean }) {
   // These are exported to the SDK directory, and not stored with general-purpose schemas.
   // Requires rust and python dependencies to be installed.
   await logProgress("Generating Pyclass definitions", async () => {
-    // Ignore stdout from spawned commands, but keep stderr
-    const spawnOpts: CommonSpawnOptions = { stdio: ["ignore", "pipe", "pipe"] };
+    const spawnOpts: SpawnOptions = {
+      cwd: repoRoot,
+      // Ignore stdout from spawned commands, but keep stderr
+      stdio: ["ignore", "pipe", "pipe"],
+    };
 
     // Source files (.rs) are re-generated.
     // Stub file is placed into the existing hierarchy.
@@ -208,36 +237,23 @@ async function main({ clean }: { clean: boolean }) {
 
     await finished(writer);
 
-    try {
-      const result = spawnSync("cargo", ["fmt", "--", path.resolve(schemasFile)], spawnOpts);
-      if (result.status !== 0) {
-        throw new Error(`\`cargo fmt\` exited with status ${result.status ?? "unknown"}`);
-      }
-    } catch (err) {
-      console.error("Failed to format rust output using `cargo fmt`");
-      throw err;
-    }
+    await exec("cargo", ["fmt", "--", path.resolve(schemasFile)], spawnOpts);
 
     // Pyi stub file
     await fs.writeFile(pythonSdkStub, generatePymoduleStub([...enumSchemas, ...messageSchemas]));
-    try {
-      const result = spawnSync("poetry", ["run", "black", path.resolve(pythonSdkStub)], spawnOpts);
-      if (result.status !== 0) {
-        throw new Error(`\`poetry run black\` exited with status ${result.status ?? "unknown"}`);
-      }
-    } catch (err) {
-      console.error("Failed to format python output using `poetry run black`");
-      throw err;
-    }
+    await exec("poetry", ["run", "black", path.resolve(pythonSdkStub)], spawnOpts);
   });
 
-  await logProgress("Running yarn test --updateSnapshot", async () => {
-    const result = spawnSync("yarn", ["test", "--updateSnapshot"], {
-      stdio: "inherit",
+  await logProgressLn("Generating Rust code", async () => {
+    await exec("cargo", ["run", "--bin", "foxglove-proto-gen"], {
+      cwd: path.join(repoRoot, "rust"),
     });
-    if (result.status !== 0) {
-      throw new Error(`yarn test failed with code ${result.status ?? "unknown"}`);
-    }
+  });
+
+  await logProgressLn("Updating Jest snapshots", async () => {
+    await exec("yarn", ["test", "--updateSnapshot"], {
+      cwd: repoRoot,
+    });
   });
 }
 

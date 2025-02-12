@@ -3,7 +3,8 @@ import numpy as np
 import time
 
 from examples.geometry import euler_to_quaternion
-from foxglove.schemas import (
+from foxglove._foxglove_py.channels import SceneUpdateChannel, FrameTransformChannel
+from foxglove._foxglove_py.schemas import (
     Color,
     CubePrimitive,
     Duration,
@@ -13,7 +14,6 @@ from foxglove.schemas import (
     SceneUpdate,
     Vector3,
 )
-
 
 plot_schema = {
     "type": "object",
@@ -32,12 +32,8 @@ def main() -> None:
     sin_chan = foxglove.Channel(
         topic="/sine", encoder=foxglove.JsonEncoder(), schema=plot_schema
     )
-    box_chan = foxglove.Channel(
-        topic="/boxes", encoder=foxglove.ProtobufEncoder(), schema=SceneUpdate
-    )
-    tf_chan = foxglove.Channel(
-        topic="/tf", encoder=foxglove.ProtobufEncoder(), schema=FrameTransform
-    )
+    box_chan = SceneUpdateChannel("/boxes")
+    tf_chan = FrameTransformChannel("/tf")
 
     try:
         counter = 0

@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { finished } from "node:stream/promises";
 import { rimraf } from "rimraf";
+
 import { generateRosMsg, generateRosMsgDefinition } from "../typescript/schemas/src/internal";
 import { exportTypeScriptSchemas } from "../typescript/schemas/src/internal/exportTypeScriptSchemas";
 import {
@@ -210,7 +211,7 @@ async function main({ clean }: { clean: boolean }) {
     try {
       const result = spawnSync("cargo", ["fmt", "--", path.resolve(schemasFile)], spawnOpts);
       if (result.status !== 0) {
-        throw new Error(`\'cargo fmt\' exited with status ${result.status}`);
+        throw new Error(`\`cargo fmt\` exited with status ${result.status ?? "unknown"}`);
       }
     } catch (err) {
       console.error("Failed to format rust output using `cargo fmt`");
@@ -222,7 +223,7 @@ async function main({ clean }: { clean: boolean }) {
     try {
       const result = spawnSync("poetry", ["run", "black", path.resolve(pythonSdkStub)], spawnOpts);
       if (result.status !== 0) {
-        throw new Error(`\'poetry run black\' exited with status ${result.status}`);
+        throw new Error(`\`poetry run black\` exited with status ${result.status ?? "unknown"}`);
       }
     } catch (err) {
       console.error("Failed to format python output using `poetry run black`");

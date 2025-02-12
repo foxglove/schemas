@@ -34,11 +34,6 @@ jobs:
       - name: Install common dependencies
         uses: ./.github/actions/common-deps
 
-      - uses: arduino/setup-protoc@v3
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          version: "29.x"
-
       - run: pipx install poetry
       - run: poetry check --strict
       - run: poetry install

@@ -29,6 +29,8 @@ import {
   generateTimeTypes,
   generateChannelClasses,
   generatePyChannelStub,
+  generatePySchemaModule,
+  generatePyChannelModule,
 } from "../typescript/schemas/src/internal/generatePyclass";
 import {
   foxgloveEnumSchemas,
@@ -76,7 +78,7 @@ async function main({ clean }: { clean: boolean }) {
 
   const pythonSdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
   const pythonSdkGeneratedRoot = path.join(pythonSdkRoot, "src", "generated");
-  const pythonSdkStubRoot = path.join(pythonSdkRoot, "python/foxglove/_foxglove_py");
+  const pythonSdkPyRoot = path.join(pythonSdkRoot, "python/foxglove");
 
   await logProgress("Removing existing output directories", async () => {
     await rimraf(outDir);
@@ -85,8 +87,10 @@ async function main({ clean }: { clean: boolean }) {
     await rimraf(typescriptTypesDir);
     await rimraf(path.join(repoRoot, "rust/foxglove/src/schemas"));
     await rimraf(pythonSdkGeneratedRoot);
-    await rimraf(path.join(pythonSdkStubRoot, "schemas.pyi"));
-    await rimraf(path.join(pythonSdkStubRoot, "channels.pyi"));
+    await rimraf(path.join(pythonSdkPyRoot, "_foxglove_py/schemas.pyi"));
+    await rimraf(path.join(pythonSdkPyRoot, "schemas/__init__.py"));
+    await rimraf(path.join(pythonSdkPyRoot, "_foxglove_py/channels.pyi"));
+    await rimraf(path.join(pythonSdkPyRoot, "channels/__init__.py"));
   });
 
   if (clean) {
@@ -215,6 +219,8 @@ async function main({ clean }: { clean: boolean }) {
     // Stub file is placed into the existing hierarchy.
     const schemasFile = path.join(pythonSdkGeneratedRoot, "schemas.rs");
     await fs.mkdir(pythonSdkGeneratedRoot, { recursive: true });
+    await fs.mkdir(path.join(pythonSdkPyRoot, "schemas"), { recursive: true });
+    await fs.mkdir(path.join(pythonSdkPyRoot, "channels"), { recursive: true });
 
     // Schemas file
     const writer = (await fs.open(schemasFile, "wx")).createWriteStream();
@@ -232,26 +238,38 @@ async function main({ clean }: { clean: boolean }) {
       writer.write(generatePyclass(schema));
     }
 
-    writer.write(generateSchemaModuleRegistration([...enumSchemas, ...messageSchemas]));
+    const allSchemas = [...enumSchemas, ...messageSchemas];
+
+    writer.write(generateSchemaModuleRegistration(allSchemas));
     writer.end();
-
     await finished(writer);
-
-    const schemasStubFile = path.join(pythonSdkStubRoot, "schemas.pyi");
-    await fs.writeFile(schemasStubFile, generatePySchemaStub([...enumSchemas, ...messageSchemas]));
 
     const channelClassesFile = path.join(pythonSdkGeneratedRoot, "channels.rs");
     await fs.writeFile(channelClassesFile, generateChannelClasses(messageSchemas));
 
-    const channelStubFile = path.join(pythonSdkStubRoot, "channels.pyi");
+    // Stubs are written to the location of the pyo3-generated module
+    // Python module indexes are added for the public API.
+    const schemasStubFile = path.join(pythonSdkPyRoot, "_foxglove_py/schemas.pyi");
+    const schemasStubModule = path.join(pythonSdkPyRoot, "schemas/__init__.py");
+    const channelStubFile = path.join(pythonSdkPyRoot, "_foxglove_py/channels.pyi");
+    const channelStubModule = path.join(pythonSdkPyRoot, "channels/__init__.py");
+
+    await fs.writeFile(schemasStubFile, generatePySchemaStub(allSchemas));
+    await fs.writeFile(schemasStubModule, generatePySchemaModule(allSchemas));
     await fs.writeFile(channelStubFile, generatePyChannelStub(messageSchemas));
+    await fs.writeFile(channelStubModule, generatePyChannelModule(messageSchemas));
 
     await exec("cargo", ["fmt", "--", path.resolve(channelClassesFile, schemasFile)], {
       cwd: repoRoot,
     });
 
-    const pyiFiles = [path.resolve(schemasStubFile), path.resolve(channelStubFile)];
-    await exec("poetry", ["run", "black", ...pyiFiles], { cwd: repoRoot });
+    const pythonFiles = [
+      path.resolve(schemasStubFile),
+      path.resolve(channelStubFile),
+      path.resolve(schemasStubModule),
+      path.resolve(channelStubModule),
+    ];
+    await exec("poetry", ["run", "black", ...pythonFiles], { cwd: repoRoot });
   });
 
   await logProgressLn("Updating Jest snapshots", async () => {

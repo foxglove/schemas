@@ -1,6 +1,5 @@
 import atexit
 from typing import Union
-from google.protobuf.message import Message
 from ._foxglove_py import (
     record_file,
     enable_log_forwarding,
@@ -9,8 +8,9 @@ from ._foxglove_py import (
     shutdown,
 )
 
-from .encoding import Encoder, ProtobufEncoder, JsonEncoder
-from .channel import Channel
+
+from .encoding import Encoder, JsonEncoder
+from .channel import Channel, log
 
 import logging
 
@@ -48,15 +48,11 @@ def verbose_off() -> None:
     disable_log_forwarding()
 
 
-def log(topic: str, proto_msg: Message) -> None: ...
-
-
 __all__ = [
     "Channel",
     "start_server",
     "record_file",
     "Encoder",
-    "ProtobufEncoder",
     "JsonEncoder",
     "verbose_on",
     "verbose_off",

@@ -1,6 +1,5 @@
 import atexit
 from typing import Union
-from google.protobuf.message import Message
 from ._foxglove_py import (
     record_file,
     enable_log_forwarding,
@@ -10,7 +9,7 @@ from ._foxglove_py import (
 )
 
 from .encoding import Encoder, ProtobufEncoder, JsonEncoder
-from .channel import Channel
+from .channel import Channel, log
 
 import logging
 
@@ -46,9 +45,6 @@ def verbose_on(level: Union[int, str] = "debug") -> None:
 def verbose_off() -> None:
     logging.debug("SDK logging disabled")
     disable_log_forwarding()
-
-
-def log(topic: str, proto_msg: Message) -> None: ...
 
 
 __all__ = [

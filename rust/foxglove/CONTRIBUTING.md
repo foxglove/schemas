@@ -13,12 +13,6 @@
 cargo run --bin foxglove-proto-gen
 ```
 
-### Generate schemas for the Python SDK
-
-```bash
-yarn generate
-```
-
 ### Run the example server
 
 1. `cargo run -p example-ws-server`

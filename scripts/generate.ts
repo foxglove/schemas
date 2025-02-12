@@ -74,13 +74,7 @@ async function main({ clean }: { clean: boolean }) {
 
   const pythonSdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
   const pythonSdkGeneratedRoot = path.join(pythonSdkRoot, "src", "generated");
-  const pythonSdkStub = path.join(
-    pythonSdkRoot,
-    "python",
-    "foxglove",
-    "_foxglove_py",
-    "schemas.pyi",
-  );
+  const pythonSdkStub = path.join(pythonSdkRoot, "python/foxglove/_foxglove_py/schemas.pyi");
 
   await logProgress("Removing existing output directories", async () => {
     await rimraf(outDir);

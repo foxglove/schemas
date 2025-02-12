@@ -3,8 +3,8 @@ import numpy as np
 import time
 
 from examples.geometry import euler_to_quaternion
-from foxglove._foxglove_py.channels import SceneUpdateChannel, FrameTransformChannel
-from foxglove._foxglove_py.schemas import (
+from foxglove.channels import SceneUpdateChannel, FrameTransformChannel
+from foxglove.schemas import (
     Color,
     CubePrimitive,
     Duration,

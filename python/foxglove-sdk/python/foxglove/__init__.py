@@ -8,6 +8,7 @@ from ._foxglove_py import (
     shutdown,
 )
 
+
 from .encoding import Encoder, ProtobufEncoder, JsonEncoder
 from .channel import Channel, log
 
@@ -54,6 +55,7 @@ __all__ = [
     "Encoder",
     "ProtobufEncoder",
     "JsonEncoder",
+    "channels",
     "verbose_on",
     "verbose_off",
     "log",

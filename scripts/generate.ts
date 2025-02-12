@@ -22,11 +22,13 @@ import {
 } from "../typescript/schemas/src/internal/generateOmgIdl";
 import { generateProto } from "../typescript/schemas/src/internal/generateProto";
 import {
-  generateModuleRegistration,
-  generatePrelude,
+  generateSchemaModuleRegistration,
+  generateSchemaPrelude,
   generatePyclass,
-  generatePymoduleStub,
+  generatePySchemaStub,
   generateTimeTypes,
+  generateChannelClasses,
+  generatePyChannelStub,
 } from "../typescript/schemas/src/internal/generatePyclass";
 import {
   foxgloveEnumSchemas,
@@ -74,7 +76,7 @@ async function main({ clean }: { clean: boolean }) {
 
   const pythonSdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
   const pythonSdkGeneratedRoot = path.join(pythonSdkRoot, "src", "generated");
-  const pythonSdkStub = path.join(pythonSdkRoot, "python/foxglove/_foxglove_py/schemas.pyi");
+  const pythonSdkStubRoot = path.join(pythonSdkRoot, "python/foxglove/_foxglove_py");
 
   await logProgress("Removing existing output directories", async () => {
     await rimraf(outDir);
@@ -83,7 +85,8 @@ async function main({ clean }: { clean: boolean }) {
     await rimraf(typescriptTypesDir);
     await rimraf(path.join(repoRoot, "rust/foxglove/src/schemas"));
     await rimraf(pythonSdkGeneratedRoot);
-    await rimraf(pythonSdkStub);
+    await rimraf(path.join(pythonSdkStubRoot, "schemas.pyi"));
+    await rimraf(path.join(pythonSdkStubRoot, "channels.pyi"));
   });
 
   if (clean) {
@@ -215,7 +218,7 @@ async function main({ clean }: { clean: boolean }) {
 
     // Schemas file
     const writer = (await fs.open(schemasFile, "wx")).createWriteStream();
-    writer.write(generatePrelude());
+    writer.write(generateSchemaPrelude());
 
     const enumSchemas = Object.values(foxgloveEnumSchemas);
     for (const enumSchema of enumSchemas) {
@@ -229,16 +232,26 @@ async function main({ clean }: { clean: boolean }) {
       writer.write(generatePyclass(schema));
     }
 
-    writer.write(generateModuleRegistration([...enumSchemas, ...messageSchemas]));
+    writer.write(generateSchemaModuleRegistration([...enumSchemas, ...messageSchemas]));
     writer.end();
 
     await finished(writer);
 
-    await exec("cargo", ["fmt", "--", path.resolve(schemasFile)], { cwd: repoRoot });
+    const schemasStubFile = path.join(pythonSdkStubRoot, "schemas.pyi");
+    await fs.writeFile(schemasStubFile, generatePySchemaStub([...enumSchemas, ...messageSchemas]));
 
-    // Pyi stub file
-    await fs.writeFile(pythonSdkStub, generatePymoduleStub([...enumSchemas, ...messageSchemas]));
-    await exec("poetry", ["run", "black", path.resolve(pythonSdkStub)], { cwd: repoRoot });
+    const channelClassesFile = path.join(pythonSdkGeneratedRoot, "channels.rs");
+    await fs.writeFile(channelClassesFile, generateChannelClasses(messageSchemas));
+
+    const channelStubFile = path.join(pythonSdkStubRoot, "channels.pyi");
+    await fs.writeFile(channelStubFile, generatePyChannelStub(messageSchemas));
+
+    await exec("cargo", ["fmt", "--", path.resolve(channelClassesFile, schemasFile)], {
+      cwd: repoRoot,
+    });
+
+    const pyiFiles = [path.resolve(schemasStubFile), path.resolve(channelStubFile)];
+    await exec("poetry", ["run", "black", ...pyiFiles], { cwd: repoRoot });
   });
 
   await logProgressLn("Updating Jest snapshots", async () => {

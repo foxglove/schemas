@@ -4,14 +4,11 @@
 use crate::channel::ChannelId;
 use bytes::{Buf, Bytes};
 use serde::{Deserialize, Serialize};
-use tokio_tungstenite::tungstenite::Message;
 
 use super::server::Parameter;
 
 #[derive(Debug, thiserror::Error)]
 pub(crate) enum ParseError {
-    #[error("Unexpected message type")]
-    UnexpectedMessageType,
     #[error("Unknown binary opcode {0}")]
     InvalidOpcode(u8),
     #[error("Buffer too short")]
@@ -57,20 +54,12 @@ impl ClientMessage {
         }
     }
 
-    pub fn parse_message(message: Message) -> Result<Option<Self>, ParseError> {
-        match message {
-            Message::Text(bytes) => Self::parse_json(bytes.as_str()).map(Some),
-            Message::Binary(bytes) => Self::parse_binary(bytes),
-            _ => Err(ParseError::UnexpectedMessageType),
-        }
-    }
-
-    fn parse_json(json: &str) -> Result<Self, ParseError> {
+    pub fn parse_json(json: &str) -> Result<Self, ParseError> {
         let msg = serde_json::from_str::<JsonMessage>(json)?;
         Ok(Self::from(msg))
     }
 
-    fn parse_binary(mut data: Bytes) -> Result<Option<Self>, ParseError> {
+    pub fn parse_binary(mut data: Bytes) -> Result<Option<Self>, ParseError> {
         if data.is_empty() {
             Ok(None)
         } else {

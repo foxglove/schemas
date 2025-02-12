@@ -200,12 +200,23 @@ impl ConnectedClient {
     ///
     /// Standard protocol messages (such as Close) should be handled upstream.
     fn handle_message(&self, message: Message) {
-        let msg = match ClientMessage::parse_message(message) {
-            Ok(Some(msg)) => msg,
-            Ok(None) => {
-                tracing::debug!("Received empty binary message from {}", self.addr);
+        let parse_result = match message {
+            Message::Text(bytes) => ClientMessage::parse_json(bytes.as_str()),
+            Message::Binary(bytes) => match ClientMessage::parse_binary(bytes) {
+                Err(e) => Err(e),
+                Ok(Some(msg)) => Ok(msg),
+                Ok(None) => {
+                    tracing::debug!("Received empty binary message from {}", self.addr);
+                    return;
+                }
+            },
+            _ => {
+                tracing::debug!("Unhandled websocket message: {message:?}");
                 return;
             }
+        };
+        let msg = match parse_result {
+            Ok(msg) => msg,
             Err(err) => {
                 tracing::error!("Invalid message from {}: {err}", self.addr);
                 self.send_error(format!("Invalid message: {err}"));

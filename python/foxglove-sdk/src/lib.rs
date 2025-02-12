@@ -13,6 +13,9 @@ use std::sync::Arc;
 use std::time;
 
 mod errors;
+mod generated;
+
+use generated::schemas;
 
 #[pyclass]
 struct BaseChannel(Arc<Channel>);
@@ -200,5 +203,11 @@ fn _foxglove_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<BaseChannel>()?;
     m.add_class::<PyWebSocketServer>()?;
     m.add_class::<PyMcapWriter>()?;
+
+    // Register the schemas module
+    // A declarative submodule is created in generated/schemas_module.rs, but this is currently
+    // easier to work with and function modules haven't yet been deprecated.
+    schemas::register_submodule(m)?;
+
     Ok(())
 }

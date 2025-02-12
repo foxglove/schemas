@@ -8,6 +8,7 @@ from ._foxglove_py import (
     start_server,
     shutdown,
 )
+
 from .encoding import Encoder, ProtobufEncoder, JsonEncoder
 from .channel import Channel
 

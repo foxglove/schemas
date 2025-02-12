@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc -b",
     "bump-sdk-version": "ts-node ./scripts/bumpSdkVersion.ts",
-    "clean": "ts-node ./scripts/updateGeneratedFiles.ts --clean",
+    "clean": "ts-node ./scripts/generate.ts --clean",
     "generate": "ts-node ./scripts/generate.ts",
     "lint:ci": "eslint --report-unused-disable-directives .",
     "lint": "eslint --report-unused-disable-directives --fix .",

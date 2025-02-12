@@ -1,6 +1,6 @@
 import { program } from "commander";
 import fs from "fs/promises";
-import { spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 import path from "path";
 import { rimraf } from "rimraf";
 
@@ -31,6 +31,31 @@ async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write("done\n");
 }
 
+async function logProgressLn(message: string, body: () => Promise<void>) {
+  process.stderr.write(`${message}...\n`);
+  await body();
+  process.stderr.write("done\n");
+}
+
+async function exec(command: string, args: string[], { cwd }: { cwd?: string }) {
+  process.stderr.write(`  ==> ${command} ${args.join(" ")}\n`);
+
+  await new Promise<void>((resolve, reject) => {
+    const child = spawn(command, args, {
+      stdio: "inherit",
+      cwd,
+    });
+
+    child.on("close", (code: number) => {
+      if (code !== 0) {
+        reject(new Error(`${command} failed with exit code ${code}`));
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
 async function main({ clean }: { clean: boolean }) {
   const repoRoot = path.resolve(__dirname, "..");
   const outDir = path.join(repoRoot, "schemas");
@@ -42,6 +67,7 @@ async function main({ clean }: { clean: boolean }) {
     await rimraf(path.join(rosOutDir, "ros1"));
     await rimraf(path.join(rosOutDir, "ros2"));
     await rimraf(typescriptTypesDir);
+    await rimraf(path.join(repoRoot, "rust/foxglove/src/schemas"));
   });
 
   if (clean) {
@@ -155,13 +181,16 @@ async function main({ clean }: { clean: boolean }) {
     );
   });
 
-  await logProgress("Running yarn test --updateSnapshot", async () => {
-    const result = spawnSync("yarn", ["test", "--updateSnapshot"], {
-      stdio: "inherit",
+  await logProgressLn("Generating Rust code", async () => {
+    await exec("cargo", ["run", "--bin", "foxglove-proto-gen"], {
+      cwd: path.join(repoRoot, "rust"),
     });
-    if (result.status !== 0) {
-      throw new Error(`yarn test failed with code ${result.status ?? "unknown"}`);
-    }
+  });
+
+  await logProgressLn("Updating Jest snapshots", async () => {
+    await exec("yarn", ["test", "--updateSnapshot"], {
+      cwd: repoRoot,
+    });
   });
 }
 

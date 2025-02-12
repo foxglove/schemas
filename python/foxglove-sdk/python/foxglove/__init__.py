@@ -9,7 +9,7 @@ from ._foxglove_py import (
 )
 
 
-from .encoding import Encoder, ProtobufEncoder, JsonEncoder
+from .encoding import Encoder, JsonEncoder
 from .channel import Channel, log
 
 import logging
@@ -53,9 +53,7 @@ __all__ = [
     "start_server",
     "record_file",
     "Encoder",
-    "ProtobufEncoder",
     "JsonEncoder",
-    "channels",
     "verbose_on",
     "verbose_off",
     "log",

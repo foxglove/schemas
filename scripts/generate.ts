@@ -2,8 +2,8 @@ import { program } from "commander";
 import { CommonSpawnOptions, spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { finished } from "node:stream/promises";
 import { rimraf } from "rimraf";
-
 import { generateRosMsg, generateRosMsgDefinition } from "../typescript/schemas/src/internal";
 import { exportTypeScriptSchemas } from "../typescript/schemas/src/internal/exportTypeScriptSchemas";
 import {
@@ -204,6 +204,8 @@ async function main({ clean }: { clean: boolean }) {
 
     writer.write(generateModuleRegistration([...enumSchemas, ...messageSchemas]));
     writer.end();
+
+    await finished(writer);
 
     try {
       const result = spawnSync("cargo", ["fmt", "--", path.resolve(schemasFile)], spawnOpts);

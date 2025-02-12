@@ -1,6 +1,6 @@
 from math import cos, sin
 
-from foxglove._foxglove_py.schemas import Quaternion
+from foxglove.schemas import Quaternion
 
 
 def euler_to_quaternion(roll: float, pitch: float, yaw: float) -> Quaternion:

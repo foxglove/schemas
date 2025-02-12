@@ -83,12 +83,12 @@ Repo: [foxglove/ws-protocol](https://github.com/foxglove/ws-protocol/tree/main/c
 </td>
 <td>
 
-ROS WebSocket bridge using the Foxglove WebSocket protocol.<br/>
+ROS implementation of the WebSocket protocol<br/>
 Repo: [foxglove/ros-foxglove-bridge](https://github.com/foxglove/ros-foxglove-bridge)
 
 </td>
 </tr>
-<tr><td><strong>TypeScript</strong></td><td></td><td></td></tr>
+<tr><td><strong>JavaScript / TypeScript</strong></td><td></td><td></td></tr>
 <tr>
 <td>@foxglove/schemas</td>
 <td>
@@ -96,7 +96,7 @@ Repo: [foxglove/ros-foxglove-bridge](https://github.com/foxglove/ros-foxglove-br
 [![npm version](https://img.shields.io/npm/v/@foxglove/schemas)](https://www.npmjs.com/package/@foxglove/schemas)
 
 </td>
-<td>Foxglove schemas for JavaScript / TypeScript</td>
+<td>Foxglove schemas for TypeScript</td>
 </tr>
 <tr>
 <td>@foxglove/ws-protocol</td>
@@ -107,7 +107,7 @@ Repo: [foxglove/ros-foxglove-bridge](https://github.com/foxglove/ros-foxglove-br
 </td>
 <td>
 
-JavaScript / TypeScript implementation of the WebSocket protocol<br/>
+TypeScript implementation of the WebSocket protocol<br/>
 Repo: [foxglove/ws-protocol](https://github.com/foxglove/ws-protocol/tree/main/typescript/ws-protocol)
 
 </td>

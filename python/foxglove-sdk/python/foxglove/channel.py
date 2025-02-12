@@ -1,43 +1,95 @@
+import json
 from ._foxglove_py import BaseChannel, channels
-from .encoding import Encoder
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
+
+JsonSchema = Dict[str, Any]
+JsonMessage = Dict[str, Any]
+
+
+class SchemaDefinition:
+    """
+    A custom schema definition for consumption by Foxglove.
+
+    To use Foxglove well-known schemas, use existing Channel and schema definitions.
+    """
+
+    __slots__ = ["name", "schema_encoding", "message_encoding", "schema_data"]
+    name: str
+    message_encoding: str
+    schema_encoding: str
+    schema_data: bytes
+
+    def __init__(
+        self,
+        name: str,
+        schema_encoding: str,
+        message_encoding: str,
+        schema_data: bytes,
+    ):
+        self.name = name
+        self.schema_encoding = schema_encoding
+        self.message_encoding = message_encoding
+        self.schema_data = schema_data
 
 
 class Channel:
-    __slots__ = ["base", "encoder"]
+    __slots__ = ["base", "schema_encoding"]
     base: BaseChannel
-    encoder: Optional[Encoder]
+    schema_encoding: str
 
-    def __init__(self, topic: str, *, schema: Any, encoder: Optional[Encoder] = None):
+    def __init__(
+        self,
+        topic: str,
+        *,
+        schema: Union[JsonSchema, SchemaDefinition],
+    ):
+        """
+        Create a new channel for logging messages on a topic.
+
+        :param topic: the topic name.
+        :param schema: a definition of your schema. Pass a `SchemaDefinition` for full control. If a
+            dictionary is passed, it will be treated as a JSON schema.
+
+        :raises KeyError: if a channel already exists for the given topic.
+        """
         if topic in _channels_by_topic:
             raise ValueError(f"Channel for topic '{topic}' already exists")
 
-        self.encoder = encoder
+        schema = _normalize_schema(schema)
 
-        if encoder is not None:
-            schema_name, schema_encoding, schema_data = encoder.get_schema_info(schema)
-            self.base = BaseChannel(
-                topic, encoder.encoding, schema_name, schema_encoding, schema_data
-            )
-        else:
-            self.base = BaseChannel(topic, "", None, None, None)
+        self.schema_encoding = schema.schema_encoding
+
+        self.base = BaseChannel(
+            topic,
+            schema_encoding=schema.schema_encoding,
+            schema_name=schema.name,
+            message_encoding=schema.message_encoding,
+            schema_data=schema.schema_data,
+        )
 
         _channels_by_topic[topic] = self
 
-    def log(self, msg: Any) -> None:
-        if self.encoder is not None:
-            payload = self.encoder.encode(msg)
-        else:
-            payload = msg
+    def log(self, msg: Union[JsonMessage, bytes]) -> None:
+        """
+        Log a message on the channel.
 
-        self.base.log(payload)
+        :param msg: the message to log. If the channel uses JSON encoding, you may pass a
+            dictionary. Otherwise, you are responsible for serializing the message.
+        """
+        if isinstance(msg, bytes):
+            self.base.log(msg)
+
+        if self.schema_encoding == "json":
+            self.base.log(json.dumps(msg).encode("utf-8"))
+
+        raise ValueError(f"Unsupported message type: {type(msg)}")
 
 
 _channels_by_topic: Dict[str, Channel] = {}
 
 
-def log(topic: str, message: object) -> None:
+def log(topic: str, message: Any) -> None:
     channel: Optional[Channel] = _channels_by_topic.get(topic, None)
     if channel is None:
         schema_name = type(message).__name__
@@ -55,3 +107,17 @@ def log(topic: str, message: object) -> None:
         pass
 
     channel.log(message)
+
+
+def _normalize_schema(schema: Union[JsonSchema, SchemaDefinition]) -> SchemaDefinition:
+    if isinstance(schema, SchemaDefinition):
+        return schema
+    elif isinstance(schema, dict):
+        return SchemaDefinition(
+            message_encoding="json",
+            schema_encoding="jsonschema",
+            name=schema.get("title", "json_schema"),
+            schema_data=json.dumps(schema).encode("utf-8"),
+        )
+    else:
+        raise ValueError(f"Invalid schema type: {type(schema)}")

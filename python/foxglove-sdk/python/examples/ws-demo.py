@@ -1,8 +1,11 @@
+import json
 import foxglove
 import numpy as np
 import time
 
 from examples.geometry import euler_to_quaternion
+
+from foxglove import SchemaDefinition
 from foxglove.channels import SceneUpdateChannel, FrameTransformChannel
 from foxglove.schemas import (
     Color,
@@ -15,6 +18,11 @@ from foxglove.schemas import (
     SceneUpdate,
     Vector3,
 )
+
+any_schema = {
+    "type": "object",
+    "additionalProperties": True,
+}
 
 plot_schema = {
     "type": "object",
@@ -34,9 +42,18 @@ def main() -> None:
     box_chan = SceneUpdateChannel("/boxes")
     tf_chan = FrameTransformChannel("/tf")
 
-    # Log arbitrary messages
+    # Log dicts using JSON encoding
+    json_chan = foxglove.Channel(topic="/json", schema=plot_schema)
+
+    # Log messages with a custom schema and any encoding
     sin_chan = foxglove.Channel(
-        topic="/sine", encoder=foxglove.JsonEncoder(), schema=plot_schema
+        topic="/sine",
+        schema=SchemaDefinition(
+            name="sine",
+            schema_encoding="jsonschema",
+            message_encoding="json",
+            schema_data=json.dumps(plot_schema).encode("utf-8"),
+        ),
     )
 
     try:
@@ -45,10 +62,14 @@ def main() -> None:
             counter += 1
             now = time.time()
             y = np.sin(now)
+
             json_msg = {
                 "timestamp": now,
                 "y": y,
             }
+            sin_chan.log(json.dumps(json_msg).encode("utf-8"))
+
+            json_chan.log(json_msg)
 
             tf_chan.log(
                 FrameTransform(
@@ -57,7 +78,7 @@ def main() -> None:
                     rotation=euler_to_quaternion(roll=1, pitch=0, yaw=counter * 0.1),
                 )
             )
-            sin_chan.log(json_msg)
+
             box_chan.log(
                 SceneUpdate(
                     entities=[

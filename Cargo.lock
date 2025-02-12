@@ -533,6 +533,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "example-ws-stream-mcap"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bytes",
+ "clap",
+ "ctrlc",
+ "env_logger",
+ "foxglove",
+ "mcap",
+ "tracing",
+]
+
+[[package]]
 name = "fastrand"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"

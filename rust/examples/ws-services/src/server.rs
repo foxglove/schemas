@@ -12,69 +12,6 @@ use tracing::info;
 use crate::types::{IntBinRequest, IntBinResponse, SetBoolRequest, SetBoolResponse};
 use crate::Config;
 
-fn empty_schema() -> ServiceSchema {
-    ServiceSchema::new("/std_srvs/Empty")
-}
-
-fn echo_schema() -> ServiceSchema {
-    ServiceSchema::new("/custom_srvs/RawEcho")
-        .with_request("raw", Schema::new("raw", "none", b""))
-        .with_response("raw", Schema::new("raw", "none", b""))
-}
-
-fn int_bin_schema() -> ServiceSchema {
-    // Schemas can be derived from types that implement `JsonSchema` using the
-    // `Schema::json_schema()` method.
-    ServiceSchema::new("/custom_srvs/IntBinOps")
-        .with_request("json", Schema::json_schema::<IntBinRequest>())
-        .with_response("json", Schema::json_schema::<IntBinResponse>())
-}
-
-/// A stateless handler function.
-fn int_bin_handler(client: Client, req: Request) -> Result<Bytes> {
-    info!("Client {client:?}: {req:?}");
-    let service_name = req.service_name;
-    let req: IntBinRequest = serde_json::from_slice(&req.payload)?;
-
-    // Shared handlers can use `Request::service_name` to disambiguate the service endpoint.
-    // Service names are guaranteed to be unique.
-    let result = match service_name.as_str() {
-        "/IntBin/add" => req.a + req.b,
-        "/IntBin/sub" => req.a - req.b,
-        "/IntBin/mul" => req.a * req.b,
-        "/IntBin/mod" => req.a % req.b,
-        m => return Err(anyhow::anyhow!("unexpected service: {m}")),
-    };
-
-    let payload = serde_json::to_vec(&IntBinResponse { result })?;
-    Ok(payload.into())
-}
-
-/// A stateful handler implements the `SyncHandler` trait.
-#[derive(Debug, Default, Clone)]
-struct Flag(Arc<AtomicBool>);
-
-fn set_bool_schema() -> ServiceSchema {
-    ServiceSchema::new("/std_srvs/SetBool")
-        .with_request("json", Schema::json_schema::<SetBoolRequest>())
-        .with_response("json", Schema::json_schema::<SetBoolResponse>())
-}
-
-impl SyncHandler for Flag {
-    type Error = anyhow::Error;
-
-    fn call(&self, client: Client, req: Request) -> Result<Bytes, Self::Error> {
-        info!("Client {client:?}: {req:?}");
-        let req: SetBoolRequest = serde_json::from_slice(&req.payload)?;
-        self.0.store(req.data, std::sync::atomic::Ordering::Relaxed);
-        let payload = serde_json::to_vec(&SetBoolResponse {
-            success: true,
-            ..Default::default()
-        })?;
-        Ok(payload.into())
-    }
-}
-
 pub async fn main(config: Config) -> Result<()> {
     let server = foxglove::WebSocketServer::new()
         .name("echo")
@@ -137,4 +74,81 @@ pub async fn main(config: Config) -> Result<()> {
     tokio::signal::ctrl_c().await.ok();
     server.stop().await;
     Ok(())
+}
+
+fn empty_schema() -> ServiceSchema {
+    // A simple schema with a "well-known" request & response.
+    ServiceSchema::new("/std_srvs/Empty")
+}
+
+fn echo_schema() -> ServiceSchema {
+    // A simple schema with a well-specified request & response.
+    ServiceSchema::new("/custom_srvs/RawEcho")
+        .with_request("raw", Schema::new("raw", "none", b""))
+        .with_response("raw", Schema::new("raw", "none", b""))
+}
+
+fn int_bin_schema() -> ServiceSchema {
+    // Schemas can be derived from types that implement `JsonSchema` using the
+    // `Schema::json_schema()` method.
+    ServiceSchema::new("/custom_srvs/IntBinOps")
+        .with_request("json", Schema::json_schema::<IntBinRequest>())
+        .with_response("json", Schema::json_schema::<IntBinResponse>())
+}
+
+fn set_bool_schema() -> ServiceSchema {
+    ServiceSchema::new("/std_srvs/SetBool")
+        .with_request("json", Schema::json_schema::<SetBoolRequest>())
+        .with_response("json", Schema::json_schema::<SetBoolResponse>())
+}
+
+/// A stateless handler function.
+fn int_bin_handler(client: Client, req: Request) -> Result<Bytes> {
+    info!("Client {client:?}: {req:?}");
+    let service_name = req.service_name;
+    let req: IntBinRequest = serde_json::from_slice(&req.payload)?;
+
+    // Shared handlers can use `Request::service_name` to disambiguate the service endpoint.
+    // Service names are guaranteed to be unique.
+    let result = match service_name.as_str() {
+        "/IntBin/add" => req.a + req.b,
+        "/IntBin/sub" => req.a - req.b,
+        "/IntBin/mul" => req.a * req.b,
+        "/IntBin/mod" => req.a % req.b,
+        m => return Err(anyhow::anyhow!("unexpected service: {m}")),
+    };
+
+    let payload = serde_json::to_vec(&IntBinResponse { result })?;
+    Ok(payload.into())
+}
+
+/// A stateful handler implements the `SyncHandler` trait.
+#[derive(Debug, Default, Clone)]
+struct Flag(Arc<AtomicBool>);
+
+impl SyncHandler for Flag {
+    type Error = anyhow::Error;
+
+    fn call(&self, client: Client, req: Request) -> Result<Bytes, Self::Error> {
+        info!("Client {client:?}: {req:?}");
+
+        // Decode the payload.
+        let req: SetBoolRequest = serde_json::from_slice(&req.payload)?;
+
+        // Update the flag.
+        let prev = self.0.swap(req.data, std::sync::atomic::Ordering::Relaxed);
+
+        // Encode the response.
+        let message = if prev == req.data {
+            "unchanged".to_string()
+        } else {
+            format!("updated {prev} -> {}", req.data)
+        };
+        let payload = serde_json::to_vec(&SetBoolResponse {
+            success: true,
+            message,
+        })?;
+
+        Ok(payload.into())
+    }
 }

@@ -6,250 +6,55 @@ use std::time::Duration;
 use crate::types::{IntBinRequest, IntBinResponse, SetBoolRequest, SetBoolResponse};
 use crate::Config;
 use anyhow::{anyhow, Context, Result};
-use bytes::{Buf, BufMut, Bytes, BytesMut};
-use futures::{
-    stream::{SplitSink, SplitStream},
-    SinkExt, StreamExt,
+use bytes::Bytes;
+use futures::stream::{SplitSink, SplitStream};
+use futures::{SinkExt, StreamExt};
+use protocol::{
+    AdvertiseServices, ServerMessage, ServiceCallFailure, ServiceCallRequest, ServiceCallResponse,
+    UnadvertiseServices, SDK_SUBPROTOCOL,
 };
-use serde::Deserialize;
-use tokio::{
-    sync::oneshot,
-    task::{JoinHandle, JoinSet},
-};
-use tokio_tungstenite::tungstenite::{client::IntoClientRequest, http::HeaderValue, Message};
+use tokio::sync::oneshot;
+use tokio::task::{JoinHandle, JoinSet};
+use tokio_tungstenite::tungstenite::{client::IntoClientRequest, Message};
 use tracing::{error, info};
 
-pub(crate) const SDK_SUBPROTOCOL: HeaderValue = HeaderValue::from_static("foxglove.sdk.v1");
+mod protocol;
 
-enum ServerMessage {
-    ServerInfo,
-    AdvertiseServices(AdvertiseServices),
-    UnadvertiseServices(UnadvertiseServices),
-    ServiceCallResponse(ServiceCallResponse),
-    ServiceCallFailure(ServiceCallFailure),
-}
-impl ServerMessage {
-    pub fn parse_message(message: Message) -> Result<Option<Self>> {
-        match message {
-            Message::Text(bytes) => Self::parse_json(bytes.as_str()).map(Some),
-            Message::Binary(bytes) => Self::parse_binary(bytes),
-            _ => Err(anyhow!("unhandled message {message:?}")),
-        }
-    }
+pub async fn main(config: Config) -> Result<()> {
+    let client = Arc::new(Client::connect(&config.host, config.port).await?);
 
-    fn parse_json(json: &str) -> Result<Self> {
-        let msg = serde_json::from_str::<JsonMessage>(json)?;
-        Ok(Self::from(msg))
-    }
+    // Make some calls.
+    let sum = client.call_add(4, 38).await?;
+    info!("got sum: {sum}");
 
-    fn parse_binary(mut data: Bytes) -> Result<Option<Self>> {
-        if data.is_empty() {
-            Ok(None)
-        } else {
-            let opcode = data.get_u8();
-            match BinaryOpcode::from_repr(opcode) {
-                Some(BinaryOpcode::ServiceCallResponse) => ServiceCallResponse::parse(data)
-                    .map(ServerMessage::ServiceCallResponse)
-                    .map(Some),
-                _ => Err(anyhow!("invalid opcode {opcode}")),
+    let echo = client.call_echo("echo! echo!".into()).await?;
+    info!("got echo: {echo}");
+
+    let result = client.call_set_flag(true).await?;
+    info!("set flag: {result:?}");
+
+    let result = client.call_set_flag(false).await?;
+    info!("clear flag: {result:?}");
+
+    // Launch a bunch of concurrent calls, expecting some of them to fail with "Too many requests".
+    let mut sleepers = JoinSet::default();
+    for id in 0..50 {
+        let client = client.clone();
+        sleepers.spawn(async move {
+            if let Err(e) = client.call_sleep().await {
+                error!("{id} failed to sleep: {e}");
+            } else {
+                info!("{id} is awake");
             }
-        }
+        });
     }
-}
+    let _ = sleepers.join_all().await;
 
-#[repr(u8)]
-#[derive(strum::FromRepr)]
-enum BinaryOpcode {
-    ServiceCallRequest = 2,
-    ServiceCallResponse = 3,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase", tag = "op")]
-enum JsonMessage {
-    ServerInfo,
-    AdvertiseServices(AdvertiseServices),
-    UnadvertiseServices(UnadvertiseServices),
-    ServiceCallFailure(ServiceCallFailure),
-}
-
-impl From<JsonMessage> for ServerMessage {
-    fn from(m: JsonMessage) -> Self {
-        match m {
-            JsonMessage::ServerInfo => ServerMessage::ServerInfo,
-            JsonMessage::AdvertiseServices(m) => ServerMessage::AdvertiseServices(m),
-            JsonMessage::UnadvertiseServices(m) => ServerMessage::UnadvertiseServices(m),
-            JsonMessage::ServiceCallFailure(m) => ServerMessage::ServiceCallFailure(m),
-        }
-    }
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct AdvertiseServices {
-    services: Vec<AdvertiseService>,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct AdvertiseService {
-    id: u32,
-    name: String,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct UnadvertiseServices {
-    service_ids: Vec<u32>,
-}
-
-#[allow(dead_code)]
-#[derive(Debug)]
-struct ServiceCallResponse {
-    service_id: u32,
-    call_id: u32,
-    encoding: String,
-    payload: Bytes,
-}
-impl ServiceCallResponse {
-    fn parse(mut data: Bytes) -> Result<Self> {
-        // 4-byte service id, call id, and encoding length.
-        if data.remaining() < 12 {
-            return Err(anyhow!("Buffer too short"));
-        }
-        let service_id = data.get_u32_le();
-        let call_id = data.get_u32_le();
-        let encoding_length = data.get_u32_le() as usize;
-        if data.remaining() < encoding_length {
-            return Err(anyhow!("Buffer too short"));
-        }
-        let encoding = std::str::from_utf8(&data[..encoding_length])?.to_string();
-        data.advance(encoding_length);
-        Ok(Self {
-            service_id,
-            call_id,
-            encoding,
-            payload: data,
-        })
-    }
-}
-
-#[allow(dead_code)]
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct ServiceCallFailure {
-    service_id: u32,
-    call_id: u32,
-    message: String,
+    client.close().await
 }
 
 type Stream =
     tokio_tungstenite::WebSocketStream<tokio_tungstenite::MaybeTlsStream<tokio::net::TcpStream>>;
-
-#[derive(Default)]
-struct Inner {
-    services: HashMap<String, u32>,
-    service_calls: HashMap<u32, oneshot::Sender<Result<Bytes>>>,
-}
-
-struct ServiceCall {
-    msg: Message,
-    rx: oneshot::Receiver<Result<Bytes>>,
-}
-
-#[derive(Default, Clone)]
-struct State(Arc<parking_lot::RwLock<Inner>>);
-impl State {
-    fn on_advertise_services(&self, msg: AdvertiseServices) {
-        let mut inner = self.0.write();
-        for service in msg.services {
-            let name = service.name;
-            let id = service.id;
-            if let Some(prev_id) = inner.services.insert(name.clone(), id) {
-                info!("Updated service {} id ({} -> {})", name, prev_id, id);
-            } else {
-                info!("Added service {} ({})", name, id);
-            }
-        }
-    }
-
-    fn on_unadvertise_services(&self, msg: UnadvertiseServices) {
-        let mut inner = self.0.write();
-        let ids: HashSet<_> = msg.service_ids.into_iter().collect();
-        inner.services.retain(|name, id| {
-            if ids.contains(id) {
-                info!("Removed service {} ({})", name, id);
-                false
-            } else {
-                true
-            }
-        });
-    }
-
-    fn on_service_call_response(&self, msg: ServiceCallResponse) {
-        self.complete_service_call(msg.call_id, Ok(msg.payload));
-    }
-
-    fn on_service_call_failure(&self, msg: ServiceCallFailure) {
-        self.complete_service_call(msg.call_id, Err(anyhow!(msg.message)));
-    }
-
-    fn get_service_id(&self, name: &str) -> Option<u32> {
-        self.0.read().services.get(name).copied()
-    }
-
-    fn service_call(&self, service_id: u32, encoding: &str, payload: Bytes) -> ServiceCall {
-        static CALL_ID: AtomicU32 = AtomicU32::new(0);
-        let call_id = CALL_ID.fetch_add(1, Ordering::Relaxed);
-        let encoding_raw = encoding.as_bytes();
-        let mut buf = BytesMut::new();
-        buf.put_u8(BinaryOpcode::ServiceCallRequest as u8);
-        buf.put_u32_le(service_id);
-        buf.put_u32_le(call_id);
-        buf.put_u32_le(encoding_raw.len() as u32);
-        buf.put(encoding_raw);
-        buf.put(payload);
-        let (tx, rx) = oneshot::channel();
-        let prev = self.0.write().service_calls.insert(call_id, tx);
-        assert!(prev.is_none());
-        ServiceCall {
-            msg: Message::Binary(buf.into()),
-            rx,
-        }
-    }
-
-    fn complete_service_call(&self, call_id: u32, result: Result<Bytes>) {
-        let mut inner = self.0.write();
-        if let Some(tx) = inner.service_calls.remove(&call_id) {
-            let _ = tx.send(result);
-        } else {
-            error!("unexpected callback for {call_id}");
-        }
-    }
-}
-
-async fn rx_task(mut rx: SplitStream<Stream>, state: State) {
-    while let Some(msg) = rx.next().await {
-        let msg = msg.expect("Failed to receive message");
-        let msg = match ServerMessage::parse_message(msg) {
-            Ok(msg) => msg,
-            Err(err) => {
-                error!("Failed to parse message: {err}");
-                continue;
-            }
-        };
-        let Some(msg) = msg else {
-            continue;
-        };
-        match msg {
-            ServerMessage::ServerInfo => (),
-            ServerMessage::AdvertiseServices(msg) => state.on_advertise_services(msg),
-            ServerMessage::UnadvertiseServices(msg) => state.on_unadvertise_services(msg),
-            ServerMessage::ServiceCallResponse(msg) => state.on_service_call_response(msg),
-            ServerMessage::ServiceCallFailure(msg) => state.on_service_call_failure(msg),
-        }
-    }
-}
 
 struct Client {
     tx: tokio::sync::Mutex<SplitSink<Stream, Message>>,
@@ -262,6 +67,7 @@ impl Drop for Client {
     }
 }
 impl Client {
+    /// Connects to a websocket server and validates the subprotocol.
     async fn connect(host: &str, port: u16) -> Result<Self> {
         let mut request = format!("ws://{host}:{port}/")
             .into_client_request()
@@ -293,12 +99,14 @@ impl Client {
         })
     }
 
+    /// Sends a message.
     async fn send(&self, msg: Message) -> Result<()> {
         let mut tx = self.tx.lock().await;
         tx.send(msg).await?;
         Ok(())
     }
 
+    /// Makes a service call.
     async fn service_call(
         &self,
         service_name: &str,
@@ -343,6 +151,7 @@ impl Client {
         Ok(resp)
     }
 
+    /// Gracefully closes the websocket.
     async fn close(&self) -> Result<()> {
         let mut tx = self.tx.lock().await;
         tx.close().await?;
@@ -350,35 +159,116 @@ impl Client {
     }
 }
 
-pub async fn main(config: Config) -> Result<()> {
-    let client = Arc::new(Client::connect(&config.host, config.port).await?);
+/// Main poll loop for receiving messages from the websocket server.
+async fn rx_task(mut rx: SplitStream<Stream>, state: State) {
+    while let Some(msg) = rx.next().await {
+        let msg = msg.expect("Failed to receive message");
+        let msg = match ServerMessage::parse_message(msg) {
+            Ok(msg) => msg,
+            Err(err) => {
+                error!("Failed to parse message: {err}");
+                continue;
+            }
+        };
+        let Some(msg) = msg else {
+            continue;
+        };
+        match msg {
+            ServerMessage::ServerInfo => (),
+            ServerMessage::AdvertiseServices(msg) => state.on_advertise_services(msg),
+            ServerMessage::UnadvertiseServices(msg) => state.on_unadvertise_services(msg),
+            ServerMessage::ServiceCallResponse(msg) => state.on_service_call_response(msg),
+            ServerMessage::ServiceCallFailure(msg) => state.on_service_call_failure(msg),
+        }
+    }
+}
 
-    let sum = client.call_add(4, 38).await?;
-    info!("got sum: {sum}");
+#[derive(Default)]
+struct Inner {
+    /// Map service names to service IDs.
+    services: HashMap<String, u32>,
+    /// Map of service call IDs to response channels.
+    service_calls: HashMap<u32, oneshot::Sender<Result<Bytes>>>,
+}
 
-    let echo = client.call_echo("echo! echo!".into()).await?;
-    info!("got echo: {echo}");
+/// An outstanding service call.
+struct ServiceCall {
+    /// The encoded message to send.
+    msg: Message,
+    /// A channel on which to receive the response.
+    rx: oneshot::Receiver<Result<Bytes>>,
+}
 
-    let result = client.call_set_flag(true).await?;
-    info!("set flag: {result:?}");
-
-    let result = client.call_set_flag(false).await?;
-    info!("clear flag: {result:?}");
-
-    // Launch a bunch of concurrent calls, expecting some of them to fail with "Too many requests".
-    let mut sleepers = JoinSet::default();
-    for id in 0..50 {
-        let client = client.clone();
-        sleepers.spawn(async move {
-            if let Err(e) = client.call_sleep().await {
-                error!("{id} failed to sleep: {e}");
+#[derive(Default, Clone)]
+struct State(Arc<parking_lot::RwLock<Inner>>);
+impl State {
+    /// Registers advertised services in the services map.
+    fn on_advertise_services(&self, msg: AdvertiseServices) {
+        let mut inner = self.0.write();
+        for service in msg.services {
+            let name = service.name;
+            let id = service.id;
+            if let Some(prev_id) = inner.services.insert(name.clone(), id) {
+                info!("Updated service {} id ({} -> {})", name, prev_id, id);
             } else {
-                info!("{id} is awake");
+                info!("Added service {} ({})", name, id);
+            }
+        }
+    }
+
+    /// Unregisters unadvertised services from the services map.
+    fn on_unadvertise_services(&self, msg: UnadvertiseServices) {
+        let mut inner = self.0.write();
+        let ids: HashSet<_> = msg.service_ids.into_iter().collect();
+        inner.services.retain(|name, id| {
+            if ids.contains(id) {
+                info!("Removed service {} ({})", name, id);
+                false
+            } else {
+                true
             }
         });
     }
 
-    let _ = sleepers.join_all().await;
+    /// Handles a service call response.
+    fn on_service_call_response(&self, msg: ServiceCallResponse) {
+        self.complete_service_call(msg.call_id, Ok(msg.payload));
+    }
 
-    client.close().await
+    /// Handles a service call failure.
+    fn on_service_call_failure(&self, msg: ServiceCallFailure) {
+        self.complete_service_call(msg.call_id, Err(anyhow!(msg.message)));
+    }
+
+    /// Looks up a service by name.
+    fn get_service_id(&self, name: &str) -> Option<u32> {
+        self.0.read().services.get(name).copied()
+    }
+
+    /// Prepares a new service call by encoding the message and registering a response channel.
+    fn service_call(&self, service_id: u32, encoding: &str, payload: Bytes) -> ServiceCall {
+        static CALL_ID: AtomicU32 = AtomicU32::new(0);
+        let call_id = CALL_ID.fetch_add(1, Ordering::Relaxed);
+        let msg = ServiceCallRequest {
+            service_id,
+            call_id,
+            encoding,
+            payload,
+        }
+        .encode();
+        let (tx, rx) = oneshot::channel();
+        let prev = self.0.write().service_calls.insert(call_id, tx);
+        assert!(prev.is_none());
+        ServiceCall { msg, rx }
+    }
+
+    /// Completes a service call by sending the result on the response channel.
+    fn complete_service_call(&self, call_id: u32, result: Result<Bytes>) {
+        let mut inner = self.0.write();
+        if let Some(tx) = inner.service_calls.remove(&call_id) {
+            let _ = tx.send(result);
+        } else {
+            error!("unexpected callback for {call_id}");
+        }
+    }
 }

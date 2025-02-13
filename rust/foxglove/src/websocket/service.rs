@@ -125,7 +125,7 @@ impl Service {
     }
 
     /// Invokes the service call implementation.
-    pub fn call(
+    pub(crate) fn call(
         &self,
         client: Client<'_>,
         call_id: CallId,

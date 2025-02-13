@@ -32,6 +32,7 @@ maturin = "^1.7.4"
 numpy = "^2.0"
 black = "^24.2.0"
 flake8 = "^7.0.0"
+sphinx = "^7.0.0"
 
 [tool.mypy]
 python_version = "3.9"

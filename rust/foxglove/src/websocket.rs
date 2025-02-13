@@ -12,6 +12,7 @@ use std::collections::HashSet;
 use std::sync::atomic::Ordering::{AcqRel, Acquire, Relaxed};
 use std::sync::atomic::{AtomicBool, AtomicU32};
 use std::sync::Weak;
+use std::time::{SystemTime, UNIX_EPOCH};
 use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 use thiserror::Error;
 use tokio::runtime::Handle;
@@ -142,7 +143,7 @@ pub(crate) struct Server {
     message_backlog_size: u32,
     runtime: Handle,
     /// May be provided by the caller
-    session_id: String,
+    session_id: parking_lot::RwLock<String>,
     name: String,
     clients: CowVec<Arc<ConnectedClient>>,
     channels: parking_lot::RwLock<HashMap<ChannelId, Arc<Channel>>>,
@@ -560,6 +561,15 @@ impl std::fmt::Debug for ConnectedClient {
 
 // A websocket server that implements the Foxglove WebSocket Protocol
 impl Server {
+    /// Generate a random session ID
+    pub(crate) fn generate_session_id() -> String {
+        SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .ok()
+            .map(|d| d.as_millis().to_string())
+            .unwrap_or_default()
+    }
+
     pub fn new(weak_self: Weak<Self>, opts: ServerOptions) -> Self {
         let mut capabilities = opts.capabilities.unwrap_or_default();
         if !opts.services.is_empty() {
@@ -573,7 +583,9 @@ impl Server {
                 .unwrap_or(DEFAULT_MESSAGE_BACKLOG_SIZE) as u32,
             runtime: opts.runtime.unwrap_or_else(get_runtime_handle),
             listener: opts.listener,
-            session_id: opts.session_id.unwrap_or_default(),
+            session_id: parking_lot::RwLock::new(
+                opts.session_id.unwrap_or_else(Self::generate_session_id),
+            ),
             name: opts.name.unwrap_or_default(),
             clients: CowVec::new(),
             channels: parking_lot::RwLock::new(HashMap::new()),
@@ -764,6 +776,25 @@ impl Server {
         }
     }
 
+    /// Sets a new session ID and notifies all clients, causing them to reset their state.
+    /// If no session ID is provided, generates a new one based on the current timestamp.
+    pub fn clear_session(&self, new_session_id: Option<String>) {
+        *self.session_id.write() = new_session_id.unwrap_or_else(Self::generate_session_id);
+
+        let info_message = protocol::server::server_info(
+            &self.session_id.read(),
+            &self.name,
+            &self.capabilities,
+            &self.supported_encodings,
+        );
+
+        let message = Message::text(info_message);
+        let clients = self.clients.get();
+        for client in clients.iter() {
+            client.send_control_msg(message.clone());
+        }
+    }
+
     /// When a new client connects:
     /// - Handshake
     /// - Send ServerInfo
@@ -782,7 +813,7 @@ impl Server {
         let (mut ws_sender, mut ws_receiver) = ws_stream.split();
 
         let info_message = protocol::server::server_info(
-            &self.session_id,
+            &self.session_id.read(),
             &self.name,
             &self.capabilities,
             &self.supported_encodings,

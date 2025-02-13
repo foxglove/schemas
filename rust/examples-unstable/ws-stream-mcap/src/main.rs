@@ -69,13 +69,16 @@ fn main() -> Result<()> {
     let summary = Summary::load_from_mcap(&args.file)?;
 
     info!("Waiting for client");
-    std::thread::sleep(Duration::from_secs(5));
+    std::thread::sleep(Duration::from_secs(1));
 
     info!("Starting stream");
     while !done.load(Ordering::Relaxed) {
         summary.file_stream().stream_until(&server, &done)?;
         if !args.r#loop {
             done.store(true, Ordering::Relaxed);
+        } else {
+            info!("Looping");
+            server.clear_session(None);
         }
     }
 

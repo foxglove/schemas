@@ -2,7 +2,6 @@
 
 use std::fmt::Debug;
 use std::sync::Arc;
-use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::websocket::service::{Service, ServiceId};
 #[cfg(feature = "unstable")]
@@ -23,12 +22,8 @@ pub struct WebSocketServer {
 
 impl Default for WebSocketServer {
     fn default() -> Self {
-        let session_id = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .ok()
-            .map(|d| d.as_millis().to_string());
         let options = ServerOptions {
-            session_id,
+            session_id: Some(Server::generate_session_id()),
             ..ServerOptions::default()
         };
         Self {
@@ -202,6 +197,12 @@ impl WebSocketServerHandle {
         self.0.broadcast_time(timestamp_nanos).await;
     }
 
+    /// Sets a new session ID and notifies all clients, causing them to reset their state.
+    /// If no session ID is provided, generates a new one based on the current timestamp.
+    pub fn clear_session(&self, new_session_id: Option<String>) {
+        self.0.clear_session(new_session_id);
+    }
+
     /// Publishes parameter values to all clients.
     #[doc(hidden)]
     #[cfg(feature = "unstable")]
@@ -267,6 +268,12 @@ impl WebSocketServerBlockingHandle {
         self.0
             .runtime()
             .block_on(self.0.broadcast_time(timestamp_nanos))
+    }
+
+    /// Sets a new session ID and notifies all clients, causing them to reset their state.
+    /// If no session ID is provided, generates a new one based on the current timestamp.
+    pub fn clear_session(&self, new_session_id: Option<String>) {
+        self.0.clear_session(new_session_id);
     }
 
     /// Publishes parameter values to all clients.

@@ -31,6 +31,16 @@ impl PyWebSocketServer {
             py.allow_threads(|| server.stop())
         }
     }
+
+    /// Sets a new session ID and notifies all clients, causing them to reset their state.
+    /// If no session ID is provided, generates a new one based on the current timestamp.
+    #[pyo3(signature = (session_id=None))]
+    fn clear_session(&self, session_id: Option<String>) -> PyResult<()> {
+        if let Some(server) = &self.0 {
+            server.clear_session(session_id);
+        }
+        Ok(())
+    }
 }
 
 #[pyclass]

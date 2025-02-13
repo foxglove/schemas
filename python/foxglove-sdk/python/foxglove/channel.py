@@ -23,6 +23,7 @@ class SchemaDefinition:
     def __init__(
         self,
         name: str,
+        *,
         schema_encoding: str,
         message_encoding: str,
         schema_data: bytes,
@@ -34,9 +35,9 @@ class SchemaDefinition:
 
 
 class Channel:
-    __slots__ = ["base", "schema_encoding"]
+    __slots__ = ["base", "message_encoding"]
     base: BaseChannel
-    schema_encoding: str
+    message_encoding: str
 
     def __init__(
         self,
@@ -58,7 +59,7 @@ class Channel:
 
         schema = _normalize_schema(schema)
 
-        self.schema_encoding = schema.schema_encoding
+        self.message_encoding = schema.message_encoding
 
         self.base = BaseChannel(
             topic,
@@ -78,10 +79,10 @@ class Channel:
             dictionary. Otherwise, you are responsible for serializing the message.
         """
         if isinstance(msg, bytes):
-            self.base.log(msg)
+            return self.base.log(msg)
 
-        if self.schema_encoding == "json":
-            self.base.log(json.dumps(msg).encode("utf-8"))
+        if self.message_encoding == "json":
+            return self.base.log(json.dumps(msg).encode("utf-8"))
 
         raise ValueError(f"Unsupported message type: {type(msg)}")
 
@@ -113,10 +114,13 @@ def _normalize_schema(schema: Union[JsonSchema, SchemaDefinition]) -> SchemaDefi
     if isinstance(schema, SchemaDefinition):
         return schema
     elif isinstance(schema, dict):
+        if schema.get("type") != "object":
+            raise ValueError("Only object schemas are supported")
+
         return SchemaDefinition(
+            name=schema.get("title", "json_schema"),
             message_encoding="json",
             schema_encoding="jsonschema",
-            name=schema.get("title", "json_schema"),
             schema_data=json.dumps(schema).encode("utf-8"),
         )
     else:

@@ -17,6 +17,7 @@ pub async fn main(config: Config) -> Result<()> {
         .name("echo")
         .bind(&config.host, config.port)
         .capabilities([Capability::Services])
+        .supported_encodings(["raw"])
         .start()
         .await
         .context("Failed to start server")?;
@@ -29,7 +30,6 @@ pub async fn main(config: Config) -> Result<()> {
             Service::builder("/echo", echo_schema())
                 .sync_handler_fn(|_, req| anyhow::Ok(req.payload)),
         ])
-        .await
         .context("Failed to register services")?;
 
     // Services that need to sleep (or do heavy computation) should use `tokio::spawn()`
@@ -45,7 +45,6 @@ pub async fn main(config: Config) -> Result<()> {
                 });
             }),
         ])
-        .await
         .context("Failed to register services")?;
 
     // A single handler function can be shared by multiple services.
@@ -57,7 +56,6 @@ pub async fn main(config: Config) -> Result<()> {
                     Service::builder(name, int_bin_schema()).sync_handler_fn(int_bin_handler)
                 }),
         )
-        .await
         .context("Failed to register services")?;
 
     // A stateful handler might be written as a type that implements `Handler` (or `SyncHandler`).
@@ -68,7 +66,6 @@ pub async fn main(config: Config) -> Result<()> {
             Service::builder("/flag_a", set_bool_schema()).handler(flag_a.clone()),
             Service::builder("/flag_b", set_bool_schema()).handler(flag_b.clone()),
         ])
-        .await
         .context("Failed to register services")?;
 
     tokio::signal::ctrl_c().await.ok();

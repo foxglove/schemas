@@ -220,6 +220,9 @@ pub enum FoxgloveError {
     /// A service with the same name is already registered.
     #[error("Service {0} already exists in registry")]
     DuplicateService(String),
+    /// Niether the service nor the server declared supported encodings.
+    #[error("Neither service {0} nor the server declared a supported request encoding")]
+    MissingRequestEncoding(String),
     /// Services are not supported on this server instance.
     #[error("Services are not supported on this server instance")]
     ServicesNotSupported,

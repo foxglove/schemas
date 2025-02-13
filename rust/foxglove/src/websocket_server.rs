@@ -101,6 +101,17 @@ impl WebSocketServer {
         self
     }
 
+    /// Configure the set of supported encodings for client requests.
+    ///
+    /// This is used for both client-side publishing as well as service call request/responses.
+    pub fn supported_encodings(
+        mut self,
+        encodings: impl IntoIterator<Item = impl Into<String>>,
+    ) -> Self {
+        self.options.supported_encodings = Some(encodings.into_iter().map(|e| e.into()).collect());
+        self
+    }
+
     /// Set a session ID.
     ///
     /// This allows the client to understand if the connection is a re-connection or if it is
@@ -176,18 +187,16 @@ impl WebSocketServerHandle {
     /// [`remove_services`][WebSocketServerHandle::remove_services].
     ///
     /// This method will fail if the server was not configured with [`Capability::Services`].
-    pub async fn add_services(
+    pub fn add_services(
         &self,
         services: impl IntoIterator<Item = Service>,
     ) -> Result<(), FoxgloveError> {
-        self.0.add_services(services.into_iter().collect()).await
+        self.0.add_services(services.into_iter().collect())
     }
 
     /// Removes services that were previously advertised.
-    pub async fn remove_services(&self, ids: impl IntoIterator<Item = ServiceId>) {
-        self.0
-            .remove_services(&ids.into_iter().collect::<Vec<_>>())
-            .await;
+    pub fn remove_services(&self, ids: impl IntoIterator<Item = ServiceId>) {
+        self.0.remove_services(&ids.into_iter().collect::<Vec<_>>());
     }
 
     /// Publishes the current server timestamp to all clients.
@@ -253,12 +262,12 @@ impl WebSocketServerBlockingHandle {
         &self,
         services: impl IntoIterator<Item = Service>,
     ) -> Result<(), FoxgloveError> {
-        self.0.runtime().block_on(self.0.add_services(services))
+        self.0.add_services(services)
     }
 
     /// Removes services that were previously advertised.
     pub async fn remove_services(&self, ids: impl IntoIterator<Item = ServiceId>) {
-        self.0.runtime().block_on(self.0.remove_services(ids))
+        self.0.remove_services(ids);
     }
 
     /// Publishes the current server timestamp to all clients.

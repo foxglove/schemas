@@ -102,7 +102,7 @@ impl Client {
     /// Sends a message.
     async fn send(&self, msg: Message) -> Result<()> {
         let mut tx = self.tx.lock().await;
-        tx.send(msg).await?;
+        tx.send(msg).await.context("failed to send message")?;
         Ok(())
     }
 
@@ -121,32 +121,44 @@ impl Client {
             };
             let call = self.state.service_call(service_id, encoding, payload);
             self.send(call.msg).await?;
-            return call.rx.await?;
+            return call.rx.await.context("failed to get response")?;
         }
     }
 
     async fn call_add(&self, a: u64, b: u64) -> Result<u64> {
         let req = serde_json::to_vec(&IntBinRequest { a, b })?;
-        let resp = self.service_call("/IntBin/add", "json", req.into()).await?;
-        let resp: IntBinResponse = serde_json::from_slice(&resp)?;
+        let resp = self
+            .service_call("/IntBin/add", "json", req.into())
+            .await
+            .context("failed to call /IntBin/add")?;
+        let resp: IntBinResponse =
+            serde_json::from_slice(&resp).context("failed to parse /IntBin/add response")?;
         Ok(resp.result)
     }
 
     async fn call_echo(&self, msg: String) -> Result<String> {
         let req = msg.into_bytes().into();
-        let resp = self.service_call("/echo", "raw", req).await?;
-        let resp = String::from_utf8(resp.to_vec())?;
+        let resp = self
+            .service_call("/echo", "raw", req)
+            .await
+            .context("failed to call /echo")?;
+        let resp = String::from_utf8(resp.to_vec()).context("invalid echo response")?;
         Ok(resp)
     }
 
     async fn call_sleep(&self) -> Result<()> {
-        self.service_call("/sleep", "", Bytes::new()).await?;
+        self.service_call("/sleep", "raw", Bytes::new())
+            .await
+            .context("failed to call /sleep")?;
         Ok(())
     }
 
     async fn call_set_flag(&self, data: bool) -> Result<SetBoolResponse> {
         let req = serde_json::to_vec(&SetBoolRequest { data })?;
-        let resp = self.service_call("/flag_a", "json", req.into()).await?;
+        let resp = self
+            .service_call("/flag_a", "json", req.into())
+            .await
+            .context("failed to call /flag_a")?;
         let resp: SetBoolResponse = serde_json::from_slice(&resp)?;
         Ok(resp)
     }

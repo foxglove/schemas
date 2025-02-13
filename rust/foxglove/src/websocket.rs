@@ -496,8 +496,20 @@ impl ConnectedClient {
             return;
         };
 
+        // If this service declared a request encoding, ensure that it matches. Otherwise, ensure
+        // that the request encoding is in the server's global list of supported encodings.
+        if !service
+            .request_encoding()
+            .map(|e| e == req.encoding)
+            .unwrap_or_else(|| server.supported_encodings.contains(&req.encoding))
+        {
+            self.send_service_call_failure(service_id, call_id, "Unsupported encoding");
+            return;
+        }
+
         // Prepare a response, or fail if this client has too many concurrent requests.
-        let Some(responder) = resp_chan.prepare_response(service_id, call_id, &req.encoding) else {
+        let encoding = service.response_encoding().unwrap_or(&req.encoding);
+        let Some(responder) = resp_chan.prepare_response(service_id, call_id, encoding) else {
             self.send_service_call_failure(service_id, call_id, "Too many requests");
             return;
         };
@@ -572,9 +584,19 @@ impl Server {
 
     pub fn new(weak_self: Weak<Self>, opts: ServerOptions) -> Self {
         let mut capabilities = opts.capabilities.unwrap_or_default();
+        let mut supported_encodings = opts.supported_encodings.unwrap_or_default();
+
+        // If the server was declared with services, automatically add the "services" capability
+        // and the set of supported request encodings.
         if !opts.services.is_empty() {
             capabilities.insert(Capability::Services);
+            supported_encodings.extend(
+                opts.services
+                    .values()
+                    .flat_map(|svc| svc.schema().request().map(|s| s.encoding.clone())),
+            );
         }
+
         Server {
             weak_self,
             started: AtomicBool::new(false),
@@ -590,7 +612,7 @@ impl Server {
             clients: CowVec::new(),
             channels: parking_lot::RwLock::new(HashMap::new()),
             capabilities,
-            supported_encodings: opts.supported_encodings.unwrap_or_default(),
+            supported_encodings,
             cancellation_token: CancellationToken::new(),
             services: parking_lot::RwLock::new(
                 opts.services
@@ -1001,20 +1023,28 @@ impl Server {
     ///
     /// This method will fail if the services capability was not declared, or if a service name is
     /// not unique.
-    pub async fn add_services(&self, new_services: Vec<Service>) -> Result<(), FoxgloveError> {
+    pub fn add_services(&self, new_services: Vec<Service>) -> Result<(), FoxgloveError> {
         // Make sure that the server supports services.
         if !self.capabilities.contains(&Capability::Services) {
             return Err(FoxgloveError::ServicesNotSupported);
         }
 
-        // Ensure that the new service names are unique.
         let mut new_names = HashMap::with_capacity(new_services.len());
         for service in &new_services {
+            // Ensure that the new service names are unique.
             if new_names
                 .insert(service.name().to_string(), service.id())
                 .is_some()
             {
                 return Err(FoxgloveError::DuplicateService(service.name().to_string()));
+            }
+
+            // If the service doesn't declare a request encoding, there must be at least one
+            // encoding declared in the global list.
+            if service.request_encoding().is_none() && self.supported_encodings.is_empty() {
+                return Err(FoxgloveError::MissingRequestEncoding(
+                    service.name().to_string(),
+                ));
             }
         }
 
@@ -1031,7 +1061,9 @@ impl Server {
             }
 
             // Update the service map.
-            services.extend(new_services.into_iter().map(|s| (s.id(), Arc::new(s))));
+            for service in new_services {
+                services.insert(service.id(), Arc::new(service));
+            }
         }
 
         // Send advertisements.
@@ -1060,7 +1092,7 @@ impl Server {
     /// Removes services, and unadvertises them to all clients.
     ///
     /// Unrecognized service IDs are silently ignored.
-    pub async fn remove_services(&self, ids: &[ServiceId]) {
+    pub fn remove_services(&self, ids: &[ServiceId]) {
         // Remove services from the map.
         let mut old_services = HashMap::with_capacity(ids.len());
         {

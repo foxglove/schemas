@@ -1,9 +1,9 @@
 //! Service call response handling.
 
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 
 use bytes::Bytes;
-use parking_lot::Mutex;
 use tokio_tungstenite::tungstenite::Message;
 use tracing::error;
 
@@ -18,7 +18,7 @@ const DEFAULT_RESPONSE_CHANNEL_CAPACITY: usize = 32;
 
 /// A bounded response channel.
 pub(crate) struct ResponseChannel {
-    tokens: Arc<Mutex<usize>>,
+    tokens: Arc<AtomicUsize>,
     tx: flume::Sender<Response>,
     rx: flume::Receiver<Response>,
 }
@@ -33,7 +33,7 @@ impl ResponseChannel {
     /// The service response channel is configured with a capacity, which represents the maximum
     /// number of concurrent service calls from a particular client.
     pub fn new(capacity: usize) -> Self {
-        let tokens = Arc::new(Mutex::new(capacity));
+        let tokens = Arc::new(AtomicUsize::new(capacity));
         let (tx, rx) = flume::bounded(capacity);
         Self { tokens, tx, rx }
     }
@@ -52,7 +52,27 @@ impl ResponseChannel {
     pub fn drain(&self) {
         self.rx.drain();
         #[cfg(debug_assertions)]
-        assert_eq!(*self.tokens.lock(), self.tx.capacity().unwrap());
+        assert_eq!(
+            self.tokens.load(Ordering::Relaxed),
+            self.tx.capacity().unwrap()
+        );
+    }
+
+    /// Attempts to acquire a response token.
+    fn try_acquire_token(&self) -> Option<Token> {
+        loop {
+            let current = self.tokens.load(Ordering::Acquire);
+            if current == 0 {
+                return None;
+            }
+            if self
+                .tokens
+                .compare_exchange(current, current - 1, Ordering::AcqRel, Ordering::Acquire)
+                .is_ok()
+            {
+                return Some(Token(self.tokens.clone()));
+            }
+        }
     }
 
     /// Allocates a response token and constructs a [`Responder`].
@@ -68,33 +88,24 @@ impl ResponseChannel {
         call_id: CallId,
         encoding: &str,
     ) -> Option<Responder> {
-        let mut tokens = self.tokens.lock();
-        if *tokens > 0 {
-            *tokens -= 1;
-            Some(Responder {
-                service_id,
-                call_id,
-                encoding: encoding.to_string(),
-                tx: self.tx.clone(),
-                token: Token(self.tokens.clone()),
-            })
-        } else {
-            None
-        }
+        self.try_acquire_token().map(|token| Responder {
+            service_id,
+            call_id,
+            encoding: encoding.to_string(),
+            tx: self.tx.clone(),
+            token,
+        })
     }
 }
 
 /// Represents a reservation for the client's service response queue.
 ///
 /// Increments the inner counter (a reference to [`ResponseChannel::tokens`]) when dropped.
-struct Token(Arc<Mutex<usize>>);
+struct Token(Arc<AtomicUsize>);
 
 impl Drop for Token {
     fn drop(&mut self) {
-        let mut tokens = self.0.lock();
-        #[cfg(debug_assertions)]
-        assert_ne!(*tokens, usize::MAX);
-        *tokens += 1;
+        self.0.fetch_add(1, Ordering::Release);
     }
 }
 
@@ -112,6 +123,15 @@ pub struct Responder {
     token: Token,
 }
 impl Responder {
+    /// Overrides the default response encoding.
+    ///
+    /// By default, the response encoding is the one declared in the
+    /// [`ServiceSchema`][super::ServiceSchema]. If no response encoding was declared, then the
+    /// encoding is presumed to be the same as the request.
+    pub fn set_encoding(&mut self, encoding: impl Into<String>) {
+        self.encoding = encoding.into();
+    }
+
     /// Completes the request by sending a response to the client.
     pub fn respond(self, result: Result<Bytes, String>) {
         let response = Response {

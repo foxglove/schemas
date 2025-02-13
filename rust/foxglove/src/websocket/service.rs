@@ -124,6 +124,14 @@ impl Service {
         &self.schema
     }
 
+    pub(crate) fn request_encoding(&self) -> Option<&str> {
+        self.schema().request().map(|rs| rs.encoding.as_str())
+    }
+
+    pub(crate) fn response_encoding(&self) -> Option<&str> {
+        self.schema().response().map(|rs| rs.encoding.as_str())
+    }
+
     /// Invokes the service call implementation.
     pub(crate) fn call(
         &self,

@@ -62,13 +62,20 @@ impl CameraCalibrationChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(
+    fn log_with_meta(
         &self,
         msg: &schemas::CameraCalibration,
-        opts: Bound<'_, PartialMetadata>,
+        metadata: Bound<'_, PartialMetadata>,
     ) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("CameraCalibrationChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -87,9 +94,16 @@ impl CircleAnnotationChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::CircleAnnotation, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::CircleAnnotation, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("CircleAnnotationChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -108,9 +122,16 @@ impl ColorChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::Color, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::Color, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("ColorChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -129,9 +150,16 @@ impl CompressedImageChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::CompressedImage, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::CompressedImage, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("CompressedImageChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -150,9 +178,16 @@ impl CompressedVideoChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::CompressedVideo, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::CompressedVideo, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("CompressedVideoChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -171,9 +206,16 @@ impl FrameTransformChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::FrameTransform, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::FrameTransform, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("FrameTransformChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -192,9 +234,16 @@ impl FrameTransformsChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::FrameTransforms, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::FrameTransforms, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("FrameTransformsChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -213,9 +262,16 @@ impl GeoJsonChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::GeoJson, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::GeoJson, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("GeoJsonChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -234,9 +290,16 @@ impl GridChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::Grid, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::Grid, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("GridChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -255,9 +318,16 @@ impl ImageAnnotationsChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::ImageAnnotations, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::ImageAnnotations, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("ImageAnnotationsChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -276,9 +346,16 @@ impl KeyValuePairChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::KeyValuePair, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::KeyValuePair, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("KeyValuePairChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -297,9 +374,16 @@ impl LaserScanChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::LaserScan, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::LaserScan, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("LaserScanChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -318,9 +402,16 @@ impl LocationFixChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::LocationFix, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::LocationFix, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("LocationFixChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -339,9 +430,16 @@ impl LogChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::Log, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::Log, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("LogChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -360,13 +458,20 @@ impl SceneEntityDeletionChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(
+    fn log_with_meta(
         &self,
         msg: &schemas::SceneEntityDeletion,
-        opts: Bound<'_, PartialMetadata>,
+        metadata: Bound<'_, PartialMetadata>,
     ) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("SceneEntityDeletionChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -385,9 +490,16 @@ impl SceneEntityChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::SceneEntity, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::SceneEntity, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("SceneEntityChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -406,9 +518,16 @@ impl SceneUpdateChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::SceneUpdate, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::SceneUpdate, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("SceneUpdateChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -427,13 +546,20 @@ impl PackedElementFieldChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(
+    fn log_with_meta(
         &self,
         msg: &schemas::PackedElementField,
-        opts: Bound<'_, PartialMetadata>,
+        metadata: Bound<'_, PartialMetadata>,
     ) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("PackedElementFieldChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -452,9 +578,16 @@ impl Point2Channel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::Point2, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::Point2, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("Point2Channel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -473,9 +606,16 @@ impl Point3Channel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::Point3, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::Point3, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("Point3Channel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -494,9 +634,16 @@ impl PointCloudChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::PointCloud, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::PointCloud, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("PointCloudChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -515,9 +662,16 @@ impl PointsAnnotationChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::PointsAnnotation, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::PointsAnnotation, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("PointsAnnotationChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -536,9 +690,16 @@ impl PoseChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::Pose, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::Pose, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("PoseChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -557,9 +718,16 @@ impl PoseInFrameChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::PoseInFrame, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::PoseInFrame, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("PoseInFrameChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -578,9 +746,16 @@ impl PosesInFrameChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::PosesInFrame, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::PosesInFrame, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("PosesInFrameChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -599,9 +774,16 @@ impl QuaternionChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::Quaternion, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::Quaternion, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("QuaternionChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -620,9 +802,16 @@ impl RawImageChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::RawImage, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::RawImage, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("RawImageChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -641,9 +830,16 @@ impl TextAnnotationChannel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::TextAnnotation, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::TextAnnotation, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("TextAnnotationChannel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -662,9 +858,16 @@ impl Vector2Channel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::Vector2, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::Vector2, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("Vector2Channel(topic='{}')", self.0.topic()).to_string()
     }
 }
 
@@ -683,8 +886,15 @@ impl Vector3Channel {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(&self, msg: &schemas::Vector3, opts: Bound<'_, PartialMetadata>) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+    fn log_with_meta(&self, msg: &schemas::Vector3, metadata: Bound<'_, PartialMetadata>) {
+        let metadata = metadata
+            .extract::<PartialMetadata>()
+            .ok()
+            .unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("Vector3Channel(topic='{}')", self.0.topic()).to_string()
     }
 }

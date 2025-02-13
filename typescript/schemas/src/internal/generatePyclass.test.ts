@@ -94,6 +94,36 @@ describe("generatePyclass", () => {
                     field_nested_array: field_nested_array.into_iter().map(|x| x.into()).collect(),
                 })
             }
+            fn __repr__(&self) -> String {
+                format!(
+                    "ExampleMessage(field_duration={:?}, field_time={:?}, field_boolean={:?}, field_bytes={:?}, field_float64={:?}, field_uint32={:?}, field_string={:?}, field_duration_array={:?}, field_time_array={:?}, field_boolean_array={:?}, field_bytes_array={:?}, field_float64_array={:?}, field_uint32_array={:?}, field_string_array={:?}, field_duration_fixed_array={:?}, field_time_fixed_array={:?}, field_boolean_fixed_array={:?}, field_bytes_fixed_array={:?}, field_float64_fixed_array={:?}, field_uint32_fixed_array={:?}, field_string_fixed_array={:?}, field_enum={:?}, field_enum_array={:?}, field_nested={:?}, field_nested_array={:?})",
+                    self.0.field_duration,
+                    self.0.field_time,
+                    self.0.field_boolean,
+                    self.0.field_bytes,
+                    self.0.field_float64,
+                    self.0.field_uint32,
+                    self.0.field_string,
+                    self.0.field_duration_array,
+                    self.0.field_time_array,
+                    self.0.field_boolean_array,
+                    self.0.field_bytes_array,
+                    self.0.field_float64_array,
+                    self.0.field_uint32_array,
+                    self.0.field_string_array,
+                    self.0.field_duration_fixed_array,
+                    self.0.field_time_fixed_array,
+                    self.0.field_boolean_fixed_array,
+                    self.0.field_bytes_fixed_array,
+                    self.0.field_float64_fixed_array,
+                    self.0.field_uint32_fixed_array,
+                    self.0.field_string_fixed_array,
+                    self.0.field_enum,
+                    self.0.field_enum_array,
+                    self.0.field_nested,
+                    self.0.field_nested_array,
+                )
+            }
         }
 
 

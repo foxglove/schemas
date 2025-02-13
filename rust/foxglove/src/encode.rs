@@ -69,6 +69,13 @@ pub struct TypedChannel<T: Encode> {
 }
 
 impl<T: Encode> TypedChannel<T> {
+    /// Returns the topic name of the channel.
+    pub fn topic(&self) -> &str {
+        &self.inner.topic
+    }
+}
+
+impl<T: Encode> TypedChannel<T> {
     /// Constructs a new typed channel with default settings.
     ///
     /// If you want to override the channel configuration, use [`ChannelBuilder::build_typed`].

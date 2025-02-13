@@ -87,6 +87,10 @@ impl Timestamp {
             nanos: nanos.unwrap_or_default(),
         }
     }
+
+    fn __repr__(&self) -> String {
+        format!("Timestamp(seconds={}, nanos={})", self.seconds, self.nanos).to_string()
+    }
 }
 
 impl From<Timestamp> for prost_types::Timestamp {
@@ -114,6 +118,10 @@ impl Duration {
             seconds,
             nanos: nanos.unwrap_or_default(),
         }
+    }
+
+    fn __repr__(&self) -> String {
+        format!("Duration(seconds={}, nanos={})", self.seconds, self.nanos).to_string()
     }
 }
 
@@ -149,6 +157,17 @@ impl ArrowPrimitive {
             head_diameter,
             color: color.map(Into::into),
         })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "ArrowPrimitive(pose={:?}, shaft_length={:?}, shaft_diameter={:?}, head_length={:?}, head_diameter={:?}, color={:?})",
+            self.0.pose,
+            self.0.shaft_length,
+            self.0.shaft_diameter,
+            self.0.head_length,
+            self.0.head_diameter,
+            self.0.color,
+        )
     }
 }
 
@@ -189,6 +208,20 @@ impl CameraCalibration {
             p: P,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "CameraCalibration(timestamp={:?}, frame_id={:?}, width={:?}, height={:?}, distortion_model={:?}, D={:?}, K={:?}, R={:?}, P={:?})",
+            self.0.timestamp,
+            self.0.frame_id,
+            self.0.width,
+            self.0.height,
+            self.0.distortion_model,
+            self.0.d,
+            self.0.k,
+            self.0.r,
+            self.0.p,
+        )
+    }
 }
 
 impl From<CameraCalibration> for foxglove::schemas::CameraCalibration {
@@ -222,6 +255,17 @@ impl CircleAnnotation {
             outline_color: outline_color.map(Into::into),
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "CircleAnnotation(timestamp={:?}, position={:?}, diameter={:?}, thickness={:?}, fill_color={:?}, outline_color={:?})",
+            self.0.timestamp,
+            self.0.position,
+            self.0.diameter,
+            self.0.thickness,
+            self.0.fill_color,
+            self.0.outline_color,
+        )
+    }
 }
 
 impl From<CircleAnnotation> for foxglove::schemas::CircleAnnotation {
@@ -240,6 +284,12 @@ impl Color {
     #[pyo3(signature = (*, r=0.0, g=0.0, b=0.0, a=0.0) )]
     fn new(r: f64, g: f64, b: f64, a: f64) -> Self {
         Self(foxglove::schemas::Color { r, g, b, a })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "Color(r={:?}, g={:?}, b={:?}, a={:?})",
+            self.0.r, self.0.g, self.0.b, self.0.a,
+        )
     }
 }
 
@@ -265,6 +315,12 @@ impl CompressedImage {
             format,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "CompressedImage(timestamp={:?}, frame_id={:?}, data={:?}, format={:?})",
+            self.0.timestamp, self.0.frame_id, self.0.data, self.0.format,
+        )
+    }
 }
 
 impl From<CompressedImage> for foxglove::schemas::CompressedImage {
@@ -288,6 +344,12 @@ impl CompressedVideo {
             data,
             format,
         })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "CompressedVideo(timestamp={:?}, frame_id={:?}, data={:?}, format={:?})",
+            self.0.timestamp, self.0.frame_id, self.0.data, self.0.format,
+        )
     }
 }
 
@@ -320,6 +382,16 @@ impl CylinderPrimitive {
             color: color.map(Into::into),
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "CylinderPrimitive(pose={:?}, size={:?}, bottom_scale={:?}, top_scale={:?}, color={:?})",
+            self.0.pose,
+            self.0.size,
+            self.0.bottom_scale,
+            self.0.top_scale,
+            self.0.color,
+        )
+    }
 }
 
 impl From<CylinderPrimitive> for foxglove::schemas::CylinderPrimitive {
@@ -342,6 +414,12 @@ impl CubePrimitive {
             size: size.map(Into::into),
             color: color.map(Into::into),
         })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "CubePrimitive(pose={:?}, size={:?}, color={:?})",
+            self.0.pose, self.0.size, self.0.color,
+        )
     }
 }
 
@@ -374,6 +452,16 @@ impl FrameTransform {
             rotation: rotation.map(Into::into),
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "FrameTransform(timestamp={:?}, parent_frame_id={:?}, child_frame_id={:?}, translation={:?}, rotation={:?})",
+            self.0.timestamp,
+            self.0.parent_frame_id,
+            self.0.child_frame_id,
+            self.0.translation,
+            self.0.rotation,
+        )
+    }
 }
 
 impl From<FrameTransform> for foxglove::schemas::FrameTransform {
@@ -395,6 +483,9 @@ impl FrameTransforms {
             transforms: transforms.into_iter().map(|x| x.into()).collect(),
         })
     }
+    fn __repr__(&self) -> String {
+        format!("FrameTransforms(transforms={:?})", self.0.transforms,)
+    }
 }
 
 impl From<FrameTransforms> for foxglove::schemas::FrameTransforms {
@@ -413,6 +504,9 @@ impl GeoJson {
     #[pyo3(signature = (*, geojson="".to_string()) )]
     fn new(geojson: String) -> Self {
         Self(foxglove::schemas::GeoJson { geojson })
+    }
+    fn __repr__(&self) -> String {
+        format!("GeoJson(geojson={:?})", self.0.geojson,)
     }
 }
 
@@ -453,6 +547,20 @@ impl Grid {
             data,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "Grid(timestamp={:?}, frame_id={:?}, pose={:?}, column_count={:?}, cell_size={:?}, row_stride={:?}, cell_stride={:?}, fields={:?}, data={:?})",
+            self.0.timestamp,
+            self.0.frame_id,
+            self.0.pose,
+            self.0.column_count,
+            self.0.cell_size,
+            self.0.row_stride,
+            self.0.cell_stride,
+            self.0.fields,
+            self.0.data,
+        )
+    }
 }
 
 impl From<Grid> for foxglove::schemas::Grid {
@@ -480,6 +588,12 @@ impl ImageAnnotations {
             texts: texts.into_iter().map(|x| x.into()).collect(),
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "ImageAnnotations(circles={:?}, points={:?}, texts={:?})",
+            self.0.circles, self.0.points, self.0.texts,
+        )
+    }
 }
 
 impl From<ImageAnnotations> for foxglove::schemas::ImageAnnotations {
@@ -498,6 +612,12 @@ impl KeyValuePair {
     #[pyo3(signature = (*, key="".to_string(), value="".to_string()) )]
     fn new(key: String, value: String) -> Self {
         Self(foxglove::schemas::KeyValuePair { key, value })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "KeyValuePair(key={:?}, value={:?})",
+            self.0.key, self.0.value,
+        )
     }
 }
 
@@ -533,6 +653,18 @@ impl LaserScan {
             ranges,
             intensities,
         })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "LaserScan(timestamp={:?}, frame_id={:?}, pose={:?}, start_angle={:?}, end_angle={:?}, ranges={:?}, intensities={:?})",
+            self.0.timestamp,
+            self.0.frame_id,
+            self.0.pose,
+            self.0.start_angle,
+            self.0.end_angle,
+            self.0.ranges,
+            self.0.intensities,
+        )
     }
 }
 
@@ -571,6 +703,19 @@ impl LinePrimitive {
             indices,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "LinePrimitive(r#type={:?}, pose={:?}, thickness={:?}, scale_invariant={:?}, points={:?}, color={:?}, colors={:?}, indices={:?})",
+            self.0.r#type,
+            self.0.pose,
+            self.0.thickness,
+            self.0.scale_invariant,
+            self.0.points,
+            self.0.color,
+            self.0.colors,
+            self.0.indices,
+        )
+    }
 }
 
 impl From<LinePrimitive> for foxglove::schemas::LinePrimitive {
@@ -606,6 +751,18 @@ impl LocationFix {
             position_covariance_type: position_covariance_type as i32,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "LocationFix(timestamp={:?}, frame_id={:?}, latitude={:?}, longitude={:?}, altitude={:?}, position_covariance={:?}, position_covariance_type={:?})",
+            self.0.timestamp,
+            self.0.frame_id,
+            self.0.latitude,
+            self.0.longitude,
+            self.0.altitude,
+            self.0.position_covariance,
+            self.0.position_covariance_type,
+        )
+    }
 }
 
 impl From<LocationFix> for foxglove::schemas::LocationFix {
@@ -639,6 +796,12 @@ impl Log {
             line,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "Log(timestamp={:?}, level={:?}, message={:?}, name={:?}, file={:?}, line={:?})",
+            self.0.timestamp, self.0.level, self.0.message, self.0.name, self.0.file, self.0.line,
+        )
+    }
 }
 
 impl From<Log> for foxglove::schemas::Log {
@@ -661,6 +824,12 @@ impl SceneEntityDeletion {
             r#type: r#type as i32,
             id,
         })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "SceneEntityDeletion(timestamp={:?}, r#type={:?}, id={:?})",
+            self.0.timestamp, self.0.r#type, self.0.id,
+        )
     }
 }
 
@@ -711,6 +880,25 @@ impl SceneEntity {
             models: models.into_iter().map(|x| x.into()).collect(),
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "SceneEntity(timestamp={:?}, frame_id={:?}, id={:?}, lifetime={:?}, frame_locked={:?}, metadata={:?}, arrows={:?}, cubes={:?}, spheres={:?}, cylinders={:?}, lines={:?}, triangles={:?}, texts={:?}, models={:?})",
+            self.0.timestamp,
+            self.0.frame_id,
+            self.0.id,
+            self.0.lifetime,
+            self.0.frame_locked,
+            self.0.metadata,
+            self.0.arrows,
+            self.0.cubes,
+            self.0.spheres,
+            self.0.cylinders,
+            self.0.lines,
+            self.0.triangles,
+            self.0.texts,
+            self.0.models,
+        )
+    }
 }
 
 impl From<SceneEntity> for foxglove::schemas::SceneEntity {
@@ -732,6 +920,12 @@ impl SceneUpdate {
             deletions: deletions.into_iter().map(|x| x.into()).collect(),
             entities: entities.into_iter().map(|x| x.into()).collect(),
         })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "SceneUpdate(deletions={:?}, entities={:?})",
+            self.0.deletions, self.0.entities,
+        )
     }
 }
 
@@ -768,6 +962,18 @@ impl ModelPrimitive {
             data,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "ModelPrimitive(pose={:?}, scale={:?}, color={:?}, override_color={:?}, url={:?}, media_type={:?}, data={:?})",
+            self.0.pose,
+            self.0.scale,
+            self.0.color,
+            self.0.override_color,
+            self.0.url,
+            self.0.media_type,
+            self.0.data,
+        )
+    }
 }
 
 impl From<ModelPrimitive> for foxglove::schemas::ModelPrimitive {
@@ -791,6 +997,12 @@ impl PackedElementField {
             r#type: r#type as i32,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "PackedElementField(name={:?}, offset={:?}, r#type={:?})",
+            self.0.name, self.0.offset, self.0.r#type,
+        )
+    }
 }
 
 impl From<PackedElementField> for foxglove::schemas::PackedElementField {
@@ -810,6 +1022,9 @@ impl Point2 {
     fn new(x: f64, y: f64) -> Self {
         Self(foxglove::schemas::Point2 { x, y })
     }
+    fn __repr__(&self) -> String {
+        format!("Point2(x={:?}, y={:?})", self.0.x, self.0.y,)
+    }
 }
 
 impl From<Point2> for foxglove::schemas::Point2 {
@@ -828,6 +1043,12 @@ impl Point3 {
     #[pyo3(signature = (*, x=0.0, y=0.0, z=0.0) )]
     fn new(x: f64, y: f64, z: f64) -> Self {
         Self(foxglove::schemas::Point3 { x, y, z })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "Point3(x={:?}, y={:?}, z={:?})",
+            self.0.x, self.0.y, self.0.z,
+        )
     }
 }
 
@@ -861,6 +1082,17 @@ impl PointCloud {
             fields: fields.into_iter().map(|x| x.into()).collect(),
             data,
         })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "PointCloud(timestamp={:?}, frame_id={:?}, pose={:?}, point_stride={:?}, fields={:?}, data={:?})",
+            self.0.timestamp,
+            self.0.frame_id,
+            self.0.pose,
+            self.0.point_stride,
+            self.0.fields,
+            self.0.data,
+        )
     }
 }
 
@@ -897,6 +1129,18 @@ impl PointsAnnotation {
             thickness,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "PointsAnnotation(timestamp={:?}, r#type={:?}, points={:?}, outline_color={:?}, outline_colors={:?}, fill_color={:?}, thickness={:?})",
+            self.0.timestamp,
+            self.0.r#type,
+            self.0.points,
+            self.0.outline_color,
+            self.0.outline_colors,
+            self.0.fill_color,
+            self.0.thickness,
+        )
+    }
 }
 
 impl From<PointsAnnotation> for foxglove::schemas::PointsAnnotation {
@@ -918,6 +1162,12 @@ impl Pose {
             position: position.map(Into::into),
             orientation: orientation.map(Into::into),
         })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "Pose(position={:?}, orientation={:?})",
+            self.0.position, self.0.orientation,
+        )
     }
 }
 
@@ -942,6 +1192,12 @@ impl PoseInFrame {
             pose: pose.map(Into::into),
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "PoseInFrame(timestamp={:?}, frame_id={:?}, pose={:?})",
+            self.0.timestamp, self.0.frame_id, self.0.pose,
+        )
+    }
 }
 
 impl From<PoseInFrame> for foxglove::schemas::PoseInFrame {
@@ -965,6 +1221,12 @@ impl PosesInFrame {
             poses: poses.into_iter().map(|x| x.into()).collect(),
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "PosesInFrame(timestamp={:?}, frame_id={:?}, poses={:?})",
+            self.0.timestamp, self.0.frame_id, self.0.poses,
+        )
+    }
 }
 
 impl From<PosesInFrame> for foxglove::schemas::PosesInFrame {
@@ -983,6 +1245,12 @@ impl Quaternion {
     #[pyo3(signature = (*, x=0.0, y=0.0, z=0.0, w=0.0) )]
     fn new(x: f64, y: f64, z: f64, w: f64) -> Self {
         Self(foxglove::schemas::Quaternion { x, y, z, w })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "Quaternion(x={:?}, y={:?}, z={:?}, w={:?})",
+            self.0.x, self.0.y, self.0.z, self.0.w,
+        )
     }
 }
 
@@ -1019,6 +1287,18 @@ impl RawImage {
             data,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "RawImage(timestamp={:?}, frame_id={:?}, width={:?}, height={:?}, encoding={:?}, step={:?}, data={:?})",
+            self.0.timestamp,
+            self.0.frame_id,
+            self.0.width,
+            self.0.height,
+            self.0.encoding,
+            self.0.step,
+            self.0.data,
+        )
+    }
 }
 
 impl From<RawImage> for foxglove::schemas::RawImage {
@@ -1041,6 +1321,12 @@ impl SpherePrimitive {
             size: size.map(Into::into),
             color: color.map(Into::into),
         })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "SpherePrimitive(pose={:?}, size={:?}, color={:?})",
+            self.0.pose, self.0.size, self.0.color,
+        )
     }
 }
 
@@ -1075,6 +1361,17 @@ impl TextAnnotation {
             background_color: background_color.map(Into::into),
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "TextAnnotation(timestamp={:?}, position={:?}, text={:?}, font_size={:?}, text_color={:?}, background_color={:?})",
+            self.0.timestamp,
+            self.0.position,
+            self.0.text,
+            self.0.font_size,
+            self.0.text_color,
+            self.0.background_color,
+        )
+    }
 }
 
 impl From<TextAnnotation> for foxglove::schemas::TextAnnotation {
@@ -1108,6 +1405,17 @@ impl TextPrimitive {
             text,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "TextPrimitive(pose={:?}, billboard={:?}, font_size={:?}, scale_invariant={:?}, color={:?}, text={:?})",
+            self.0.pose,
+            self.0.billboard,
+            self.0.font_size,
+            self.0.scale_invariant,
+            self.0.color,
+            self.0.text,
+        )
+    }
 }
 
 impl From<TextPrimitive> for foxglove::schemas::TextPrimitive {
@@ -1139,6 +1447,12 @@ impl TriangleListPrimitive {
             indices,
         })
     }
+    fn __repr__(&self) -> String {
+        format!(
+            "TriangleListPrimitive(pose={:?}, points={:?}, color={:?}, colors={:?}, indices={:?})",
+            self.0.pose, self.0.points, self.0.color, self.0.colors, self.0.indices,
+        )
+    }
 }
 
 impl From<TriangleListPrimitive> for foxglove::schemas::TriangleListPrimitive {
@@ -1158,6 +1472,9 @@ impl Vector2 {
     fn new(x: f64, y: f64) -> Self {
         Self(foxglove::schemas::Vector2 { x, y })
     }
+    fn __repr__(&self) -> String {
+        format!("Vector2(x={:?}, y={:?})", self.0.x, self.0.y,)
+    }
 }
 
 impl From<Vector2> for foxglove::schemas::Vector2 {
@@ -1176,6 +1493,12 @@ impl Vector3 {
     #[pyo3(signature = (*, x=0.0, y=0.0, z=0.0) )]
     fn new(x: f64, y: f64, z: f64) -> Self {
         Self(foxglove::schemas::Vector3 { x, y, z })
+    }
+    fn __repr__(&self) -> String {
+        format!(
+            "Vector3(x={:?}, y={:?}, z={:?})",
+            self.0.x, self.0.y, self.0.z,
+        )
     }
 }
 

@@ -164,7 +164,7 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
   const signature = schemaFields.map(({ argName, field }) => `${argName}=${rustDefaultValue(field)}`).join(", ");
 
   const impl = [
-    "#[pymethods]",
+    `#[pymethods]`,
     `impl ${className} {`,
     `    #[new]`,
     `    #[pyo3(signature = (*, ${signature}) )]`,
@@ -173,9 +173,15 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
     `    ) -> Self {`,
     `        Self(foxglove::schemas::${className} {`,
     schemaFields.map(({ field }) => `            ${fieldAssignment(field)},`).join("\n"),
-    "        })",
-    "    }",
-    "}\n\n",
+    `        })`,
+    `    }`,
+    `    fn __repr__(&self) -> String {`,
+    `        format!(`,
+    `            "${className}(${schemaFields.map(({ argName }) => `${argName}={:?}`).join(", ")})",`,
+    schemaFields.map(({ fieldName }) => `            self.0.${protoName(fieldName)},`).join("\n"),
+    `        )`,
+    `    }`,
+    `}\n\n`,
   ];
 
   const fromTrait = [
@@ -469,6 +475,10 @@ impl Timestamp {
             nanos: nanos.unwrap_or_default(),
         }
     }
+
+    fn __repr__(&self) -> String {
+        format!("Timestamp(seconds={}, nanos={})", self.seconds, self.nanos).to_string()
+    }
 }
 
 impl From<Timestamp> for prost_types::Timestamp {
@@ -496,6 +506,10 @@ impl Duration {
             seconds,
             nanos: nanos.unwrap_or_default(),
         }
+    }
+
+    fn __repr__(&self) -> String {
+      format!("Duration(seconds={}, nanos={})", self.seconds, self.nanos).to_string()
     }
 }
 
@@ -602,13 +616,17 @@ impl ${channelClass} {
         self.0.log(&msg.0);
     }
 
-    pub fn log_with_meta(
+    fn log_with_meta(
         &self,
         msg: &schemas::${schemaClass},
-        opts: Bound<'_, PartialMetadata>,
+        metadata: Bound<'_, PartialMetadata>,
     ) {
-        let metadata = opts.extract::<PartialMetadata>().ok().unwrap_or_default();
+        let metadata = metadata.extract::<PartialMetadata>().ok().unwrap_or_default();
         self.0.log_with_meta(&msg.0, metadata.into());
+    }
+
+    fn __repr__(&self) -> String {
+        format!("${channelClass}(topic='{}')", self.0.topic()).to_string()
     }
 }
 `;

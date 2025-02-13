@@ -70,13 +70,13 @@ def start_server(
 
 def enable_log_forwarding(level: str) -> None:
     """
-    Enable SDK logging to stdio.
+    Forward SDK logs to python's logging facility.
     """
     ...
 
 def disable_log_forwarding() -> None:
     """
-    Disable SDK logging to stdio.
+    Stop forwarding SDK logs.
     """
     ...
 
@@ -94,6 +94,6 @@ def record_file(path: str) -> None:
 
 def get_channel_for_topic(topic: str) -> BaseChannel:
     """
-    Get a channel for the given topic.
+    Get a previously-registered channel.
     """
     ...

@@ -21,12 +21,15 @@ logging.basicConfig(
 atexit.register(shutdown)
 
 
-def log_level_from_int(level: int) -> str:
+def _log_level_from_int(level: int) -> str:
     log_levels = {10: "debug", 20: "info", 30: "warn", 40: "error"}
     return log_levels.get(level, "unknown")
 
 
 def verbose_on(level: Union[int, str] = "debug") -> None:
+    """
+    Forward SDK logs to python's logging facility.
+    """
     if isinstance(level, int):
         assert level in [
             logging.DEBUG,
@@ -34,7 +37,7 @@ def verbose_on(level: Union[int, str] = "debug") -> None:
             logging.WARN,
             logging.ERROR,
         ], ValueError("Invalid log level")
-        level = log_level_from_int(level)
+        level = _log_level_from_int(level)
     else:
         assert level in ["debug", "info", "warn", "error"], ValueError(
             "Invalid log level"
@@ -44,6 +47,9 @@ def verbose_on(level: Union[int, str] = "debug") -> None:
 
 
 def verbose_off() -> None:
+    """
+    Stop forwarding SDK logs
+    """
     logging.debug("SDK logging disabled")
     disable_log_forwarding()
 

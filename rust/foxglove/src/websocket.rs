@@ -4,9 +4,9 @@ use crate::websocket::protocol::client::Subscription;
 pub use crate::websocket::protocol::client::{
     ClientChannel, ClientChannelId, ClientMessage, SubscriptionId,
 };
-pub use crate::websocket::protocol::server::{Capability, Status, StatusLevel};
-#[cfg(feature = "unstable")]
-pub use crate::websocket::protocol::server::{Parameter, ParameterType, ParameterValue};
+pub use crate::websocket::protocol::server::{
+    Capability, Parameter, ParameterType, ParameterValue, Status, StatusLevel,
+};
 use crate::{get_runtime_handle, Channel, FoxgloveError, LogSink, Metadata};
 use bimap::BiHashMap;
 use bytes::{BufMut, BytesMut};
@@ -211,7 +211,7 @@ struct ConnectedClient {
     /// Channels advertised by this client
     advertised_channels: parking_lot::Mutex<HashMap<ClientChannelId, Arc<ClientChannel>>>,
     /// Parameters subscribed to by this client
-    subscribed_parameters: parking_lot::Mutex<HashSet<String>>,
+    parameter_subscriptions: parking_lot::Mutex<HashSet<String>>,
     /// Optional callback handler for a server implementation
     server_listener: Option<Arc<dyn ServerListener>>,
     server: Weak<Server>,
@@ -263,13 +263,13 @@ impl ConnectedClient {
                 parameters,
                 request_id,
             }) => {
-                self.on_set_parameters(parameters, request_id);
+                self.on_set_parameters(server, parameters, request_id);
             }
             Ok(ClientMessage::SubscribeParameterUpdates { parameter_names }) => {
-                self.on_parameters_subscribe(parameter_names);
+                self.on_parameters_subscribe(server, parameter_names);
             }
             Ok(ClientMessage::UnsubscribeParameterUpdates { parameter_names }) => {
-                self.on_parameters_unsubscribe(parameter_names);
+                self.on_parameters_unsubscribe(server, parameter_names);
             }
             _ => {
                 tracing::error!("Unsupported message from {}: {message}", self.addr);
@@ -537,41 +537,82 @@ impl ConnectedClient {
 
     fn on_get_parameters(&self, param_names: Vec<String>, request_id: Option<String>) {
         if let Some(handler) = self.server_listener.as_ref() {
-            let request_id = request_id.map(String::as_str);
+            let request_id = request_id.as_deref();
             let parameters = handler.on_get_parameters(Client(self), param_names, request_id);
-            match protocol::server::parameters_json(&parameters, request_id) {
-                Ok(message) => {
-                    let _ = self.control_plane_tx.try_send(Message::text(message));
-                }
-                Err(err) => {
-                    tracing::error!("Failed to serialize parameter values: {err}");
-                }
-            }
+            let message = protocol::server::parameters_json(&parameters, request_id);
+            let _ = self.control_plane_tx.try_send(Message::text(message));
         }
     }
 
-    fn on_set_parameters(&self, parameters: Vec<Parameter>, request_id: Option<String>) {
+    fn on_set_parameters(
+        &self,
+        server: Arc<Server>,
+        parameters: Vec<Parameter>,
+        request_id: Option<String>,
+    ) {
         if let Some(handler) = self.server_listener.as_ref() {
-            let request_id = request_id.map(String::as_str);
+            let request_id = request_id.as_deref();
             let updated_parameters =
                 handler.on_set_parameters(Client(self), parameters, request_id);
-            // Send the updated_parameters back to the client if request_id is provided.
+            // Send all the updated_parameters back to the client if request_id is provided.
             // This is the behavior of the reference Python server implementation.
             if request_id.is_some() {
-                match protocol::server::parameters_json(&updated_parameters, request_id) {
-                    Ok(message) => {
-                        let _ = self.control_plane_tx.try_send(Message::text(message));
-                    }
-                    Err(err) => {
-                        tracing::error!("Failed to serialize parameter values: {err}");
-                    }
-                }
+                let message = protocol::server::parameters_json(&updated_parameters, request_id);
+                self.send_control_msg(Message::text(message));
             }
-            self.update_parameters(updated_parameters);
+            // Send the subscribed parameters to the client if the client is subscribed to them.
+            server.publish_parameter_values(updated_parameters);
         }
     }
 
-    fn update_parameters(&self, parameters: Vec<Parameter>) {}
+    fn update_parameters(&self, parameters: &[Parameter]) {
+        // Hold the lock for as short a time as possible
+        let subscribed_parameters: Vec<Parameter> = {
+            let subscribed_parameters = self.parameter_subscriptions.lock();
+            // Filter parameters to only send the ones the client is subscribed to
+            parameters
+                .iter()
+                .filter(|p| subscribed_parameters.contains(&p.name))
+                .cloned()
+                .collect()
+        };
+        if parameters.is_empty() {
+            return;
+        }
+        let message = protocol::server::parameters_json(&subscribed_parameters, None);
+        self.send_control_msg(Message::text(message));
+    }
+
+    fn on_parameters_subscribe(&self, server: Arc<Server>, mut param_names: Vec<String>) {
+        // First filter param_names down to only the ones the client isn't already subscribed to.
+        // We can skip this step, but it speeds up the O(MN) call to parameters_without_subscription.
+        {
+            let subscribed_parameters = self.parameter_subscriptions.lock();
+            param_names.retain(|name| !subscribed_parameters.contains(name));
+        }
+        // Get the list of parameter names that previously had no subscribers
+        let new_param_subscriptions = server.parameters_without_subscription(param_names.clone());
+        {
+            let mut subscribed_parameters = self.parameter_subscriptions.lock();
+            subscribed_parameters.extend(param_names);
+        }
+        if let Some(handler) = self.server_listener.as_ref() {
+            handler.on_parameters_subscribe(Client(self), new_param_subscriptions);
+        }
+    }
+
+    fn on_parameters_unsubscribe(&self, server: Arc<Server>, mut param_names: Vec<String>) {
+        // First filter param_names down to only the ones the client is subscribed to.
+        {
+            let mut subscribed_parameters = self.parameter_subscriptions.lock();
+            param_names.retain(|name| subscribed_parameters.remove(name));
+        }
+        // Get the list of parameter names that now have no subscribers
+        let unsubscribed_parameters = server.parameters_without_subscription(param_names);
+        if let Some(handler) = self.server_listener.as_ref() {
+            handler.on_parameters_unsubscribe(Client(self), unsubscribed_parameters);
+        }
+    }
 
     /// Send an ad hoc error status message to the client, with the given message.
     fn send_error(&self, message: String) {
@@ -736,6 +777,18 @@ impl Server {
         }
     }
 
+    /// Filter param_names to just those with no subscribers
+    fn parameters_without_subscription(&self, mut param_names: Vec<String>) -> Vec<String> {
+        let clients = self.clients.get();
+        for client in clients.iter() {
+            let subscribed_parameters = client.parameter_subscriptions.lock();
+            // Remove any parameters that are already subscribed to by this client
+            param_names.retain(|name| !subscribed_parameters.contains(name));
+        }
+        // The remaining parameters are those with no subscribers
+        param_names
+    }
+
     /// Publish the current timestamp to all clients.
     #[cfg(feature = "unstable")]
     pub async fn broadcast_time(&self, timestamp_nanos: u64) {
@@ -757,31 +810,15 @@ impl Server {
     }
 
     /// Publish parameter values to all clients.
-    #[cfg(feature = "unstable")]
-    pub async fn publish_parameter_values(
-        &self,
-        parameters: Vec<Parameter>,
-        client_addr: Option<SocketAddr>,
-    ) {
+    pub fn publish_parameter_values(&self, parameters: Vec<Parameter>) {
         if !self.capabilities.contains(&Capability::Parameters) {
             tracing::error!("Server does not support parameters capability");
             return;
         }
 
-        let message = match protocol::server::parameters_json(parameters, None) {
-            Ok(message) => message,
-            Err(err) => {
-                tracing::error!("Failed to serialize parameter values: {err}");
-                return;
-            }
-        };
-        // FG-9994: This should only send to clients that have subscribed to the parameters.
         let clients = self.clients.get();
         for client in clients.iter() {
-            if client_addr.is_some_and(|addr| addr != client.addr) {
-                continue;
-            }
-            client.send_control_msg(Message::text(message.clone()));
+            client.update_parameters(&parameters);
         }
     }
 
@@ -847,7 +884,7 @@ impl Server {
             control_plane_rx: ctrl_rx,
             subscriptions: parking_lot::Mutex::new(BiHashMap::new()),
             advertised_channels: parking_lot::Mutex::new(HashMap::new()),
-            subscribed_parameters: parking_lot::Mutex::new(HashSet::new()),
+            parameter_subscriptions: parking_lot::Mutex::new(HashSet::new()),
             server_listener: self.listener.clone(),
             server: self.weak_self.clone(),
         });

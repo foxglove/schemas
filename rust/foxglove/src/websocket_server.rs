@@ -4,9 +4,7 @@ use std::fmt::Debug;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use crate::websocket::{create_server, Server, ServerOptions, Status};
-#[cfg(feature = "unstable")]
-use crate::websocket::{Capability, Parameter};
+use crate::websocket::{create_server, Capability, Parameter, Server, ServerOptions, Status};
 use crate::{get_runtime_handle, FoxgloveError, LogContext, LogSink};
 use tokio::runtime::Handle;
 
@@ -63,16 +61,12 @@ impl WebSocketServer {
     /// Sets the server capabilities to advertise to the client.
     ///
     /// By default, the server does not advertise any capabilities.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
     pub fn capabilities(mut self, capabilities: impl IntoIterator<Item = Capability>) -> Self {
         self.options.capabilities = Some(capabilities.into_iter().collect());
         self
     }
 
     /// Configure an event listener to receive client message events.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
     pub fn listener(mut self, listener: Arc<dyn crate::websocket::ServerListener>) -> Self {
         self.options.listener = Some(listener);
         self
@@ -166,12 +160,8 @@ impl WebSocketServerHandle {
     }
 
     /// Publishes parameter values to all clients.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
-    pub async fn publish_parameter_values(&self, parameters: impl IntoIterator<Item = Parameter>) {
-        self.0
-            .publish_parameter_values(parameters.into_iter().collect(), None)
-            .await;
+    pub fn publish_parameter_values(&self, parameters: Vec<Parameter>) {
+        self.0.publish_parameter_values(parameters);
     }
 
     /// Publishes a status message to all clients.
@@ -215,12 +205,8 @@ impl WebSocketServerBlockingHandle {
     }
 
     /// Publishes parameter values to all clients.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
-    pub fn publish_parameter_values(&self, parameters: impl IntoIterator<Item = Parameter>) {
-        self.0
-            .runtime()
-            .block_on(self.0.publish_parameter_values(parameters))
+    pub fn publish_parameter_values(&self, parameters: Vec<Parameter>) {
+        self.0.publish_parameter_values(parameters)
     }
 
     /// Publishes a status message to all clients.

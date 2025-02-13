@@ -191,11 +191,9 @@ pub use metadata::{Metadata, PartialMetadata};
 pub(crate) use runtime::get_runtime_handle;
 pub use runtime::shutdown_runtime;
 pub(crate) use time::nanoseconds_since_epoch;
-#[doc(hidden)]
-#[cfg(feature = "unstable")]
-pub use websocket::{Capability, Parameter, ParameterType, ParameterValue};
 pub use websocket::{
-    ChannelView, Client, ClientChannelId, ClientChannelView, ClientId, ServerListener,
+    Capability, ChannelView, Client, ClientChannelId, ClientChannelView, ClientId, Parameter,
+    ParameterType, ParameterValue, ServerListener,
 };
 pub use websocket_server::{WebSocketServer, WebSocketServerBlockingHandle, WebSocketServerHandle};
 
@@ -232,7 +230,6 @@ pub enum FoxgloveError {
     MCAPError(#[from] mcap::McapError),
     /// An error related to JSON encoding.
     #[doc(hidden)]
-    #[cfg(feature = "unstable")]
     #[error(transparent)]
     JSONError(#[from] serde_json::Error),
 }

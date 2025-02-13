@@ -99,7 +99,6 @@ pub struct Subscription {
     pub channel_id: ChannelId,
 }
 
-#[doc(hidden)]
 #[derive(Debug, Clone, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ClientChannel {

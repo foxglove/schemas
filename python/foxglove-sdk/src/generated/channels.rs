@@ -47,7 +47,7 @@ pub fn register_submodule(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     parent_module.add_submodule(&module)
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct CameraCalibrationChannel(TypedChannel<foxglove::schemas::CameraCalibration>);
 
 #[pymethods]
@@ -72,7 +72,7 @@ impl CameraCalibrationChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct CircleAnnotationChannel(TypedChannel<foxglove::schemas::CircleAnnotation>);
 
 #[pymethods]
@@ -93,7 +93,7 @@ impl CircleAnnotationChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct ColorChannel(TypedChannel<foxglove::schemas::Color>);
 
 #[pymethods]
@@ -114,7 +114,7 @@ impl ColorChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct CompressedImageChannel(TypedChannel<foxglove::schemas::CompressedImage>);
 
 #[pymethods]
@@ -135,7 +135,7 @@ impl CompressedImageChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct CompressedVideoChannel(TypedChannel<foxglove::schemas::CompressedVideo>);
 
 #[pymethods]
@@ -156,7 +156,7 @@ impl CompressedVideoChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct FrameTransformChannel(TypedChannel<foxglove::schemas::FrameTransform>);
 
 #[pymethods]
@@ -177,7 +177,7 @@ impl FrameTransformChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct FrameTransformsChannel(TypedChannel<foxglove::schemas::FrameTransforms>);
 
 #[pymethods]
@@ -198,7 +198,7 @@ impl FrameTransformsChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct GeoJsonChannel(TypedChannel<foxglove::schemas::GeoJson>);
 
 #[pymethods]
@@ -219,7 +219,7 @@ impl GeoJsonChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct GridChannel(TypedChannel<foxglove::schemas::Grid>);
 
 #[pymethods]
@@ -240,7 +240,7 @@ impl GridChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct ImageAnnotationsChannel(TypedChannel<foxglove::schemas::ImageAnnotations>);
 
 #[pymethods]
@@ -261,7 +261,7 @@ impl ImageAnnotationsChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct KeyValuePairChannel(TypedChannel<foxglove::schemas::KeyValuePair>);
 
 #[pymethods]
@@ -282,7 +282,7 @@ impl KeyValuePairChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct LaserScanChannel(TypedChannel<foxglove::schemas::LaserScan>);
 
 #[pymethods]
@@ -303,7 +303,7 @@ impl LaserScanChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct LocationFixChannel(TypedChannel<foxglove::schemas::LocationFix>);
 
 #[pymethods]
@@ -324,7 +324,7 @@ impl LocationFixChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct LogChannel(TypedChannel<foxglove::schemas::Log>);
 
 #[pymethods]
@@ -345,7 +345,7 @@ impl LogChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct SceneEntityDeletionChannel(TypedChannel<foxglove::schemas::SceneEntityDeletion>);
 
 #[pymethods]
@@ -370,7 +370,7 @@ impl SceneEntityDeletionChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct SceneEntityChannel(TypedChannel<foxglove::schemas::SceneEntity>);
 
 #[pymethods]
@@ -391,7 +391,7 @@ impl SceneEntityChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct SceneUpdateChannel(TypedChannel<foxglove::schemas::SceneUpdate>);
 
 #[pymethods]
@@ -412,7 +412,7 @@ impl SceneUpdateChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct PackedElementFieldChannel(TypedChannel<foxglove::schemas::PackedElementField>);
 
 #[pymethods]
@@ -437,7 +437,7 @@ impl PackedElementFieldChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct Point2Channel(TypedChannel<foxglove::schemas::Point2>);
 
 #[pymethods]
@@ -458,7 +458,7 @@ impl Point2Channel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct Point3Channel(TypedChannel<foxglove::schemas::Point3>);
 
 #[pymethods]
@@ -479,7 +479,7 @@ impl Point3Channel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct PointCloudChannel(TypedChannel<foxglove::schemas::PointCloud>);
 
 #[pymethods]
@@ -500,7 +500,7 @@ impl PointCloudChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct PointsAnnotationChannel(TypedChannel<foxglove::schemas::PointsAnnotation>);
 
 #[pymethods]
@@ -521,7 +521,7 @@ impl PointsAnnotationChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct PoseChannel(TypedChannel<foxglove::schemas::Pose>);
 
 #[pymethods]
@@ -542,7 +542,7 @@ impl PoseChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct PoseInFrameChannel(TypedChannel<foxglove::schemas::PoseInFrame>);
 
 #[pymethods]
@@ -563,7 +563,7 @@ impl PoseInFrameChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct PosesInFrameChannel(TypedChannel<foxglove::schemas::PosesInFrame>);
 
 #[pymethods]
@@ -584,7 +584,7 @@ impl PosesInFrameChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct QuaternionChannel(TypedChannel<foxglove::schemas::Quaternion>);
 
 #[pymethods]
@@ -605,7 +605,7 @@ impl QuaternionChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct RawImageChannel(TypedChannel<foxglove::schemas::RawImage>);
 
 #[pymethods]
@@ -626,7 +626,7 @@ impl RawImageChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct TextAnnotationChannel(TypedChannel<foxglove::schemas::TextAnnotation>);
 
 #[pymethods]
@@ -647,7 +647,7 @@ impl TextAnnotationChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct Vector2Channel(TypedChannel<foxglove::schemas::Vector2>);
 
 #[pymethods]
@@ -668,7 +668,7 @@ impl Vector2Channel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct Vector3Channel(TypedChannel<foxglove::schemas::Vector3>);
 
 #[pymethods]

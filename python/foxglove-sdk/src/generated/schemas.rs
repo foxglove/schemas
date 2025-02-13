@@ -6,7 +6,7 @@
 use pyo3::prelude::*;
 
 /// An enumeration indicating how input points should be interpreted to create lines
-#[pyclass(eq, eq_int)]
+#[pyclass(eq, eq_int, module = "foxglove.schemas")]
 #[derive(PartialEq, Clone)]
 pub(crate) enum LinePrimitiveLineType {
     LineStrip = 0,
@@ -15,7 +15,7 @@ pub(crate) enum LinePrimitiveLineType {
 }
 
 /// Log level
-#[pyclass(eq, eq_int)]
+#[pyclass(eq, eq_int, module = "foxglove.schemas")]
 #[derive(PartialEq, Clone)]
 pub(crate) enum LogLevel {
     Unknown = 0,
@@ -27,7 +27,7 @@ pub(crate) enum LogLevel {
 }
 
 /// An enumeration indicating which entities should match a SceneEntityDeletion command
-#[pyclass(eq, eq_int)]
+#[pyclass(eq, eq_int, module = "foxglove.schemas")]
 #[derive(PartialEq, Clone)]
 pub(crate) enum SceneEntityDeletionType {
     MatchingId = 0,
@@ -35,7 +35,7 @@ pub(crate) enum SceneEntityDeletionType {
 }
 
 /// Numeric type
-#[pyclass(eq, eq_int)]
+#[pyclass(eq, eq_int, module = "foxglove.schemas")]
 #[derive(PartialEq, Clone)]
 pub(crate) enum PackedElementFieldNumericType {
     Unknown = 0,
@@ -50,7 +50,7 @@ pub(crate) enum PackedElementFieldNumericType {
 }
 
 /// Type of points annotation
-#[pyclass(eq, eq_int)]
+#[pyclass(eq, eq_int, module = "foxglove.schemas")]
 #[derive(PartialEq, Clone)]
 pub(crate) enum PointsAnnotationType {
     Unknown = 0,
@@ -61,7 +61,7 @@ pub(crate) enum PointsAnnotationType {
 }
 
 /// Type of position covariance
-#[pyclass(eq, eq_int)]
+#[pyclass(eq, eq_int, module = "foxglove.schemas")]
 #[derive(PartialEq, Clone)]
 pub(crate) enum LocationFixPositionCovarianceType {
     Unknown = 0,
@@ -70,7 +70,7 @@ pub(crate) enum LocationFixPositionCovarianceType {
     Known = 3,
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub struct Timestamp {
     pub seconds: i64,
@@ -98,7 +98,7 @@ impl From<Timestamp> for prost_types::Timestamp {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub struct Duration {
     pub seconds: u64,
@@ -126,7 +126,7 @@ impl From<Duration> for prost_types::Duration {
     }
 }
 /// A primitive representing an arrow
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct ArrowPrimitive(pub(crate) foxglove::schemas::ArrowPrimitive);
 #[pymethods]
@@ -159,7 +159,7 @@ impl From<ArrowPrimitive> for foxglove::schemas::ArrowPrimitive {
 }
 
 /// Camera calibration parameters
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CameraCalibration(pub(crate) foxglove::schemas::CameraCalibration);
 #[pymethods]
@@ -198,7 +198,7 @@ impl From<CameraCalibration> for foxglove::schemas::CameraCalibration {
 }
 
 /// A circle annotation on a 2D image
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CircleAnnotation(pub(crate) foxglove::schemas::CircleAnnotation);
 #[pymethods]
@@ -231,7 +231,7 @@ impl From<CircleAnnotation> for foxglove::schemas::CircleAnnotation {
 }
 
 /// A color in RGBA format
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Color(pub(crate) foxglove::schemas::Color);
 #[pymethods]
@@ -250,7 +250,7 @@ impl From<Color> for foxglove::schemas::Color {
 }
 
 /// A compressed image
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CompressedImage(pub(crate) foxglove::schemas::CompressedImage);
 #[pymethods]
@@ -274,7 +274,7 @@ impl From<CompressedImage> for foxglove::schemas::CompressedImage {
 }
 
 /// A single frame of a compressed video bitstream
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CompressedVideo(pub(crate) foxglove::schemas::CompressedVideo);
 #[pymethods]
@@ -298,7 +298,7 @@ impl From<CompressedVideo> for foxglove::schemas::CompressedVideo {
 }
 
 /// A primitive representing a cylinder, elliptic cylinder, or truncated cone
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CylinderPrimitive(pub(crate) foxglove::schemas::CylinderPrimitive);
 #[pymethods]
@@ -329,7 +329,7 @@ impl From<CylinderPrimitive> for foxglove::schemas::CylinderPrimitive {
 }
 
 /// A primitive representing a cube or rectangular prism
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CubePrimitive(pub(crate) foxglove::schemas::CubePrimitive);
 #[pymethods]
@@ -352,7 +352,7 @@ impl From<CubePrimitive> for foxglove::schemas::CubePrimitive {
 }
 
 /// A transform between two reference frames in 3D space
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct FrameTransform(pub(crate) foxglove::schemas::FrameTransform);
 #[pymethods]
@@ -383,7 +383,7 @@ impl From<FrameTransform> for foxglove::schemas::FrameTransform {
 }
 
 /// An array of FrameTransform messages
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct FrameTransforms(pub(crate) foxglove::schemas::FrameTransforms);
 #[pymethods]
@@ -404,7 +404,7 @@ impl From<FrameTransforms> for foxglove::schemas::FrameTransforms {
 }
 
 /// GeoJSON data for annotating maps
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct GeoJson(pub(crate) foxglove::schemas::GeoJson);
 #[pymethods]
@@ -423,7 +423,7 @@ impl From<GeoJson> for foxglove::schemas::GeoJson {
 }
 
 /// A 2D grid of data
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Grid(pub(crate) foxglove::schemas::Grid);
 #[pymethods]
@@ -462,7 +462,7 @@ impl From<Grid> for foxglove::schemas::Grid {
 }
 
 /// Array of annotations for a 2D image
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct ImageAnnotations(pub(crate) foxglove::schemas::ImageAnnotations);
 #[pymethods]
@@ -489,7 +489,7 @@ impl From<ImageAnnotations> for foxglove::schemas::ImageAnnotations {
 }
 
 /// A key with its associated value
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct KeyValuePair(pub(crate) foxglove::schemas::KeyValuePair);
 #[pymethods]
@@ -508,7 +508,7 @@ impl From<KeyValuePair> for foxglove::schemas::KeyValuePair {
 }
 
 /// A single scan from a planar laser range-finder
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct LaserScan(pub(crate) foxglove::schemas::LaserScan);
 #[pymethods]
@@ -543,7 +543,7 @@ impl From<LaserScan> for foxglove::schemas::LaserScan {
 }
 
 /// A primitive representing a series of points connected by lines
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct LinePrimitive(pub(crate) foxglove::schemas::LinePrimitive);
 #[pymethods]
@@ -580,7 +580,7 @@ impl From<LinePrimitive> for foxglove::schemas::LinePrimitive {
 }
 
 /// A navigation satellite fix for any Global Navigation Satellite System
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct LocationFix(pub(crate) foxglove::schemas::LocationFix);
 #[pymethods]
@@ -615,7 +615,7 @@ impl From<LocationFix> for foxglove::schemas::LocationFix {
 }
 
 /// A log message
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Log(pub(crate) foxglove::schemas::Log);
 #[pymethods]
@@ -648,7 +648,7 @@ impl From<Log> for foxglove::schemas::Log {
 }
 
 /// Command to remove previously published entities
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct SceneEntityDeletion(pub(crate) foxglove::schemas::SceneEntityDeletion);
 #[pymethods]
@@ -671,7 +671,7 @@ impl From<SceneEntityDeletion> for foxglove::schemas::SceneEntityDeletion {
 }
 
 /// A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct SceneEntity(pub(crate) foxglove::schemas::SceneEntity);
 #[pymethods]
@@ -720,7 +720,7 @@ impl From<SceneEntity> for foxglove::schemas::SceneEntity {
 }
 
 /// An update to the entities displayed in a 3D scene
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct SceneUpdate(pub(crate) foxglove::schemas::SceneUpdate);
 #[pymethods]
@@ -742,7 +742,7 @@ impl From<SceneUpdate> for foxglove::schemas::SceneUpdate {
 }
 
 /// A primitive representing a 3D model file loaded from an external URL or embedded data
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct ModelPrimitive(pub(crate) foxglove::schemas::ModelPrimitive);
 #[pymethods]
@@ -777,7 +777,7 @@ impl From<ModelPrimitive> for foxglove::schemas::ModelPrimitive {
 }
 
 /// A field present within each element in a byte array of packed elements.
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct PackedElementField(pub(crate) foxglove::schemas::PackedElementField);
 #[pymethods]
@@ -800,7 +800,7 @@ impl From<PackedElementField> for foxglove::schemas::PackedElementField {
 }
 
 /// A point representing a position in 2D space
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Point2(pub(crate) foxglove::schemas::Point2);
 #[pymethods]
@@ -819,7 +819,7 @@ impl From<Point2> for foxglove::schemas::Point2 {
 }
 
 /// A point representing a position in 3D space
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Point3(pub(crate) foxglove::schemas::Point3);
 #[pymethods]
@@ -838,7 +838,7 @@ impl From<Point3> for foxglove::schemas::Point3 {
 }
 
 /// A collection of N-dimensional points, which may contain additional fields with information like normals, intensity, etc.
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct PointCloud(pub(crate) foxglove::schemas::PointCloud);
 #[pymethods]
@@ -871,7 +871,7 @@ impl From<PointCloud> for foxglove::schemas::PointCloud {
 }
 
 /// An array of points on a 2D image
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct PointsAnnotation(pub(crate) foxglove::schemas::PointsAnnotation);
 #[pymethods]
@@ -906,7 +906,7 @@ impl From<PointsAnnotation> for foxglove::schemas::PointsAnnotation {
 }
 
 /// A position and orientation for an object or reference frame in 3D space
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Pose(pub(crate) foxglove::schemas::Pose);
 #[pymethods]
@@ -928,7 +928,7 @@ impl From<Pose> for foxglove::schemas::Pose {
 }
 
 /// A timestamped pose for an object or reference frame in 3D space
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct PoseInFrame(pub(crate) foxglove::schemas::PoseInFrame);
 #[pymethods]
@@ -951,7 +951,7 @@ impl From<PoseInFrame> for foxglove::schemas::PoseInFrame {
 }
 
 /// An array of timestamped poses for an object or reference frame in 3D space
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct PosesInFrame(pub(crate) foxglove::schemas::PosesInFrame);
 #[pymethods]
@@ -974,7 +974,7 @@ impl From<PosesInFrame> for foxglove::schemas::PosesInFrame {
 }
 
 /// A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Quaternion(pub(crate) foxglove::schemas::Quaternion);
 #[pymethods]
@@ -993,7 +993,7 @@ impl From<Quaternion> for foxglove::schemas::Quaternion {
 }
 
 /// A raw image
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct RawImage(pub(crate) foxglove::schemas::RawImage);
 #[pymethods]
@@ -1028,7 +1028,7 @@ impl From<RawImage> for foxglove::schemas::RawImage {
 }
 
 /// A primitive representing a sphere or ellipsoid
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct SpherePrimitive(pub(crate) foxglove::schemas::SpherePrimitive);
 #[pymethods]
@@ -1051,7 +1051,7 @@ impl From<SpherePrimitive> for foxglove::schemas::SpherePrimitive {
 }
 
 /// A text label on a 2D image
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct TextAnnotation(pub(crate) foxglove::schemas::TextAnnotation);
 #[pymethods]
@@ -1084,7 +1084,7 @@ impl From<TextAnnotation> for foxglove::schemas::TextAnnotation {
 }
 
 /// A primitive representing a text label
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct TextPrimitive(pub(crate) foxglove::schemas::TextPrimitive);
 #[pymethods]
@@ -1117,7 +1117,7 @@ impl From<TextPrimitive> for foxglove::schemas::TextPrimitive {
 }
 
 /// A primitive representing a set of triangles or a surface tiled by triangles
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct TriangleListPrimitive(pub(crate) foxglove::schemas::TriangleListPrimitive);
 #[pymethods]
@@ -1148,7 +1148,7 @@ impl From<TriangleListPrimitive> for foxglove::schemas::TriangleListPrimitive {
 }
 
 /// A vector in 2D space that represents a direction only
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Vector2(pub(crate) foxglove::schemas::Vector2);
 #[pymethods]
@@ -1167,7 +1167,7 @@ impl From<Vector2> for foxglove::schemas::Vector2 {
 }
 
 /// A vector in 3D space that represents a direction only
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Vector3(pub(crate) foxglove::schemas::Vector3);
 #[pymethods]

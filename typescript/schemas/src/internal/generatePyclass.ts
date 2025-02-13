@@ -130,8 +130,8 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
   }));
   const struct = [
     rustDoc(schema.description),
-    "#[pyclass]",
-    "#[derive(Clone)]",
+    `#[pyclass(module = "foxglove.schemas")]`,
+    `#[derive(Clone)]`,
     `pub(crate) struct ${className}(pub(crate) foxglove::schemas::${className});`,
   ];
 
@@ -192,7 +192,7 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
 function generateEnumClass(schema: FoxgloveEnumSchema): string {
   const enumLines = [
     rustDoc(schema.description),
-    `#[pyclass(eq, eq_int)]`,
+    `#[pyclass(eq, eq_int, module = "foxglove.schemas")]`,
     `#[derive(PartialEq, Clone)]`,
     `pub(crate) enum ${enumName(schema)} {`,
     ...schema.values.map((value) => `    ${constantToTitleCase(value.name)} = ${value.value},`),
@@ -452,7 +452,7 @@ class Duration:
  */
 export function generateTimeTypes(): string {
   return `
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub struct Timestamp {
     pub seconds: i64,
@@ -480,7 +480,7 @@ impl From<Timestamp> for prost_types::Timestamp {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub struct Duration {
     pub seconds: u64,
@@ -587,7 +587,7 @@ export function generateChannelClasses(messageSchemas: FoxgloveMessageSchema[]):
     const schemaClass = structName(schema.name);
     const channelClass = `${schemaClass}Channel`;
     return `
-#[pyclass]
+#[pyclass(module = "foxglove.channels")]
 struct ${channelClass}(TypedChannel<foxglove::schemas::${schemaClass}>);
 
 #[pymethods]

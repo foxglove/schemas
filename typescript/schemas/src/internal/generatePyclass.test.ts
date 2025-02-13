@@ -18,7 +18,7 @@ describe("generatePyclass", () => {
   it("generates an enum", () => {
     expect(generatePyclass(exampleEnum)).toMatchInlineSnapshot(`
         "/// An example enum
-        #[pyclass(eq, eq_int)]
+        #[pyclass(eq, eq_int, module = "foxglove.schemas")]
         #[derive(PartialEq, Clone)]
         pub(crate) enum ExampleMessageExampleEnum {
             A = 0,
@@ -32,7 +32,7 @@ describe("generatePyclass", () => {
   it("generates a struct from a message", () => {
     expect(generatePyclass(exampleMessage)).toMatchInlineSnapshot(`
         "/// An example type
-        #[pyclass]
+        #[pyclass(module = "foxglove.schemas")]
         #[derive(Clone)]
         pub(crate) struct ExampleMessage(pub(crate) foxglove::schemas::ExampleMessage);
         #[pymethods]

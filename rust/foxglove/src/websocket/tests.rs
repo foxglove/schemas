@@ -6,10 +6,7 @@ use std::sync::Arc;
 use tokio_tungstenite::tungstenite::{self, http::HeaderValue, Message};
 use tungstenite::client::IntoClientRequest;
 
-use super::{
-    create_server, send_lossy, ClientMessage, SendLossyResult, ServerOptions, SubscriptionId,
-    SUBPROTOCOL,
-};
+use super::{create_server, send_lossy, SendLossyResult, ServerOptions, SUBPROTOCOL};
 use crate::testutil::RecordingServerListener;
 use crate::{collection, Channel, ChannelBuilder, LogContext, LogSink, Metadata, Schema};
 
@@ -342,8 +339,9 @@ async fn test_log_only_to_subscribers() {
         .await
         .expect("Failed to send");
 
-    let unsubscribe_both = json!(ClientMessage::Unsubscribe {
-        subscription_ids: vec![SubscriptionId::new(1), SubscriptionId::new(2)]
+    let unsubscribe_both = json!({
+        "op": "unsubscribe",
+        "subscriptionIds": [1, 2],
     });
     client3
         .send(Message::text(subscribe1.to_string()))
@@ -479,7 +477,10 @@ async fn test_error_status_message() {
         let text = msg.into_text().expect("Failed to get message text");
         let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
         assert_eq!(status["level"], 2);
-        assert_eq!(status["message"], "Unsupported message: nonsense");
+        assert_eq!(
+            status["message"],
+            "Invalid message: expected ident at line 1 column 2"
+        );
     }
 
     {
@@ -511,7 +512,10 @@ async fn test_error_status_message() {
         let text = msg.into_text().expect("Failed to get message text");
         let status: Value = serde_json::from_str(&text).expect("Failed to parse status");
         assert_eq!(status["level"], 2);
-        assert_eq!(status["message"], "Invalid binary opcode: 255");
+        assert_eq!(
+            status["message"],
+            "Invalid message: Unknown binary opcode 255"
+        );
     }
 
     server.stop().await;

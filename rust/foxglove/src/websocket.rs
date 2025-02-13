@@ -1,8 +1,10 @@
+//! Websocket functionality
+
 use crate::channel::ChannelId;
 use crate::cow_vec::CowVec;
-use crate::websocket::protocol::client::Subscription;
-pub use crate::websocket::protocol::client::{
-    ClientChannel, ClientChannelId, ClientMessage, SubscriptionId,
+pub use crate::websocket::protocol::client::ClientChannelId;
+use crate::websocket::protocol::client::{
+    ClientChannel, ClientMessage, Subscription, SubscriptionId,
 };
 pub use crate::websocket::protocol::server::{
     Capability, Parameter, ParameterType, ParameterValue, Status, StatusLevel,
@@ -17,6 +19,7 @@ use std::collections::HashSet;
 use std::sync::atomic::Ordering::{AcqRel, Acquire, Relaxed};
 use std::sync::atomic::{AtomicBool, AtomicU32};
 use std::sync::Weak;
+use std::time::{SystemTime, UNIX_EPOCH};
 use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 use thiserror::Error;
 use tokio::runtime::Handle;
@@ -137,7 +140,7 @@ pub(crate) struct Server {
     message_backlog_size: u32,
     runtime: Handle,
     /// May be provided by the caller
-    session_id: String,
+    session_id: parking_lot::RwLock<String>,
     name: String,
     clients: CowVec<Arc<ConnectedClient>>,
     channels: parking_lot::RwLock<HashMap<ChannelId, Arc<Channel>>>,
@@ -222,58 +225,54 @@ impl ConnectedClient {
     ///
     /// Standard protocol messages (such as Close) should be handled upstream.
     fn handle_message(&self, message: Message) {
-        if message.is_binary() {
-            self.handle_binary_message(message);
-        } else {
-            self.handle_text_message(message);
-        }
-    }
-
-    fn handle_text_message(&self, message: Message) {
-        let Ok(message) = message.to_text() else {
-            tracing::error!("Received invalid message from {}", self.addr);
-            self.send_error(format!("Invalid message: {message}"));
-            return;
+        let parse_result = match message {
+            Message::Text(bytes) => ClientMessage::parse_json(bytes.as_str()),
+            Message::Binary(bytes) => match ClientMessage::parse_binary(bytes) {
+                Err(e) => Err(e),
+                Ok(Some(msg)) => Ok(msg),
+                Ok(None) => {
+                    tracing::debug!("Received empty binary message from {}", self.addr);
+                    return;
+                }
+            },
+            _ => {
+                tracing::debug!("Unhandled websocket message: {message:?}");
+                return;
+            }
+        };
+        let msg = match parse_result {
+            Ok(msg) => msg,
+            Err(err) => {
+                tracing::error!("Invalid message from {}: {err}", self.addr);
+                self.send_error(format!("Invalid message: {err}"));
+                return;
+            }
         };
         let Some(server) = self.server.upgrade() else {
-            tracing::error!("Server closed");
             return;
         };
 
-        match serde_json::from_str::<ClientMessage>(message) {
-            Ok(ClientMessage::Subscribe { subscriptions }) => {
-                self.on_subscribe(server, subscriptions);
+        match msg {
+            ClientMessage::Subscribe(msg) => self.on_subscribe(server, msg.subscriptions),
+            ClientMessage::Unsubscribe(msg) => self.on_unsubscribe(server, msg.subscription_ids),
+            ClientMessage::Advertise(msg) => self.on_advertise(server, msg.channels),
+            ClientMessage::Unadvertise(msg) => self.on_unadvertise(msg.channel_ids),
+            ClientMessage::MessageData(msg) => self.on_message_data(msg),
+            ClientMessage::GetParameters(msg) => {
+                self.on_get_parameters(msg.parameter_names, msg.request_id)
             }
-            Ok(ClientMessage::Unsubscribe { subscription_ids }) => {
-                self.on_unsubscribe(server, subscription_ids);
+            ClientMessage::SetParameters(msg) => {
+                self.on_set_parameters(server, msg.parameters, msg.request_id)
             }
-            Ok(ClientMessage::Advertise { channels }) => {
-                self.on_advertise(server, channels);
+            ClientMessage::SubscribeParameterUpdates(msg) => {
+                self.on_parameters_subscribe(server, msg.parameter_names)
             }
-            Ok(ClientMessage::Unadvertise { channel_ids }) => {
-                self.on_unadvertise(channel_ids);
-            }
-            Ok(ClientMessage::GetParameters {
-                parameter_names,
-                request_id,
-            }) => {
-                self.on_get_parameters(parameter_names, request_id);
-            }
-            Ok(ClientMessage::SetParameters {
-                parameters,
-                request_id,
-            }) => {
-                self.on_set_parameters(server, parameters, request_id);
-            }
-            Ok(ClientMessage::SubscribeParameterUpdates { parameter_names }) => {
-                self.on_parameters_subscribe(server, parameter_names);
-            }
-            Ok(ClientMessage::UnsubscribeParameterUpdates { parameter_names }) => {
-                self.on_parameters_unsubscribe(server, parameter_names);
+            ClientMessage::UnsubscribeParameterUpdates(msg) => {
+                self.on_parameters_unsubscribe(server, msg.parameter_names)
             }
             _ => {
-                tracing::error!("Unsupported message from {}: {message}", self.addr);
-                self.send_error(format!("Unsupported message: {message}"));
+                tracing::error!("Unsupported message from {}: {}", self.addr, msg.op());
+                self.send_error(format!("Unsupported message: {}", msg.op()));
             }
         }
     }
@@ -302,56 +301,29 @@ impl ConnectedClient {
         true
     }
 
-    fn handle_binary_message(&self, message: Message) {
-        if message.is_empty() {
-            tracing::debug!("Received empty binary message from {}", self.addr);
-            return;
-        }
-
-        let msg_bytes = message.into_data();
-        let opcode = protocol::client::BinaryOpcode::from_repr(msg_bytes[0]);
-        match opcode {
-            Some(protocol::client::BinaryOpcode::MessageData) => {
-                match protocol::client::parse_binary_message(&msg_bytes) {
-                    Ok((channel_id, payload)) => {
-                        let client_channel = {
-                            let advertised_channels = self.advertised_channels.lock();
-                            let Some(channel) = advertised_channels.get(&channel_id) else {
-                                tracing::error!(
-                                    "Received message for unknown channel: {}",
-                                    channel_id
-                                );
-                                self.send_error(format!("Unknown channel ID: {}", channel_id));
-                                // Do not forward to server listener
-                                return;
-                            };
-                            channel.clone()
-                        };
-                        // Call the handler after releasing the advertised_channels lock
-                        if let Some(handler) = self.server_listener.as_ref() {
-                            handler.on_message_data(
-                                Client(self),
-                                ClientChannelView {
-                                    id: client_channel.id,
-                                    topic: &client_channel.topic,
-                                },
-                                payload,
-                            );
-                        }
-                    }
-                    Err(err) => {
-                        tracing::error!("Failed to parse binary message: {err}");
-                        self.send_error(format!("Failed to parse binary message: {err}"));
-                    }
-                }
-            }
-            Some(_) => {
-                tracing::error!("Opcode not yet implemented: {}", msg_bytes[0]);
-            }
-            None => {
-                tracing::error!("Invalid binary opcode: {}", msg_bytes[0]);
-                self.send_error(format!("Invalid binary opcode: {}", msg_bytes[0]));
-            }
+    fn on_message_data(&self, message: protocol::client::ClientMessageData) {
+        let channel_id = message.channel_id;
+        let payload = message.payload;
+        let client_channel = {
+            let advertised_channels = self.advertised_channels.lock();
+            let Some(channel) = advertised_channels.get(&channel_id) else {
+                tracing::error!("Received message for unknown channel: {}", channel_id);
+                self.send_error(format!("Unknown channel ID: {}", channel_id));
+                // Do not forward to server listener
+                return;
+            };
+            channel.clone()
+        };
+        // Call the handler after releasing the advertised_channels lock
+        if let Some(handler) = self.server_listener.as_ref() {
+            handler.on_message_data(
+                Client(self),
+                ClientChannelView {
+                    id: client_channel.id,
+                    topic: &client_channel.topic,
+                },
+                &payload,
+            );
         }
     }
 
@@ -650,6 +622,15 @@ impl std::fmt::Debug for ConnectedClient {
 
 // A websocket server that implements the Foxglove WebSocket Protocol
 impl Server {
+    /// Generate a random session ID
+    pub(crate) fn generate_session_id() -> String {
+        SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .ok()
+            .map(|d| d.as_millis().to_string())
+            .unwrap_or_default()
+    }
+
     pub fn new(weak_self: Weak<Self>, opts: ServerOptions) -> Self {
         Server {
             weak_self,
@@ -659,7 +640,9 @@ impl Server {
                 .unwrap_or(DEFAULT_MESSAGE_BACKLOG_SIZE) as u32,
             runtime: opts.runtime.unwrap_or_else(get_runtime_handle),
             listener: opts.listener,
-            session_id: opts.session_id.unwrap_or_default(),
+            session_id: parking_lot::RwLock::new(
+                opts.session_id.unwrap_or_else(Self::generate_session_id),
+            ),
             name: opts.name.unwrap_or_default(),
             clients: CowVec::new(),
             channels: parking_lot::RwLock::new(HashMap::new()),
@@ -840,6 +823,25 @@ impl Server {
         }
     }
 
+    /// Sets a new session ID and notifies all clients, causing them to reset their state.
+    /// If no session ID is provided, generates a new one based on the current timestamp.
+    pub fn clear_session(&self, new_session_id: Option<String>) {
+        *self.session_id.write() = new_session_id.unwrap_or_else(Self::generate_session_id);
+
+        let info_message = protocol::server::server_info(
+            &self.session_id.read(),
+            &self.name,
+            &self.capabilities,
+            &self.supported_encodings,
+        );
+
+        let message = Message::text(info_message);
+        let clients = self.clients.get();
+        for client in clients.iter() {
+            client.send_control_msg(message.clone());
+        }
+    }
+
     /// When a new client connects:
     /// - Handshake
     /// - Send ServerInfo
@@ -857,7 +859,7 @@ impl Server {
         let (mut ws_sender, mut ws_receiver) = ws_stream.split();
 
         let info_message = protocol::server::server_info(
-            &self.session_id,
+            &self.session_id.read(),
             &self.name,
             &self.capabilities,
             &self.supported_encodings,

@@ -73,6 +73,14 @@ jobs:
 
       - run: yarn test
 
+      # Install python dependencies required to prettify generated SDK files
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - run: pipx install poetry
+      - run: poetry check --strict
+      - run: poetry install
+
       - name: Ensure generated files are up to date
         run: |
           yarn generate

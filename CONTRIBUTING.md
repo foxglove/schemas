@@ -17,6 +17,21 @@ yarn generate    # regenerate files
 
 Remember to publish new versions of all libraries!
 
+### Rust & Python
+
+This package generates source and interface files for the Foxglove SDK, and relies on tooling from the Rust and Python ecosystems.
+
+- Rust, installed via [rustup](https://rustup.rs/)
+- [Protobuf compiler](https://grpc.io/docs/protoc-installation/)
+- Python dependencies installed via [Poetry](https://python-poetry.org/)
+
+```sh
+pipx install poetry
+poetry install
+```
+
+For more details, refer to the [Python SDK README](python/foxglove-sdk/README.md).
+
 ## Release instructions
 
 Releases are published via GitHub Actions.

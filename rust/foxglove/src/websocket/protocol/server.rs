@@ -6,8 +6,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::json;
 use serde_repr::Serialize_repr;
 use serde_with::{base64::Base64, serde_as};
-use std::collections::HashMap;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 #[repr(u8)]
 pub enum BinaryOpcode {
@@ -84,16 +83,21 @@ pub enum ServerMessage<'a> {
     },
 }
 
+/// The log level for a [`Status`] message.
 #[derive(Debug, Copy, Clone, Serialize_repr)]
 #[repr(u8)]
+#[allow(missing_docs)]
 pub enum StatusLevel {
-    #[allow(dead_code)]
     Info = 0,
-    #[allow(dead_code)]
     Warning = 1,
     Error = 2,
 }
 
+/// A status message.
+///
+/// For more information, refer to the [Status][status] message specification.
+///
+/// [status]: https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#status
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "op")]
 #[serde(rename = "status")]
@@ -105,6 +109,7 @@ pub struct Status {
 }
 
 impl Status {
+    /// Creates a new status message.
     pub fn new(level: StatusLevel, message: String) -> Self {
         Self {
             level,
@@ -113,6 +118,7 @@ impl Status {
         }
     }
 
+    /// Sets the status message ID, so that this status can be replaced or removed in the future.
     pub fn with_id(mut self, id: String) -> Self {
         self.id = Some(id);
         self

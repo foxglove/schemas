@@ -3,17 +3,18 @@ import numpy as np
 import time
 
 from examples.geometry import euler_to_quaternion
+from foxglove.channels import SceneUpdateChannel, FrameTransformChannel
 from foxglove.schemas import (
     Color,
     CubePrimitive,
     Duration,
     FrameTransform,
     Pose,
+    RawImage,
     SceneEntity,
     SceneUpdate,
     Vector3,
 )
-
 
 plot_schema = {
     "type": "object",
@@ -29,14 +30,13 @@ def main() -> None:
 
     server = foxglove.start_server(port=8765)
 
+    # Log messages having well-known Foxglove schemas using the appropriate channel type.
+    box_chan = SceneUpdateChannel("/boxes")
+    tf_chan = FrameTransformChannel("/tf")
+
+    # Log arbitrary messages
     sin_chan = foxglove.Channel(
         topic="/sine", encoder=foxglove.JsonEncoder(), schema=plot_schema
-    )
-    box_chan = foxglove.Channel(
-        topic="/boxes", encoder=foxglove.ProtobufEncoder(), schema=SceneUpdate
-    )
-    tf_chan = foxglove.Channel(
-        topic="/tf", encoder=foxglove.ProtobufEncoder(), schema=FrameTransform
     )
 
     try:
@@ -80,6 +80,18 @@ def main() -> None:
                         ),
                     ]
                 )
+            )
+
+            # Or use high-level log API without needing to manage explicit Channels.
+            foxglove.log(
+                "/high-level",
+                RawImage(
+                    data=np.zeros((100, 100, 3), dtype=np.uint8).tobytes(),
+                    step=300,
+                    width=100,
+                    height=100,
+                    encoding="rgb8",
+                ),
             )
 
             time.sleep(0.05)

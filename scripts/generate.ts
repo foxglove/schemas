@@ -1,7 +1,8 @@
 import { program } from "commander";
-import fs from "fs/promises";
-import { spawnSync } from "node:child_process";
-import path from "path";
+import { SpawnOptions, spawn } from "node:child_process";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { finished } from "node:stream/promises";
 import { rimraf } from "rimraf";
 
 import { generateRosMsg, generateRosMsgDefinition } from "../typescript/schemas/src/internal";
@@ -21,6 +22,17 @@ import {
 } from "../typescript/schemas/src/internal/generateOmgIdl";
 import { generateProto } from "../typescript/schemas/src/internal/generateProto";
 import {
+  generateSchemaModuleRegistration,
+  generateSchemaPrelude,
+  generatePyclass,
+  generatePySchemaStub,
+  generateTimeTypes,
+  generateChannelClasses,
+  generatePyChannelStub,
+  generatePySchemaModule,
+  generatePyChannelModule,
+} from "../typescript/schemas/src/internal/generatePyclass";
+import {
   foxgloveEnumSchemas,
   foxgloveMessageSchemas,
 } from "../typescript/schemas/src/internal/schemas";
@@ -31,17 +43,54 @@ async function logProgress(message: string, body: () => Promise<void>) {
   process.stderr.write("done\n");
 }
 
+async function logProgressLn(message: string, body: () => Promise<void>) {
+  process.stderr.write(`${message}...\n`);
+  await body();
+  process.stderr.write("done\n");
+}
+
+async function exec(command: string, args: string[], { cwd }: Pick<SpawnOptions, "cwd">) {
+  process.stderr.write(`  ==> ${command} ${args.join(" ")}\n`);
+
+  await new Promise<void>((resolve, reject) => {
+    const child = spawn(command, args, {
+      stdio: "inherit",
+      cwd,
+    });
+
+    child.on("close", (code: number) => {
+      if (code !== 0) {
+        const fullCommand = `${command} ${args.join(" ")}`;
+        console.error(`Command failed: \`${fullCommand}\``);
+        reject(new Error(`${command} failed with exit code ${code}`));
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
 async function main({ clean }: { clean: boolean }) {
   const repoRoot = path.resolve(__dirname, "..");
   const outDir = path.join(repoRoot, "schemas");
   const rosOutDir = path.join(repoRoot, "ros_foxglove_msgs");
   const typescriptTypesDir = path.join(repoRoot, "typescript/schemas/src/types");
 
+  const pythonSdkRoot = path.resolve(repoRoot, "python", "foxglove-sdk");
+  const pythonSdkGeneratedRoot = path.join(pythonSdkRoot, "src", "generated");
+  const pythonSdkPyRoot = path.join(pythonSdkRoot, "python/foxglove");
+
   await logProgress("Removing existing output directories", async () => {
     await rimraf(outDir);
     await rimraf(path.join(rosOutDir, "ros1"));
     await rimraf(path.join(rosOutDir, "ros2"));
     await rimraf(typescriptTypesDir);
+    await rimraf(path.join(repoRoot, "rust/foxglove/src/schemas"));
+    await rimraf(pythonSdkGeneratedRoot);
+    await rimraf(path.join(pythonSdkPyRoot, "_foxglove_py/schemas.pyi"));
+    await rimraf(path.join(pythonSdkPyRoot, "schemas/__init__.py"));
+    await rimraf(path.join(pythonSdkPyRoot, "_foxglove_py/channels.pyi"));
+    await rimraf(path.join(pythonSdkPyRoot, "channels/__init__.py"));
   });
 
   if (clean) {
@@ -155,15 +204,81 @@ async function main({ clean }: { clean: boolean }) {
     );
   });
 
-  await logProgress("Running yarn test --updateSnapshot", async () => {
-    const result = spawnSync("yarn", ["test", "--updateSnapshot"], {
-      stdio: "inherit",
+  // This must run before generating the Pyclass definitions
+  await logProgressLn("Generating Rust code", async () => {
+    await exec("cargo", ["run", "--bin", "foxglove-proto-gen"], {
+      cwd: path.join(repoRoot, "rust"),
     });
-    if (result.status !== 0) {
-      throw new Error(`yarn test failed with code ${result.status ?? "unknown"}`);
+  });
+
+  // Generate schemas and supporting source for the Foxglove SDK
+  // These are exported to the SDK directory, and not stored with general-purpose schemas.
+  // Requires rust and python dependencies to be installed.
+  await logProgressLn("Generating Pyclass definitions", async () => {
+    // Source files (.rs) are re-generated.
+    // Stub file is placed into the existing hierarchy.
+    const schemasFile = path.join(pythonSdkGeneratedRoot, "schemas.rs");
+    await fs.mkdir(pythonSdkGeneratedRoot, { recursive: true });
+    await fs.mkdir(path.join(pythonSdkPyRoot, "schemas"), { recursive: true });
+    await fs.mkdir(path.join(pythonSdkPyRoot, "channels"), { recursive: true });
+
+    // Schemas file
+    const writer = (await fs.open(schemasFile, "wx")).createWriteStream();
+    writer.write(generateSchemaPrelude());
+
+    const enumSchemas = Object.values(foxgloveEnumSchemas);
+    for (const enumSchema of enumSchemas) {
+      writer.write(generatePyclass(enumSchema));
     }
+
+    writer.write(generateTimeTypes());
+
+    const messageSchemas = Object.values(foxgloveMessageSchemas);
+    for (const schema of messageSchemas) {
+      writer.write(generatePyclass(schema));
+    }
+
+    const allSchemas = [...enumSchemas, ...messageSchemas];
+
+    writer.write(generateSchemaModuleRegistration(allSchemas));
+    writer.end();
+    await finished(writer);
+
+    const channelClassesFile = path.join(pythonSdkGeneratedRoot, "channels.rs");
+    await fs.writeFile(channelClassesFile, generateChannelClasses(messageSchemas));
+
+    // Stubs are written to the location of the pyo3-generated module
+    // Python module indexes are added for the public API.
+    const schemasStubFile = path.join(pythonSdkPyRoot, "_foxglove_py/schemas.pyi");
+    const schemasStubModule = path.join(pythonSdkPyRoot, "schemas/__init__.py");
+    const channelStubFile = path.join(pythonSdkPyRoot, "_foxglove_py/channels.pyi");
+    const channelStubModule = path.join(pythonSdkPyRoot, "channels/__init__.py");
+
+    await fs.writeFile(schemasStubFile, generatePySchemaStub(allSchemas));
+    await fs.writeFile(schemasStubModule, generatePySchemaModule(allSchemas));
+    await fs.writeFile(channelStubFile, generatePyChannelStub(messageSchemas));
+    await fs.writeFile(channelStubModule, generatePyChannelModule(messageSchemas));
+
+    await exec("cargo", ["fmt", "--", path.resolve(channelClassesFile, schemasFile)], {
+      cwd: repoRoot,
+    });
+
+    const pythonFiles = [
+      path.resolve(schemasStubFile),
+      path.resolve(channelStubFile),
+      path.resolve(schemasStubModule),
+      path.resolve(channelStubModule),
+    ];
+    await exec("poetry", ["run", "black", ...pythonFiles], { cwd: repoRoot });
+  });
+
+  await logProgressLn("Updating Jest snapshots", async () => {
+    await exec("yarn", ["test", "--updateSnapshot"], {
+      cwd: repoRoot,
+    });
   });
 }
 
-program.option("--clean", "remove all generated files").action(main);
+program.option("--clean", "remove all generated files");
+program.action(main);
 program.parseAsync().catch(console.error);

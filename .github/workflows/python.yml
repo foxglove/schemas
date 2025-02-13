@@ -23,7 +23,7 @@ jobs:
       - run: poetry run black . --check
       - run: poetry run flake8 .
 
-  lint-sdk:
+  lint-and-test-sdk:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -39,6 +39,8 @@ jobs:
       - run: poetry install
       - run: poetry run maturin develop
       - run: poetry run mypy .
+      - run: poetry run pytest
+        working-directory: python/foxglove-sdk/python
 
   schemas:
     runs-on: ubuntu-latest

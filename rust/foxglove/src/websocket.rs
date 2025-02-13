@@ -259,10 +259,10 @@ impl ConnectedClient {
             ClientMessage::Unadvertise(msg) => self.on_unadvertise(msg.channel_ids),
             ClientMessage::MessageData(msg) => self.on_message_data(msg),
             ClientMessage::GetParameters(msg) => {
-                self.on_get_parameters(msg.parameter_names, msg.request_id)
+                self.on_get_parameters(msg.parameter_names, msg.id)
             }
             ClientMessage::SetParameters(msg) => {
-                self.on_set_parameters(server, msg.parameters, msg.request_id)
+                self.on_set_parameters(server, msg.parameters, msg.id)
             }
             ClientMessage::SubscribeParameterUpdates(msg) => {
                 self.on_parameters_subscribe(server, msg.parameter_names)

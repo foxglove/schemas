@@ -167,38 +167,11 @@ enum BinaryOpcode {
     ServiceCallRequest = 2,
 }
 
-// https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
-#[serde(tag = "op")]
+// https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#subscribe
+#[derive(Debug, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
-#[serde(rename_all_fields = "camelCase")]
-pub enum ClientMessage {
-    Subscribe {
-        subscriptions: Vec<Subscription>,
-    },
-    Unsubscribe {
-        subscription_ids: Vec<SubscriptionId>,
-    },
-    Advertise {
-        channels: Vec<ClientChannel>,
-    },
-    Unadvertise {
-        channel_ids: Vec<ClientChannelId>,
-    },
-    GetParameters {
-        parameter_names: Vec<String>,
-        request_id: Option<String>,
-    },
-    SetParameters {
-        parameters: Vec<Parameter>,
-        request_id: Option<String>,
-    },
-    SubscribeParameterUpdates {
-        parameter_names: Vec<String>,
-    },
-    UnsubscribeParameterUpdates {
-        parameter_names: Vec<String>,
-    },
+pub(crate) struct Subscribe {
+    pub subscriptions: Vec<Subscription>,
 }
 
 #[derive(Debug, Deserialize, PartialEq)]

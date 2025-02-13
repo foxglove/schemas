@@ -10,7 +10,7 @@ requires-python = ">=3.9"
 dependencies = ["protobuf (>=3.20)"]
 
 [project.urls]
-repository = "https://github.com/foxglove/schemas"
+repository = "https://github.com/foxglove/foxglove-sdk"
 documentation = "https://docs.foxglove.dev/"
 
 [build-system]

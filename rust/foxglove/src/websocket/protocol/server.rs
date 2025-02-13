@@ -64,12 +64,12 @@ pub enum ParameterValue {
 pub struct Parameter {
     /// The name of the parameter.
     pub name: String,
-    /// The parameter value.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub value: Option<ParameterValue>,
     /// The parameter type.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub r#type: Option<ParameterType>,
+    /// The parameter value.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub value: Option<ParameterValue>,
 }
 
 #[derive(Serialize)]
@@ -318,17 +318,17 @@ mod tests {
                     {
                         "name": "f64",
                         "value": 1.23,
-                        "type": "float64"
+                        "type": "float64",
                     },
                     {
                         "name": "f64[]",
+                        "type": "float64_array",
                         "value": [1.23, 4.56],
-                        "type": "float64_array"
                     },
                     {
                         "name": "byte[]",
+                        "type": "byte_array",
                         "value": BASE64_STANDARD.encode(data),
-                        "type": "byte_array"
                     },
                     {
                         "name": "bool",

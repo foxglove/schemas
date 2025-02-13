@@ -119,8 +119,8 @@ impl Status {
     }
 
     /// Sets the status message ID, so that this status can be replaced or removed in the future.
-    pub fn with_id(mut self, id: String) -> Self {
-        self.id = Some(id);
+    pub fn with_id(mut self, id: impl Into<String>) -> Self {
+        self.id = Some(id.into());
         self
     }
 }

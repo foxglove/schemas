@@ -8,6 +8,7 @@ use tungstenite::client::IntoClientRequest;
 
 use super::{create_server, send_lossy, SendLossyResult, ServerOptions, SUBPROTOCOL};
 use crate::testutil::RecordingServerListener;
+use crate::websocket::{Status, StatusLevel};
 use crate::{collection, Channel, ChannelBuilder, LogContext, LogSink, Metadata, Schema};
 
 fn make_message(id: usize) -> Message {
@@ -519,6 +520,81 @@ async fn test_error_status_message() {
     }
 
     server.stop().await;
+}
+
+#[tokio::test]
+async fn test_publish_status_message() {
+    let server = create_server(ServerOptions::default());
+    let addr = server
+        .start("127.0.0.1", 0)
+        .await
+        .expect("Failed to start server");
+
+    let mut ws_client = connect_client(addr).await;
+
+    _ = ws_client.next().await.expect("No serverInfo sent");
+
+    server
+        .publish_status(Status::new(StatusLevel::Info, "Hello, world!".to_string()).with_id("123"));
+    server.publish_status(
+        Status::new(StatusLevel::Error, "Reactor core overload!".to_string()).with_id("abc"),
+    );
+
+    let msg = ws_client
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(
+        text,
+        r#"{"op":"status","level":1,"message":"Hello, world!","id":"123"}"#
+    );
+
+    let msg = ws_client
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(
+        text,
+        r#"{"op":"status","level":3,"message":"Reactor core overload!","id":"abc"}"#
+    );
+}
+
+#[tokio::test]
+async fn test_remove_status() {
+    let server = create_server(ServerOptions::default());
+    let addr = server
+        .start("127.0.0.1", 0)
+        .await
+        .expect("Failed to start server");
+
+    let mut ws_client1 = connect_client(addr.clone()).await;
+    let mut ws_client2 = connect_client(addr).await;
+
+    _ = ws_client1.next().await.expect("No serverInfo sent");
+    _ = ws_client2.next().await.expect("No serverInfo sent");
+
+    // These don't have to exist, and aren't checked
+    server.remove_status(vec!["123".to_string(), "abc".to_string()]);
+
+    let msg = ws_client1
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(text, r#"{"op":"removeStatus","statusIds":["123","abc"]}"#);
+
+    let msg = ws_client2
+        .next()
+        .await
+        .expect("No message received")
+        .expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    assert_eq!(text, r#"{"op":"removeStatus","statusIds":["123","abc"]}"#);
 }
 
 /// Connect to a server, ensuring the protocol header is set, and return the client WS stream

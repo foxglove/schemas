@@ -168,7 +168,7 @@ async fn test_parameter_values() {
         value: Some(ParameterValue::Number(1.23)),
         r#type: Some(ParameterType::Float64),
     };
-    server.publish_parameter_values(vec![parameter], None).await;
+    server.publish_parameter_values(vec![parameter]);
 
     // FG-10395 replace this with something more precise
     std::thread::sleep(std::time::Duration::from_millis(100));

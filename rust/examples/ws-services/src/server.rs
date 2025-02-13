@@ -84,34 +84,50 @@ pub async fn main(config: Config) -> Result<()> {
         .await
         .context("Failed to start server")?;
 
-    let flag_a = Flag::default();
-    let flag_b = Flag::default();
-
+    // Simple services can be implemented with a closure.
     server
         .add_services([
-            // Simple services can be implemented with a closure.
             Service::builder("/empty", empty_schema())
                 .sync_handler_fn(|_, _| anyhow::Ok(Bytes::new())),
-            // Services that have non-trivial request or response schemas can define them with
-            // `.with_request()` and `.with_response()`.
             Service::builder("/echo", echo_schema())
                 .sync_handler_fn(|_, req| anyhow::Ok(req.payload)),
-            // Services that need to sleep (or do heavy computation) should use `tokio::spawn()`
-            // (or `tokio::task::spawn_blocking()`) to avoid blocking the client's main event loop.
-            // Unlike the `SyncHandler` implementations, the generic `Handler` is responsible for
-            // invoking `resp.respond()` to complete the request.
-            Service::builder("/sleepy", empty_schema()).handler_fn(|_, _, resp| {
+        ])
+        .await
+        .context("Failed to register services")?;
+
+    // Services that need to sleep (or do heavy computation) should use `tokio::spawn()`
+    // (or `tokio::task::spawn_blocking()`) to avoid blocking the client's main event loop.
+    // Unlike the `SyncHandler` implementations, the generic `Handler` is responsible for
+    // invoking `resp.respond()` to complete the request.
+    server
+        .add_services([
+            Service::builder("/sleep", empty_schema()).handler_fn(|_, _, resp| {
                 tokio::spawn(async move {
                     tokio::time::sleep(Duration::from_secs(1)).await;
                     resp.respond(Ok(Bytes::new()))
                 });
             }),
-            // A shared handler can be written as a function.
-            Service::builder("/IntBin/add", int_bin_schema()).sync_handler_fn(int_bin_handler),
-            Service::builder("/IntBin/sub", int_bin_schema()).sync_handler_fn(int_bin_handler),
-            Service::builder("/IntBin/mul", int_bin_schema()).sync_handler_fn(int_bin_handler),
-            Service::builder("/IntBin/mod", int_bin_schema()).sync_handler_fn(int_bin_handler),
-            // A stateful handler can be written as a type that implements `Handler`.
+        ])
+        .await
+        .context("Failed to register services")?;
+
+    // A single handler function can be shared by multiple services.
+    server
+        .add_services(
+            ["/IntBin/add", "/IntBin/sub", "/IntBin/mul", "/IntBin/mod"]
+                .into_iter()
+                .map(|name| {
+                    Service::builder(name, int_bin_schema()).sync_handler_fn(int_bin_handler)
+                }),
+        )
+        .await
+        .context("Failed to register services")?;
+
+    // A stateful handler might be written as a type that implements `Handler` (or `SyncHandler`).
+    let flag_a = Flag::default();
+    let flag_b = Flag::default();
+    server
+        .add_services([
             Service::builder("/flag_a", set_bool_schema()).handler(flag_a.clone()),
             Service::builder("/flag_b", set_bool_schema()).handler(flag_b.clone()),
         ])

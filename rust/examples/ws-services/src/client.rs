@@ -332,7 +332,7 @@ impl Client {
     }
 
     async fn call_sleep(&self) -> Result<()> {
-        self.service_call("/sleepy", "", Bytes::new()).await?;
+        self.service_call("/sleep", "", Bytes::new()).await?;
         Ok(())
     }
 

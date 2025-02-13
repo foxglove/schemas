@@ -472,7 +472,7 @@ dependencies = [
 
 [[package]]
 name = "example-client-publish"
-version = "0.2.0"
+version = "0.0.0"
 dependencies = [
  "clap",
  "env_logger",
@@ -484,7 +484,7 @@ dependencies = [
 
 [[package]]
 name = "example-mcap"
-version = "0.2.0"
+version = "0.0.0"
 dependencies = [
  "clap",
  "ctrlc",
@@ -497,7 +497,7 @@ dependencies = [
 
 [[package]]
 name = "example-param-server"
-version = "0.2.0"
+version = "0.0.0"
 dependencies = [
  "clap",
  "env_logger",
@@ -508,7 +508,7 @@ dependencies = [
 
 [[package]]
 name = "example-ws-server"
-version = "0.2.0"
+version = "0.0.0"
 dependencies = [
  "clap",
  "env_logger",
@@ -522,7 +522,7 @@ dependencies = [
 
 [[package]]
 name = "example-ws-server-blocking"
-version = "0.2.0"
+version = "0.0.0"
 dependencies = [
  "clap",
  "ctrlc",
@@ -534,7 +534,7 @@ dependencies = [
 
 [[package]]
 name = "example-ws-stream-mcap"
-version = "0.2.0"
+version = "0.0.0"
 dependencies = [
  "anyhow",
  "bytes",

@@ -1,6 +1,5 @@
 [package]
 name = "example-ws-server"
-version = "0.2.0"
 edition = "2021"
 publish = false
 

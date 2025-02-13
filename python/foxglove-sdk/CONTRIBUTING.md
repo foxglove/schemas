@@ -53,3 +53,11 @@ poetry run flake8 .
 ```sh
 poetry run python python/examples/live_visualization.py
 ```
+
+### Documentation
+
+Sphinx documentation can be generated from this directory with:
+
+```sh
+poetry run sphinx-build ./python/docs ./python/docs/_build
+```

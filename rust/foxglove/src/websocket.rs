@@ -538,6 +538,7 @@ impl ConnectedClient {
     }
 
     fn update_parameters(&self, parameters: &[Parameter]) {
+        println!("update_parameters: {:?}", parameters);
         // Hold the lock for as short a time as possible
         let subscribed_parameters: Vec<Parameter> = {
             let subscribed_parameters = self.parameter_subscriptions.lock();
@@ -549,6 +550,7 @@ impl ConnectedClient {
                 .collect()
         };
         if parameters.is_empty() {
+            println!("update_parameters: no parameters to send");
             return;
         }
         let message = protocol::server::parameters_json(&subscribed_parameters, None);
@@ -556,6 +558,7 @@ impl ConnectedClient {
     }
 
     fn on_parameters_subscribe(&self, server: Arc<Server>, mut param_names: Vec<String>) {
+        println!("on_parameters_subscribe: {:?}", param_names);
         // First filter param_names down to only the ones the client isn't already subscribed to.
         // We can skip this step, but it speeds up the O(MN) call to parameters_without_subscription.
         {
@@ -568,6 +571,7 @@ impl ConnectedClient {
             let mut subscribed_parameters = self.parameter_subscriptions.lock();
             subscribed_parameters.extend(param_names);
         }
+        println!("on_parameters_subscribe: {:?}", new_param_subscriptions);
         if let Some(handler) = self.server_listener.as_ref() {
             handler.on_parameters_subscribe(Client(self), new_param_subscriptions);
         }

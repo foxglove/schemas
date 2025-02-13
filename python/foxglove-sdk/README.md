@@ -20,5 +20,5 @@ poetry install
 Examples are available in `python/examples`. To run the websocket example:
 
 ```sh
-poetry run python python/examples/ws-demo.py
+poetry run python python/examples/live_visualization.py
 ```

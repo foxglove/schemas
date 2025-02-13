@@ -51,5 +51,5 @@ poetry run flake8 .
 ### Examples
 
 ```sh
-poetry run python python/examples/ws-demo.py
+poetry run python python/examples/live_visualization.py
 ```

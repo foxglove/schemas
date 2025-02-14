@@ -26,8 +26,8 @@ Overview
 To record messages, you need at least one sink and at least one channel.
 
 A "sink" is a destination for logged messages — either an MCAP file or a live visualization server.
-Use :python:`record_file` to register a new MCAP sink. Use :python:`start_server` to create a new
-live visualization server.
+Use :python:`record_file` or :python:`with new_mcap_file("")` to register a new MCAP sink. Use
+:python:`start_server` to create a new live visualization server.
 
 A "channel" gives a way to log related messages which have the same schema. Each channel is
 instantiated with a unique topic name.

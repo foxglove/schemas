@@ -452,7 +452,7 @@ impl ConnectedClient {
                 }
             }
 
-            tracing::info!(
+            tracing::debug!(
                 "Client {} subscribed to channel {} with subscription id {}",
                 self.addr,
                 subscription.channel_id,
@@ -575,6 +575,8 @@ impl Server {
             }
         });
 
+        tracing::info!("Started server on {}", bound_addr);
+
         Ok(bound_addr)
     }
 
@@ -618,7 +620,7 @@ impl Server {
         let clients = self.clients.get();
         for client in clients.iter() {
             if client.send_control_msg(Message::text(message.clone())) {
-                tracing::info!(
+                tracing::debug!(
                     "Advertised channel {} with id {} to client {}",
                     channel.topic,
                     channel.id,
@@ -635,7 +637,7 @@ impl Server {
         let clients = self.clients.get();
         for client in clients.iter() {
             if client.send_control_msg(Message::text(message.clone())) {
-                tracing::info!(
+                tracing::debug!(
                     "Unadvertised channel with id {} to client {}",
                     channel_id,
                     client.addr
@@ -831,7 +833,7 @@ impl Server {
         // Run send and receive loops concurrently, and wait for receive to complete
         tokio::select! {
             _ = receive_messages => {
-                tracing::info!("Receive messages task completed");
+                tracing::debug!("Receive messages task completed");
             }
             _ = send_control_messages => {
                 tracing::error!("Send control messages task completed");
@@ -860,7 +862,7 @@ impl Server {
         }
 
         tracing::info!(
-            "Registered client {} advertising {} channels",
+            "Registered client {}; advertising {} channels",
             client.addr,
             channels.len()
         );
@@ -880,7 +882,7 @@ impl Server {
                 break;
             }
 
-            tracing::info!(
+            tracing::debug!(
                 "Advertised channel {} with id {} to client {}",
                 channel.topic,
                 channel.id,

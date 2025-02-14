@@ -70,6 +70,7 @@ pub(crate) enum LocationFixPositionCovarianceType {
     Known = 3,
 }
 
+/// A timestamp in seconds and nanoseconds
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub struct Timestamp {
@@ -102,6 +103,7 @@ impl From<Timestamp> for prost_types::Timestamp {
     }
 }
 
+/// A duration in seconds and nanoseconds
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub struct Duration {

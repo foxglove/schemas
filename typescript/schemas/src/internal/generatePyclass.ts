@@ -467,6 +467,7 @@ class Duration:
  */
 export function generateTimeTypes(): string {
   return `
+/// A timestamp in seconds and nanoseconds
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub struct Timestamp {
@@ -499,6 +500,7 @@ impl From<Timestamp> for prost_types::Timestamp {
     }
 }
 
+/// A duration in seconds and nanoseconds
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub struct Duration {
@@ -610,6 +612,7 @@ export function generateChannelClasses(messageSchemas: FoxgloveMessageSchema[]):
     const schemaClass = structName(schema.name);
     const channelClass = `${schemaClass}Channel`;
     return `
+/// A channel for logging ${schemaClass} messages
 #[pyclass(module = "foxglove.channels")]
 struct ${channelClass}(TypedChannel<foxglove::schemas::${schemaClass}>);
 

@@ -47,6 +47,7 @@ pub fn register_submodule(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     parent_module.add_submodule(&module)
 }
 
+/// A channel for logging CameraCalibration messages
 #[pyclass(module = "foxglove.channels")]
 struct CameraCalibrationChannel(TypedChannel<foxglove::schemas::CameraCalibration>);
 
@@ -79,6 +80,7 @@ impl CameraCalibrationChannel {
     }
 }
 
+/// A channel for logging CircleAnnotation messages
 #[pyclass(module = "foxglove.channels")]
 struct CircleAnnotationChannel(TypedChannel<foxglove::schemas::CircleAnnotation>);
 
@@ -107,6 +109,7 @@ impl CircleAnnotationChannel {
     }
 }
 
+/// A channel for logging Color messages
 #[pyclass(module = "foxglove.channels")]
 struct ColorChannel(TypedChannel<foxglove::schemas::Color>);
 
@@ -135,6 +138,7 @@ impl ColorChannel {
     }
 }
 
+/// A channel for logging CompressedImage messages
 #[pyclass(module = "foxglove.channels")]
 struct CompressedImageChannel(TypedChannel<foxglove::schemas::CompressedImage>);
 
@@ -163,6 +167,7 @@ impl CompressedImageChannel {
     }
 }
 
+/// A channel for logging CompressedVideo messages
 #[pyclass(module = "foxglove.channels")]
 struct CompressedVideoChannel(TypedChannel<foxglove::schemas::CompressedVideo>);
 
@@ -191,6 +196,7 @@ impl CompressedVideoChannel {
     }
 }
 
+/// A channel for logging FrameTransform messages
 #[pyclass(module = "foxglove.channels")]
 struct FrameTransformChannel(TypedChannel<foxglove::schemas::FrameTransform>);
 
@@ -219,6 +225,7 @@ impl FrameTransformChannel {
     }
 }
 
+/// A channel for logging FrameTransforms messages
 #[pyclass(module = "foxglove.channels")]
 struct FrameTransformsChannel(TypedChannel<foxglove::schemas::FrameTransforms>);
 
@@ -247,6 +254,7 @@ impl FrameTransformsChannel {
     }
 }
 
+/// A channel for logging GeoJson messages
 #[pyclass(module = "foxglove.channels")]
 struct GeoJsonChannel(TypedChannel<foxglove::schemas::GeoJson>);
 
@@ -275,6 +283,7 @@ impl GeoJsonChannel {
     }
 }
 
+/// A channel for logging Grid messages
 #[pyclass(module = "foxglove.channels")]
 struct GridChannel(TypedChannel<foxglove::schemas::Grid>);
 
@@ -303,6 +312,7 @@ impl GridChannel {
     }
 }
 
+/// A channel for logging ImageAnnotations messages
 #[pyclass(module = "foxglove.channels")]
 struct ImageAnnotationsChannel(TypedChannel<foxglove::schemas::ImageAnnotations>);
 
@@ -331,6 +341,7 @@ impl ImageAnnotationsChannel {
     }
 }
 
+/// A channel for logging KeyValuePair messages
 #[pyclass(module = "foxglove.channels")]
 struct KeyValuePairChannel(TypedChannel<foxglove::schemas::KeyValuePair>);
 
@@ -359,6 +370,7 @@ impl KeyValuePairChannel {
     }
 }
 
+/// A channel for logging LaserScan messages
 #[pyclass(module = "foxglove.channels")]
 struct LaserScanChannel(TypedChannel<foxglove::schemas::LaserScan>);
 
@@ -387,6 +399,7 @@ impl LaserScanChannel {
     }
 }
 
+/// A channel for logging LocationFix messages
 #[pyclass(module = "foxglove.channels")]
 struct LocationFixChannel(TypedChannel<foxglove::schemas::LocationFix>);
 
@@ -415,6 +428,7 @@ impl LocationFixChannel {
     }
 }
 
+/// A channel for logging Log messages
 #[pyclass(module = "foxglove.channels")]
 struct LogChannel(TypedChannel<foxglove::schemas::Log>);
 
@@ -443,6 +457,7 @@ impl LogChannel {
     }
 }
 
+/// A channel for logging SceneEntityDeletion messages
 #[pyclass(module = "foxglove.channels")]
 struct SceneEntityDeletionChannel(TypedChannel<foxglove::schemas::SceneEntityDeletion>);
 
@@ -475,6 +490,7 @@ impl SceneEntityDeletionChannel {
     }
 }
 
+/// A channel for logging SceneEntity messages
 #[pyclass(module = "foxglove.channels")]
 struct SceneEntityChannel(TypedChannel<foxglove::schemas::SceneEntity>);
 
@@ -503,6 +519,7 @@ impl SceneEntityChannel {
     }
 }
 
+/// A channel for logging SceneUpdate messages
 #[pyclass(module = "foxglove.channels")]
 struct SceneUpdateChannel(TypedChannel<foxglove::schemas::SceneUpdate>);
 
@@ -531,6 +548,7 @@ impl SceneUpdateChannel {
     }
 }
 
+/// A channel for logging PackedElementField messages
 #[pyclass(module = "foxglove.channels")]
 struct PackedElementFieldChannel(TypedChannel<foxglove::schemas::PackedElementField>);
 
@@ -563,6 +581,7 @@ impl PackedElementFieldChannel {
     }
 }
 
+/// A channel for logging Point2 messages
 #[pyclass(module = "foxglove.channels")]
 struct Point2Channel(TypedChannel<foxglove::schemas::Point2>);
 
@@ -591,6 +610,7 @@ impl Point2Channel {
     }
 }
 
+/// A channel for logging Point3 messages
 #[pyclass(module = "foxglove.channels")]
 struct Point3Channel(TypedChannel<foxglove::schemas::Point3>);
 
@@ -619,6 +639,7 @@ impl Point3Channel {
     }
 }
 
+/// A channel for logging PointCloud messages
 #[pyclass(module = "foxglove.channels")]
 struct PointCloudChannel(TypedChannel<foxglove::schemas::PointCloud>);
 
@@ -647,6 +668,7 @@ impl PointCloudChannel {
     }
 }
 
+/// A channel for logging PointsAnnotation messages
 #[pyclass(module = "foxglove.channels")]
 struct PointsAnnotationChannel(TypedChannel<foxglove::schemas::PointsAnnotation>);
 
@@ -675,6 +697,7 @@ impl PointsAnnotationChannel {
     }
 }
 
+/// A channel for logging Pose messages
 #[pyclass(module = "foxglove.channels")]
 struct PoseChannel(TypedChannel<foxglove::schemas::Pose>);
 
@@ -703,6 +726,7 @@ impl PoseChannel {
     }
 }
 
+/// A channel for logging PoseInFrame messages
 #[pyclass(module = "foxglove.channels")]
 struct PoseInFrameChannel(TypedChannel<foxglove::schemas::PoseInFrame>);
 
@@ -731,6 +755,7 @@ impl PoseInFrameChannel {
     }
 }
 
+/// A channel for logging PosesInFrame messages
 #[pyclass(module = "foxglove.channels")]
 struct PosesInFrameChannel(TypedChannel<foxglove::schemas::PosesInFrame>);
 
@@ -759,6 +784,7 @@ impl PosesInFrameChannel {
     }
 }
 
+/// A channel for logging Quaternion messages
 #[pyclass(module = "foxglove.channels")]
 struct QuaternionChannel(TypedChannel<foxglove::schemas::Quaternion>);
 
@@ -787,6 +813,7 @@ impl QuaternionChannel {
     }
 }
 
+/// A channel for logging RawImage messages
 #[pyclass(module = "foxglove.channels")]
 struct RawImageChannel(TypedChannel<foxglove::schemas::RawImage>);
 
@@ -815,6 +842,7 @@ impl RawImageChannel {
     }
 }
 
+/// A channel for logging TextAnnotation messages
 #[pyclass(module = "foxglove.channels")]
 struct TextAnnotationChannel(TypedChannel<foxglove::schemas::TextAnnotation>);
 
@@ -843,6 +871,7 @@ impl TextAnnotationChannel {
     }
 }
 
+/// A channel for logging Vector2 messages
 #[pyclass(module = "foxglove.channels")]
 struct Vector2Channel(TypedChannel<foxglove::schemas::Vector2>);
 
@@ -871,6 +900,7 @@ impl Vector2Channel {
     }
 }
 
+/// A channel for logging Vector3 messages
 #[pyclass(module = "foxglove.channels")]
 struct Vector3Channel(TypedChannel<foxglove::schemas::Vector3>);
 

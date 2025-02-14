@@ -1,4 +1,6 @@
 import json
+import math
+import struct
 import foxglove
 import numpy as np
 import time
@@ -6,13 +8,22 @@ import time
 from examples.geometry import euler_to_quaternion
 
 from foxglove import SchemaDefinition
-from foxglove.channels import SceneUpdateChannel, FrameTransformChannel
+from foxglove.channels import (
+    FrameTransformsChannel,
+    PointCloudChannel,
+    SceneUpdateChannel,
+)
 from foxglove.schemas import (
     Color,
     CubePrimitive,
     Duration,
     FrameTransform,
+    FrameTransforms,
+    PackedElementField,
+    PackedElementFieldNumericType,
+    PointCloud,
     Pose,
+    Quaternion,
     RawImage,
     SceneEntity,
     SceneUpdate,
@@ -40,7 +51,8 @@ def main() -> None:
 
     # Log messages having well-known Foxglove schemas using the appropriate channel type.
     box_chan = SceneUpdateChannel("/boxes")
-    tf_chan = FrameTransformChannel("/tf")
+    tf_chan = FrameTransformsChannel("/tf")
+    point_chan = PointCloudChannel("/pointcloud")
 
     # Log dicts using JSON encoding
     json_chan = foxglove.Channel(topic="/json", schema=plot_schema)
@@ -72,12 +84,25 @@ def main() -> None:
             json_chan.log(json_msg)
 
             tf_chan.log(
-                FrameTransform(
-                    parent_frame_id="world",
-                    child_frame_id="box",
-                    rotation=euler_to_quaternion(roll=1, pitch=0, yaw=counter * 0.1),
+                FrameTransforms(
+                    transforms=[
+                        FrameTransform(
+                            parent_frame_id="world",
+                            child_frame_id="box",
+                            rotation=euler_to_quaternion(
+                                roll=1, pitch=0, yaw=counter * 0.1
+                            ),
+                        ),
+                        FrameTransform(
+                            parent_frame_id="world",
+                            child_frame_id="points",
+                            translation=Vector3(x=-10, y=-10, z=0),
+                        ),
+                    ]
                 )
             )
+
+            sin_chan.log(json_msg)
 
             box_chan.log(
                 SceneUpdate(
@@ -103,6 +128,8 @@ def main() -> None:
                 )
             )
 
+            point_chan.log(make_point_cloud())
+
             # Or use high-level log API without needing to manage explicit Channels.
             foxglove.log(
                 "/high-level",
@@ -119,6 +146,42 @@ def main() -> None:
 
     except KeyboardInterrupt:
         server.stop()
+
+
+def make_point_cloud() -> PointCloud:
+    """
+    https://foxglove.dev/blog/visualizing-point-clouds-with-custom-colors
+    """
+    point_struct = struct.Struct("<fffBBBB")
+    f32 = PackedElementFieldNumericType.Float32
+    u32 = PackedElementFieldNumericType.Uint32
+
+    t = time.time()
+    points = [(x + math.cos(t + y / 5), y, 0) for x in range(20) for y in range(20)]
+    buffer = bytearray(point_struct.size * len(points))
+    for i, point in enumerate(points):
+        x, y, z = point
+        r = int(255 * (0.5 + 0.5 * x / 20))
+        g = int(255 * y / 20)
+        b = int(255 * (0.5 + 0.5 * math.sin(t)))
+        a = int(255 * (0.5 + 0.5 * ((x / 20) * (y / 20))))
+        point_struct.pack_into(buffer, i * point_struct.size, x, y, z, b, g, r, a)
+
+    return PointCloud(
+        frame_id="points",
+        pose=Pose(
+            position=Vector3(x=0, y=0, z=0),
+            orientation=Quaternion(x=0, y=0, z=0, w=1),
+        ),
+        point_stride=16,  # 4 fields * 4 bytes
+        fields=[
+            PackedElementField(name="x", offset=0, type=f32),
+            PackedElementField(name="y", offset=4, type=f32),
+            PackedElementField(name="z", offset=8, type=f32),
+            PackedElementField(name="rgba", offset=12, type=u32),
+        ],
+        data=bytes(buffer),
+    )
 
 
 if __name__ == "__main__":

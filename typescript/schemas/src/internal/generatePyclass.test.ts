@@ -9,7 +9,7 @@ describe("generatePyclass", () => {
         #![allow(clippy::too_many_arguments)]
         #![allow(clippy::enum_variant_names)]
         #![allow(non_snake_case)]
-        use pyo3::prelude::*;
+        use pyo3::{prelude::*, types::PyBytes};
 
         "
         `);
@@ -38,26 +38,26 @@ describe("generatePyclass", () => {
         #[pymethods]
         impl ExampleMessage {
             #[new]
-            #[pyo3(signature = (*, field_duration=None, field_time=None, field_boolean=false, field_bytes=vec![], field_float64=0.0, field_uint32=0, field_string="".to_string(), field_duration_array=vec![], field_time_array=vec![], field_boolean_array=vec![], field_bytes_array=vec![], field_float64_array=vec![], field_uint32_array=vec![], field_string_array=vec![], field_duration_fixed_array=vec![], field_time_fixed_array=vec![], field_boolean_fixed_array=vec![], field_bytes_fixed_array=vec![], field_float64_fixed_array=vec![], field_uint32_fixed_array=vec![], field_string_fixed_array=vec![], field_enum=ExampleMessageExampleEnum::A, field_enum_array=vec![], field_nested=None, field_nested_array=vec![]) )]
+            #[pyo3(signature = (*, field_duration=None, field_time=None, field_boolean=false, field_bytes=None, field_float64=0.0, field_uint32=0, field_string="".to_string(), field_duration_array=vec![], field_time_array=vec![], field_boolean_array=vec![], field_bytes_array=None, field_float64_array=vec![], field_uint32_array=vec![], field_string_array=vec![], field_duration_fixed_array=vec![], field_time_fixed_array=vec![], field_boolean_fixed_array=vec![], field_bytes_fixed_array=None, field_float64_fixed_array=vec![], field_uint32_fixed_array=vec![], field_string_fixed_array=vec![], field_enum=ExampleMessageExampleEnum::A, field_enum_array=vec![], field_nested=None, field_nested_array=vec![]) )]
             fn new(
                 field_duration: Option<Duration>,
                 field_time: Option<Timestamp>,
                 field_boolean: bool,
-                field_bytes: Vec<u8>,
+                field_bytes: Option<Bound<'_, PyBytes>>,
                 field_float64: f64,
                 field_uint32: u32,
                 field_string: String,
                 field_duration_array: Vec<Option<Duration>>,
                 field_time_array: Vec<Option<Timestamp>>,
                 field_boolean_array: Vec<bool>,
-                field_bytes_array: Vec<Vec<u8>>,
+                field_bytes_array: Option<Bound<'_, PyBytes>>,
                 field_float64_array: Vec<f64>,
                 field_uint32_array: Vec<u32>,
                 field_string_array: Vec<String>,
                 field_duration_fixed_array: Vec<Option<Duration>>,
                 field_time_fixed_array: Vec<Option<Timestamp>>,
                 field_boolean_fixed_array: Vec<bool>,
-                field_bytes_fixed_array: Vec<Vec<u8>>,
+                field_bytes_fixed_array: Option<Bound<'_, PyBytes>>,
                 field_float64_fixed_array: Vec<f64>,
                 field_uint32_fixed_array: Vec<u32>,
                 field_string_fixed_array: Vec<String>,
@@ -70,21 +70,21 @@ describe("generatePyclass", () => {
                     field_duration: field_duration.map(Into::into),
                     field_time: field_time.map(Into::into),
                     field_boolean,
-                    field_bytes,
+                    field_bytes: data.map(|x| x.as_bytes().to_vec()).unwrap_or_default(),
                     field_float64,
                     field_uint32,
                     field_string,
                     field_duration_array: field_duration_array.map(Into::into),
                     field_time_array: field_time_array.map(Into::into),
                     field_boolean_array,
-                    field_bytes_array,
+                    field_bytes_array: data.map(|x| x.as_bytes().to_vec()).unwrap_or_default(),
                     field_float64_array,
                     field_uint32_array,
                     field_string_array,
                     field_duration_fixed_array: field_duration_fixed_array.map(Into::into),
                     field_time_fixed_array: field_time_fixed_array.map(Into::into),
                     field_boolean_fixed_array,
-                    field_bytes_fixed_array,
+                    field_bytes_fixed_array: data.map(|x| x.as_bytes().to_vec()).unwrap_or_default(),
                     field_float64_fixed_array,
                     field_uint32_fixed_array,
                     field_string_fixed_array,

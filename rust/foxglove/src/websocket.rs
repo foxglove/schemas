@@ -575,16 +575,13 @@ impl ConnectedClient {
                 .collect()
         };
         if subscribed_parameters.is_empty() {
-            println!("update_parameters: no parameters to send");
             return;
         }
-        println!("update_parameters: {:?}", subscribed_parameters);
         let message = protocol::server::parameters_json(&subscribed_parameters, None);
         self.send_control_msg(Message::text(message));
     }
 
     fn on_parameters_subscribe(&self, server: Arc<Server>, param_names: Vec<String>) {
-        println!("on_parameters_subscribe: {:?}", param_names);
         if !server
             .capabilities
             .contains(&Capability::ParametersSubscribe)
@@ -607,7 +604,6 @@ impl ConnectedClient {
         }
         // Track the client's own subscriptions
         {
-            println!("client subscribed to: {:?}", param_names);
             let mut subscribed_parameters = self.parameter_subscriptions.lock();
             subscribed_parameters.extend(param_names);
         }
@@ -615,7 +611,6 @@ impl ConnectedClient {
             return;
         }
         if let Some(handler) = self.server_listener.as_ref() {
-            println!("new subscriptions: {:?}", new_param_subscriptions);
             handler.on_parameters_subscribe(new_param_subscriptions);
         }
     }

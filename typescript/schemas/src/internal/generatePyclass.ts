@@ -173,7 +173,9 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
     ...schemaFields.map(({ argName, field }) => `        ${argName}: ${rustOutputType(field)},`),
     `    ) -> Self {`,
     `        Self {`,
-    ...schemaFields.map(({ fieldName, argName }) => `            ${fieldName}: ${argName},`),
+    ...schemaFields.map(({ fieldName, argName }) =>
+      `            ${ fieldName === argName ? fieldName : `${fieldName}: ${argName}` },`
+    ),
     `        }`,
     `    }`,
     `    fn __repr__(&self) -> String {`,

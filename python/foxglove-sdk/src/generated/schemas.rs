@@ -163,12 +163,12 @@ impl ArrowPrimitive {
         color: Option<Color>,
     ) -> Self {
         Self {
-            pose: pose,
-            shaft_length: shaft_length,
-            shaft_diameter: shaft_diameter,
-            head_length: head_length,
-            head_diameter: head_diameter,
-            color: color,
+            pose,
+            shaft_length,
+            shaft_diameter,
+            head_length,
+            head_diameter,
+            color,
         }
     }
     fn __repr__(&self) -> String {
@@ -276,15 +276,15 @@ impl CameraCalibration {
         P: Vec<f64>,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            frame_id: frame_id,
-            width: width,
-            height: height,
-            distortion_model: distortion_model,
-            D: D,
-            K: K,
-            R: R,
-            P: P,
+            timestamp,
+            frame_id,
+            width,
+            height,
+            distortion_model,
+            D,
+            K,
+            R,
+            P,
         }
     }
     fn __repr__(&self) -> String {
@@ -350,12 +350,12 @@ impl CircleAnnotation {
         outline_color: Option<Color>,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            position: position,
-            diameter: diameter,
-            thickness: thickness,
-            fill_color: fill_color,
-            outline_color: outline_color,
+            timestamp,
+            position,
+            diameter,
+            thickness,
+            fill_color,
+            outline_color,
         }
     }
     fn __repr__(&self) -> String {
@@ -402,12 +402,7 @@ impl Color {
     #[new]
     #[pyo3(signature = (*, r=0.0, g=0.0, b=0.0, a=0.0))]
     fn new(r: f64, g: f64, b: f64, a: f64) -> Self {
-        Self {
-            r: r,
-            g: g,
-            b: b,
-            a: a,
-        }
+        Self { r, g, b, a }
     }
     fn __repr__(&self) -> String {
         format!(
@@ -449,10 +444,10 @@ impl CompressedImage {
     #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), data=vec![], format="".to_string()))]
     fn new(timestamp: Option<Timestamp>, frame_id: String, data: Vec<u8>, format: String) -> Self {
         Self {
-            timestamp: timestamp,
-            frame_id: frame_id,
-            data: data,
-            format: format,
+            timestamp,
+            frame_id,
+            data,
+            format,
         }
     }
     fn __repr__(&self) -> String {
@@ -521,10 +516,10 @@ impl CompressedVideo {
     #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), data=vec![], format="".to_string()))]
     fn new(timestamp: Option<Timestamp>, frame_id: String, data: Vec<u8>, format: String) -> Self {
         Self {
-            timestamp: timestamp,
-            frame_id: frame_id,
-            data: data,
-            format: format,
+            timestamp,
+            frame_id,
+            data,
+            format,
         }
     }
     fn __repr__(&self) -> String {
@@ -573,11 +568,11 @@ impl CylinderPrimitive {
         color: Option<Color>,
     ) -> Self {
         Self {
-            pose: pose,
-            size: size,
-            bottom_scale: bottom_scale,
-            top_scale: top_scale,
-            color: color,
+            pose,
+            size,
+            bottom_scale,
+            top_scale,
+            color,
         }
     }
     fn __repr__(&self) -> String {
@@ -620,11 +615,7 @@ impl CubePrimitive {
     #[new]
     #[pyo3(signature = (*, pose=None, size=None, color=None))]
     fn new(pose: Option<Pose>, size: Option<Vector3>, color: Option<Color>) -> Self {
-        Self {
-            pose: pose,
-            size: size,
-            color: color,
-        }
+        Self { pose, size, color }
     }
     fn __repr__(&self) -> String {
         format!(
@@ -671,11 +662,11 @@ impl FrameTransform {
         rotation: Option<Quaternion>,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            parent_frame_id: parent_frame_id,
-            child_frame_id: child_frame_id,
-            translation: translation,
-            rotation: rotation,
+            timestamp,
+            parent_frame_id,
+            child_frame_id,
+            translation,
+            rotation,
         }
     }
     fn __repr__(&self) -> String {
@@ -714,9 +705,7 @@ impl FrameTransforms {
     #[new]
     #[pyo3(signature = (*, transforms=vec![]))]
     fn new(transforms: Vec<FrameTransform>) -> Self {
-        Self {
-            transforms: transforms,
-        }
+        Self { transforms }
     }
     fn __repr__(&self) -> String {
         format!("FrameTransforms(transforms={:?})", self.transforms,)
@@ -743,7 +732,7 @@ impl GeoJson {
     #[new]
     #[pyo3(signature = (*, geojson="".to_string()))]
     fn new(geojson: String) -> Self {
-        Self { geojson: geojson }
+        Self { geojson }
     }
     fn __repr__(&self) -> String {
         format!("GeoJson(geojson={:?})", self.geojson,)
@@ -797,15 +786,15 @@ impl Grid {
         data: Vec<u8>,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            frame_id: frame_id,
-            pose: pose,
-            column_count: column_count,
-            cell_size: cell_size,
-            row_stride: row_stride,
-            cell_stride: cell_stride,
-            fields: fields,
-            data: data,
+            timestamp,
+            frame_id,
+            pose,
+            column_count,
+            cell_size,
+            row_stride,
+            cell_stride,
+            fields,
+            data,
         }
     }
     fn __repr__(&self) -> String {
@@ -861,9 +850,9 @@ impl ImageAnnotations {
         texts: Vec<TextAnnotation>,
     ) -> Self {
         Self {
-            circles: circles,
-            points: points,
-            texts: texts,
+            circles,
+            points,
+            texts,
         }
     }
     fn __repr__(&self) -> String {
@@ -898,10 +887,7 @@ impl KeyValuePair {
     #[new]
     #[pyo3(signature = (*, key="".to_string(), value="".to_string()))]
     fn new(key: String, value: String) -> Self {
-        Self {
-            key: key,
-            value: value,
-        }
+        Self { key, value }
     }
     fn __repr__(&self) -> String {
         format!("KeyValuePair(key={:?}, value={:?})", self.key, self.value,)
@@ -950,13 +936,13 @@ impl LaserScan {
         intensities: Vec<f64>,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            frame_id: frame_id,
-            pose: pose,
-            start_angle: start_angle,
-            end_angle: end_angle,
-            ranges: ranges,
-            intensities: intensities,
+            timestamp,
+            frame_id,
+            pose,
+            start_angle,
+            end_angle,
+            ranges,
+            intensities,
         }
     }
     fn __repr__(&self) -> String {
@@ -1025,14 +1011,14 @@ impl LinePrimitive {
         indices: Vec<u32>,
     ) -> Self {
         Self {
-            r#type: r#type,
-            pose: pose,
-            thickness: thickness,
-            scale_invariant: scale_invariant,
-            points: points,
-            color: color,
-            colors: colors,
-            indices: indices,
+            r#type,
+            pose,
+            thickness,
+            scale_invariant,
+            points,
+            color,
+            colors,
+            indices,
         }
     }
     fn __repr__(&self) -> String {
@@ -1098,13 +1084,13 @@ impl LocationFix {
         position_covariance_type: LocationFixPositionCovarianceType,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            frame_id: frame_id,
-            latitude: latitude,
-            longitude: longitude,
-            altitude: altitude,
-            position_covariance: position_covariance,
-            position_covariance_type: position_covariance_type,
+            timestamp,
+            frame_id,
+            latitude,
+            longitude,
+            altitude,
+            position_covariance,
+            position_covariance_type,
         }
     }
     fn __repr__(&self) -> String {
@@ -1165,12 +1151,12 @@ impl Log {
         line: u32,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            level: level,
-            message: message,
-            name: name,
-            file: file,
-            line: line,
+            timestamp,
+            level,
+            message,
+            name,
+            file,
+            line,
         }
     }
     fn __repr__(&self) -> String {
@@ -1211,9 +1197,9 @@ impl SceneEntityDeletion {
     #[pyo3(signature = (*, timestamp=None, r#type=SceneEntityDeletionType::MatchingId, id="".to_string()))]
     fn new(timestamp: Option<Timestamp>, r#type: SceneEntityDeletionType, id: String) -> Self {
         Self {
-            timestamp: timestamp,
-            r#type: r#type,
-            id: id,
+            timestamp,
+            r#type,
+            id,
         }
     }
     fn __repr__(&self) -> String {
@@ -1288,20 +1274,20 @@ impl SceneEntity {
         models: Vec<ModelPrimitive>,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            frame_id: frame_id,
-            id: id,
-            lifetime: lifetime,
-            frame_locked: frame_locked,
-            metadata: metadata,
-            arrows: arrows,
-            cubes: cubes,
-            spheres: spheres,
-            cylinders: cylinders,
-            lines: lines,
-            triangles: triangles,
-            texts: texts,
-            models: models,
+            timestamp,
+            frame_id,
+            id,
+            lifetime,
+            frame_locked,
+            metadata,
+            arrows,
+            cubes,
+            spheres,
+            cylinders,
+            lines,
+            triangles,
+            texts,
+            models,
         }
     }
     fn __repr__(&self) -> String {
@@ -1361,8 +1347,8 @@ impl SceneUpdate {
     #[pyo3(signature = (*, deletions=vec![], entities=vec![]))]
     fn new(deletions: Vec<SceneEntityDeletion>, entities: Vec<SceneEntity>) -> Self {
         Self {
-            deletions: deletions,
-            entities: entities,
+            deletions,
+            entities,
         }
     }
     fn __repr__(&self) -> String {
@@ -1415,13 +1401,13 @@ impl ModelPrimitive {
         data: Vec<u8>,
     ) -> Self {
         Self {
-            pose: pose,
-            scale: scale,
-            color: color,
-            override_color: override_color,
-            url: url,
-            media_type: media_type,
-            data: data,
+            pose,
+            scale,
+            color,
+            override_color,
+            url,
+            media_type,
+            data,
         }
     }
     fn __repr__(&self) -> String {
@@ -1469,9 +1455,9 @@ impl PackedElementField {
     #[pyo3(signature = (*, name="".to_string(), offset=0, r#type=PackedElementFieldNumericType::Unknown))]
     fn new(name: String, offset: u32, r#type: PackedElementFieldNumericType) -> Self {
         Self {
-            name: name,
-            offset: offset,
-            r#type: r#type,
+            name,
+            offset,
+            r#type,
         }
     }
     fn __repr__(&self) -> String {
@@ -1506,7 +1492,7 @@ impl Point2 {
     #[new]
     #[pyo3(signature = (*, x=0.0, y=0.0))]
     fn new(x: f64, y: f64) -> Self {
-        Self { x: x, y: y }
+        Self { x, y }
     }
     fn __repr__(&self) -> String {
         format!("Point2(x={:?}, y={:?})", self.x, self.y,)
@@ -1538,7 +1524,7 @@ impl Point3 {
     #[new]
     #[pyo3(signature = (*, x=0.0, y=0.0, z=0.0))]
     fn new(x: f64, y: f64, z: f64) -> Self {
-        Self { x: x, y: y, z: z }
+        Self { x, y, z }
     }
     fn __repr__(&self) -> String {
         format!("Point3(x={:?}, y={:?}, z={:?})", self.x, self.y, self.z,)
@@ -1585,12 +1571,12 @@ impl PointCloud {
         data: Vec<u8>,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            frame_id: frame_id,
-            pose: pose,
-            point_stride: point_stride,
-            fields: fields,
-            data: data,
+            timestamp,
+            frame_id,
+            pose,
+            point_stride,
+            fields,
+            data,
         }
     }
     fn __repr__(&self) -> String {
@@ -1653,13 +1639,13 @@ impl PointsAnnotation {
         thickness: f64,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            r#type: r#type,
-            points: points,
-            outline_color: outline_color,
-            outline_colors: outline_colors,
-            fill_color: fill_color,
-            thickness: thickness,
+            timestamp,
+            r#type,
+            points,
+            outline_color,
+            outline_colors,
+            fill_color,
+            thickness,
         }
     }
     fn __repr__(&self) -> String {
@@ -1705,8 +1691,8 @@ impl Pose {
     #[pyo3(signature = (*, position=None, orientation=None))]
     fn new(position: Option<Vector3>, orientation: Option<Quaternion>) -> Self {
         Self {
-            position: position,
-            orientation: orientation,
+            position,
+            orientation,
         }
     }
     fn __repr__(&self) -> String {
@@ -1743,9 +1729,9 @@ impl PoseInFrame {
     #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), pose=None))]
     fn new(timestamp: Option<Timestamp>, frame_id: String, pose: Option<Pose>) -> Self {
         Self {
-            timestamp: timestamp,
-            frame_id: frame_id,
-            pose: pose,
+            timestamp,
+            frame_id,
+            pose,
         }
     }
     fn __repr__(&self) -> String {
@@ -1783,9 +1769,9 @@ impl PosesInFrame {
     #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), poses=vec![]))]
     fn new(timestamp: Option<Timestamp>, frame_id: String, poses: Vec<Pose>) -> Self {
         Self {
-            timestamp: timestamp,
-            frame_id: frame_id,
-            poses: poses,
+            timestamp,
+            frame_id,
+            poses,
         }
     }
     fn __repr__(&self) -> String {
@@ -1824,12 +1810,7 @@ impl Quaternion {
     #[new]
     #[pyo3(signature = (*, x=0.0, y=0.0, z=0.0, w=0.0))]
     fn new(x: f64, y: f64, z: f64, w: f64) -> Self {
-        Self {
-            x: x,
-            y: y,
-            z: z,
-            w: w,
-        }
+        Self { x, y, z, w }
     }
     fn __repr__(&self) -> String {
         format!(
@@ -1885,13 +1866,13 @@ impl RawImage {
         data: Vec<u8>,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            frame_id: frame_id,
-            width: width,
-            height: height,
-            encoding: encoding,
-            step: step,
-            data: data,
+            timestamp,
+            frame_id,
+            width,
+            height,
+            encoding,
+            step,
+            data,
         }
     }
     fn __repr__(&self) -> String {
@@ -1938,11 +1919,7 @@ impl SpherePrimitive {
     #[new]
     #[pyo3(signature = (*, pose=None, size=None, color=None))]
     fn new(pose: Option<Pose>, size: Option<Vector3>, color: Option<Color>) -> Self {
-        Self {
-            pose: pose,
-            size: size,
-            color: color,
-        }
+        Self { pose, size, color }
     }
     fn __repr__(&self) -> String {
         format!(
@@ -1993,12 +1970,12 @@ impl TextAnnotation {
         background_color: Option<Color>,
     ) -> Self {
         Self {
-            timestamp: timestamp,
-            position: position,
-            text: text,
-            font_size: font_size,
-            text_color: text_color,
-            background_color: background_color,
+            timestamp,
+            position,
+            text,
+            font_size,
+            text_color,
+            background_color,
         }
     }
     fn __repr__(&self) -> String {
@@ -2057,12 +2034,12 @@ impl TextPrimitive {
         text: String,
     ) -> Self {
         Self {
-            pose: pose,
-            billboard: billboard,
-            font_size: font_size,
-            scale_invariant: scale_invariant,
-            color: color,
-            text: text,
+            pose,
+            billboard,
+            font_size,
+            scale_invariant,
+            color,
+            text,
         }
     }
     fn __repr__(&self) -> String {
@@ -2120,11 +2097,11 @@ impl TriangleListPrimitive {
         indices: Vec<u32>,
     ) -> Self {
         Self {
-            pose: pose,
-            points: points,
-            color: color,
-            colors: colors,
-            indices: indices,
+            pose,
+            points,
+            color,
+            colors,
+            indices,
         }
     }
     fn __repr__(&self) -> String {
@@ -2161,7 +2138,7 @@ impl Vector2 {
     #[new]
     #[pyo3(signature = (*, x=0.0, y=0.0))]
     fn new(x: f64, y: f64) -> Self {
-        Self { x: x, y: y }
+        Self { x, y }
     }
     fn __repr__(&self) -> String {
         format!("Vector2(x={:?}, y={:?})", self.x, self.y,)
@@ -2193,7 +2170,7 @@ impl Vector3 {
     #[new]
     #[pyo3(signature = (*, x=0.0, y=0.0, z=0.0))]
     fn new(x: f64, y: f64, z: f64) -> Self {
-        Self { x: x, y: y, z: z }
+        Self { x, y, z }
     }
     fn __repr__(&self) -> String {
         format!("Vector3(x={:?}, y={:?}, z={:?})", self.x, self.y, self.z,)

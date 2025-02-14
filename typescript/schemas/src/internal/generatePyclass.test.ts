@@ -19,7 +19,7 @@ describe("generatePyclass", () => {
     expect(generatePyclass(exampleEnum)).toMatchInlineSnapshot(`
         "/// An example enum
         #[pyclass(eq, eq_int, module = "foxglove.schemas")]
-        #[derive(PartialEq, Clone)]
+        #[derive(PartialEq, Clone, Debug)]
         pub(crate) enum ExampleMessageExampleEnum {
             A = 0,
             B = 1,
@@ -33,12 +33,68 @@ describe("generatePyclass", () => {
     expect(generatePyclass(exampleMessage)).toMatchInlineSnapshot(`
         "/// An example type
         #[pyclass(module = "foxglove.schemas")]
-        #[derive(Clone)]
-        pub(crate) struct ExampleMessage(pub(crate) foxglove::schemas::ExampleMessage);
+        #[derive(Clone, Debug)]
+        pub(crate) struct ExampleMessage {
+            /// duration field
+            field_duration: Option<Duration>,
+            /// time field
+            field_time: Option<Timestamp>,
+            /// boolean field
+            field_boolean: bool,
+            /// bytes field
+            field_bytes: Vec<u8>,
+            /// float64 field
+            field_float64: f64,
+            /// uint32 field
+            field_uint32: u32,
+            /// string field
+            field_string: String,
+            /// duration array field
+            field_duration_array: Vec<Option<Duration>>,
+            /// time array field
+            field_time_array: Vec<Option<Timestamp>>,
+            /// boolean array field
+            field_boolean_array: Vec<bool>,
+            /// bytes array field
+            field_bytes_array: Vec<Vec<u8>>,
+            /// float64 array field
+            field_float64_array: Vec<f64>,
+            /// uint32 array field
+            field_uint32_array: Vec<u32>,
+            /// string array field
+            field_string_array: Vec<String>,
+            /// duration fixed-length array field
+            field_duration_fixed_array: Vec<Option<Duration>>,
+            /// time fixed-length array field
+            field_time_fixed_array: Vec<Option<Timestamp>>,
+            /// boolean fixed-length array field
+            field_boolean_fixed_array: Vec<bool>,
+            /// bytes fixed-length array field
+            field_bytes_fixed_array: Vec<Vec<u8>>,
+            /// float64 fixed-length array field
+            field_float64_fixed_array: Vec<f64>,
+            /// uint32 fixed-length array field
+            field_uint32_fixed_array: Vec<u32>,
+            /// string fixed-length array field
+            field_string_fixed_array: Vec<String>,
+            /// An enum field
+            field_enum: ExampleMessageExampleEnum,
+            /// An enum array field
+            field_enum_array: Vec<ExampleMessageExampleEnum>,
+            /// A nested field
+            field_nested: Option<NestedMessage>,
+            /// A nested array field
+            /// With
+            /// a
+            /// very
+            /// long
+            /// description
+            field_nested_array: Vec<NestedMessage>,
+        }
         #[pymethods]
         impl ExampleMessage {
             #[new]
-            #[pyo3(signature = (*, field_duration=None, field_time=None, field_boolean=false, field_bytes=vec![], field_float64=0.0, field_uint32=0, field_string="".to_string(), field_duration_array=vec![], field_time_array=vec![], field_boolean_array=vec![], field_bytes_array=vec![], field_float64_array=vec![], field_uint32_array=vec![], field_string_array=vec![], field_duration_fixed_array=vec![], field_time_fixed_array=vec![], field_boolean_fixed_array=vec![], field_bytes_fixed_array=vec![], field_float64_fixed_array=vec![], field_uint32_fixed_array=vec![], field_string_fixed_array=vec![], field_enum=ExampleMessageExampleEnum::A, field_enum_array=vec![], field_nested=None, field_nested_array=vec![]) )]
+            #[pyo3(signature = (*, field_duration=None, field_time=None, field_boolean=false, field_bytes=vec![], field_float64=0.0, field_uint32=0, field_string="".to_string(), field_duration_array=vec![], field_time_array=vec![], field_boolean_array=vec![], field_bytes_array=vec![], field_float64_array=vec![], field_uint32_array=vec![], field_string_array=vec![], field_duration_fixed_array=vec![], field_time_fixed_array=vec![], field_boolean_fixed_array=vec![], field_bytes_fixed_array=vec![], field_float64_fixed_array=vec![], field_uint32_fixed_array=vec![], field_string_fixed_array=vec![], field_enum=ExampleMessageExampleEnum::A, field_enum_array=vec![], field_nested=None, field_nested_array=vec![]))]
             fn new(
                 field_duration: Option<Duration>,
                 field_time: Option<Timestamp>,
@@ -66,62 +122,62 @@ describe("generatePyclass", () => {
                 field_nested: Option<NestedMessage>,
                 field_nested_array: Vec<NestedMessage>,
             ) -> Self {
-                Self(foxglove::schemas::ExampleMessage {
-                    field_duration: field_duration.map(Into::into),
-                    field_time: field_time.map(Into::into),
-                    field_boolean,
-                    field_bytes,
-                    field_float64,
-                    field_uint32,
-                    field_string,
-                    field_duration_array: field_duration_array.map(Into::into),
-                    field_time_array: field_time_array.map(Into::into),
-                    field_boolean_array,
-                    field_bytes_array,
-                    field_float64_array,
-                    field_uint32_array,
-                    field_string_array,
-                    field_duration_fixed_array: field_duration_fixed_array.map(Into::into),
-                    field_time_fixed_array: field_time_fixed_array.map(Into::into),
-                    field_boolean_fixed_array,
-                    field_bytes_fixed_array,
-                    field_float64_fixed_array,
-                    field_uint32_fixed_array,
-                    field_string_fixed_array,
-                    field_enum: field_enum as i32,
-                    field_enum_array: field_enum_array as i32,
-                    field_nested: field_nested.map(Into::into),
-                    field_nested_array: field_nested_array.into_iter().map(|x| x.into()).collect(),
-                })
+                Self {
+                    field_duration: field_duration,
+                    field_time: field_time,
+                    field_boolean: field_boolean,
+                    field_bytes: field_bytes,
+                    field_float64: field_float64,
+                    field_uint32: field_uint32,
+                    field_string: field_string,
+                    field_duration_array: field_duration_array,
+                    field_time_array: field_time_array,
+                    field_boolean_array: field_boolean_array,
+                    field_bytes_array: field_bytes_array,
+                    field_float64_array: field_float64_array,
+                    field_uint32_array: field_uint32_array,
+                    field_string_array: field_string_array,
+                    field_duration_fixed_array: field_duration_fixed_array,
+                    field_time_fixed_array: field_time_fixed_array,
+                    field_boolean_fixed_array: field_boolean_fixed_array,
+                    field_bytes_fixed_array: field_bytes_fixed_array,
+                    field_float64_fixed_array: field_float64_fixed_array,
+                    field_uint32_fixed_array: field_uint32_fixed_array,
+                    field_string_fixed_array: field_string_fixed_array,
+                    field_enum: field_enum,
+                    field_enum_array: field_enum_array,
+                    field_nested: field_nested,
+                    field_nested_array: field_nested_array,
+                }
             }
             fn __repr__(&self) -> String {
                 format!(
                     "ExampleMessage(field_duration={:?}, field_time={:?}, field_boolean={:?}, field_bytes={:?}, field_float64={:?}, field_uint32={:?}, field_string={:?}, field_duration_array={:?}, field_time_array={:?}, field_boolean_array={:?}, field_bytes_array={:?}, field_float64_array={:?}, field_uint32_array={:?}, field_string_array={:?}, field_duration_fixed_array={:?}, field_time_fixed_array={:?}, field_boolean_fixed_array={:?}, field_bytes_fixed_array={:?}, field_float64_fixed_array={:?}, field_uint32_fixed_array={:?}, field_string_fixed_array={:?}, field_enum={:?}, field_enum_array={:?}, field_nested={:?}, field_nested_array={:?})",
-                    self.0.field_duration,
-                    self.0.field_time,
-                    self.0.field_boolean,
-                    self.0.field_bytes,
-                    self.0.field_float64,
-                    self.0.field_uint32,
-                    self.0.field_string,
-                    self.0.field_duration_array,
-                    self.0.field_time_array,
-                    self.0.field_boolean_array,
-                    self.0.field_bytes_array,
-                    self.0.field_float64_array,
-                    self.0.field_uint32_array,
-                    self.0.field_string_array,
-                    self.0.field_duration_fixed_array,
-                    self.0.field_time_fixed_array,
-                    self.0.field_boolean_fixed_array,
-                    self.0.field_bytes_fixed_array,
-                    self.0.field_float64_fixed_array,
-                    self.0.field_uint32_fixed_array,
-                    self.0.field_string_fixed_array,
-                    self.0.field_enum,
-                    self.0.field_enum_array,
-                    self.0.field_nested,
-                    self.0.field_nested_array,
+                    self.field_duration,
+                    self.field_time,
+                    self.field_boolean,
+                    self.field_bytes,
+                    self.field_float64,
+                    self.field_uint32,
+                    self.field_string,
+                    self.field_duration_array,
+                    self.field_time_array,
+                    self.field_boolean_array,
+                    self.field_bytes_array,
+                    self.field_float64_array,
+                    self.field_uint32_array,
+                    self.field_string_array,
+                    self.field_duration_fixed_array,
+                    self.field_time_fixed_array,
+                    self.field_boolean_fixed_array,
+                    self.field_bytes_fixed_array,
+                    self.field_float64_fixed_array,
+                    self.field_uint32_fixed_array,
+                    self.field_string_fixed_array,
+                    self.field_enum,
+                    self.field_enum_array,
+                    self.field_nested,
+                    self.field_nested_array,
                 )
             }
         }
@@ -129,7 +185,33 @@ describe("generatePyclass", () => {
 
         impl From<ExampleMessage> for foxglove::schemas::ExampleMessage {
             fn from(value: ExampleMessage) -> Self {
-                value.0
+                Self {
+                    field_duration: value.field_duration.map(Into::into),
+                    field_time: value.field_time.map(Into::into),
+                    field_boolean: value.field_boolean,
+                    field_bytes: value.field_bytes,
+                    field_float64: value.field_float64,
+                    field_uint32: value.field_uint32,
+                    field_string: value.field_string,
+                    field_duration_array: value.field_duration_array.map(Into::into),
+                    field_time_array: value.field_time_array.map(Into::into),
+                    field_boolean_array: value.field_boolean_array,
+                    field_bytes_array: value.field_bytes_array,
+                    field_float64_array: value.field_float64_array,
+                    field_uint32_array: value.field_uint32_array,
+                    field_string_array: value.field_string_array,
+                    field_duration_fixed_array: value.field_duration_fixed_array.map(Into::into),
+                    field_time_fixed_array: value.field_time_fixed_array.map(Into::into),
+                    field_boolean_fixed_array: value.field_boolean_fixed_array,
+                    field_bytes_fixed_array: value.field_bytes_fixed_array,
+                    field_float64_fixed_array: value.field_float64_fixed_array,
+                    field_uint32_fixed_array: value.field_uint32_fixed_array,
+                    field_string_fixed_array: value.field_string_fixed_array,
+                    field_enum: value.field_enum as i32,
+                    field_enum_array: value.field_enum_array as i32,
+                    field_nested: value.field_nested.map(Into::into),
+                    field_nested_array: value.field_nested_array.into_iter().map(|x| x.into()).collect(),
+                }
             }
         }
 

@@ -80,6 +80,12 @@ class ArrowPrimitive:
     A primitive representing an arrow
     """
 
+    pose: "Optional[Pose]"
+    shaft_length: "Optional[float]"
+    shaft_diameter: "Optional[float]"
+    head_length: "Optional[float]"
+    head_diameter: "Optional[float]"
+    color: "Optional[Color]"
     def __new__(
         cls,
         *,
@@ -96,6 +102,15 @@ class CameraCalibration:
     Camera calibration parameters
     """
 
+    timestamp: "Optional[Timestamp]"
+    frame_id: "Optional[str]"
+    width: "Optional[int]"
+    height: "Optional[int]"
+    distortion_model: "Optional[str]"
+    D: "Optional[List[float]]"
+    K: "Optional[List[float]]"
+    R: "Optional[List[float]]"
+    P: "Optional[List[float]]"
     def __new__(
         cls,
         *,
@@ -115,6 +130,12 @@ class CircleAnnotation:
     A circle annotation on a 2D image
     """
 
+    timestamp: "Optional[Timestamp]"
+    position: "Optional[Point2]"
+    diameter: "Optional[float]"
+    thickness: "Optional[float]"
+    fill_color: "Optional[Color]"
+    outline_color: "Optional[Color]"
     def __new__(
         cls,
         *,
@@ -131,6 +152,10 @@ class Color:
     A color in RGBA format
     """
 
+    r: "Optional[float]"
+    g: "Optional[float]"
+    b: "Optional[float]"
+    a: "Optional[float]"
     def __new__(
         cls,
         *,
@@ -145,6 +170,10 @@ class CompressedImage:
     A compressed image
     """
 
+    timestamp: "Optional[Timestamp]"
+    frame_id: "Optional[str]"
+    data: "Optional[bytes]"
+    format: "Optional[str]"
     def __new__(
         cls,
         *,
@@ -159,6 +188,10 @@ class CompressedVideo:
     A single frame of a compressed video bitstream
     """
 
+    timestamp: "Optional[Timestamp]"
+    frame_id: "Optional[str]"
+    data: "Optional[bytes]"
+    format: "Optional[str]"
     def __new__(
         cls,
         *,
@@ -173,6 +206,9 @@ class CubePrimitive:
     A primitive representing a cube or rectangular prism
     """
 
+    pose: "Optional[Pose]"
+    size: "Optional[Vector3]"
+    color: "Optional[Color]"
     def __new__(
         cls,
         *,
@@ -186,6 +222,11 @@ class CylinderPrimitive:
     A primitive representing a cylinder, elliptic cylinder, or truncated cone
     """
 
+    pose: "Optional[Pose]"
+    size: "Optional[Vector3]"
+    bottom_scale: "Optional[float]"
+    top_scale: "Optional[float]"
+    color: "Optional[Color]"
     def __new__(
         cls,
         *,
@@ -212,6 +253,11 @@ class FrameTransform:
     A transform between two reference frames in 3D space
     """
 
+    timestamp: "Optional[Timestamp]"
+    parent_frame_id: "Optional[str]"
+    child_frame_id: "Optional[str]"
+    translation: "Optional[Vector3]"
+    rotation: "Optional[Quaternion]"
     def __new__(
         cls,
         *,
@@ -227,8 +273,11 @@ class FrameTransforms:
     An array of FrameTransform messages
     """
 
+    transforms: "Optional[List[FrameTransform]]"
     def __new__(
-        cls, *, transforms: "Optional[List[FrameTransform]]" = []
+        cls,
+        *,
+        transforms: "Optional[List[FrameTransform]]" = [],
     ) -> "FrameTransforms": ...
 
 class GeoJson:
@@ -236,13 +285,27 @@ class GeoJson:
     GeoJSON data for annotating maps
     """
 
-    def __new__(cls, *, geojson: "Optional[str]" = "") -> "GeoJson": ...
+    geojson: "Optional[str]"
+    def __new__(
+        cls,
+        *,
+        geojson: "Optional[str]" = "",
+    ) -> "GeoJson": ...
 
 class Grid:
     """
     A 2D grid of data
     """
 
+    timestamp: "Optional[Timestamp]"
+    frame_id: "Optional[str]"
+    pose: "Optional[Pose]"
+    column_count: "Optional[int]"
+    cell_size: "Optional[Vector2]"
+    row_stride: "Optional[int]"
+    cell_stride: "Optional[int]"
+    fields: "Optional[List[PackedElementField]]"
+    data: "Optional[bytes]"
     def __new__(
         cls,
         *,
@@ -262,6 +325,9 @@ class ImageAnnotations:
     Array of annotations for a 2D image
     """
 
+    circles: "Optional[List[CircleAnnotation]]"
+    points: "Optional[List[PointsAnnotation]]"
+    texts: "Optional[List[TextAnnotation]]"
     def __new__(
         cls,
         *,
@@ -275,8 +341,13 @@ class KeyValuePair:
     A key with its associated value
     """
 
+    key: "Optional[str]"
+    value: "Optional[str]"
     def __new__(
-        cls, *, key: "Optional[str]" = "", value: "Optional[str]" = ""
+        cls,
+        *,
+        key: "Optional[str]" = "",
+        value: "Optional[str]" = "",
     ) -> "KeyValuePair": ...
 
 class LaserScan:
@@ -284,6 +355,13 @@ class LaserScan:
     A single scan from a planar laser range-finder
     """
 
+    timestamp: "Optional[Timestamp]"
+    frame_id: "Optional[str]"
+    pose: "Optional[Pose]"
+    start_angle: "Optional[float]"
+    end_angle: "Optional[float]"
+    ranges: "Optional[List[float]]"
+    intensities: "Optional[List[float]]"
     def __new__(
         cls,
         *,
@@ -301,6 +379,14 @@ class LinePrimitive:
     A primitive representing a series of points connected by lines
     """
 
+    type: "Optional[LinePrimitiveLineType]"
+    pose: "Optional[Pose]"
+    thickness: "Optional[float]"
+    scale_invariant: "Optional[bool]"
+    points: "Optional[List[Point3]]"
+    color: "Optional[Color]"
+    colors: "Optional[List[Color]]"
+    indices: "Optional[List[int]]"
     def __new__(
         cls,
         *,
@@ -319,6 +405,13 @@ class LocationFix:
     A navigation satellite fix for any Global Navigation Satellite System
     """
 
+    timestamp: "Optional[Timestamp]"
+    frame_id: "Optional[str]"
+    latitude: "Optional[float]"
+    longitude: "Optional[float]"
+    altitude: "Optional[float]"
+    position_covariance: "Optional[List[float]]"
+    position_covariance_type: "Optional[LocationFixPositionCovarianceType]"
     def __new__(
         cls,
         *,
@@ -336,6 +429,12 @@ class Log:
     A log message
     """
 
+    timestamp: "Optional[Timestamp]"
+    level: "Optional[LogLevel]"
+    message: "Optional[str]"
+    name: "Optional[str]"
+    file: "Optional[str]"
+    line: "Optional[int]"
     def __new__(
         cls,
         *,
@@ -352,6 +451,13 @@ class ModelPrimitive:
     A primitive representing a 3D model file loaded from an external URL or embedded data
     """
 
+    pose: "Optional[Pose]"
+    scale: "Optional[Vector3]"
+    color: "Optional[Color]"
+    override_color: "Optional[bool]"
+    url: "Optional[str]"
+    media_type: "Optional[str]"
+    data: "Optional[bytes]"
     def __new__(
         cls,
         *,
@@ -369,6 +475,9 @@ class PackedElementField:
     A field present within each element in a byte array of packed elements.
     """
 
+    name: "Optional[str]"
+    offset: "Optional[int]"
+    type: "Optional[PackedElementFieldNumericType]"
     def __new__(
         cls,
         *,
@@ -382,8 +491,13 @@ class Point2:
     A point representing a position in 2D space
     """
 
+    x: "Optional[float]"
+    y: "Optional[float]"
     def __new__(
-        cls, *, x: "Optional[float]" = 0.0, y: "Optional[float]" = 0.0
+        cls,
+        *,
+        x: "Optional[float]" = 0.0,
+        y: "Optional[float]" = 0.0,
     ) -> "Point2": ...
 
 class Point3:
@@ -391,6 +505,9 @@ class Point3:
     A point representing a position in 3D space
     """
 
+    x: "Optional[float]"
+    y: "Optional[float]"
+    z: "Optional[float]"
     def __new__(
         cls,
         *,
@@ -404,6 +521,12 @@ class PointCloud:
     A collection of N-dimensional points, which may contain additional fields with information like normals, intensity, etc.
     """
 
+    timestamp: "Optional[Timestamp]"
+    frame_id: "Optional[str]"
+    pose: "Optional[Pose]"
+    point_stride: "Optional[int]"
+    fields: "Optional[List[PackedElementField]]"
+    data: "Optional[bytes]"
     def __new__(
         cls,
         *,
@@ -420,6 +543,13 @@ class PointsAnnotation:
     An array of points on a 2D image
     """
 
+    timestamp: "Optional[Timestamp]"
+    type: "Optional[PointsAnnotationType]"
+    points: "Optional[List[Point2]]"
+    outline_color: "Optional[Color]"
+    outline_colors: "Optional[List[Color]]"
+    fill_color: "Optional[Color]"
+    thickness: "Optional[float]"
     def __new__(
         cls,
         *,
@@ -437,6 +567,8 @@ class Pose:
     A position and orientation for an object or reference frame in 3D space
     """
 
+    position: "Optional[Vector3]"
+    orientation: "Optional[Quaternion]"
     def __new__(
         cls,
         *,
@@ -449,6 +581,9 @@ class PoseInFrame:
     A timestamped pose for an object or reference frame in 3D space
     """
 
+    timestamp: "Optional[Timestamp]"
+    frame_id: "Optional[str]"
+    pose: "Optional[Pose]"
     def __new__(
         cls,
         *,
@@ -462,6 +597,9 @@ class PosesInFrame:
     An array of timestamped poses for an object or reference frame in 3D space
     """
 
+    timestamp: "Optional[Timestamp]"
+    frame_id: "Optional[str]"
+    poses: "Optional[List[Pose]]"
     def __new__(
         cls,
         *,
@@ -475,6 +613,10 @@ class Quaternion:
     A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space
     """
 
+    x: "Optional[float]"
+    y: "Optional[float]"
+    z: "Optional[float]"
+    w: "Optional[float]"
     def __new__(
         cls,
         *,
@@ -489,6 +631,13 @@ class RawImage:
     A raw image
     """
 
+    timestamp: "Optional[Timestamp]"
+    frame_id: "Optional[str]"
+    width: "Optional[int]"
+    height: "Optional[int]"
+    encoding: "Optional[str]"
+    step: "Optional[int]"
+    data: "Optional[bytes]"
     def __new__(
         cls,
         *,
@@ -506,6 +655,20 @@ class SceneEntity:
     A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
     """
 
+    timestamp: "Optional[Timestamp]"
+    frame_id: "Optional[str]"
+    id: "Optional[str]"
+    lifetime: "Optional[Duration]"
+    frame_locked: "Optional[bool]"
+    metadata: "Optional[List[KeyValuePair]]"
+    arrows: "Optional[List[ArrowPrimitive]]"
+    cubes: "Optional[List[CubePrimitive]]"
+    spheres: "Optional[List[SpherePrimitive]]"
+    cylinders: "Optional[List[CylinderPrimitive]]"
+    lines: "Optional[List[LinePrimitive]]"
+    triangles: "Optional[List[TriangleListPrimitive]]"
+    texts: "Optional[List[TextPrimitive]]"
+    models: "Optional[List[ModelPrimitive]]"
     def __new__(
         cls,
         *,
@@ -530,6 +693,9 @@ class SceneEntityDeletion:
     Command to remove previously published entities
     """
 
+    timestamp: "Optional[Timestamp]"
+    type: "Optional[SceneEntityDeletionType]"
+    id: "Optional[str]"
     def __new__(
         cls,
         *,
@@ -543,6 +709,8 @@ class SceneUpdate:
     An update to the entities displayed in a 3D scene
     """
 
+    deletions: "Optional[List[SceneEntityDeletion]]"
+    entities: "Optional[List[SceneEntity]]"
     def __new__(
         cls,
         *,
@@ -555,6 +723,9 @@ class SpherePrimitive:
     A primitive representing a sphere or ellipsoid
     """
 
+    pose: "Optional[Pose]"
+    size: "Optional[Vector3]"
+    color: "Optional[Color]"
     def __new__(
         cls,
         *,
@@ -568,6 +739,12 @@ class TextAnnotation:
     A text label on a 2D image
     """
 
+    timestamp: "Optional[Timestamp]"
+    position: "Optional[Point2]"
+    text: "Optional[str]"
+    font_size: "Optional[float]"
+    text_color: "Optional[Color]"
+    background_color: "Optional[Color]"
     def __new__(
         cls,
         *,
@@ -584,6 +761,12 @@ class TextPrimitive:
     A primitive representing a text label
     """
 
+    pose: "Optional[Pose]"
+    billboard: "Optional[bool]"
+    font_size: "Optional[float]"
+    scale_invariant: "Optional[bool]"
+    color: "Optional[Color]"
+    text: "Optional[str]"
     def __new__(
         cls,
         *,
@@ -611,6 +794,11 @@ class TriangleListPrimitive:
     A primitive representing a set of triangles or a surface tiled by triangles
     """
 
+    pose: "Optional[Pose]"
+    points: "Optional[List[Point3]]"
+    color: "Optional[Color]"
+    colors: "Optional[List[Color]]"
+    indices: "Optional[List[int]]"
     def __new__(
         cls,
         *,
@@ -626,8 +814,13 @@ class Vector2:
     A vector in 2D space that represents a direction only
     """
 
+    x: "Optional[float]"
+    y: "Optional[float]"
     def __new__(
-        cls, *, x: "Optional[float]" = 0.0, y: "Optional[float]" = 0.0
+        cls,
+        *,
+        x: "Optional[float]" = 0.0,
+        y: "Optional[float]" = 0.0,
     ) -> "Vector2": ...
 
 class Vector3:
@@ -635,6 +828,9 @@ class Vector3:
     A vector in 3D space that represents a direction only
     """
 
+    x: "Optional[float]"
+    y: "Optional[float]"
+    z: "Optional[float]"
     def __new__(
         cls,
         *,

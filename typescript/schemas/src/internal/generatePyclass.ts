@@ -64,21 +64,26 @@ export function generatePySchemaStub(schemas: FoxgloveSchema[]): string {
   const classes = schemas.filter(isMessageSchema).map((schema) => {
     const name = structName(schema.name);
     const doc = ['    """', `    ${schema.description}`, '    """'];
+    const attrs = schema.fields
+      .map((field) => {
+        return `    ${field.name}: "${pythonAttrType(field)}"`;
+      });
     const params = schema.fields
       .map((field) => {
-        return `        ${field.name}: "${pythonCtorType(field)}" = ${pythonDefaultValue(field)}`;
+        return `        ${field.name}: "${pythonAttrType(field)}" = ${pythonDefaultValue(field)},`;
       })
-      .join(",\n");
+      ;
 
     return {
       name,
       source: [
         `class ${name}:`,
         ...doc,
+        ...attrs,
         `    def __new__(`,
-        "        cls,",
-        "        *,",
-        params,
+        `        cls,`,
+        `        *,`,
+        ...params,
         `    ) -> "${name}": ...`,
       ].join("\n") + "\n\n",
     };
@@ -131,8 +136,13 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
   const struct = [
     rustDoc(schema.description),
     `#[pyclass(module = "foxglove.schemas")]`,
-    `#[derive(Clone)]`,
-    `pub(crate) struct ${className}(pub(crate) foxglove::schemas::${className});`,
+    `#[derive(Clone, Debug)]`,
+    `pub(crate) struct ${className} {`,
+    ...schemaFields.map(
+      ({ fieldName, description, field }) =>
+        `${description}\n    ${fieldName}: ${rustOutputType(field)},`,
+    ),
+    `}`,
   ];
 
   function fieldValue(field: FoxgloveMessageField): string {
@@ -152,33 +162,24 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
     }
   }
 
-  function fieldAssignment(field: FoxgloveMessageField): string {
-    const name = protoName(field.name);
-    const value = fieldValue(field);
-    if (name === value) {
-      return name;
-    }
-    return `${name}: ${value}`;
-  }
-
   const signature = schemaFields.map(({ argName, field }) => `${argName}=${rustDefaultValue(field)}`).join(", ");
 
   const impl = [
     `#[pymethods]`,
     `impl ${className} {`,
     `    #[new]`,
-    `    #[pyo3(signature = (*, ${signature}) )]`,
+    `    #[pyo3(signature = (*, ${signature}))]`,
     `    fn new(`,
     ...schemaFields.map(({ argName, field }) => `        ${argName}: ${rustOutputType(field)},`),
     `    ) -> Self {`,
-    `        Self(foxglove::schemas::${className} {`,
-    schemaFields.map(({ field }) => `            ${fieldAssignment(field)},`).join("\n"),
-    `        })`,
+    `        Self {`,
+    ...schemaFields.map(({ fieldName, argName }) => `            ${fieldName}: ${argName},`),
+    `        }`,
     `    }`,
     `    fn __repr__(&self) -> String {`,
     `        format!(`,
     `            "${className}(${schemaFields.map(({ argName }) => `${argName}={:?}`).join(", ")})",`,
-    schemaFields.map(({ fieldName }) => `            self.0.${protoName(fieldName)},`).join("\n"),
+    schemaFields.map(({ fieldName }) => `            self.${fieldName},`).join("\n"),
     `        )`,
     `    }`,
     `}\n\n`,
@@ -187,7 +188,9 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
   const fromTrait = [
     `impl From<${structName(schema.name)}> for foxglove::schemas::${structName(schema.name)} {`,
     `    fn from(value: ${structName(schema.name)}) -> Self {`,
-    `        value.0`,
+    `        Self {`,
+    schemaFields.map(({ field }) => `            ${protoName(field.name)}: value.${fieldValue(field)},`).join("\n"),
+    `        }`,
     `    }`,
     `}\n\n`,
   ];
@@ -199,7 +202,7 @@ function generateEnumClass(schema: FoxgloveEnumSchema): string {
   const enumLines = [
     rustDoc(schema.description),
     `#[pyclass(eq, eq_int, module = "foxglove.schemas")]`,
-    `#[derive(PartialEq, Clone)]`,
+    `#[derive(PartialEq, Clone, Debug)]`,
     `pub(crate) enum ${enumName(schema)} {`,
     ...schema.values.map((value) => `    ${constantToTitleCase(value.name)} = ${value.value},`),
     "}\n\n",
@@ -281,10 +284,10 @@ function rustType(foxglovePrimitive: FoxglovePrimitive): string {
 }
 
 /**
- * Get the Python type for a constructor parameter.
+ * Get the Python type for an attribute / constructor parameter.
  * All types are optional.
  */
-function pythonCtorType(field: FoxgloveMessageField): string {
+function pythonAttrType(field: FoxgloveMessageField): string {
   let type: string;
   switch (field.type.type) {
     case "primitive":
@@ -459,7 +462,7 @@ class Duration:
 export function generateTimeTypes(): string {
   return `
 #[pyclass(module = "foxglove.schemas")]
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Timestamp {
     pub seconds: i64,
     pub nanos: i32,
@@ -491,7 +494,7 @@ impl From<Timestamp> for prost_types::Timestamp {
 }
 
 #[pyclass(module = "foxglove.schemas")]
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Duration {
     pub seconds: u64,
     pub nanos: u32,
@@ -612,17 +615,17 @@ impl ${channelClass} {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::${schemaClass}) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::${schemaClass}) {
+        self.0.log(&msg.into());
     }
 
     fn log_with_meta(
         &self,
-        msg: &schemas::${schemaClass},
+        msg: schemas::${schemaClass},
         metadata: Bound<'_, PartialMetadata>,
     ) {
         let metadata = metadata.extract::<PartialMetadata>().ok().unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {

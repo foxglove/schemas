@@ -134,7 +134,7 @@ impl From<Duration> for prost_types::Duration {
     }
 }
 /// A primitive representing an arrow
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct ArrowPrimitive {
     /// Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.
@@ -198,7 +198,7 @@ impl From<ArrowPrimitive> for foxglove::schemas::ArrowPrimitive {
 }
 
 /// Camera calibration parameters
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct CameraCalibration {
     /// Timestamp of calibration data
@@ -320,7 +320,7 @@ impl From<CameraCalibration> for foxglove::schemas::CameraCalibration {
 }
 
 /// A circle annotation on a 2D image
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct CircleAnnotation {
     /// Timestamp of circle
@@ -385,7 +385,7 @@ impl From<CircleAnnotation> for foxglove::schemas::CircleAnnotation {
 }
 
 /// A color in RGBA format
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct Color {
     /// Red value between 0 and 1
@@ -429,7 +429,7 @@ impl From<Color> for foxglove::schemas::Color {
 }
 
 /// A compressed image
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct CompressedImage {
     /// Timestamp of image
@@ -475,7 +475,7 @@ impl From<CompressedImage> for foxglove::schemas::CompressedImage {
 }
 
 /// A single frame of a compressed video bitstream
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct CompressedVideo {
     /// Timestamp of video frame
@@ -547,7 +547,7 @@ impl From<CompressedVideo> for foxglove::schemas::CompressedVideo {
 }
 
 /// A primitive representing a cylinder, elliptic cylinder, or truncated cone
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct CylinderPrimitive {
     /// Position of the center of the cylinder and orientation of the cylinder. The flat face(s) are perpendicular to the z-axis.
@@ -605,7 +605,7 @@ impl From<CylinderPrimitive> for foxglove::schemas::CylinderPrimitive {
 }
 
 /// A primitive representing a cube or rectangular prism
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct CubePrimitive {
     /// Position of the center of the cube and orientation of the cube
@@ -645,7 +645,7 @@ impl From<CubePrimitive> for foxglove::schemas::CubePrimitive {
 }
 
 /// A transform between two reference frames in 3D space
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct FrameTransform {
     /// Timestamp of transform
@@ -703,7 +703,7 @@ impl From<FrameTransform> for foxglove::schemas::FrameTransform {
 }
 
 /// An array of FrameTransform messages
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct FrameTransforms {
     /// Array of transforms
@@ -732,7 +732,7 @@ impl From<FrameTransforms> for foxglove::schemas::FrameTransforms {
 }
 
 /// GeoJSON data for annotating maps
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct GeoJson {
     /// GeoJSON data encoded as a UTF-8 string
@@ -759,7 +759,7 @@ impl From<GeoJson> for foxglove::schemas::GeoJson {
 }
 
 /// A 2D grid of data
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct Grid {
     /// Timestamp of grid
@@ -841,7 +841,7 @@ impl From<Grid> for foxglove::schemas::Grid {
 }
 
 /// Array of annotations for a 2D image
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct ImageAnnotations {
     /// Circle annotations
@@ -885,7 +885,7 @@ impl From<ImageAnnotations> for foxglove::schemas::ImageAnnotations {
 }
 
 /// A key with its associated value
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct KeyValuePair {
     /// Key
@@ -918,7 +918,7 @@ impl From<KeyValuePair> for foxglove::schemas::KeyValuePair {
 }
 
 /// A single scan from a planar laser range-finder
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct LaserScan {
     /// Timestamp of scan
@@ -988,7 +988,7 @@ impl From<LaserScan> for foxglove::schemas::LaserScan {
 }
 
 /// A primitive representing a series of points connected by lines
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct LinePrimitive {
     /// Drawing primitive to use for lines
@@ -1066,7 +1066,7 @@ impl From<LinePrimitive> for foxglove::schemas::LinePrimitive {
 }
 
 /// A navigation satellite fix for any Global Navigation Satellite System
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct LocationFix {
     /// Timestamp of the message
@@ -1136,7 +1136,7 @@ impl From<LocationFix> for foxglove::schemas::LocationFix {
 }
 
 /// A log message
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct Log {
     /// Timestamp of log message
@@ -1195,7 +1195,7 @@ impl From<Log> for foxglove::schemas::Log {
 }
 
 /// Command to remove previously published entities
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct SceneEntityDeletion {
     /// Timestamp of the deletion. Only matching entities earlier than this timestamp will be deleted.
@@ -1235,7 +1235,7 @@ impl From<SceneEntityDeletion> for foxglove::schemas::SceneEntityDeletion {
 }
 
 /// A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct SceneEntity {
     /// Timestamp of the entity
@@ -1347,7 +1347,7 @@ impl From<SceneEntity> for foxglove::schemas::SceneEntity {
 }
 
 /// An update to the entities displayed in a 3D scene
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct SceneUpdate {
     /// Scene entities to delete
@@ -1383,7 +1383,7 @@ impl From<SceneUpdate> for foxglove::schemas::SceneUpdate {
 }
 
 /// A primitive representing a 3D model file loaded from an external URL or embedded data
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct ModelPrimitive {
     /// Origin of model relative to reference frame
@@ -1453,7 +1453,7 @@ impl From<ModelPrimitive> for foxglove::schemas::ModelPrimitive {
 }
 
 /// A field present within each element in a byte array of packed elements.
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct PackedElementField {
     /// Name of the field
@@ -1493,7 +1493,7 @@ impl From<PackedElementField> for foxglove::schemas::PackedElementField {
 }
 
 /// A point representing a position in 2D space
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct Point2 {
     /// x coordinate position
@@ -1523,7 +1523,7 @@ impl From<Point2> for foxglove::schemas::Point2 {
 }
 
 /// A point representing a position in 3D space
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct Point3 {
     /// x coordinate position
@@ -1556,7 +1556,7 @@ impl From<Point3> for foxglove::schemas::Point3 {
 }
 
 /// A collection of N-dimensional points, which may contain additional fields with information like normals, intensity, etc.
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct PointCloud {
     /// Timestamp of point cloud
@@ -1620,7 +1620,7 @@ impl From<PointCloud> for foxglove::schemas::PointCloud {
 }
 
 /// An array of points on a 2D image
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct PointsAnnotation {
     /// Timestamp of annotation
@@ -1691,7 +1691,7 @@ impl From<PointsAnnotation> for foxglove::schemas::PointsAnnotation {
 }
 
 /// A position and orientation for an object or reference frame in 3D space
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct Pose {
     /// Point denoting position in 3D space
@@ -1727,7 +1727,7 @@ impl From<Pose> for foxglove::schemas::Pose {
 }
 
 /// A timestamped pose for an object or reference frame in 3D space
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct PoseInFrame {
     /// Timestamp of pose
@@ -1767,7 +1767,7 @@ impl From<PoseInFrame> for foxglove::schemas::PoseInFrame {
 }
 
 /// An array of timestamped poses for an object or reference frame in 3D space
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct PosesInFrame {
     /// Timestamp of pose
@@ -1807,7 +1807,7 @@ impl From<PosesInFrame> for foxglove::schemas::PosesInFrame {
 }
 
 /// A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct Quaternion {
     /// x value
@@ -1851,7 +1851,7 @@ impl From<Quaternion> for foxglove::schemas::Quaternion {
 }
 
 /// A raw image
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct RawImage {
     /// Timestamp of image
@@ -1923,7 +1923,7 @@ impl From<RawImage> for foxglove::schemas::RawImage {
 }
 
 /// A primitive representing a sphere or ellipsoid
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct SpherePrimitive {
     /// Position of the center of the sphere and orientation of the sphere
@@ -1963,7 +1963,7 @@ impl From<SpherePrimitive> for foxglove::schemas::SpherePrimitive {
 }
 
 /// A text label on a 2D image
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct TextAnnotation {
     /// Timestamp of annotation
@@ -2028,7 +2028,7 @@ impl From<TextAnnotation> for foxglove::schemas::TextAnnotation {
 }
 
 /// A primitive representing a text label
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct TextPrimitive {
     /// Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x.
@@ -2092,7 +2092,7 @@ impl From<TextPrimitive> for foxglove::schemas::TextPrimitive {
 }
 
 /// A primitive representing a set of triangles or a surface tiled by triangles
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct TriangleListPrimitive {
     /// Origin of triangles relative to reference frame
@@ -2148,7 +2148,7 @@ impl From<TriangleListPrimitive> for foxglove::schemas::TriangleListPrimitive {
 }
 
 /// A vector in 2D space that represents a direction only
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct Vector2 {
     /// x coordinate length
@@ -2178,7 +2178,7 @@ impl From<Vector2> for foxglove::schemas::Vector2 {
 }
 
 /// A vector in 3D space that represents a direction only
-#[pyclass(module = "foxglove.schemas")]
+#[pyclass(module = "foxglove.schemas", get_all)]
 #[derive(Clone, Debug)]
 pub(crate) struct Vector3 {
     /// x coordinate length

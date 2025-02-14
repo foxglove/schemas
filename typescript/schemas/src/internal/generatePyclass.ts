@@ -135,7 +135,7 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
   }));
   const struct = [
     rustDoc(schema.description),
-    `#[pyclass(module = "foxglove.schemas")]`,
+    `#[pyclass(module = "foxglove.schemas", get_all)]`,
     `#[derive(Clone, Debug)]`,
     `pub(crate) struct ${className} {`,
     ...schemaFields.map(

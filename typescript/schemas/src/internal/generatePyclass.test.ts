@@ -32,7 +32,7 @@ describe("generatePyclass", () => {
   it("generates a struct from a message", () => {
     expect(generatePyclass(exampleMessage)).toMatchInlineSnapshot(`
         "/// An example type
-        #[pyclass(module = "foxglove.schemas")]
+        #[pyclass(module = "foxglove.schemas", get_all)]
         #[derive(Clone, Debug)]
         pub(crate) struct ExampleMessage {
             /// duration field

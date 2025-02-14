@@ -7,7 +7,7 @@
 //! cargo run -p example-param-server
 //! ```
 
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
@@ -27,15 +27,13 @@ struct Cli {
 }
 
 struct ParamListener {
-    params: Mutex<HashMap<String, Parameter>>,
-    subscribed_params: Mutex<HashSet<String>>,
+    param_store: Mutex<HashMap<String, Parameter>>,
 }
 
 impl ParamListener {
     fn new() -> Arc<Self> {
         Arc::new(Self {
-            params: Mutex::new(HashMap::new()),
-            subscribed_params: Mutex::new(HashSet::new()),
+            param_store: Mutex::new(HashMap::new()),
         })
     }
 }
@@ -52,16 +50,22 @@ impl ServerListener for ParamListener {
             param_names,
             request_id.unwrap_or("None")
         );
-        let params = self.params.lock().unwrap();
-        param_names
-            .iter()
-            .filter_map(|name| params.get(name).cloned())
-            .collect()
+
+        let params = self.param_store.lock().unwrap();
+        if param_names.is_empty() {
+            params.values().cloned().collect()
+        } else {
+            param_names
+                .iter()
+                .filter_map(|name| params.get(name).cloned())
+                .collect()
+        }
     }
+
     fn on_set_parameters(
         &self,
         _client: Client,
-        parameters: Vec<Parameter>,
+        mut parameters: Vec<Parameter>,
         request_id: Option<&str>,
     ) -> Vec<Parameter> {
         let param_names: Vec<String> = parameters.iter().map(|param| param.name.clone()).collect();
@@ -70,31 +74,38 @@ impl ServerListener for ParamListener {
             param_names,
             request_id.unwrap_or("None")
         );
-        let mut params = self.params.lock().unwrap();
-        for param in parameters.iter() {
-            params.insert(param.name.clone(), param.clone());
+
+        let mut params = self.param_store.lock().unwrap();
+        for param in parameters.iter_mut() {
+            if let Some(old_param) = params.get_mut(&param.name) {
+                if param.name.starts_with("read_only_") {
+                    // Return the old value
+                    param.value = old_param.value.clone();
+                    param.r#type = old_param.r#type.clone();
+                } else {
+                    // Update the value
+                    old_param.value = param.value.clone();
+                    old_param.r#type = param.r#type.clone();
+                }
+            } else {
+                params.insert(param.name.clone(), param.clone());
+            }
         }
         parameters
     }
+
     fn on_parameters_subscribe(&self, param_names: Vec<String>) {
         println!(
             "on_parameters_subscribe called with parameter names: {:?}",
             param_names
         );
-        let mut subscribed_params = self.subscribed_params.lock().unwrap();
-        for param_name in param_names {
-            subscribed_params.insert(param_name);
-        }
     }
+
     fn on_parameters_unsubscribe(&self, param_names: Vec<String>) {
         println!(
             "on_parameters_unsubscribe called with parameter names: {:?}",
             param_names
         );
-        let mut subscribed_params = self.subscribed_params.lock().unwrap();
-        for param_name in param_names {
-            subscribed_params.remove(&param_name);
-        }
     }
 }
 
@@ -105,6 +116,41 @@ async fn main() {
 
     let args = Cli::parse();
     let listener = ParamListener::new();
+
+    // Initialize the parameter store with some example parameters
+    {
+        let mut param_store = listener.param_store.lock().unwrap();
+        param_store.insert(
+            "read_only_str_param".to_string(),
+            Parameter {
+                name: "read_only_str_param".to_string(),
+                value: Some(ParameterValue::String(
+                    "can't change me".as_bytes().to_vec(),
+                )),
+                r#type: None,
+            },
+        );
+        param_store.insert(
+            "elapsed".to_string(),
+            Parameter {
+                name: "elapsed".to_string(),
+                value: Some(ParameterValue::Number(0.0)),
+                r#type: None,
+            },
+        );
+        param_store.insert(
+            "float_array_param".to_string(),
+            Parameter {
+                name: "float_array_param".to_string(),
+                value: Some(ParameterValue::Array(vec![
+                    ParameterValue::Number(1.0),
+                    ParameterValue::Number(2.0),
+                    ParameterValue::Number(3.0),
+                ])),
+                r#type: Some(ParameterType::Float64Array),
+            },
+        );
+    }
 
     let server = WebSocketServer::new()
         .name("param server")

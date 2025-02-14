@@ -30,7 +30,7 @@ pipx install poetry
 poetry install
 ```
 
-For more details, refer to the [Python SDK README](python/foxglove-sdk/README.md).
+For more details, refer to the [Python SDK contributing guide](python/foxglove-sdk/CONTRIBUTING.md).
 
 ## Release instructions
 

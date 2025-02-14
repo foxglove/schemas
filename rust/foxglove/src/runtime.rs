@@ -11,7 +11,7 @@ struct Runtime {
 }
 impl Runtime {
     fn new() -> Self {
-        tracing::info!("Creating tokio runtime");
+        tracing::debug!("Creating tokio runtime");
         let rt = tokio::runtime::Builder::new_multi_thread()
             .enable_all()
             .build()

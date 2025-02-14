@@ -68,13 +68,13 @@ def start_server(
     """
     ...
 
-def enable_log_forwarding(level: str) -> None:
+def enable_logging(level: str) -> None:
     """
     Forward SDK logs to python's logging facility.
     """
     ...
 
-def disable_log_forwarding() -> None:
+def disable_logging() -> None:
     """
     Stop forwarding SDK logs.
     """

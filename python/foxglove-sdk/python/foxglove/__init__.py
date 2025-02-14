@@ -2,8 +2,8 @@ import atexit
 from typing import Union
 from ._foxglove_py import (
     record_file,
-    enable_log_forwarding,
-    disable_log_forwarding,
+    enable_logging,
+    disable_logging,
     start_server,
     shutdown,
 )
@@ -43,7 +43,7 @@ def verbose_on(level: Union[int, str] = "debug") -> None:
             "Invalid log level"
         )
     logging.debug(f"SDK logging enabled ({level.upper()})")
-    enable_log_forwarding(level)
+    enable_logging(level)
 
 
 def verbose_off() -> None:
@@ -51,7 +51,7 @@ def verbose_off() -> None:
     Stop forwarding SDK logs
     """
     logging.debug("SDK logging disabled")
-    disable_log_forwarding()
+    disable_logging()
 
 
 __all__ = [

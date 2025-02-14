@@ -58,20 +58,16 @@ impl CameraCalibrationChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::CameraCalibration) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::CameraCalibration) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(
-        &self,
-        msg: &schemas::CameraCalibration,
-        metadata: Bound<'_, PartialMetadata>,
-    ) {
+    fn log_with_meta(&self, msg: schemas::CameraCalibration, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -90,16 +86,16 @@ impl CircleAnnotationChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::CircleAnnotation) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::CircleAnnotation) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::CircleAnnotation, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::CircleAnnotation, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -118,16 +114,16 @@ impl ColorChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::Color) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::Color) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::Color, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::Color, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -146,16 +142,16 @@ impl CompressedImageChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::CompressedImage) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::CompressedImage) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::CompressedImage, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::CompressedImage, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -174,16 +170,16 @@ impl CompressedVideoChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::CompressedVideo) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::CompressedVideo) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::CompressedVideo, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::CompressedVideo, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -202,16 +198,16 @@ impl FrameTransformChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::FrameTransform) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::FrameTransform) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::FrameTransform, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::FrameTransform, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -230,16 +226,16 @@ impl FrameTransformsChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::FrameTransforms) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::FrameTransforms) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::FrameTransforms, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::FrameTransforms, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -258,16 +254,16 @@ impl GeoJsonChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::GeoJson) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::GeoJson) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::GeoJson, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::GeoJson, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -286,16 +282,16 @@ impl GridChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::Grid) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::Grid) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::Grid, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::Grid, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -314,16 +310,16 @@ impl ImageAnnotationsChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::ImageAnnotations) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::ImageAnnotations) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::ImageAnnotations, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::ImageAnnotations, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -342,16 +338,16 @@ impl KeyValuePairChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::KeyValuePair) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::KeyValuePair) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::KeyValuePair, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::KeyValuePair, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -370,16 +366,16 @@ impl LaserScanChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::LaserScan) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::LaserScan) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::LaserScan, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::LaserScan, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -398,16 +394,16 @@ impl LocationFixChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::LocationFix) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::LocationFix) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::LocationFix, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::LocationFix, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -426,16 +422,16 @@ impl LogChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::Log) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::Log) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::Log, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::Log, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -454,20 +450,20 @@ impl SceneEntityDeletionChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::SceneEntityDeletion) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::SceneEntityDeletion) {
+        self.0.log(&msg.into());
     }
 
     fn log_with_meta(
         &self,
-        msg: &schemas::SceneEntityDeletion,
+        msg: schemas::SceneEntityDeletion,
         metadata: Bound<'_, PartialMetadata>,
     ) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -486,16 +482,16 @@ impl SceneEntityChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::SceneEntity) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::SceneEntity) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::SceneEntity, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::SceneEntity, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -514,16 +510,16 @@ impl SceneUpdateChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::SceneUpdate) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::SceneUpdate) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::SceneUpdate, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::SceneUpdate, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -542,20 +538,20 @@ impl PackedElementFieldChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::PackedElementField) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::PackedElementField) {
+        self.0.log(&msg.into());
     }
 
     fn log_with_meta(
         &self,
-        msg: &schemas::PackedElementField,
+        msg: schemas::PackedElementField,
         metadata: Bound<'_, PartialMetadata>,
     ) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -574,16 +570,16 @@ impl Point2Channel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::Point2) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::Point2) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::Point2, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::Point2, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -602,16 +598,16 @@ impl Point3Channel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::Point3) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::Point3) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::Point3, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::Point3, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -630,16 +626,16 @@ impl PointCloudChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::PointCloud) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::PointCloud) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::PointCloud, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::PointCloud, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -658,16 +654,16 @@ impl PointsAnnotationChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::PointsAnnotation) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::PointsAnnotation) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::PointsAnnotation, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::PointsAnnotation, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -686,16 +682,16 @@ impl PoseChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::Pose) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::Pose) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::Pose, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::Pose, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -714,16 +710,16 @@ impl PoseInFrameChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::PoseInFrame) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::PoseInFrame) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::PoseInFrame, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::PoseInFrame, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -742,16 +738,16 @@ impl PosesInFrameChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::PosesInFrame) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::PosesInFrame) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::PosesInFrame, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::PosesInFrame, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -770,16 +766,16 @@ impl QuaternionChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::Quaternion) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::Quaternion) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::Quaternion, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::Quaternion, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -798,16 +794,16 @@ impl RawImageChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::RawImage) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::RawImage) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::RawImage, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::RawImage, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -826,16 +822,16 @@ impl TextAnnotationChannel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::TextAnnotation) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::TextAnnotation) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::TextAnnotation, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::TextAnnotation, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -854,16 +850,16 @@ impl Vector2Channel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::Vector2) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::Vector2) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::Vector2, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::Vector2, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {
@@ -882,16 +878,16 @@ impl Vector3Channel {
         Ok(Self(base))
     }
 
-    fn log(&self, msg: &schemas::Vector3) {
-        self.0.log(&msg.0);
+    fn log(&self, msg: schemas::Vector3) {
+        self.0.log(&msg.into());
     }
 
-    fn log_with_meta(&self, msg: &schemas::Vector3, metadata: Bound<'_, PartialMetadata>) {
+    fn log_with_meta(&self, msg: schemas::Vector3, metadata: Bound<'_, PartialMetadata>) {
         let metadata = metadata
             .extract::<PartialMetadata>()
             .ok()
             .unwrap_or_default();
-        self.0.log_with_meta(&msg.0, metadata.into());
+        self.0.log_with_meta(&msg.into(), metadata.into());
     }
 
     fn __repr__(&self) -> String {

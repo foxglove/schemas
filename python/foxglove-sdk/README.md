@@ -4,56 +4,42 @@
 
 This package is currently under active development and not recommended for production use. See [foxglove-websocket](https://github.com/foxglove/ws-protocol/tree/main/python) for the currently recommended approach.
 
-## Development
+## Requirements
 
-### Installation
-
-We use [Poetry](https://python-poetry.org/) to manage dependencies.
-
-Install Poetry:
-
-```sh
-brew install pipx
-pipx ensurepath
-pipx install poetry
-```
-
-Install dependencies
-
-```sh
-poetry install
-```
-
-### Developing
-
-To make use of installed dependencies, prefix python commands with `poetry run`. For more details, refer to the [Poetry docs](https://python-poetry.org/docs/basic-usage/).
-
-After making changes to rust code, rebuild with:
-
-```sh
-poetry run maturin develop
-```
-
-To check types, run:
-
-```sh
-poetry run mypy .
-```
-
-Format code:
-
-```sh
-poetry run black .
-```
-
-PEP8 check:
-
-```sh
-poetry run flake8 .
-```
+- Python 3.9+
 
 ### Examples
 
+To get started, install Poetry https://python-poetry.org/docs/#installation, and then the project dependencies. For example:
+
 ```sh
-poetry run python python/examples/ws-demo.py
+pipx install poetry
+poetry install
 ```
+
+Examples are available in `python/examples`. To run the websocket example:
+
+```sh
+poetry run python python/examples/live_visualization.py
+```
+
+## Overview
+
+To record messages, you need at least one sink and at least one channel.
+
+A "sink" is a destination for logged messages — either an MCAP file or a live visualization server.
+Use `record_file` to register a new MCAP sink. Use `start_server` to create a new live visualization
+server.
+
+A "channel" gives a way to log related messages which have the same schema. Each channel is
+instantiated with a unique topic name.
+
+The SDK provides classes for well-known schemas. These can be used in conjunction with associated
+channel classes for type-safe logging, which ensures at compile time that messages logged to a
+channel all share a common schema. For example, you may create a `SceneUpdateChannel` on which you
+will log `SceneUpdate` messages.
+
+You can also log messages with arbitrary schemas and provide your own encoding, by instantiating a
+`Channel` class.
+
+See the examples for more details.

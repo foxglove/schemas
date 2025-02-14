@@ -852,14 +852,13 @@ async fn test_parameter_unsubscribe_no_updates() {
 
     _ = ws_client.next().await.expect("No serverInfo sent");
 
-    let msg = ws_client.next().await.expect("No message received");
-    let msg = msg.expect("Failed to parse message");
-    let text = msg.into_text().expect("Failed to get message text");
-    let msg: Value = serde_json::from_str(&text).expect("Failed to parse message");
-    assert_eq!(msg["op"], "parameterValues");
-    assert_eq!(msg["parameters"].as_array().unwrap().len(), 0);
-
     server.stop().await;
+
+    // No parameter message was sent with the updated param before the Close message
+    assert!(matches!(
+        ws_client.next().await,
+        Some(Ok(Message::Close(_)))
+    ));
 }
 
 #[traced_test]

@@ -148,6 +148,8 @@ pub(crate) struct Server {
     listener: Option<Arc<dyn ServerListener>>,
     /// Capabilities advertised to clients
     capabilities: HashSet<Capability>,
+    /// Parameters subscribed to by clients
+    subscribed_parameters: parking_lot::Mutex<HashSet<String>>,
     /// Encodings server can accept from clients. Ignored unless the "clientPublish" capability is set.
     supported_encodings: HashSet<String>,
     /// Token for cancelling all tasks
@@ -572,15 +574,17 @@ impl ConnectedClient {
                 .cloned()
                 .collect()
         };
-        if parameters.is_empty() {
+        if subscribed_parameters.is_empty() {
             println!("update_parameters: no parameters to send");
             return;
         }
+        println!("update_parameters: {:?}", subscribed_parameters);
         let message = protocol::server::parameters_json(&subscribed_parameters, None);
         self.send_control_msg(Message::text(message));
     }
 
-    fn on_parameters_subscribe(&self, server: Arc<Server>, mut param_names: Vec<String>) {
+    fn on_parameters_subscribe(&self, server: Arc<Server>, param_names: Vec<String>) {
+        println!("on_parameters_subscribe: {:?}", param_names);
         if !server
             .capabilities
             .contains(&Capability::ParametersSubscribe)
@@ -589,21 +593,29 @@ impl ConnectedClient {
             return;
         }
 
-        println!("on_parameters_subscribe: {:?}", param_names);
-        // First filter param_names down to only the ones the client isn't already subscribed to.
-        // We can skip this step, but it speeds up the O(MN) call to parameters_without_subscription.
+        // Get the list of which subscriptions are new to the server (first time subscriptions)
+        // This must come before modifying self.paramter_subscriptions for it to sync
+        // correctly with on_parameters_unsubscribe.
+        let mut new_param_subscriptions = Vec::with_capacity(param_names.len());
         {
-            let subscribed_parameters = self.parameter_subscriptions.lock();
-            param_names.retain(|name| !subscribed_parameters.contains(name));
+            let mut subscribed_parameters = server.subscribed_parameters.lock();
+            for name in param_names.iter() {
+                if subscribed_parameters.insert(name.clone()) {
+                    new_param_subscriptions.push(name.clone());
+                }
+            }
         }
-        // Get the list of parameter names that previously had no subscribers
-        let new_param_subscriptions = server.parameters_without_subscription(param_names.clone());
+        // Track the client's own subscriptions
         {
+            println!("client subscribed to: {:?}", param_names);
             let mut subscribed_parameters = self.parameter_subscriptions.lock();
             subscribed_parameters.extend(param_names);
         }
-        println!("on_parameters_subscribe: {:?}", new_param_subscriptions);
+        if new_param_subscriptions.is_empty() {
+            return;
+        }
         if let Some(handler) = self.server_listener.as_ref() {
+            println!("new subscriptions: {:?}", new_param_subscriptions);
             handler.on_parameters_subscribe(new_param_subscriptions);
         }
     }
@@ -617,16 +629,31 @@ impl ConnectedClient {
             return;
         }
 
-        // First filter param_names down to only the ones the client is subscribed to.
+        // Remove the parameter subscriptions for this client,
+        // and filter out any we weren't subscribed to
         {
             let mut subscribed_parameters = self.parameter_subscriptions.lock();
             param_names.retain(|name| subscribed_parameters.remove(name));
         }
-        // Get the list of parameter names that now have no subscribers
-        let unsubscribed_parameters = server.parameters_without_subscription(param_names);
-        if let Some(handler) = self.server_listener.as_ref() {
-            handler.on_parameters_unsubscribe(unsubscribed_parameters);
+        if param_names.is_empty() {
+            // We didn't remove any subscriptions
+            return;
         }
+        let Some(handler) = self.server_listener.as_ref() else {
+            return;
+        };
+
+        let unsubscribed_parameters = {
+            let mut subscribed_parameters = server.subscribed_parameters.lock();
+            // With the server-wide lock held, which prevents new subscriptions,
+            // get the parameters without any subscibers
+            let mut unsubscribed_parameters = server.parameters_without_subscription(param_names);
+            // Remove the unsubscribed parameters from the server's list of subscribed parameters
+            unsubscribed_parameters.retain(|name| subscribed_parameters.remove(name));
+            unsubscribed_parameters
+        };
+
+        handler.on_parameters_unsubscribe(unsubscribed_parameters);
     }
 
     /// Send an ad hoc error status message to the client, with the given message.
@@ -690,6 +717,7 @@ impl Server {
             clients: CowVec::new(),
             channels: parking_lot::RwLock::new(HashMap::new()),
             capabilities: opts.capabilities.unwrap_or_default(),
+            subscribed_parameters: parking_lot::Mutex::new(HashSet::new()),
             supported_encodings: opts.supported_encodings.unwrap_or_default(),
             cancellation_token: CancellationToken::new(),
         }

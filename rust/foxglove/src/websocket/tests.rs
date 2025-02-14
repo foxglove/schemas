@@ -1,6 +1,7 @@
 use assert_matches::assert_matches;
 use bytes::{BufMut, BytesMut};
 use futures_util::{FutureExt, SinkExt, StreamExt};
+use serde::Deserialize;
 use serde_json::{json, Value};
 use std::collections::HashSet;
 use std::net::SocketAddr;
@@ -25,6 +26,12 @@ fn parse_message(msg: Message) -> usize {
         Message::Text(text) => text.parse().expect("id"),
         _ => unreachable!(),
     }
+}
+
+#[derive(Debug, Deserialize)]
+struct ParameterValues {
+    id: Option<String>,
+    parameters: Vec<Parameter>,
 }
 
 #[traced_test]
@@ -734,7 +741,10 @@ async fn test_client_advertising() {
 #[tokio::test]
 async fn test_parameter_values() {
     let server = create_server(ServerOptions {
-        capabilities: Some(HashSet::from([Capability::Parameters])),
+        capabilities: Some(HashSet::from([
+            Capability::Parameters,
+            Capability::ParametersSubscribe,
+        ])),
         ..Default::default()
     });
     let addr = server
@@ -776,6 +786,230 @@ async fn test_parameter_values() {
     assert_eq!(msg["parameters"].as_array().unwrap().len(), 1);
     assert_eq!(msg["parameters"][0]["name"], "some-float-value");
     assert_eq!(msg["parameters"][0]["value"], 1.23);
+
+    server.stop().await;
+}
+
+#[traced_test]
+#[tokio::test]
+async fn test_parameter_unsubscribe_no_updates() {
+    let recording_listener = Arc::new(RecordingServerListener::new());
+
+    let server = create_server(ServerOptions {
+        capabilities: Some(HashSet::from([
+            Capability::Parameters,
+            Capability::ParametersSubscribe,
+        ])),
+        listener: Some(recording_listener.clone()),
+        ..Default::default()
+    });
+    let addr = server
+        .start("127.0.0.1", 0)
+        .await
+        .expect("Failed to start server");
+
+    let mut ws_client = connect_client(addr).await;
+
+    // Send the Subscribe Parameter Update message for "some-float-value"
+    // Otherwise we won't get the update after we publish it.
+    ws_client
+        .send(Message::text(
+            r#"{"op":"subscribeParameterUpdates","parameterNames":["some-float-value"]}"#,
+        ))
+        .await
+        .expect("Failed to send subscribe parameter updates");
+    ws_client
+        .send(Message::text(
+            r#"{"op":"unsubscribeParameterUpdates","parameterNames":["some-float-value","baz"]}"#,
+        ))
+        .await
+        .expect("Failed to send unsubscribe parameter updates");
+
+    // FG-10395 replace this with something more precise
+    tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+
+    let (_, parameter_names) = recording_listener
+        .take_parameters_subscribe()
+        .pop()
+        .unwrap();
+    assert_eq!(parameter_names, vec!["some-float-value"]);
+
+    let (_, parameter_names) = recording_listener
+        .take_parameters_unsubscribe()
+        .pop()
+        .unwrap();
+    assert_eq!(parameter_names, vec!["some-float-value"]);
+
+    let parameter = Parameter {
+        name: "some-float-value".to_string(),
+        value: Some(ParameterValue::Number(1.23)),
+        r#type: Some(ParameterType::Float64),
+    };
+    server.publish_parameter_values(vec![parameter]);
+
+    // FG-10395 replace this with something more precise
+    tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+
+    _ = ws_client.next().await.expect("No serverInfo sent");
+
+    let msg = ws_client.next().await.expect("No message received");
+    let msg = msg.expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    let msg: Value = serde_json::from_str(&text).expect("Failed to parse message");
+    assert_eq!(msg["op"], "parameterValues");
+    assert_eq!(msg["parameters"].as_array().unwrap().len(), 0);
+
+    server.stop().await;
+}
+
+#[traced_test]
+#[tokio::test]
+async fn test_set_parameters() {
+    let recording_listener = Arc::new(RecordingServerListener::new());
+
+    let server = create_server(ServerOptions {
+        capabilities: Some(HashSet::from([
+            Capability::Parameters,
+            Capability::ParametersSubscribe,
+        ])),
+        listener: Some(recording_listener.clone()),
+        ..Default::default()
+    });
+    let addr = server
+        .start("127.0.0.1", 0)
+        .await
+        .expect("Failed to start server");
+
+    let mut ws_client = connect_client(addr).await;
+
+    // Subscribe to "foo" and "bar"
+    ws_client
+        .send(Message::text(
+            r#"{"op":"subscribeParameterUpdates","parameterNames":["foo", "bar"]}"#,
+        ))
+        .await
+        .expect("Failed to send subscribe parameter updates");
+
+    // FG-10395 replace this with something more precise
+    tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+
+    ws_client
+        .send(Message::text(
+            r#"{"op":"setParameters", "parameters":[{"name":"foo","value":1,"type":"float64"},{"name":"bar","value":"aGVsbG8="},{"name":"baz","value":true}], "id":"123"}"#,
+        ))
+        .await
+        .expect("Failed to send set parameters");
+
+    // FG-10395 replace this with something more precise
+    tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+
+    let (_, parameters, request_id) = recording_listener.take_parameters_set().pop().unwrap();
+    assert_eq!(parameters.len(), 3);
+    assert_eq!(parameters[0].name, "foo");
+    assert_eq!(parameters[0].value, Some(ParameterValue::Number(1.0)));
+    assert_eq!(parameters[0].r#type, Some(ParameterType::Float64));
+    assert_eq!(parameters[1].name, "bar");
+    assert_eq!(
+        parameters[1].value,
+        Some(ParameterValue::String(Vec::from("hello".as_bytes())))
+    );
+    assert_eq!(parameters[1].r#type, None);
+    assert_eq!(parameters[2].name, "baz");
+    assert_eq!(parameters[2].value, Some(ParameterValue::Bool(true)));
+    assert_eq!(parameters[2].r#type, None);
+    assert_eq!(request_id, Some("123".to_string()));
+
+    _ = ws_client.next().await.expect("No serverInfo sent");
+
+    // setParameters returns the result of on_set_parameters, which for recording listener, just returns them back
+    let msg = ws_client.next().await.expect("No message received");
+    let msg = msg.expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    let msg: ParameterValues = serde_json::from_str(&text).expect("Failed to parse message");
+    let params = msg.parameters;
+    assert_eq!(params.len(), 3);
+    assert_eq!(params[0].name, "foo");
+    assert_eq!(params[0].value, Some(ParameterValue::Number(1.0)));
+    assert_eq!(params[0].r#type, Some(ParameterType::Float64));
+    assert_eq!(params[1].name, "bar");
+    assert_eq!(
+        params[1].value,
+        Some(ParameterValue::String(Vec::from("hello".as_bytes())))
+    );
+    assert_eq!(params[1].r#type, None);
+    assert_eq!(params[2].name, "baz");
+    assert_eq!(params[2].value, Some(ParameterValue::Bool(true)));
+    assert_eq!(params[2].r#type, None);
+
+    // it will also publish the updated paramters returned from on_set_parameters
+    // which will send just the paramters we're subscribed to.
+    let msg = ws_client.next().await.expect("No message received");
+    let msg = msg.expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    let msg: ParameterValues = serde_json::from_str(&text).expect("Failed to parse message");
+    let params = msg.parameters;
+    assert_eq!(params.len(), 2);
+    assert_eq!(params[0].name, "foo");
+    assert_eq!(params[0].value, Some(ParameterValue::Number(1.0)));
+    assert_eq!(params[0].r#type, Some(ParameterType::Float64));
+    assert_eq!(params[1].name, "bar");
+    assert_eq!(
+        params[1].value,
+        Some(ParameterValue::String(Vec::from("hello".as_bytes())))
+    );
+    assert_eq!(params[1].r#type, None);
+
+    server.stop().await;
+}
+
+#[traced_test]
+#[tokio::test]
+async fn test_get_parameters() {
+    let recording_listener = Arc::new(RecordingServerListener::new());
+    recording_listener.set_parameters_get_result(vec![Parameter {
+        name: "foo".to_string(),
+        value: Some(ParameterValue::Number(1.0)),
+        r#type: Some(ParameterType::Float64),
+    }]);
+
+    let server = create_server(ServerOptions {
+        capabilities: Some(HashSet::from([Capability::Parameters])),
+        listener: Some(recording_listener.clone()),
+        ..Default::default()
+    });
+    let addr = server
+        .start("127.0.0.1", 0)
+        .await
+        .expect("Failed to start server");
+
+    let mut ws_client = connect_client(addr).await;
+
+    ws_client
+        .send(Message::text(
+            r#"{"op":"getParameters", "parameterNames":["foo", "bar", "baz"], "id":"123"}"#,
+        ))
+        .await
+        .expect("Failed to send get parameters");
+
+    // FG-10395 replace this with something more precise
+    tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+
+    let (_, param_names, request_id) = recording_listener.take_parameters_get().pop().unwrap();
+    assert_eq!(param_names, vec!["foo", "bar", "baz"]);
+    assert_eq!(request_id, Some("123".to_string()));
+
+    _ = ws_client.next().await.expect("No serverInfo sent");
+
+    let msg = ws_client.next().await.expect("No message received");
+    let msg = msg.expect("Failed to parse message");
+    let text = msg.into_text().expect("Failed to get message text");
+    let msg: ParameterValues = serde_json::from_str(&text).expect("Failed to parse message");
+    let params = msg.parameters;
+    assert_eq!(msg.id, Some("123".to_string()));
+    assert_eq!(params.len(), 1);
+    assert_eq!(params[0].name, "foo");
+    assert_eq!(params[0].value, Some(ParameterValue::Number(1.0)));
+    assert_eq!(params[0].r#type, Some(ParameterType::Float64));
 
     server.stop().await;
 }

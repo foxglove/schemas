@@ -171,11 +171,11 @@ pub trait ServerListener: Send + Sync {
     /// Callback invoked when a client unsubscribes from a channel.
     /// Only invoked for channels that had an active subscription from the client.
     fn on_unsubscribe(&self, _client: Client, _channel: ChannelView) {}
-    /// Callback invoked when a client advertises a client channel. Requires the "clientPublish" capability.
+    /// Callback invoked when a client advertises a client channel. Requires [`Capability::ClientPublish`].
     fn on_client_advertise(&self, _client: Client, _channel: ClientChannelView) {}
-    /// Callback invoked when a client unadvertises a client channel. Requires the "clientPublish" capability.
+    /// Callback invoked when a client unadvertises a client channel. Requires [`Capability::ClientPublish`].
     fn on_client_unadvertise(&self, _client: Client, _channel: ClientChannelView) {}
-    /// Callback invoked when a client requests parameters. Requires the "parameters" capability.
+    /// Callback invoked when a client requests parameters. Requires [`Capability::Parameters`].
     fn on_get_parameters(
         &self,
         _client: Client,
@@ -184,7 +184,7 @@ pub trait ServerListener: Send + Sync {
     ) -> Vec<Parameter> {
         Vec::new()
     }
-    /// Callback invoked when a client sets parameters. Requires the "parameters" capability.
+    /// Callback invoked when a client sets parameters. Requires [`Capability::Parameters`].
     fn on_set_parameters(
         &self,
         _client: Client,
@@ -193,9 +193,9 @@ pub trait ServerListener: Send + Sync {
     ) -> Vec<Parameter> {
         Vec::new()
     }
-    /// Callback invoked when a client subscribes to parameters. Requires the "parameters" capability.
+    /// Callback invoked when a client subscribes to parameters. Requires [`Capability::ParametersSubscribe`].
     fn on_parameters_subscribe(&self, _client: Client, _param_names: Vec<String>) {}
-    /// Callback invoked when a client unsubscribes from parameters. Requires the "parameters" capability.
+    /// Callback invoked when a client unsubscribes from parameters. Requires [`Capability::ParametersSubscribe`].
     fn on_parameters_unsubscribe(&self, _client: Client, _param_names: Vec<String>) {}
 }
 
@@ -259,7 +259,7 @@ impl ConnectedClient {
             ClientMessage::Unadvertise(msg) => self.on_unadvertise(msg.channel_ids),
             ClientMessage::MessageData(msg) => self.on_message_data(msg),
             ClientMessage::GetParameters(msg) => {
-                self.on_get_parameters(msg.parameter_names, msg.id)
+                self.on_get_parameters(server, msg.parameter_names, msg.id)
             }
             ClientMessage::SetParameters(msg) => {
                 self.on_set_parameters(server, msg.parameters, msg.id)
@@ -507,7 +507,17 @@ impl ConnectedClient {
         }
     }
 
-    fn on_get_parameters(&self, param_names: Vec<String>, request_id: Option<String>) {
+    fn on_get_parameters(
+        &self,
+        server: Arc<Server>,
+        param_names: Vec<String>,
+        request_id: Option<String>,
+    ) {
+        if !server.capabilities.contains(&Capability::Parameters) {
+            self.send_error("Server does not support parameters capability".to_string());
+            return;
+        }
+
         if let Some(handler) = self.server_listener.as_ref() {
             let request_id = request_id.as_deref();
             let parameters = handler.on_get_parameters(Client(self), param_names, request_id);
@@ -522,6 +532,11 @@ impl ConnectedClient {
         parameters: Vec<Parameter>,
         request_id: Option<String>,
     ) {
+        if !server.capabilities.contains(&Capability::Parameters) {
+            self.send_error("Server does not support parameters capability".to_string());
+            return;
+        }
+
         if let Some(handler) = self.server_listener.as_ref() {
             let request_id = request_id.as_deref();
             let updated_parameters =
@@ -538,7 +553,6 @@ impl ConnectedClient {
     }
 
     fn update_parameters(&self, parameters: &[Parameter]) {
-        println!("update_parameters: {:?}", parameters);
         // Hold the lock for as short a time as possible
         let subscribed_parameters: Vec<Parameter> = {
             let subscribed_parameters = self.parameter_subscriptions.lock();
@@ -558,6 +572,14 @@ impl ConnectedClient {
     }
 
     fn on_parameters_subscribe(&self, server: Arc<Server>, mut param_names: Vec<String>) {
+        if !server
+            .capabilities
+            .contains(&Capability::ParametersSubscribe)
+        {
+            self.send_error("Server does not support parametersSubscribe capability".to_string());
+            return;
+        }
+
         println!("on_parameters_subscribe: {:?}", param_names);
         // First filter param_names down to only the ones the client isn't already subscribed to.
         // We can skip this step, but it speeds up the O(MN) call to parameters_without_subscription.
@@ -578,6 +600,14 @@ impl ConnectedClient {
     }
 
     fn on_parameters_unsubscribe(&self, server: Arc<Server>, mut param_names: Vec<String>) {
+        if !server
+            .capabilities
+            .contains(&Capability::ParametersSubscribe)
+        {
+            self.send_error("Server does not support parametersSubscribe capability".to_string());
+            return;
+        }
+
         // First filter param_names down to only the ones the client is subscribed to.
         {
             let mut subscribed_parameters = self.parameter_subscriptions.lock();

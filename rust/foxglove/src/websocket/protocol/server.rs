@@ -141,6 +141,9 @@ pub enum Capability {
     ClientPublish,
     /// Allow clients to get & set parameters.
     Parameters,
+    /// Allow clients to subscribe and unsubscribe from parameter updates
+    ParametersSubscribe,
+    ///
     /// Inform clients about the latest server time.
     ///
     /// This allows accelerated, slowed, or stepped control over the progress of time. If the

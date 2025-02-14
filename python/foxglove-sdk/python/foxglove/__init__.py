@@ -28,7 +28,7 @@ def _log_level_from_int(level: int) -> str:
 
 def verbose_on(level: Union[int, str] = "debug") -> None:
     """
-    Forward SDK logs to python's logging facility.
+    Enable SDK logging.
     """
     if isinstance(level, int):
         assert level in [
@@ -48,7 +48,7 @@ def verbose_on(level: Union[int, str] = "debug") -> None:
 
 def verbose_off() -> None:
     """
-    Stop forwarding SDK logs
+    Disable SDK logging.
     """
     logging.debug("SDK logging disabled")
     disable_logging()

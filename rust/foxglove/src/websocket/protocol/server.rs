@@ -270,10 +270,7 @@ impl<'a> From<&'a service::MessageSchema> for AdvertiseServiceMessageSchema<'a> 
 }
 
 // https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#advertise-services
-pub(crate) fn advertise_services<'a, II>(services: II) -> String
-where
-    II: IntoIterator<Item = &'a Service>,
-{
+pub(crate) fn advertise_services<'a>(services: impl IntoIterator<Item = &'a Service>) -> String {
     let services: Vec<_> = services
         .into_iter()
         .map(|s| json!(AdvertiseService::from(s)))

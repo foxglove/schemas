@@ -54,6 +54,14 @@ poetry run flake8 .
 poetry run python python/examples/live_visualization.py
 ```
 
+### Tests
+
+From the `./python/foxglove-sdk/python` directory:
+
+```sh
+poetry run python -m unittest
+```
+
 ### Documentation
 
 Sphinx documentation can be generated from this directory with:

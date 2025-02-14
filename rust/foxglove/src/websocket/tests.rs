@@ -718,19 +718,19 @@ async fn test_client_advertising() {
 
     // Server should have received one message
     let mut received = recording_listener.take_message_data();
-    let (_, channel_info, payload) = received.pop().expect("No message received");
-    assert_eq!(channel_info.id, ClientChannelId::new(1));
-    assert_eq!(payload, b"{\"a\":1}");
+    let message_data = received.pop().expect("No message received");
+    assert_eq!(message_data.channel.id, ClientChannelId::new(1));
+    assert_eq!(message_data.data, b"{\"a\":1}");
 
     // Server should have ignored the duplicate advertisement
     let advertisements = recording_listener.take_client_advertise();
     assert_eq!(advertisements.len(), 1);
-    assert_eq!(advertisements[0].1.id, channel_info.id);
+    assert_eq!(advertisements[0].1.id, ClientChannelId::new(channel_id));
 
     // Server should have received one unadvertise (and ignored the duplicate)
     let unadvertises = recording_listener.take_client_unadvertise();
     assert_eq!(unadvertises.len(), 1);
-    assert_eq!(unadvertises[0].1.id, channel_info.id);
+    assert_eq!(unadvertises[0].1.id, ClientChannelId::new(channel_id));
 
     ws_client.close(None).await.unwrap();
     server.stop().await;
@@ -901,21 +901,30 @@ async fn test_set_parameters() {
     // FG-10395 replace this with something more precise
     tokio::time::sleep(std::time::Duration::from_millis(50)).await;
 
-    let (_, parameters, request_id) = recording_listener.take_parameters_set().pop().unwrap();
-    assert_eq!(parameters.len(), 3);
-    assert_eq!(parameters[0].name, "foo");
-    assert_eq!(parameters[0].value, Some(ParameterValue::Number(1.0)));
-    assert_eq!(parameters[0].r#type, Some(ParameterType::Float64));
-    assert_eq!(parameters[1].name, "bar");
+    let set_parameters = recording_listener.take_parameters_set().pop().unwrap();
+    assert_eq!(set_parameters.parameters.len(), 3);
+    assert_eq!(set_parameters.parameters[0].name, "foo");
     assert_eq!(
-        parameters[1].value,
+        set_parameters.parameters[0].value,
+        Some(ParameterValue::Number(1.0))
+    );
+    assert_eq!(
+        set_parameters.parameters[0].r#type,
+        Some(ParameterType::Float64)
+    );
+    assert_eq!(set_parameters.parameters[1].name, "bar");
+    assert_eq!(
+        set_parameters.parameters[1].value,
         Some(ParameterValue::String(Vec::from("hello".as_bytes())))
     );
-    assert_eq!(parameters[1].r#type, None);
-    assert_eq!(parameters[2].name, "baz");
-    assert_eq!(parameters[2].value, Some(ParameterValue::Bool(true)));
-    assert_eq!(parameters[2].r#type, None);
-    assert_eq!(request_id, Some("123".to_string()));
+    assert_eq!(set_parameters.parameters[1].r#type, None);
+    assert_eq!(set_parameters.parameters[2].name, "baz");
+    assert_eq!(
+        set_parameters.parameters[2].value,
+        Some(ParameterValue::Bool(true))
+    );
+    assert_eq!(set_parameters.parameters[2].r#type, None);
+    assert_eq!(set_parameters.request_id, Some("123".to_string()));
 
     _ = ws_client.next().await.expect("No serverInfo sent");
 
@@ -992,9 +1001,9 @@ async fn test_get_parameters() {
     // FG-10395 replace this with something more precise
     tokio::time::sleep(std::time::Duration::from_millis(50)).await;
 
-    let (_, param_names, request_id) = recording_listener.take_parameters_get().pop().unwrap();
-    assert_eq!(param_names, vec!["foo", "bar", "baz"]);
-    assert_eq!(request_id, Some("123".to_string()));
+    let get_parameters = recording_listener.take_parameters_get().pop().unwrap();
+    assert_eq!(get_parameters.param_names, vec!["foo", "bar", "baz"]);
+    assert_eq!(get_parameters.request_id, Some("123".to_string()));
 
     _ = ws_client.next().await.expect("No serverInfo sent");
 

@@ -40,16 +40,37 @@ impl From<ChannelView<'_>> for ChannelInfo {
     }
 }
 
+pub(crate) struct MessageData {
+    #[allow(dead_code)]
+    pub client_id: ClientId,
+    pub channel: ClientChannelInfo,
+    pub data: Vec<u8>,
+}
+
+pub(crate) struct GetParameters {
+    #[allow(dead_code)]
+    pub client_id: ClientId,
+    pub param_names: Vec<String>,
+    pub request_id: Option<String>,
+}
+
+pub(crate) struct SetParameters {
+    #[allow(dead_code)]
+    pub client_id: ClientId,
+    pub parameters: Vec<Parameter>,
+    pub request_id: Option<String>,
+}
+
 pub(crate) struct RecordingServerListener {
-    message_data: Mutex<Vec<(ClientId, ClientChannelInfo, Vec<u8>)>>,
+    message_data: Mutex<Vec<MessageData>>,
     subscribe: Mutex<Vec<(ClientId, ChannelInfo)>>,
     unsubscribe: Mutex<Vec<(ClientId, ChannelInfo)>>,
     client_advertise: Mutex<Vec<(ClientId, ClientChannelInfo)>>,
     client_unadvertise: Mutex<Vec<(ClientId, ClientChannelInfo)>>,
     parameters_subscribe: Mutex<Vec<Vec<String>>>,
     parameters_unsubscribe: Mutex<Vec<Vec<String>>>,
-    parameters_get: Mutex<Vec<(ClientId, Vec<String>, Option<String>)>>,
-    parameters_set: Mutex<Vec<(ClientId, Vec<Parameter>, Option<String>)>>,
+    parameters_get: Mutex<Vec<GetParameters>>,
+    parameters_set: Mutex<Vec<SetParameters>>,
     parameters_get_result: Mutex<Vec<Parameter>>,
 }
 
@@ -69,7 +90,7 @@ impl RecordingServerListener {
         }
     }
 
-    pub fn take_message_data(&self) -> Vec<(ClientId, ClientChannelInfo, Vec<u8>)> {
+    pub fn take_message_data(&self) -> Vec<MessageData> {
         std::mem::take(&mut self.message_data.lock())
     }
 
@@ -97,7 +118,7 @@ impl RecordingServerListener {
         std::mem::take(&mut self.parameters_unsubscribe.lock())
     }
 
-    pub fn take_parameters_get(&self) -> Vec<(ClientId, Vec<String>, Option<String>)> {
+    pub fn take_parameters_get(&self) -> Vec<GetParameters> {
         std::mem::take(&mut self.parameters_get.lock())
     }
 
@@ -105,7 +126,7 @@ impl RecordingServerListener {
         *self.parameters_get_result.lock() = result;
     }
 
-    pub fn take_parameters_set(&self) -> Vec<(ClientId, Vec<Parameter>, Option<String>)> {
+    pub fn take_parameters_set(&self) -> Vec<SetParameters> {
         std::mem::take(&mut self.parameters_set.lock())
     }
 }
@@ -113,7 +134,11 @@ impl RecordingServerListener {
 impl ServerListener for RecordingServerListener {
     fn on_message_data(&self, client: Client, channel: ClientChannelView, payload: &[u8]) {
         let mut data = self.message_data.lock();
-        data.push((client.id(), channel.into(), payload.to_vec()));
+        data.push(MessageData {
+            client_id: client.id(),
+            channel: channel.into(),
+            data: payload.to_vec(),
+        });
     }
 
     fn on_subscribe(&self, client: Client, channel: ChannelView) {
@@ -143,11 +168,11 @@ impl ServerListener for RecordingServerListener {
         request_id: Option<&str>,
     ) -> Vec<Parameter> {
         let mut gets = self.parameters_get.lock();
-        gets.push((
-            client.id(),
-            param_names.clone(),
-            request_id.map(|s| s.to_string()),
-        ));
+        gets.push(GetParameters {
+            client_id: client.id(),
+            param_names: param_names.clone(),
+            request_id: request_id.map(|s| s.to_string()),
+        });
         self.parameters_get_result.lock().clone()
     }
 
@@ -158,11 +183,11 @@ impl ServerListener for RecordingServerListener {
         request_id: Option<&str>,
     ) -> Vec<Parameter> {
         let mut sets = self.parameters_set.lock();
-        sets.push((
-            client.id(),
-            parameters.clone(),
-            request_id.map(|s| s.to_string()),
-        ));
+        sets.push(SetParameters {
+            client_id: client.id(),
+            parameters: parameters.clone(),
+            request_id: request_id.map(|s| s.to_string()),
+        });
         parameters
     }
 

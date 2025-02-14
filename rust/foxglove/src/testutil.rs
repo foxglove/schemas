@@ -46,8 +46,8 @@ pub(crate) struct RecordingServerListener {
     unsubscribe: Mutex<Vec<(ClientId, ChannelInfo)>>,
     client_advertise: Mutex<Vec<(ClientId, ClientChannelInfo)>>,
     client_unadvertise: Mutex<Vec<(ClientId, ClientChannelInfo)>>,
-    parameters_subscribe: Mutex<Vec<(ClientId, Vec<String>)>>,
-    parameters_unsubscribe: Mutex<Vec<(ClientId, Vec<String>)>>,
+    parameters_subscribe: Mutex<Vec<Vec<String>>>,
+    parameters_unsubscribe: Mutex<Vec<Vec<String>>>,
     parameters_get: Mutex<Vec<(ClientId, Vec<String>, Option<String>)>>,
     parameters_set: Mutex<Vec<(ClientId, Vec<Parameter>, Option<String>)>>,
     parameters_get_result: Mutex<Vec<Parameter>>,
@@ -89,11 +89,11 @@ impl RecordingServerListener {
         std::mem::take(&mut self.client_unadvertise.lock())
     }
 
-    pub fn take_parameters_subscribe(&self) -> Vec<(ClientId, Vec<String>)> {
+    pub fn take_parameters_subscribe(&self) -> Vec<Vec<String>> {
         std::mem::take(&mut self.parameters_subscribe.lock())
     }
 
-    pub fn take_parameters_unsubscribe(&self) -> Vec<(ClientId, Vec<String>)> {
+    pub fn take_parameters_unsubscribe(&self) -> Vec<Vec<String>> {
         std::mem::take(&mut self.parameters_unsubscribe.lock())
     }
 
@@ -166,13 +166,13 @@ impl ServerListener for RecordingServerListener {
         parameters
     }
 
-    fn on_parameters_subscribe(&self, client: Client, param_names: Vec<String>) {
+    fn on_parameters_subscribe(&self, param_names: Vec<String>) {
         let mut subs = self.parameters_subscribe.lock();
-        subs.push((client.id(), param_names.clone()));
+        subs.push(param_names.clone());
     }
 
-    fn on_parameters_unsubscribe(&self, client: Client, param_names: Vec<String>) {
+    fn on_parameters_unsubscribe(&self, param_names: Vec<String>) {
         let mut unsubs = self.parameters_unsubscribe.lock();
-        unsubs.push((client.id(), param_names.clone()));
+        unsubs.push(param_names.clone());
     }
 }

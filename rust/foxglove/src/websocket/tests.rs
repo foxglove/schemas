@@ -828,13 +828,13 @@ async fn test_parameter_unsubscribe_no_updates() {
     // FG-10395 replace this with something more precise
     tokio::time::sleep(std::time::Duration::from_millis(50)).await;
 
-    let (_, parameter_names) = recording_listener
+    let parameter_names = recording_listener
         .take_parameters_subscribe()
         .pop()
         .unwrap();
     assert_eq!(parameter_names, vec!["some-float-value"]);
 
-    let (_, parameter_names) = recording_listener
+    let parameter_names = recording_listener
         .take_parameters_unsubscribe()
         .pop()
         .unwrap();

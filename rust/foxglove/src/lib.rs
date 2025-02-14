@@ -226,5 +226,5 @@ pub enum FoxgloveError {
     /// An error related to JSON encoding.
     #[doc(hidden)]
     #[error(transparent)]
-    JSONError(#[from] serde_json::Error),
+    JsonError(#[from] serde_json::Error),
 }

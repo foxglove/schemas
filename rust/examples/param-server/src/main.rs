@@ -41,7 +41,6 @@ impl ParamListener {
 }
 
 impl ServerListener for ParamListener {
-    /// Callback invoked when a client requests parameters. Requires the "parameters" capability.
     fn on_get_parameters(
         &self,
         _client: Client,
@@ -59,7 +58,6 @@ impl ServerListener for ParamListener {
             .filter_map(|name| params.get(name).cloned())
             .collect()
     }
-    /// Callback invoked when a client sets parameters. Requires the "parameters" capability.
     fn on_set_parameters(
         &self,
         _client: Client,
@@ -78,8 +76,7 @@ impl ServerListener for ParamListener {
         }
         parameters
     }
-    /// Callback invoked when a client subscribes to parameters. Requires the "parameters" capability.
-    fn on_parameters_subscribe(&self, _client: Client, param_names: Vec<String>) {
+    fn on_parameters_subscribe(&self, param_names: Vec<String>) {
         println!(
             "on_parameters_subscribe called with parameter names: {:?}",
             param_names
@@ -89,8 +86,7 @@ impl ServerListener for ParamListener {
             subscribed_params.insert(param_name);
         }
     }
-    /// Callback invoked when a client unsubscribes from parameters. Requires the "parameters" capability.
-    fn on_parameters_unsubscribe(&self, _client: Client, param_names: Vec<String>) {
+    fn on_parameters_unsubscribe(&self, param_names: Vec<String>) {
         println!(
             "on_parameters_unsubscribe called with parameter names: {:?}",
             param_names

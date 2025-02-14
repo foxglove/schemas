@@ -176,6 +176,7 @@ pub trait ServerListener: Send + Sync {
     /// Callback invoked when a client unadvertises a client channel. Requires [`Capability::ClientPublish`].
     fn on_client_unadvertise(&self, _client: Client, _channel: ClientChannelView) {}
     /// Callback invoked when a client requests parameters. Requires [`Capability::Parameters`].
+    /// Should return the named paramters, or all paramters if param_names is empty.
     fn on_get_parameters(
         &self,
         _client: Client,
@@ -185,18 +186,21 @@ pub trait ServerListener: Send + Sync {
         Vec::new()
     }
     /// Callback invoked when a client sets parameters. Requires [`Capability::Parameters`].
+    /// Should return the updated parameters for the passed parameters.
+    /// The implementation could return the modified parameters.
+    /// All clients subscribed to updates for the _returned_ parameters will be notified.
     fn on_set_parameters(
         &self,
         _client: Client,
-        _parameters: Vec<Parameter>,
+        parameters: Vec<Parameter>,
         _request_id: Option<&str>,
     ) -> Vec<Parameter> {
-        Vec::new()
+        parameters
     }
     /// Callback invoked when a client subscribes to parameters. Requires [`Capability::ParametersSubscribe`].
-    fn on_parameters_subscribe(&self, _client: Client, _param_names: Vec<String>) {}
+    fn on_parameters_subscribe(&self, _param_names: Vec<String>) {}
     /// Callback invoked when a client unsubscribes from parameters. Requires [`Capability::ParametersSubscribe`].
-    fn on_parameters_unsubscribe(&self, _client: Client, _param_names: Vec<String>) {}
+    fn on_parameters_unsubscribe(&self, _param_names: Vec<String>) {}
 }
 
 /// A connected client session with the websocket server.
@@ -537,7 +541,7 @@ impl ConnectedClient {
             return;
         }
 
-        if let Some(handler) = self.server_listener.as_ref() {
+        let updated_parameters = if let Some(handler) = self.server_listener.as_ref() {
             let request_id = request_id.as_deref();
             let updated_parameters =
                 handler.on_set_parameters(Client(self), parameters, request_id);
@@ -547,9 +551,14 @@ impl ConnectedClient {
                 let message = protocol::server::parameters_json(&updated_parameters, request_id);
                 self.send_control_msg(Message::text(message));
             }
-            // Send the subscribed parameters to the client if the client is subscribed to them.
-            server.publish_parameter_values(updated_parameters);
-        }
+            updated_parameters
+        } else {
+            // This differs from the Python reference implementation in that here we notify
+            // subscribers about the parameters even if there's no ServerListener configured.
+            // This seems to be a more sensible default.
+            parameters
+        };
+        server.publish_parameter_values(updated_parameters);
     }
 
     fn update_parameters(&self, parameters: &[Parameter]) {
@@ -595,7 +604,7 @@ impl ConnectedClient {
         }
         println!("on_parameters_subscribe: {:?}", new_param_subscriptions);
         if let Some(handler) = self.server_listener.as_ref() {
-            handler.on_parameters_subscribe(Client(self), new_param_subscriptions);
+            handler.on_parameters_subscribe(new_param_subscriptions);
         }
     }
 
@@ -616,7 +625,7 @@ impl ConnectedClient {
         // Get the list of parameter names that now have no subscribers
         let unsubscribed_parameters = server.parameters_without_subscription(param_names);
         if let Some(handler) = self.server_listener.as_ref() {
-            handler.on_parameters_unsubscribe(Client(self), unsubscribed_parameters);
+            handler.on_parameters_unsubscribe(unsubscribed_parameters);
         }
     }
 

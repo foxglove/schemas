@@ -3,7 +3,7 @@
 #![allow(clippy::too_many_arguments)]
 #![allow(clippy::enum_variant_names)]
 #![allow(non_snake_case)]
-use pyo3::prelude::*;
+use pyo3::{prelude::*, types::PyBytes};
 
 /// An enumeration indicating how input points should be interpreted to create lines
 #[pyclass(eq, eq_int, module = "foxglove.schemas")]
@@ -306,12 +306,17 @@ pub(crate) struct CompressedImage(pub(crate) foxglove::schemas::CompressedImage)
 #[pymethods]
 impl CompressedImage {
     #[new]
-    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), data=vec![], format="".to_string()) )]
-    fn new(timestamp: Option<Timestamp>, frame_id: String, data: Vec<u8>, format: String) -> Self {
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), data=None, format="".to_string()) )]
+    fn new(
+        timestamp: Option<Timestamp>,
+        frame_id: String,
+        data: Option<Bound<'_, PyBytes>>,
+        format: String,
+    ) -> Self {
         Self(foxglove::schemas::CompressedImage {
             timestamp: timestamp.map(Into::into),
             frame_id,
-            data,
+            data: data.map(|x| x.as_bytes().to_vec()).unwrap_or_default(),
             format,
         })
     }
@@ -336,12 +341,17 @@ pub(crate) struct CompressedVideo(pub(crate) foxglove::schemas::CompressedVideo)
 #[pymethods]
 impl CompressedVideo {
     #[new]
-    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), data=vec![], format="".to_string()) )]
-    fn new(timestamp: Option<Timestamp>, frame_id: String, data: Vec<u8>, format: String) -> Self {
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), data=None, format="".to_string()) )]
+    fn new(
+        timestamp: Option<Timestamp>,
+        frame_id: String,
+        data: Option<Bound<'_, PyBytes>>,
+        format: String,
+    ) -> Self {
         Self(foxglove::schemas::CompressedVideo {
             timestamp: timestamp.map(Into::into),
             frame_id,
-            data,
+            data: data.map(|x| x.as_bytes().to_vec()).unwrap_or_default(),
             format,
         })
     }
@@ -523,7 +533,7 @@ pub(crate) struct Grid(pub(crate) foxglove::schemas::Grid);
 #[pymethods]
 impl Grid {
     #[new]
-    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), pose=None, column_count=0, cell_size=None, row_stride=0, cell_stride=0, fields=vec![], data=vec![]) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), pose=None, column_count=0, cell_size=None, row_stride=0, cell_stride=0, fields=vec![], data=None) )]
     fn new(
         timestamp: Option<Timestamp>,
         frame_id: String,
@@ -533,7 +543,7 @@ impl Grid {
         row_stride: u32,
         cell_stride: u32,
         fields: Vec<PackedElementField>,
-        data: Vec<u8>,
+        data: Option<Bound<'_, PyBytes>>,
     ) -> Self {
         Self(foxglove::schemas::Grid {
             timestamp: timestamp.map(Into::into),
@@ -544,7 +554,7 @@ impl Grid {
             row_stride,
             cell_stride,
             fields: fields.into_iter().map(|x| x.into()).collect(),
-            data,
+            data: data.map(|x| x.as_bytes().to_vec()).unwrap_or_default(),
         })
     }
     fn __repr__(&self) -> String {
@@ -942,7 +952,7 @@ pub(crate) struct ModelPrimitive(pub(crate) foxglove::schemas::ModelPrimitive);
 #[pymethods]
 impl ModelPrimitive {
     #[new]
-    #[pyo3(signature = (*, pose=None, scale=None, color=None, override_color=false, url="".to_string(), media_type="".to_string(), data=vec![]) )]
+    #[pyo3(signature = (*, pose=None, scale=None, color=None, override_color=false, url="".to_string(), media_type="".to_string(), data=None) )]
     fn new(
         pose: Option<Pose>,
         scale: Option<Vector3>,
@@ -950,7 +960,7 @@ impl ModelPrimitive {
         override_color: bool,
         url: String,
         media_type: String,
-        data: Vec<u8>,
+        data: Option<Bound<'_, PyBytes>>,
     ) -> Self {
         Self(foxglove::schemas::ModelPrimitive {
             pose: pose.map(Into::into),
@@ -959,7 +969,7 @@ impl ModelPrimitive {
             override_color,
             url,
             media_type,
-            data,
+            data: data.map(|x| x.as_bytes().to_vec()).unwrap_or_default(),
         })
     }
     fn __repr__(&self) -> String {
@@ -1065,14 +1075,14 @@ pub(crate) struct PointCloud(pub(crate) foxglove::schemas::PointCloud);
 #[pymethods]
 impl PointCloud {
     #[new]
-    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), pose=None, point_stride=0, fields=vec![], data=vec![]) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), pose=None, point_stride=0, fields=vec![], data=None) )]
     fn new(
         timestamp: Option<Timestamp>,
         frame_id: String,
         pose: Option<Pose>,
         point_stride: u32,
         fields: Vec<PackedElementField>,
-        data: Vec<u8>,
+        data: Option<Bound<'_, PyBytes>>,
     ) -> Self {
         Self(foxglove::schemas::PointCloud {
             timestamp: timestamp.map(Into::into),
@@ -1080,7 +1090,7 @@ impl PointCloud {
             pose: pose.map(Into::into),
             point_stride,
             fields: fields.into_iter().map(|x| x.into()).collect(),
-            data,
+            data: data.map(|x| x.as_bytes().to_vec()).unwrap_or_default(),
         })
     }
     fn __repr__(&self) -> String {
@@ -1267,7 +1277,7 @@ pub(crate) struct RawImage(pub(crate) foxglove::schemas::RawImage);
 #[pymethods]
 impl RawImage {
     #[new]
-    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), width=0, height=0, encoding="".to_string(), step=0, data=vec![]) )]
+    #[pyo3(signature = (*, timestamp=None, frame_id="".to_string(), width=0, height=0, encoding="".to_string(), step=0, data=None) )]
     fn new(
         timestamp: Option<Timestamp>,
         frame_id: String,
@@ -1275,7 +1285,7 @@ impl RawImage {
         height: u32,
         encoding: String,
         step: u32,
-        data: Vec<u8>,
+        data: Option<Bound<'_, PyBytes>>,
     ) -> Self {
         Self(foxglove::schemas::RawImage {
             timestamp: timestamp.map(Into::into),
@@ -1284,7 +1294,7 @@ impl RawImage {
             height,
             encoding,
             step,
-            data,
+            data: data.map(|x| x.as_bytes().to_vec()).unwrap_or_default(),
         })
     }
     fn __repr__(&self) -> String {

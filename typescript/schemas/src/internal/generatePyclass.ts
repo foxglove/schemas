@@ -21,7 +21,7 @@ export function generateSchemaPrelude(): string {
     `#![allow(non_snake_case)]`,
   ];
 
-  const imports = ["use pyo3::prelude::*;"];
+  const imports = ["use pyo3::{prelude::*, types::PyBytes};"];
 
   const outputSections = [docs.join("\n"), imports.join("\n")];
 
@@ -136,6 +136,10 @@ function generateMessageClass(schema: FoxgloveMessageSchema): string {
   ];
 
   function fieldValue(field: FoxgloveMessageField): string {
+    if (field.type.type === "primitive" && field.type.name === "bytes") {
+      // Special case — this is an `Option<Bound<'_, PyBytes>>`; see `rustOutputType`
+      return `data.map(|x| x.as_bytes().to_vec()).unwrap_or_default()`;
+    }
     switch (field.type.type) {
       case "primitive":
         if (field.type.name === "time" || field.type.name === "duration") {
@@ -244,7 +248,30 @@ function rustOutputType(field: FoxgloveMessageField): string {
   let type: string;
   switch (field.type.type) {
     case "primitive":
-      type = rustType(field.type.name);
+      switch (field.type.name) {
+        case "string":
+          type = "String";
+          break;
+        case "float64":
+          type = "f64";
+          break;
+        case "uint32":
+          type = "u32";
+          break;
+        case "boolean":
+          type = "bool";
+          break;
+        case "bytes":
+          // Special case: we don't take a Vec<u8> directly because pyo3 will iterate the vec and
+          // copy each element https://github.com/PyO3/pyo3/issues/2888
+          return "Option<Bound<'_, PyBytes>>";
+        case "time":
+          type = "Option<Timestamp>";
+          break;
+        case "duration":
+          type = "Option<Duration>";
+          break;
+      }
       break;
     case "nested":
       // Don't wrap in an optional if part of a Vec
@@ -256,28 +283,6 @@ function rustOutputType(field: FoxgloveMessageField): string {
   }
 
   return isVec ? `Vec<${type}>` : type;
-}
-
-/**
- * Map Foxglove primitive types to Rust primitives, or structs in the case of `time` and `duration`.
- */
-function rustType(foxglovePrimitive: FoxglovePrimitive): string {
-  switch (foxglovePrimitive) {
-    case "string":
-      return "String";
-    case "float64":
-      return "f64";
-    case "uint32":
-      return "u32";
-    case "boolean":
-      return "bool";
-    case "bytes":
-      return "Vec<u8>";
-    case "time":
-      return "Option<Timestamp>";
-    case "duration":
-      return "Option<Duration>";
-  }
 }
 
 /**
@@ -339,6 +344,10 @@ function pythonDefaultValue(field: FoxgloveMessageField): string {
  * Get the Rust default for a field; used in pyo3 constructor signatures.
  */
 function rustDefaultValue(field: FoxgloveMessageField): string {
+  if (field.type.type === "primitive" && field.type.name === "bytes") {
+    // Special case — this is an `Option<Bound<'_, PyBytes>>`; see `rustOutputType`
+    return "None";
+  }
   if (field.array != undefined) {
     return "vec![]";
   }

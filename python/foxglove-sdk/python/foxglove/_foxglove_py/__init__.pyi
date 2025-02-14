@@ -58,6 +58,21 @@ class PartialMetadata:
         """
         ...
 
+class MCAPWriter:
+    """
+    A writer for logging messages to an MCAP file. Obtain an instance by calling ``record_file``.
+
+    You must maintain a reference to the writer object until you are done logging. The writer will
+    be closed automatically when it is garbage collected, but you may also ``close()`` it
+    explicitly.
+    """
+
+    def close(self) -> None:
+        """
+        Close the writer explicitly.
+        """
+        ...
+
 def start_server(
     name: Optional[str] = None,
     host: Optional[str] = "127.0.0.1",
@@ -86,7 +101,7 @@ def shutdown() -> None:
     """
     ...
 
-def record_file(path: str) -> None:
+def record_file(path: str) -> MCAPWriter:
     """
     Create a new MCAP file at ``path`` for logging.
     """

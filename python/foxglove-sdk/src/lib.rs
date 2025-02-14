@@ -43,7 +43,7 @@ impl PyWebSocketServer {
     }
 }
 
-#[pyclass]
+#[pyclass(name = "MCAPWriter")]
 struct PyMcapWriter(Option<McapWriterHandle<BufWriter<File>>>);
 
 impl Drop for PyMcapWriter {
@@ -55,6 +55,7 @@ impl Drop for PyMcapWriter {
     }
 }
 
+#[pymethods]
 impl PyMcapWriter {
     fn close(&mut self) -> PyResult<()> {
         if let Some(writer) = self.0.take() {

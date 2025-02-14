@@ -1,8 +1,21 @@
 from typing import List, Optional, Tuple
 
 class MCAPWriter:
+    """
+    A writer for logging messages to an MCAP file. Obtain an instance by calling `record_file`, or
+    the context-managed `new_mcap_file`.
+
+    If you're using `record_file`, you must maintain a reference to the returned writer until you
+    are done logging. The writer will be closed automatically when it is garbage collected, but you
+    may also `close()` it explicitly.
+    """
+
     def __new__(cls) -> "MCAPWriter": ...
-    def close(self) -> None: ...
+    def close(self) -> None:
+        """
+        Close the writer explicitly.
+        """
+        ...
 
 class WebSocketServer:
     """
@@ -55,21 +68,6 @@ class PartialMetadata:
             current time is used.
         :param publish_time: The publish_time is the time at which the message was published. e.g.
             the timestamp at which the sensor reading was taken. If omitted, log time is used.
-        """
-        ...
-
-class MCAPWriter:
-    """
-    A writer for logging messages to an MCAP file. Obtain an instance by calling ``record_file``.
-
-    You must maintain a reference to the writer object until you are done logging. The writer will
-    be closed automatically when it is garbage collected, but you may also ``close()`` it
-    explicitly.
-    """
-
-    def close(self) -> None:
-        """
-        Close the writer explicitly.
         """
         ...
 

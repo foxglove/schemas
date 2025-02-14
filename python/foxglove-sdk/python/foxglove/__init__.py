@@ -1,5 +1,6 @@
 import atexit
-from typing import Union
+from contextlib import contextmanager
+from typing import Iterator, Union
 from ._foxglove_py import (
     record_file,
     enable_logging,
@@ -52,6 +53,19 @@ def verbose_off() -> None:
     """
     logging.debug("SDK logging disabled")
     disable_logging()
+
+
+@contextmanager
+def new_mcap_file(fname: str) -> Iterator[None]:
+    """
+    Create an MCAP file at the given path for recording.
+    This is the context-managed equivalent of `record_file`.
+    """
+    writer = record_file(fname)
+    try:
+        yield
+    finally:
+        writer.close()
 
 
 __all__ = [

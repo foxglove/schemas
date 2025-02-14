@@ -1,3 +1,4 @@
+import json
 import math
 import struct
 import foxglove
@@ -5,6 +6,8 @@ import numpy as np
 import time
 
 from examples.geometry import euler_to_quaternion
+
+from foxglove import SchemaDefinition
 from foxglove.channels import (
     FrameTransformsChannel,
     PointCloudChannel,
@@ -27,6 +30,11 @@ from foxglove.schemas import (
     Vector3,
 )
 
+any_schema = {
+    "type": "object",
+    "additionalProperties": True,
+}
+
 plot_schema = {
     "type": "object",
     "properties": {
@@ -46,9 +54,18 @@ def main() -> None:
     tf_chan = FrameTransformsChannel("/tf")
     point_chan = PointCloudChannel("/pointcloud")
 
-    # Log arbitrary messages
+    # Log dicts using JSON encoding
+    json_chan = foxglove.Channel(topic="/json", schema=plot_schema)
+
+    # Log messages with a custom schema and any encoding
     sin_chan = foxglove.Channel(
-        topic="/sine", encoder=foxglove.JsonEncoder(), schema=plot_schema
+        topic="/sine",
+        schema=SchemaDefinition(
+            name="sine",
+            schema_encoding="jsonschema",
+            message_encoding="json",
+            schema_data=json.dumps(plot_schema).encode("utf-8"),
+        ),
     )
 
     try:
@@ -57,10 +74,14 @@ def main() -> None:
             counter += 1
             now = time.time()
             y = np.sin(now)
+
             json_msg = {
                 "timestamp": now,
                 "y": y,
             }
+            sin_chan.log(json.dumps(json_msg).encode("utf-8"))
+
+            json_chan.log(json_msg)
 
             tf_chan.log(
                 FrameTransforms(

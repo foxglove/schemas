@@ -10,8 +10,7 @@ from ._foxglove_py import (
 )
 
 
-from .encoding import Encoder, JsonEncoder
-from .channel import Channel, log
+from .channel import Channel, log, SchemaDefinition
 
 import logging
 
@@ -72,9 +71,8 @@ __all__ = [
     "Channel",
     "start_server",
     "record_file",
-    "Encoder",
-    "JsonEncoder",
     "verbose_on",
     "verbose_off",
     "log",
+    "SchemaDefinition",
 ]

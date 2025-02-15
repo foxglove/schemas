@@ -160,8 +160,11 @@ pub(crate) struct Server {
     services: parking_lot::RwLock<HashMap<ServiceId, Arc<Service>>>,
 }
 
-/// Provides a mechanism for registering callbacks for
-/// handling client message events.
+/// Provides a mechanism for registering callbacks for handling client message events.
+///
+/// These methods are invoked from the client's main poll loop and must not block. If blocking or
+/// long-running behavior is required, the implementation should use [`tokio::task::spawn`] (or
+/// [`tokio::task::spawn_blocking`]).
 pub trait ServerListener: Send + Sync {
     /// Callback invoked when a client message is received.
     fn on_message_data(

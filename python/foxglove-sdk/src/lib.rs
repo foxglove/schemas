@@ -43,7 +43,7 @@ impl PyWebSocketServer {
     }
 }
 
-#[pyclass]
+#[pyclass(name = "MCAPWriter")]
 struct PyMcapWriter(Option<McapWriterHandle<BufWriter<File>>>);
 
 impl Drop for PyMcapWriter {
@@ -55,6 +55,7 @@ impl Drop for PyMcapWriter {
     }
 }
 
+#[pymethods]
 impl PyMcapWriter {
     fn close(&mut self) -> PyResult<()> {
         if let Some(writer) = self.0.take() {
@@ -198,7 +199,7 @@ fn get_channel_for_topic(topic: &str) -> PyResult<Option<BaseChannel>> {
 }
 
 #[pyfunction]
-fn enable_log_forwarding(level: &str) -> PyResult<()> {
+fn enable_logging(level: &str) -> PyResult<()> {
     let level = match level.to_lowercase().as_str() {
         "info" => LevelFilter::Info,
         "debug" => LevelFilter::Debug,
@@ -212,7 +213,7 @@ fn enable_log_forwarding(level: &str) -> PyResult<()> {
 }
 
 #[pyfunction]
-fn disable_log_forwarding() -> PyResult<()> {
+fn disable_logging() -> PyResult<()> {
     log::set_max_level(LevelFilter::Off);
     Ok(())
 }
@@ -227,8 +228,8 @@ fn shutdown(py: Python<'_>) {
 #[pymodule]
 fn _foxglove_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     pyo3_log::init();
-    m.add_function(wrap_pyfunction!(enable_log_forwarding, m)?)?;
-    m.add_function(wrap_pyfunction!(disable_log_forwarding, m)?)?;
+    m.add_function(wrap_pyfunction!(enable_logging, m)?)?;
+    m.add_function(wrap_pyfunction!(disable_logging, m)?)?;
     m.add_function(wrap_pyfunction!(shutdown, m)?)?;
     m.add_function(wrap_pyfunction!(record_file, m)?)?;
     m.add_function(wrap_pyfunction!(start_server, m)?)?;

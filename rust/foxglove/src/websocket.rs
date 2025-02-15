@@ -991,7 +991,7 @@ impl Server {
                 tracing::error!("Error advertising services: {err}");
             } else {
                 for service in services {
-                    tracing::info!(
+                    tracing::debug!(
                         "Advertised service {} with id {} to client {}",
                         service.name(),
                         service.id(),
@@ -1053,7 +1053,7 @@ impl Server {
         let clients = self.clients.get();
         for client in clients.iter().cloned() {
             for (name, id) in new_names.iter() {
-                tracing::info!(
+                tracing::debug!(
                     "Advertising service {name} with id {id} to client {}",
                     client.addr
                 );
@@ -1098,7 +1098,7 @@ impl Server {
         let clients = self.clients.get();
         for client in clients.iter().cloned() {
             for (id, name) in old_services.iter() {
-                tracing::info!(
+                tracing::debug!(
                     "Unadvertising service {name} with id {id} to client {}",
                     client.addr
                 );

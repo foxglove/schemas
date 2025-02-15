@@ -581,11 +581,12 @@ async fn test_services() {
     let ok_svc = Service::builder("/ok", ServiceSchema::new("plain"))
         .with_id(1)
         .handler_fn(|_, req, resp| {
-            assert_eq!(req.service_id, 1);
-            assert_eq!(req.service_name, "/ok");
-            assert_eq!(req.call_id, 99);
-            let mut response = BytesMut::with_capacity(req.payload.len());
-            response.put(req.payload);
+            assert_eq!(req.service_id(), 1);
+            assert_eq!(req.service_name(), "/ok");
+            assert_eq!(req.call_id(), 99);
+            let payload = req.into_payload();
+            let mut response = BytesMut::with_capacity(payload.len());
+            response.put(payload);
             response.reverse();
             // Respond async, for kicks.
             tokio::spawn(async move { resp.respond(Ok(response.freeze())) });

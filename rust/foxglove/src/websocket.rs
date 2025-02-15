@@ -101,6 +101,7 @@ type WebsocketSender = SplitSink<WebSocketStream<TcpStream>, Message>;
 // Queue up to 1024 messages per connected client before dropping messages
 const DEFAULT_MESSAGE_BACKLOG_SIZE: usize = 1024;
 const DEFAULT_CONTROL_PLANE_BACKLOG_SIZE: usize = 64;
+const DEFAULT_SERVICE_CALLS_PER_CLIENT: usize = 32;
 
 #[derive(Error, Debug)]
 enum WSError {
@@ -183,16 +184,17 @@ pub trait ServerListener: Send + Sync {
 }
 
 /// A connected client session with the websocket server.
-struct ConnectedClient {
+pub(crate) struct ConnectedClient {
     id: ClientId,
     addr: SocketAddr,
+    weak_self: Weak<Self>,
     /// Write side of a WS stream
     sender: Mutex<WebsocketSender>,
     data_plane_tx: flume::Sender<Message>,
     data_plane_rx: flume::Receiver<Message>,
     control_plane_tx: flume::Sender<Message>,
     control_plane_rx: flume::Receiver<Message>,
-    service_response_chan: Option<service::ResponseChannel>,
+    service_call_sem: service::Semaphore,
     /// Subscriptions from this client
     subscriptions: parking_lot::Mutex<BiHashMap<ChannelId, SubscriptionId>>,
     /// Channels advertised by this client
@@ -203,6 +205,12 @@ struct ConnectedClient {
 }
 
 impl ConnectedClient {
+    fn arc(&self) -> Arc<Self> {
+        self.weak_self
+            .upgrade()
+            .expect("client cannot be dropped while in use")
+    }
+
     /// Handle a text or binary message sent from the client.
     ///
     /// Standard protocol messages (such as Close) should be handled upstream.
@@ -485,7 +493,7 @@ impl ConnectedClient {
         // We have a response channel if and only if the server supports services.
         let service_id = req.service_id;
         let call_id = req.call_id;
-        let Some(resp_chan) = self.service_response_chan.as_ref() else {
+        if !server.capabilities.contains(&Capability::Services) {
             self.send_service_call_failure(service_id, call_id, "Server does not support services");
             return;
         };
@@ -507,15 +515,24 @@ impl ConnectedClient {
             return;
         }
 
-        // Prepare a response, or fail if this client has too many concurrent requests.
-        let encoding = service.response_encoding().unwrap_or(&req.encoding);
-        let Some(responder) = resp_chan.prepare_response(service_id, call_id, encoding) else {
+        // Acquire the semaphore, or reject if there are too many concurrenct requests.
+        let Some(guard) = self.service_call_sem.try_acquire() else {
             self.send_service_call_failure(service_id, call_id, "Too many requests");
             return;
         };
 
-        // Pass the request to the service handler.
-        service.call(Client(self), call_id, req.encoding, req.payload, responder);
+        // Prepare the responder and the request.
+        let responder = service::Responder::new(
+            self.arc(),
+            service.id(),
+            call_id,
+            service.response_encoding().unwrap_or(&req.encoding),
+            guard,
+        );
+        let request = service::Request::new(service.clone(), call_id, req.encoding, req.payload);
+
+        // Invoke the handler.
+        service.call(Client(self), request, responder);
     }
 
     /// Sends a service call failure message to the client with the provided message.
@@ -549,15 +566,6 @@ impl ConnectedClient {
             _ => {
                 self.send_control_msg(message);
             }
-        }
-    }
-
-    /// Removes all messages from all queues.
-    fn drain_queues(&self) {
-        self.control_plane_rx.drain();
-        self.data_plane_rx.drain();
-        if let Some(chan) = self.service_response_chan.as_ref() {
-            chan.drain();
         }
     }
 }
@@ -852,21 +860,16 @@ impl Server {
         let (data_tx, data_rx) = flume::bounded(self.message_backlog_size as usize);
         let (ctrl_tx, ctrl_rx) = flume::bounded(DEFAULT_CONTROL_PLANE_BACKLOG_SIZE);
 
-        let service_response_chan = if self.capabilities.contains(&Capability::Services) {
-            Some(service::ResponseChannel::default())
-        } else {
-            None
-        };
-
-        let new_client = Arc::new(ConnectedClient {
+        let new_client = Arc::new_cyclic(|weak_self| ConnectedClient {
             id,
             addr,
+            weak_self: weak_self.clone(),
             sender: Mutex::new(ws_sender),
             data_plane_tx: data_tx,
             data_plane_rx: data_rx,
             control_plane_tx: ctrl_tx,
             control_plane_rx: ctrl_rx,
-            service_response_chan,
+            service_call_sem: service::Semaphore::new(DEFAULT_SERVICE_CALLS_PER_CLIENT),
             subscriptions: parking_lot::Mutex::new(BiHashMap::new()),
             advertised_channels: parking_lot::Mutex::new(HashMap::new()),
             server_listener: self.listener.clone(),
@@ -900,7 +903,8 @@ impl Server {
                     if self.started.load(Acquire) {
                         tracing::error!("Error sending control message to client {addr}: {err}");
                     } else {
-                        new_client.drain_queues();
+                        new_client.control_plane_rx.drain();
+                        new_client.data_plane_rx.drain();
                     }
                 }
             }
@@ -914,29 +918,11 @@ impl Server {
                     if self.started.load(Acquire) {
                         tracing::error!("Error sending data message to client {addr}: {err}");
                     } else {
-                        new_client.drain_queues();
+                        new_client.control_plane_rx.drain();
+                        new_client.data_plane_rx.drain();
                     }
                 }
             }
-        };
-
-        let send_service_call_responses = async {
-            if let Some(chan) = new_client.service_response_chan.as_ref() {
-                loop {
-                    let msg = chan.next_message().await;
-                    let mut sender = new_client.sender.lock().await;
-                    if let Err(err) = sender.send(msg).await {
-                        if self.started.load(Acquire) {
-                            tracing::error!("Error sending data message to client {addr}: {err}");
-                        } else {
-                            new_client.drain_queues();
-                        }
-                    }
-                }
-            } else {
-                // No services capability, no problem.
-                std::future::pending().await
-            };
         };
 
         // Run send and receive loops concurrently, and wait for receive to complete
@@ -949,9 +935,6 @@ impl Server {
             }
             _ = send_messages => {
                 tracing::error!("Send messages task completed");
-            }
-            _ = send_service_call_responses => {
-                tracing::error!("Send service call responses task completed");
             }
         }
 

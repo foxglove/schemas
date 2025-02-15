@@ -4,20 +4,22 @@ use std::fmt::Display;
 use std::sync::atomic::{AtomicU32, Ordering};
 use std::sync::Arc;
 
+use bytes::Bytes;
+
 use crate::websocket::Client;
 
 mod handler;
 mod request;
 mod response;
 mod schema;
-use bytes::Bytes;
+mod semaphore;
 pub use handler::{Handler, SyncHandler};
 use handler::{HandlerFn, SyncHandlerFn};
 pub use request::Request;
 pub use response::Responder;
-pub(crate) use response::ResponseChannel;
 pub(crate) use schema::MessageSchema;
 pub use schema::ServiceSchema;
+pub(crate) use semaphore::Semaphore;
 
 /// A service ID, which uniquely identifies a service hosted by the server.
 pub type ServiceId = u32;
@@ -124,30 +126,18 @@ impl Service {
         &self.schema
     }
 
+    /// The declared request encoding.
     pub(crate) fn request_encoding(&self) -> Option<&str> {
         self.schema().request().map(|rs| rs.encoding.as_str())
     }
 
+    /// The declared repsonse encoding.
     pub(crate) fn response_encoding(&self) -> Option<&str> {
         self.schema().response().map(|rs| rs.encoding.as_str())
     }
 
     /// Invokes the service call implementation.
-    pub(crate) fn call(
-        &self,
-        client: Client<'_>,
-        call_id: CallId,
-        encoding: String,
-        payload: Bytes,
-        responder: Responder,
-    ) {
-        let request = Request {
-            service_id: self.id,
-            service_name: self.name.clone(),
-            call_id,
-            encoding: encoding.clone(),
-            payload,
-        };
+    pub(crate) fn call(&self, client: Client<'_>, request: Request, responder: Responder) {
         self.handler.call(client, request, responder);
     }
 }

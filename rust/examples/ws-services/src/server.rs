@@ -28,7 +28,7 @@ pub async fn main(config: Config) -> Result<()> {
             Service::builder("/empty", empty_schema())
                 .sync_handler_fn(|_, _| anyhow::Ok(Bytes::new())),
             Service::builder("/echo", echo_schema())
-                .sync_handler_fn(|_, req| anyhow::Ok(req.payload)),
+                .sync_handler_fn(|_, req| anyhow::Ok(req.into_payload())),
         ])
         .context("Failed to register services")?;
 
@@ -101,13 +101,13 @@ fn set_bool_schema() -> ServiceSchema {
 
 /// A stateless handler function.
 fn int_bin_handler(client: Client, req: Request) -> Result<Bytes> {
-    info!("Client {client:?}: {req:?}");
-    let service_name = req.service_name;
-    let req: IntBinRequest = serde_json::from_slice(&req.payload)?;
+    let service_name = req.service_name();
+    let req: IntBinRequest = serde_json::from_slice(req.payload())?;
+    info!("Client {:?}: {service_name}: {req:?}", client.id());
 
     // Shared handlers can use `Request::service_name` to disambiguate the service endpoint.
     // Service names are guaranteed to be unique.
-    let result = match service_name.as_str() {
+    let result = match service_name {
         "/IntBin/add" => req.a + req.b,
         "/IntBin/sub" => req.a - req.b,
         "/IntBin/mul" => req.a * req.b,
@@ -127,10 +127,9 @@ impl SyncHandler for Flag {
     type Error = anyhow::Error;
 
     fn call(&self, client: Client, req: Request) -> Result<Bytes, Self::Error> {
-        info!("Client {client:?}: {req:?}");
-
         // Decode the payload.
-        let req: SetBoolRequest = serde_json::from_slice(&req.payload)?;
+        let req: SetBoolRequest = serde_json::from_slice(req.payload())?;
+        info!("Client {:?}: {req:?}", client.id());
 
         // Update the flag.
         let prev = self.0.swap(req.data, std::sync::atomic::Ordering::Relaxed);

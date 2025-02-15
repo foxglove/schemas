@@ -5,6 +5,7 @@ use std::sync::atomic::{AtomicU32, Ordering};
 use std::sync::Arc;
 
 use bytes::Bytes;
+use serde::{Deserialize, Serialize};
 
 use crate::websocket::Client;
 
@@ -22,10 +23,50 @@ pub use schema::ServiceSchema;
 pub(crate) use semaphore::Semaphore;
 
 /// A service ID, which uniquely identifies a service hosted by the server.
-pub type ServiceId = u32;
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, Deserialize, Serialize)]
+pub struct ServiceId(u32);
+
+impl ServiceId {
+    /// Creates a new service ID.
+    pub fn new(id: u32) -> Self {
+        Self(id)
+    }
+}
+
+impl From<ServiceId> for u32 {
+    fn from(id: ServiceId) -> u32 {
+        id.0
+    }
+}
+
+impl Display for ServiceId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
 
 /// A service call ID, which uniquely identifies an outstanding call for a particular client.
-pub type CallId = u32;
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, Deserialize, Serialize)]
+pub struct CallId(u32);
+
+impl CallId {
+    /// Creates a new service ID.
+    pub fn new(id: u32) -> Self {
+        Self(id)
+    }
+}
+
+impl From<CallId> for u32 {
+    fn from(id: CallId) -> u32 {
+        id.0
+    }
+}
+
+impl Display for CallId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
 
 /// A builder for a websocket service.
 #[must_use]
@@ -41,7 +82,7 @@ impl ServiceBuilder {
         static ID: AtomicU32 = AtomicU32::new(1);
         let id = ID.fetch_add(1, Ordering::Relaxed);
         Self {
-            id,
+            id: ServiceId::new(id),
             name: name.into(),
             schema,
         }

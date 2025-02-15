@@ -218,7 +218,7 @@ pub fn unadvertise(channel_id: ChannelId) -> String {
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 struct AdvertiseService<'a> {
-    id: u32,
+    id: ServiceId,
     name: &'a str,
     r#type: &'a str,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -322,8 +322,8 @@ impl ServiceCallResponse {
         let encoding_raw = self.encoding.as_bytes();
         let mut buf = BytesMut::with_capacity(13 + encoding_raw.len() + self.payload.len());
         buf.put_u8(BinaryOpcode::ServiceCallResponse as u8);
-        buf.put_u32_le(self.service_id);
-        buf.put_u32_le(self.call_id);
+        buf.put_u32_le(self.service_id.into());
+        buf.put_u32_le(self.call_id.into());
         buf.put_u32_le(encoding_raw.len() as u32);
         buf.put(encoding_raw);
         buf.put(self.payload);
@@ -332,7 +332,11 @@ impl ServiceCallResponse {
 }
 
 // https://github.com/foxglove/ws-protocol/blob/main/docs/spec.md#service-call-failure
-pub(crate) fn service_call_failure(service_id: u32, call_id: u32, message: &str) -> String {
+pub(crate) fn service_call_failure(
+    service_id: ServiceId,
+    call_id: CallId,
+    message: &str,
+) -> String {
     json!({
         "op": "serviceCallFailure",
         "serviceId": service_id,
@@ -545,7 +549,7 @@ mod tests {
     fn test_advertise_services() {
         let s1_schema = ServiceSchema::new("std_srvs/Empty");
         let s1 = Service::builder("foo", s1_schema)
-            .with_id(1)
+            .with_id(ServiceId::new(1))
             .sync_handler_fn(|_, _| Err("not implemented"));
 
         let s2_schema = ServiceSchema::new("std_srvs/SetBool")
@@ -562,7 +566,7 @@ mod tests {
                 ),
             );
         let s2 = Service::builder("set_bool", s2_schema)
-            .with_id(2)
+            .with_id(ServiceId::new(2))
             .sync_handler_fn(|_, _| Err("not implemented"));
 
         let adv = advertise_services(&[s1, s2]);
@@ -603,7 +607,7 @@ mod tests {
 
     #[test]
     fn test_unadvertise_services() {
-        let adv = unadvertise_services(&[1, 2]);
+        let adv = unadvertise_services(&[ServiceId::new(1), ServiceId::new(2)]);
         assert_eq!(
             adv,
             json!({
@@ -616,8 +620,13 @@ mod tests {
 
     #[test]
     fn test_service_call_request() {
-        let msg =
-            ServiceCallResponse::new(1, 2, "raw".to_string(), Bytes::from_static(b"yolo")).encode();
+        let msg = ServiceCallResponse::new(
+            ServiceId::new(1),
+            CallId::new(2),
+            "raw".to_string(),
+            Bytes::from_static(b"yolo"),
+        )
+        .encode();
         let mut buf = BytesMut::new();
         buf.put_u8(BinaryOpcode::ServiceCallResponse as u8);
         buf.put_u32_le(1); // service id
@@ -630,7 +639,7 @@ mod tests {
 
     #[test]
     fn test_service_call_failure() {
-        let msg = service_call_failure(42, 271828, "drat");
+        let msg = service_call_failure(ServiceId::new(42), CallId::new(271828), "drat");
         assert_eq!(
             msg,
             json!({

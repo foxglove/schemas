@@ -10,7 +10,7 @@ use tungstenite::client::IntoClientRequest;
 
 use super::{create_server, send_lossy, Capability, SendLossyResult, ServerOptions, SUBPROTOCOL};
 use crate::testutil::RecordingServerListener;
-use crate::websocket::service::{Service, ServiceSchema};
+use crate::websocket::service::{CallId, Service, ServiceId, ServiceSchema};
 use crate::{
     collection, Channel, ChannelBuilder, FoxgloveError, LogContext, LogSink, Metadata, Schema,
 };
@@ -579,11 +579,11 @@ async fn test_service_registration_duplicate_name() {
 #[tokio::test]
 async fn test_services() {
     let ok_svc = Service::builder("/ok", ServiceSchema::new("plain"))
-        .with_id(1)
+        .with_id(ServiceId::new(1))
         .handler_fn(|_, req, resp| {
-            assert_eq!(req.service_id(), 1);
+            assert_eq!(req.service_id(), ServiceId::new(1));
             assert_eq!(req.service_name(), "/ok");
-            assert_eq!(req.call_id(), 99);
+            assert_eq!(req.call_id(), CallId::new(99));
             let payload = req.into_payload();
             let mut response = BytesMut::with_capacity(payload.len());
             response.put(payload);
@@ -661,7 +661,7 @@ async fn test_services() {
 
     // Register a new service.
     let err_svc = Service::builder("/err", ServiceSchema::new("plain"))
-        .with_id(2)
+        .with_id(ServiceId::new(2))
         .sync_handler_fn(|_, _| Err("oh noes"));
     server
         .add_services(vec![err_svc])
@@ -737,7 +737,7 @@ async fn test_services() {
     drop(client2);
 
     // Unregister services.
-    server.remove_services(&[1]);
+    server.remove_services(&[ServiceId::new(1)]);
     let msg = client1
         .next()
         .await

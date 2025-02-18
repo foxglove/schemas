@@ -307,7 +307,7 @@ impl ConnectedClient {
         true
     }
 
-    fn on_disconnect(&self, server: Arc<Server>) {
+    fn on_disconnect(&self, server: &Arc<Server>) {
         // If we track paramter subscriptions, unsubscribe this clients subscriptions
         // and notify the handler, if necessary
         if !server
@@ -325,7 +325,7 @@ impl ConnectedClient {
         // Remove the parameter subscriptions for this client,
         // and filter out any we weren't subscribed to.
         let mut client_subscriptions = self.parameter_subscriptions.lock();
-        let client_subscriptions = std::mem::replace(&mut *client_subscriptions, HashSet::new());
+        let client_subscriptions = std::mem::take(&mut *client_subscriptions);
         let mut unsubscribed_parameters =
             server.parameters_without_subscription(client_subscriptions.into_iter().collect());
         if unsubscribed_parameters.is_empty() {

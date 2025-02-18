@@ -47,7 +47,7 @@ plot_schema = {
 def main() -> None:
     foxglove.verbose_on()
 
-    server = foxglove.start_server(port=8765)
+    server = foxglove.start_server()
 
     # Log messages having well-known Foxglove schemas using the appropriate channel type.
     box_chan = SceneUpdateChannel("/boxes")

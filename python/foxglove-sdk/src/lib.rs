@@ -189,7 +189,7 @@ fn record_file(path: &str) -> PyResult<PyMcapWriter> {
 /// To connect to this server: open Foxglove, choose "Open a new connection", and select Foxglove
 /// WebSocket. The default connection string matches the defaults used by the SDK.
 #[pyfunction]
-#[pyo3(signature = (name = None, host="127.0.0.1", port=0))]
+#[pyo3(signature = (name = None, host="127.0.0.1", port=8765))]
 fn start_server(
     py: Python<'_>,
     name: Option<String>,

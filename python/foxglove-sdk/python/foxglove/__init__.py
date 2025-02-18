@@ -7,6 +7,7 @@ from ._foxglove_py import (
     disable_logging,
     start_server,
     shutdown,
+    Capability,
 )
 
 
@@ -68,6 +69,7 @@ def new_mcap_file(fname: str) -> Iterator[None]:
 
 
 __all__ = [
+    "Capability",
     "Channel",
     "start_server",
     "record_file",

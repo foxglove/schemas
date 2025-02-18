@@ -543,9 +543,7 @@ impl ConnectedClient {
         let msg = Message::text(protocol::server::service_call_failure(
             service_id, call_id, message,
         ));
-        if let Err(err) = self.control_plane_tx.try_send(msg) {
-            tracing::error!("Failed to send service call failure: {err}");
-        }
+        self.send_control_msg(msg);
     }
 
     /// Send an ad hoc error status message to the client, with the given message.
@@ -1063,15 +1061,7 @@ impl Server {
                     client.addr
                 );
             }
-            let msg = msg.clone();
-            self.runtime.spawn(async move {
-                if let Err(err) = client.control_plane_tx.send_async(msg).await {
-                    tracing::error!(
-                        "Error advertising services to client {}: {err}",
-                        client.addr
-                    );
-                }
-            });
+            client.send_control_msg(msg.clone());
         }
 
         Ok(())
@@ -1108,15 +1098,7 @@ impl Server {
                     client.addr
                 );
             }
-            let msg = msg.clone();
-            self.runtime.spawn(async move {
-                if let Err(err) = client.control_plane_tx.send_async(msg.clone()).await {
-                    tracing::error!(
-                        "Error unadvertising services to client {}: {err}",
-                        client.addr
-                    );
-                }
-            });
+            client.send_control_msg(msg.clone());
         }
     }
 

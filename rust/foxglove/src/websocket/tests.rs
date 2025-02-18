@@ -810,13 +810,14 @@ async fn test_parameter_unsubscribe_no_updates() {
     let mut ws_client = connect_client(addr).await;
 
     // Send the Subscribe Parameter Update message for "some-float-value"
-    // Otherwise we won't get the update after we publish it.
     ws_client
         .send(Message::text(
             r#"{"op":"subscribeParameterUpdates","parameterNames":["some-float-value"]}"#,
         ))
         .await
         .expect("Failed to send subscribe parameter updates");
+
+    // Send the Unsubscribe Parameter Update message for "some-float-value"
     ws_client
         .send(Message::text(
             r#"{"op":"unsubscribeParameterUpdates","parameterNames":["some-float-value","baz"]}"#,
@@ -824,7 +825,8 @@ async fn test_parameter_unsubscribe_no_updates() {
         .await
         .expect("Failed to send unsubscribe parameter updates");
 
-    // FG-10395 replace this with something more precise
+    _ = ws_client.next().await.expect("No serverInfo sent");
+
     tokio::time::sleep(std::time::Duration::from_millis(50)).await;
 
     let parameter_names = recording_listener
@@ -848,8 +850,6 @@ async fn test_parameter_unsubscribe_no_updates() {
 
     // FG-10395 replace this with something more precise
     tokio::time::sleep(std::time::Duration::from_millis(50)).await;
-
-    _ = ws_client.next().await.expect("No serverInfo sent");
 
     server.stop().await;
 

@@ -671,10 +671,12 @@ impl ConnectedClient {
         // Like in subscribe, we first take the server-wide lock.
         let mut all_subscriptions = server.subscribed_parameters.lock();
 
-        // Remove the parameter subscriptions for this client,
-        // and filter out any we weren't subscribed to.
-        let mut client_subscriptions = self.parameter_subscriptions.lock();
-        param_names.retain(|name| client_subscriptions.remove(name));
+        {
+            // Remove the parameter subscriptions for this client,
+            // and filter out any we weren't subscribed to.
+            let mut client_subscriptions = self.parameter_subscriptions.lock();
+            param_names.retain(|name| client_subscriptions.remove(name));
+        }
 
         if param_names.is_empty() {
             // We didn't remove any subscriptions

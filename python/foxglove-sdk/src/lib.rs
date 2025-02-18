@@ -21,7 +21,8 @@ use generated::schemas;
 #[pyclass]
 struct BaseChannel(Arc<Channel>);
 
-#[pyclass]
+/// A live visualization server. Obtain an instance by calling :py:func:`start_server`.
+#[pyclass(name = "WebSocketServer")]
 struct PyWebSocketServer(Option<WebSocketServerBlockingHandle>);
 
 #[pymethods]
@@ -43,6 +44,14 @@ impl PyWebSocketServer {
     }
 }
 
+///  A writer for logging messages to an MCAP file.
+///
+/// Obtain an instance by calling :py:func:`record_file`, or the context-managed
+/// :py:func:`new_mcap_file`.
+///
+/// If you're using :py:func:`record_file`, you must maintain a reference to the returned writer
+/// until you are done logging. The writer will be closed automatically when it is garbage
+/// collected, but you may also :py:func:`MCAPWriter.close` it explicitly.
 #[pyclass(name = "MCAPWriter")]
 struct PyMcapWriter(Option<McapWriterHandle<BufWriter<File>>>);
 
@@ -57,6 +66,10 @@ impl Drop for PyMcapWriter {
 
 #[pymethods]
 impl PyMcapWriter {
+    /// Close the MCAP writer.
+    ///
+    /// You must call this when you are done logging, unless you are using the context-managed
+    /// :py:func:`new_mcap_file`, which handles closing the writer for you.
     fn close(&mut self) -> PyResult<()> {
         if let Some(writer) = self.0.take() {
             writer.close().map_err(PyFoxgloveError::from)?;
@@ -154,7 +167,10 @@ impl From<PartialMetadata> for foxglove::PartialMetadata {
     }
 }
 
-/// Open a new mcap file for recording
+/// Open a new mcap file for recording.
+///
+/// :param path: The path to the MCAP file. This file will be created and must not already exist.
+/// :return: A new `MCAPWriter` object.
 #[pyfunction]
 #[pyo3(signature = (path))]
 fn record_file(path: &str) -> PyResult<PyMcapWriter> {
@@ -164,7 +180,14 @@ fn record_file(path: &str) -> PyResult<PyMcapWriter> {
     Ok(PyMcapWriter(Some(handle)))
 }
 
-/// Start a new Foxglove WebSocket server
+/// Start a new Foxglove WebSocket server.
+///
+/// :param name: The name of the server.
+/// :param host: The host to bind to.
+/// :param port: The port to bind to.
+///
+/// To connect to this server: open Foxglove, choose "Open a new connection", and select Foxglove
+/// WebSocket. The default connection string matches the defaults used by the SDK.
 #[pyfunction]
 #[pyo3(signature = (name = None, host="127.0.0.1", port=0))]
 fn start_server(
@@ -198,6 +221,7 @@ fn get_channel_for_topic(topic: &str) -> PyResult<Option<BaseChannel>> {
     Ok(channel.map(BaseChannel))
 }
 
+// Not public. Re-exported in a wrapping function.
 #[pyfunction]
 fn enable_logging(level: &str) -> PyResult<()> {
     let level = match level.to_lowercase().as_str() {
@@ -212,12 +236,14 @@ fn enable_logging(level: &str) -> PyResult<()> {
     Ok(())
 }
 
+// Not public. Re-exported in a wrapping function.
 #[pyfunction]
 fn disable_logging() -> PyResult<()> {
     log::set_max_level(LevelFilter::Off);
     Ok(())
 }
 
+// Not public. Registered as an atexit handler.
 #[pyfunction]
 fn shutdown(py: Python<'_>) {
     py.allow_threads(foxglove::shutdown_runtime);

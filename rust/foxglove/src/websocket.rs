@@ -307,6 +307,37 @@ impl ConnectedClient {
         true
     }
 
+    fn on_disconnect(&self, server: Arc<Server>) {
+        // If we track paramter subscriptions, unsubscribe this clients subscriptions
+        // and notify the handler, if necessary
+        if !server
+            .capabilities
+            .contains(&Capability::ParametersSubscribe)
+            || self.server_listener.is_none()
+        {
+            return;
+        }
+
+        // Remove all subscriptions from the server subscriptions.
+        // First take the server-wide lock.
+        let mut all_subscriptions = server.subscribed_parameters.lock();
+
+        // Remove the parameter subscriptions for this client,
+        // and filter out any we weren't subscribed to.
+        let mut client_subscriptions = self.parameter_subscriptions.lock();
+        let client_subscriptions = std::mem::replace(&mut *client_subscriptions, HashSet::new());
+        let mut unsubscribed_parameters =
+            server.parameters_without_subscription(client_subscriptions.into_iter().collect());
+        if unsubscribed_parameters.is_empty() {
+            return;
+        }
+
+        unsubscribed_parameters.retain(|name| all_subscriptions.remove(name));
+        if let Some(handler) = self.server_listener.as_ref() {
+            handler.on_parameters_unsubscribe(unsubscribed_parameters);
+        }
+    }
+
     fn on_message_data(&self, message: protocol::client::ClientMessageData) {
         let channel_id = message.channel_id;
         let payload = message.payload;
@@ -590,27 +621,40 @@ impl ConnectedClient {
             return;
         }
 
+        // We hold the server lock here the entire time to serialize
+        // calls to subscribe and unsubscribe, otherwise there are all
+        // kinds of race conditions here where handlers get invoked in
+        // an order different than the order the events were applied,
+        // leading to the listener thinking it has no subscribers to a
+        // parameter when it actually does or visa versa.
+        let mut new_param_subscriptions = Vec::with_capacity(
+            self.server_listener
+                .as_ref()
+                .map(|_| param_names.len())
+                .unwrap_or_default(),
+        );
+        let mut all_subscriptions = server.subscribed_parameters.lock();
+
         // Get the list of which subscriptions are new to the server (first time subscriptions)
-        // This must come before modifying self.paramter_subscriptions for it to sync
-        // correctly with on_parameters_unsubscribe.
-        let mut new_param_subscriptions = Vec::with_capacity(param_names.len());
-        {
-            let mut subscribed_parameters = server.subscribed_parameters.lock();
+        if self.server_listener.is_some() {
             for name in param_names.iter() {
-                if subscribed_parameters.insert(name.clone()) {
+                if all_subscriptions.insert(name.clone()) {
                     new_param_subscriptions.push(name.clone());
                 }
             }
         }
+
         // Track the client's own subscriptions
-        {
-            let mut subscribed_parameters = self.parameter_subscriptions.lock();
-            subscribed_parameters.extend(param_names);
-        }
+        let mut client_subscriptions = self.parameter_subscriptions.lock();
+        client_subscriptions.extend(param_names);
+
         if new_param_subscriptions.is_empty() {
             return;
         }
+
         if let Some(handler) = self.server_listener.as_ref() {
+            // We hold the server subscribed_parameters mutex across the call to the handler
+            // to synchrnize with other
             handler.on_parameters_subscribe(new_param_subscriptions);
         }
     }
@@ -624,30 +668,28 @@ impl ConnectedClient {
             return;
         }
 
+        // Like in subscribe, we first take the server-wide lock.
+        let mut all_subscriptions = server.subscribed_parameters.lock();
+
         // Remove the parameter subscriptions for this client,
-        // and filter out any we weren't subscribed to
-        {
-            let mut subscribed_parameters = self.parameter_subscriptions.lock();
-            param_names.retain(|name| subscribed_parameters.remove(name));
-        }
+        // and filter out any we weren't subscribed to.
+        let mut client_subscriptions = self.parameter_subscriptions.lock();
+        param_names.retain(|name| client_subscriptions.remove(name));
+
         if param_names.is_empty() {
             // We didn't remove any subscriptions
             return;
         }
+
         let Some(handler) = self.server_listener.as_ref() else {
             return;
         };
 
-        let unsubscribed_parameters = {
-            let mut subscribed_parameters = server.subscribed_parameters.lock();
-            // With the server-wide lock held, which prevents new subscriptions,
-            // get the parameters without any subscibers
-            let mut unsubscribed_parameters = server.parameters_without_subscription(param_names);
-            // Remove the unsubscribed parameters from the server's list of subscribed parameters
-            unsubscribed_parameters.retain(|name| subscribed_parameters.remove(name));
-            unsubscribed_parameters
-        };
-
+        let mut unsubscribed_parameters = server.parameters_without_subscription(param_names);
+        // Remove the unsubscribed parameters from the server's list of subscribed parameters
+        unsubscribed_parameters.retain(|name| all_subscriptions.remove(name));
+        // We have to hold the lock while calling the handler because we need
+        // to synchronize this with other calls to on_parameters_subscribe and on_parameters_unsubscribe
         handler.on_parameters_unsubscribe(unsubscribed_parameters);
     }
 
@@ -1023,6 +1065,7 @@ impl Server {
         }
 
         self.clients.retain(|c| !Arc::ptr_eq(c, &new_client));
+        new_client.on_disconnect(&self);
     }
 
     async fn register_client_and_advertise_channels(&self, client: Arc<ConnectedClient>) {

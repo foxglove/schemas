@@ -42,6 +42,39 @@ impl PyWebSocketServer {
         }
         Ok(())
     }
+
+    fn broadcast_time(&self, timestamp_nanos: u64) -> PyResult<()> {
+        if let Some(server) = &self.0 {
+            server.broadcast_time(timestamp_nanos);
+        }
+        Ok(())
+    }
+}
+
+/// A capability that the websocket server advertises to its clients.
+#[pyclass(eq, eq_int)]
+#[derive(Clone, PartialEq)]
+enum Capability {
+    /// Allow clients to advertise channels to send data messages to the server.
+    // ClientPublish,
+    /// Allow clients to get & set parameters.
+    // Parameters,
+    /// Inform clients about the latest server time.
+    ///
+    /// This allows accelerated, slowed, or stepped control over the progress of time. If the
+    /// server publishes time data, then timestamps of published messages must originate from the
+    /// same time source.
+    Time,
+}
+
+impl From<Capability> for foxglove::websocket::Capability {
+    fn from(value: Capability) -> Self {
+        match value {
+            // Capability::ClientPublish => foxglove::websocket::Capability::ClientPublish,
+            // Capability::Parameters => foxglove::websocket::Capability::Parameters,
+            Capability::Time => foxglove::websocket::Capability::Time,
+        }
+    }
 }
 
 ///  A writer for logging messages to an MCAP file.
@@ -190,12 +223,13 @@ fn record_file(path: &str) -> PyResult<PyMcapWriter> {
 /// To connect to this server: open Foxglove, choose "Open a new connection", and select Foxglove
 /// WebSocket. The default connection string matches the defaults used by the SDK.
 #[pyfunction]
-#[pyo3(signature = (name = None, host="127.0.0.1", port=8765))]
+#[pyo3(signature = (*, name = None, host="127.0.0.1", port=8765, capabilities=None))]
 fn start_server(
     py: Python<'_>,
     name: Option<String>,
     host: &str,
     port: u16,
+    capabilities: Option<Vec<Capability>>,
 ) -> PyResult<PyWebSocketServer> {
     let session_id = time::SystemTime::now()
         .duration_since(time::UNIX_EPOCH)
@@ -206,6 +240,11 @@ fn start_server(
     let mut server = WebSocketServer::new()
         .session_id(session_id)
         .bind(host, port);
+
+    if let Some(capabilities) = capabilities {
+        server = server.capabilities(capabilities.into_iter().map(Capability::into));
+    }
+
     if let Some(name) = name {
         server = server.name(name);
     }
@@ -213,6 +252,7 @@ fn start_server(
     let handle = py
         .allow_threads(|| server.start_blocking())
         .map_err(PyFoxgloveError::from)?;
+
     Ok(PyWebSocketServer(Some(handle)))
 }
 
@@ -265,6 +305,7 @@ fn _foxglove_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<PyWebSocketServer>()?;
     m.add_class::<PyMcapWriter>()?;
     m.add_class::<PartialMetadata>()?;
+    m.add_class::<Capability>()?;
 
     // Register the schema & channel modules
     // A declarative submodule is created in generated/schemas_module.rs, but this is currently

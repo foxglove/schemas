@@ -42,6 +42,13 @@ class ServerListener(Protocol):
     def on_message_data(
         self, client: Client, channel: ClientChannelView, data: bytes
     ) -> None:
+        """
+        Called by the server when a message is received from a client.
+
+        :param client: The client (id) that sent the message.
+        :param channel: The channel (id, topic) that the message was sent on.
+        :param data: The message data.
+        """
         pass
 
 
@@ -51,9 +58,17 @@ def start_server(
     port: Optional[int] = 8765,
     capabilities: Optional[List[Capability]] = None,
     server_listener: Optional[ServerListener] = None,
+    supported_encodings: Optional[List[str]] = None,
 ) -> WebSocketServer:
     """
     Start a websocket server for live visualization.
+
+    :param name: The name of the server.
+    :param host: The host to bind to.
+    :param port: The port to bind to.
+    :param capabilities: A list of capabilities to advertise to clients.
+    :param server_listener: A Python object that implements the :py:class:`ServerListener` protocol.
+    :param supported_encodings: A list of encodings to advertise to clients.
     """
     return _start_server(
         name=name,
@@ -61,6 +76,7 @@ def start_server(
         port=port,
         capabilities=capabilities,
         server_listener=server_listener,
+        supported_encodings=supported_encodings,
     )
 
 

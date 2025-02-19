@@ -102,6 +102,7 @@ def start_server(
     port: Optional[int] = 8765,
     capabilities: Optional[List[Capability]] = None,
     server_listener: Any = None,
+    supported_encodings: Optional[List[str]] = None,
 ) -> WebSocketServer:
     """
     Start a websocket server for live visualization.

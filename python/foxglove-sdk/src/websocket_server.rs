@@ -84,11 +84,14 @@ impl ServerListener for PyServerListener {
 /// :param host: The host to bind to.
 /// :param port: The port to bind to.
 /// :param capabilities: A list of capabilities to advertise to clients.
+/// :param server_listener: A Python object that implements the :py:class:`ServerListener` protocol.
+/// :param supported_encodings: A list of encodings to advertise to clients.
+///    Foxglove currently supports "json", "ros1", and "cdr" for client-side publishing.
 ///
 /// To connect to this server: open Foxglove, choose "Open a new connection", and select Foxglove
 /// WebSocket. The default connection string matches the defaults used by the SDK.
 #[pyfunction]
-#[pyo3(signature = (*, name = None, host="127.0.0.1", port=8765, capabilities=None, server_listener=None))]
+#[pyo3(signature = (*, name = None, host="127.0.0.1", port=8765, capabilities=None, server_listener=None, supported_encodings=None))]
 pub fn start_server(
     py: Python<'_>,
     name: Option<String>,
@@ -96,6 +99,7 @@ pub fn start_server(
     port: u16,
     capabilities: Option<Vec<PyCapability>>,
     server_listener: Option<Py<PyAny>>,
+    supported_encodings: Option<Vec<String>>,
 ) -> PyResult<PyWebSocketServer> {
     let session_id = time::SystemTime::now()
         .duration_since(time::UNIX_EPOCH)
@@ -118,6 +122,10 @@ pub fn start_server(
 
     if let Some(capabilities) = capabilities {
         server = server.capabilities(capabilities.into_iter().map(PyCapability::into));
+    }
+
+    if let Some(supported_encodings) = supported_encodings {
+        server = server.supported_encodings(supported_encodings);
     }
 
     let handle = py

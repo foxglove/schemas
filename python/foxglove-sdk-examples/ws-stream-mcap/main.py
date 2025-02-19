@@ -94,8 +94,6 @@ def get_channel(
 
 
 class TimeTracker:
-    _offset_ns: int
-
     """
     Helper for keep tracking of the relationship between a file timestamp and the wallclock.
 
@@ -103,7 +101,6 @@ class TimeTracker:
     """
 
     def __init__(self, *, offset_ns: int):
-        self._start_time = time.time()
         self._offset_ns = offset_ns
         self._now_ns = offset_ns
         self._notify_interval_ns = 1e9 / 60

@@ -70,6 +70,10 @@ pub(crate) enum LocationFixPositionCovarianceType {
     Known = 3,
 }
 
+/// A timestamp in seconds and nanoseconds
+///
+/// :param seconds: The number of seconds since a user-defined epoch.
+/// :param nanos: The number of nanoseconds since the :py:attr:`seconds` value.
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub struct Timestamp {
@@ -102,6 +106,10 @@ impl From<Timestamp> for prost_types::Timestamp {
     }
 }
 
+/// A duration, composed of seconds and nanoseconds
+///
+/// :param seconds: The number of seconds in the duration.
+/// :param nanos: The number of nanoseconds in the duration.
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub struct Duration {
@@ -134,6 +142,15 @@ impl From<Duration> for prost_types::Duration {
     }
 }
 /// A primitive representing an arrow
+///
+/// :param pose: Position of the arrow's tail and orientation of the arrow. Identity orientation means the arrow points in the +x direction.
+/// :param shaft_length: Length of the arrow shaft
+/// :param shaft_diameter: Diameter of the arrow shaft
+/// :param head_length: Length of the arrow head
+/// :param head_diameter: Diameter of the arrow head
+/// :param color: Color of the arrow
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/arrow-primitive
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct ArrowPrimitive(pub(crate) foxglove::schemas::ArrowPrimitive);
@@ -178,6 +195,18 @@ impl From<ArrowPrimitive> for foxglove::schemas::ArrowPrimitive {
 }
 
 /// Camera calibration parameters
+///
+/// :param timestamp: Timestamp of calibration data
+/// :param frame_id: Frame of reference for the camera. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
+/// :param width: Image width
+/// :param height: Image height
+/// :param distortion_model: Name of distortion model
+/// :param D: Distortion parameters
+/// :param K: Intrinsic camera matrix (3x3 row-major matrix)
+/// :param R: Rectification matrix (stereo cameras only, 3x3 row-major matrix)
+/// :param P: Projection/camera matrix (3x4 row-major matrix)
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/camera-calibration
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CameraCalibration(pub(crate) foxglove::schemas::CameraCalibration);
@@ -231,6 +260,15 @@ impl From<CameraCalibration> for foxglove::schemas::CameraCalibration {
 }
 
 /// A circle annotation on a 2D image
+///
+/// :param timestamp: Timestamp of circle
+/// :param position: Center of the circle in 2D image coordinates (pixels).
+/// :param diameter: Circle diameter in pixels
+/// :param thickness: Line thickness in pixels
+/// :param fill_color: Fill color
+/// :param outline_color: Outline color
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/circle-annotation
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CircleAnnotation(pub(crate) foxglove::schemas::CircleAnnotation);
@@ -275,6 +313,13 @@ impl From<CircleAnnotation> for foxglove::schemas::CircleAnnotation {
 }
 
 /// A color in RGBA format
+///
+/// :param r: Red value between 0 and 1
+/// :param g: Green value between 0 and 1
+/// :param b: Blue value between 0 and 1
+/// :param a: Alpha value between 0 and 1
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/color
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Color(pub(crate) foxglove::schemas::Color);
@@ -300,6 +345,13 @@ impl From<Color> for foxglove::schemas::Color {
 }
 
 /// A compressed image
+///
+/// :param timestamp: Timestamp of image
+/// :param frame_id: Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
+/// :param data: Compressed image data
+/// :param format: Image format
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/compressed-image
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CompressedImage(pub(crate) foxglove::schemas::CompressedImage);
@@ -335,6 +387,13 @@ impl From<CompressedImage> for foxglove::schemas::CompressedImage {
 }
 
 /// A single frame of a compressed video bitstream
+///
+/// :param timestamp: Timestamp of video frame
+/// :param frame_id: Frame of reference for the video.
+/// :param data: Compressed video frame data.
+/// :param format: Video format.
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/compressed-video
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CompressedVideo(pub(crate) foxglove::schemas::CompressedVideo);
@@ -370,6 +429,14 @@ impl From<CompressedVideo> for foxglove::schemas::CompressedVideo {
 }
 
 /// A primitive representing a cylinder, elliptic cylinder, or truncated cone
+///
+/// :param pose: Position of the center of the cylinder and orientation of the cylinder. The flat face(s) are perpendicular to the z-axis.
+/// :param size: Size of the cylinder's bounding box
+/// :param bottom_scale: 0-1, ratio of the diameter of the cylinder's bottom face (min z) to the bottom of the bounding box
+/// :param top_scale: 0-1, ratio of the diameter of the cylinder's top face (max z) to the top of the bounding box
+/// :param color: Color of the cylinder
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/cylinder-primitive
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CylinderPrimitive(pub(crate) foxglove::schemas::CylinderPrimitive);
@@ -411,6 +478,12 @@ impl From<CylinderPrimitive> for foxglove::schemas::CylinderPrimitive {
 }
 
 /// A primitive representing a cube or rectangular prism
+///
+/// :param pose: Position of the center of the cube and orientation of the cube
+/// :param size: Size of the cube along each axis
+/// :param color: Color of the cube
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/cube-primitive
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct CubePrimitive(pub(crate) foxglove::schemas::CubePrimitive);
@@ -440,6 +513,14 @@ impl From<CubePrimitive> for foxglove::schemas::CubePrimitive {
 }
 
 /// A transform between two reference frames in 3D space
+///
+/// :param timestamp: Timestamp of transform
+/// :param parent_frame_id: Name of the parent frame
+/// :param child_frame_id: Name of the child frame
+/// :param translation: Translation component of the transform
+/// :param rotation: Rotation component of the transform
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/frame-transform
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct FrameTransform(pub(crate) foxglove::schemas::FrameTransform);
@@ -481,6 +562,10 @@ impl From<FrameTransform> for foxglove::schemas::FrameTransform {
 }
 
 /// An array of FrameTransform messages
+///
+/// :param transforms: Array of transforms
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/frame-transforms
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct FrameTransforms(pub(crate) foxglove::schemas::FrameTransforms);
@@ -505,6 +590,10 @@ impl From<FrameTransforms> for foxglove::schemas::FrameTransforms {
 }
 
 /// GeoJSON data for annotating maps
+///
+/// :param geojson: GeoJSON data encoded as a UTF-8 string
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/geo-json
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct GeoJson(pub(crate) foxglove::schemas::GeoJson);
@@ -527,6 +616,18 @@ impl From<GeoJson> for foxglove::schemas::GeoJson {
 }
 
 /// A 2D grid of data
+///
+/// :param timestamp: Timestamp of grid
+/// :param frame_id: Frame of reference
+/// :param pose: Origin of grid's corner relative to frame of reference; grid is positioned in the x-y plane relative to this origin
+/// :param column_count: Number of grid columns
+/// :param cell_size: Size of single grid cell along x and y axes, relative to `pose`
+/// :param row_stride: Number of bytes between rows in `data`
+/// :param cell_stride: Number of bytes between cells within a row in `data`
+/// :param fields: Fields in `data`. `red`, `green`, `blue`, and `alpha` are optional for customizing the grid's color.
+/// :param data: Grid cell data, interpreted using `fields`, in row-major (y-major) order
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/grid
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Grid(pub(crate) foxglove::schemas::Grid);
@@ -580,6 +681,12 @@ impl From<Grid> for foxglove::schemas::Grid {
 }
 
 /// Array of annotations for a 2D image
+///
+/// :param circles: Circle annotations
+/// :param points: Points annotations
+/// :param texts: Text annotations
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/image-annotations
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct ImageAnnotations(pub(crate) foxglove::schemas::ImageAnnotations);
@@ -613,6 +720,11 @@ impl From<ImageAnnotations> for foxglove::schemas::ImageAnnotations {
 }
 
 /// A key with its associated value
+///
+/// :param key: Key
+/// :param value: Value
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/key-value-pair
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct KeyValuePair(pub(crate) foxglove::schemas::KeyValuePair);
@@ -638,6 +750,16 @@ impl From<KeyValuePair> for foxglove::schemas::KeyValuePair {
 }
 
 /// A single scan from a planar laser range-finder
+///
+/// :param timestamp: Timestamp of scan
+/// :param frame_id: Frame of reference
+/// :param pose: Origin of scan relative to frame of reference; points are positioned in the x-y plane relative to this origin; angles are interpreted as counterclockwise rotations around the z axis with 0 rad being in the +x direction
+/// :param start_angle: Bearing of first point, in radians
+/// :param end_angle: Bearing of last point, in radians
+/// :param ranges: Distance of detections from origin; assumed to be at equally-spaced angles between `start_angle` and `end_angle`
+/// :param intensities: Intensity of detections
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/laser-scan
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct LaserScan(pub(crate) foxglove::schemas::LaserScan);
@@ -685,6 +807,17 @@ impl From<LaserScan> for foxglove::schemas::LaserScan {
 }
 
 /// A primitive representing a series of points connected by lines
+///
+/// :param r#type: Drawing primitive to use for lines
+/// :param pose: Origin of lines relative to reference frame
+/// :param thickness: Line thickness
+/// :param scale_invariant: Indicates whether `thickness` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
+/// :param points: Points along the line
+/// :param color: Solid color to use for the whole line. One of `color` or `colors` must be provided.
+/// :param colors: Per-point colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.
+/// :param indices: Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/line-primitive
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct LinePrimitive(pub(crate) foxglove::schemas::LinePrimitive);
@@ -735,6 +868,16 @@ impl From<LinePrimitive> for foxglove::schemas::LinePrimitive {
 }
 
 /// A navigation satellite fix for any Global Navigation Satellite System
+///
+/// :param timestamp: Timestamp of the message
+/// :param frame_id: Frame for the sensor. Latitude and longitude readings are at the origin of the frame.
+/// :param latitude: Latitude in degrees
+/// :param longitude: Longitude in degrees
+/// :param altitude: Altitude in meters
+/// :param position_covariance: Position covariance (m^2) defined relative to a tangential plane through the reported position. The components are East, North, and Up (ENU), in row-major order.
+/// :param position_covariance_type: If `position_covariance` is available, `position_covariance_type` must be set to indicate the type of covariance.
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/location-fix
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct LocationFix(pub(crate) foxglove::schemas::LocationFix);
@@ -782,6 +925,15 @@ impl From<LocationFix> for foxglove::schemas::LocationFix {
 }
 
 /// A log message
+///
+/// :param timestamp: Timestamp of log message
+/// :param level: Log level
+/// :param message: Log message
+/// :param name: Process or node name
+/// :param file: Filename
+/// :param line: Line number in the file
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/log
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Log(pub(crate) foxglove::schemas::Log);
@@ -821,6 +973,12 @@ impl From<Log> for foxglove::schemas::Log {
 }
 
 /// Command to remove previously published entities
+///
+/// :param timestamp: Timestamp of the deletion. Only matching entities earlier than this timestamp will be deleted.
+/// :param r#type: Type of deletion action to perform
+/// :param id: Identifier which must match if `type` is `MATCHING_ID`.
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/scene-entity-deletion
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct SceneEntityDeletion(pub(crate) foxglove::schemas::SceneEntityDeletion);
@@ -850,6 +1008,23 @@ impl From<SceneEntityDeletion> for foxglove::schemas::SceneEntityDeletion {
 }
 
 /// A visual element in a 3D scene. An entity may be composed of multiple primitives which all share the same frame of reference.
+///
+/// :param timestamp: Timestamp of the entity
+/// :param frame_id: Frame of reference
+/// :param id: Identifier for the entity. A entity will replace any prior entity on the same topic with the same `id`.
+/// :param lifetime: Length of time (relative to `timestamp`) after which the entity should be automatically removed. Zero value indicates the entity should remain visible until it is replaced or deleted.
+/// :param frame_locked: Whether the entity should keep its location in the fixed frame (false) or follow the frame specified in `frame_id` as it moves relative to the fixed frame (true)
+/// :param metadata: Additional user-provided metadata associated with the entity. Keys must be unique.
+/// :param arrows: Arrow primitives
+/// :param cubes: Cube primitives
+/// :param spheres: Sphere primitives
+/// :param cylinders: Cylinder primitives
+/// :param lines: Line primitives
+/// :param triangles: Triangle list primitives
+/// :param texts: Text primitives
+/// :param models: Model primitives
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/scene-entity
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct SceneEntity(pub(crate) foxglove::schemas::SceneEntity);
@@ -918,6 +1093,11 @@ impl From<SceneEntity> for foxglove::schemas::SceneEntity {
 }
 
 /// An update to the entities displayed in a 3D scene
+///
+/// :param deletions: Scene entities to delete
+/// :param entities: Scene entities to add or replace
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/scene-update
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct SceneUpdate(pub(crate) foxglove::schemas::SceneUpdate);
@@ -946,6 +1126,16 @@ impl From<SceneUpdate> for foxglove::schemas::SceneUpdate {
 }
 
 /// A primitive representing a 3D model file loaded from an external URL or embedded data
+///
+/// :param pose: Origin of model relative to reference frame
+/// :param scale: Scale factor to apply to the model along each axis
+/// :param color: Solid color to use for the whole model if `override_color` is true.
+/// :param override_color: Whether to use the color specified in `color` instead of any materials embedded in the original model.
+/// :param url: URL pointing to model file. One of `url` or `data` should be provided.
+/// :param media_type: [Media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of embedded model (e.g. `model/gltf-binary`). Required if `data` is provided instead of `url`. Overrides the inferred media type if `url` is provided.
+/// :param data: Embedded model. One of `url` or `data` should be provided. If `data` is provided, `media_type` must be set to indicate the type of the data.
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/model-primitive
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct ModelPrimitive(pub(crate) foxglove::schemas::ModelPrimitive);
@@ -993,6 +1183,12 @@ impl From<ModelPrimitive> for foxglove::schemas::ModelPrimitive {
 }
 
 /// A field present within each element in a byte array of packed elements.
+///
+/// :param name: Name of the field
+/// :param offset: Byte offset from start of data buffer
+/// :param r#type: Type of data in the field. Integers are stored using little-endian byte order.
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/packed-element-field
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct PackedElementField(pub(crate) foxglove::schemas::PackedElementField);
@@ -1022,6 +1218,11 @@ impl From<PackedElementField> for foxglove::schemas::PackedElementField {
 }
 
 /// A point representing a position in 2D space
+///
+/// :param x: x coordinate position
+/// :param y: y coordinate position
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/point2
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Point2(pub(crate) foxglove::schemas::Point2);
@@ -1044,6 +1245,12 @@ impl From<Point2> for foxglove::schemas::Point2 {
 }
 
 /// A point representing a position in 3D space
+///
+/// :param x: x coordinate position
+/// :param y: y coordinate position
+/// :param z: z coordinate position
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/point3
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Point3(pub(crate) foxglove::schemas::Point3);
@@ -1069,6 +1276,15 @@ impl From<Point3> for foxglove::schemas::Point3 {
 }
 
 /// A collection of N-dimensional points, which may contain additional fields with information like normals, intensity, etc.
+///
+/// :param timestamp: Timestamp of point cloud
+/// :param frame_id: Frame of reference
+/// :param pose: The origin of the point cloud relative to the frame of reference
+/// :param point_stride: Number of bytes between points in the `data`
+/// :param fields: Fields in `data`. At least 2 coordinate fields from `x`, `y`, and `z` are required for each point's position; `red`, `green`, `blue`, and `alpha` are optional for customizing each point's color.
+/// :param data: Point data, interpreted using `fields`
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/point-cloud
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct PointCloud(pub(crate) foxglove::schemas::PointCloud);
@@ -1113,6 +1329,16 @@ impl From<PointCloud> for foxglove::schemas::PointCloud {
 }
 
 /// An array of points on a 2D image
+///
+/// :param timestamp: Timestamp of annotation
+/// :param r#type: Type of points annotation to draw
+/// :param points: Points in 2D image coordinates (pixels).
+/// :param outline_color: Outline color
+/// :param outline_colors: Per-point colors, if `type` is `POINTS`, or per-segment stroke colors, if `type` is `LINE_LIST`, `LINE_STRIP` or `LINE_LOOP`.
+/// :param fill_color: Fill color
+/// :param thickness: Stroke thickness in pixels
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/points-annotation
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct PointsAnnotation(pub(crate) foxglove::schemas::PointsAnnotation);
@@ -1160,6 +1386,11 @@ impl From<PointsAnnotation> for foxglove::schemas::PointsAnnotation {
 }
 
 /// A position and orientation for an object or reference frame in 3D space
+///
+/// :param position: Point denoting position in 3D space
+/// :param orientation: Quaternion denoting orientation in 3D space
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/pose
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Pose(pub(crate) foxglove::schemas::Pose);
@@ -1188,6 +1419,12 @@ impl From<Pose> for foxglove::schemas::Pose {
 }
 
 /// A timestamped pose for an object or reference frame in 3D space
+///
+/// :param timestamp: Timestamp of pose
+/// :param frame_id: Frame of reference for pose position and orientation
+/// :param pose: Pose in 3D space
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/pose-in-frame
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct PoseInFrame(pub(crate) foxglove::schemas::PoseInFrame);
@@ -1217,6 +1454,12 @@ impl From<PoseInFrame> for foxglove::schemas::PoseInFrame {
 }
 
 /// An array of timestamped poses for an object or reference frame in 3D space
+///
+/// :param timestamp: Timestamp of pose
+/// :param frame_id: Frame of reference for pose position and orientation
+/// :param poses: Poses in 3D space
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/poses-in-frame
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct PosesInFrame(pub(crate) foxglove::schemas::PosesInFrame);
@@ -1246,6 +1489,13 @@ impl From<PosesInFrame> for foxglove::schemas::PosesInFrame {
 }
 
 /// A [quaternion](https://eater.net/quaternions) representing a rotation in 3D space
+///
+/// :param x: x value
+/// :param y: y value
+/// :param z: z value
+/// :param w: w value
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/quaternion
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Quaternion(pub(crate) foxglove::schemas::Quaternion);
@@ -1271,6 +1521,16 @@ impl From<Quaternion> for foxglove::schemas::Quaternion {
 }
 
 /// A raw image
+///
+/// :param timestamp: Timestamp of image
+/// :param frame_id: Frame of reference for the image. The origin of the frame is the optical center of the camera. +x points to the right in the image, +y points down, and +z points into the plane of the image.
+/// :param width: Image width
+/// :param height: Image height
+/// :param encoding: Encoding of the raw image data
+/// :param step: Byte length of a single row
+/// :param data: Raw image data
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/raw-image
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct RawImage(pub(crate) foxglove::schemas::RawImage);
@@ -1318,6 +1578,12 @@ impl From<RawImage> for foxglove::schemas::RawImage {
 }
 
 /// A primitive representing a sphere or ellipsoid
+///
+/// :param pose: Position of the center of the sphere and orientation of the sphere
+/// :param size: Size (diameter) of the sphere along each axis
+/// :param color: Color of the sphere
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/sphere-primitive
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct SpherePrimitive(pub(crate) foxglove::schemas::SpherePrimitive);
@@ -1347,6 +1613,15 @@ impl From<SpherePrimitive> for foxglove::schemas::SpherePrimitive {
 }
 
 /// A text label on a 2D image
+///
+/// :param timestamp: Timestamp of annotation
+/// :param position: Bottom-left origin of the text label in 2D image coordinates (pixels).
+/// :param text: Text to display
+/// :param font_size: Font size in pixels
+/// :param text_color: Text color
+/// :param background_color: Background fill color
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/text-annotation
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct TextAnnotation(pub(crate) foxglove::schemas::TextAnnotation);
@@ -1391,6 +1666,15 @@ impl From<TextAnnotation> for foxglove::schemas::TextAnnotation {
 }
 
 /// A primitive representing a text label
+///
+/// :param pose: Position of the center of the text box and orientation of the text. Identity orientation means the text is oriented in the xy-plane and flows from -x to +x.
+/// :param billboard: Whether the text should respect `pose.orientation` (false) or always face the camera (true)
+/// :param font_size: Font size (height of one line of text)
+/// :param scale_invariant: Indicates whether `font_size` is a fixed size in screen pixels (true), or specified in world coordinates and scales with distance from the camera (false)
+/// :param color: Color of the text
+/// :param text: Text
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/text-primitive
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct TextPrimitive(pub(crate) foxglove::schemas::TextPrimitive);
@@ -1435,6 +1719,14 @@ impl From<TextPrimitive> for foxglove::schemas::TextPrimitive {
 }
 
 /// A primitive representing a set of triangles or a surface tiled by triangles
+///
+/// :param pose: Origin of triangles relative to reference frame
+/// :param points: Vertices to use for triangles, interpreted as a list of triples (0-1-2, 3-4-5, ...)
+/// :param color: Solid color to use for the whole shape. One of `color` or `colors` must be provided.
+/// :param colors: Per-vertex colors (if specified, must have the same length as `points`). One of `color` or `colors` must be provided.
+/// :param indices: Indices into the `points` and `colors` attribute arrays, which can be used to avoid duplicating attribute data.
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/triangle-list-primitive
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct TriangleListPrimitive(pub(crate) foxglove::schemas::TriangleListPrimitive);
@@ -1472,6 +1764,11 @@ impl From<TriangleListPrimitive> for foxglove::schemas::TriangleListPrimitive {
 }
 
 /// A vector in 2D space that represents a direction only
+///
+/// :param x: x coordinate length
+/// :param y: y coordinate length
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/vector2
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Vector2(pub(crate) foxglove::schemas::Vector2);
@@ -1494,6 +1791,12 @@ impl From<Vector2> for foxglove::schemas::Vector2 {
 }
 
 /// A vector in 3D space that represents a direction only
+///
+/// :param x: x coordinate length
+/// :param y: y coordinate length
+/// :param z: z coordinate length
+///
+/// See https://docs.foxglove.dev/docs/visualization/message-schemas/vector3
 #[pyclass(module = "foxglove.schemas")]
 #[derive(Clone)]
 pub(crate) struct Vector3(pub(crate) foxglove::schemas::Vector3);

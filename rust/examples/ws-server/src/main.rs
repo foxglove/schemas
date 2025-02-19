@@ -9,7 +9,15 @@ use serde::Serialize;
 use std::time::Duration;
 
 #[derive(Debug, Serialize, JsonSchema)]
+enum MessageLevel {
+    Debug,
+    #[allow(dead_code)]
+    Info,
+}
+
+#[derive(Debug, Serialize, JsonSchema)]
 struct Message {
+    level: MessageLevel,
     msg: String,
     count: u32,
 }
@@ -31,6 +39,7 @@ async fn log_forever(fps: u8) {
 
 fn log(counter: u32) {
     MSG_CHANNEL.log(&Message {
+        level: MessageLevel::Debug,
         msg: "Hello, world!".to_string(),
         count: counter,
     });

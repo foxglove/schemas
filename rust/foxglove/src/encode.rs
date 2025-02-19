@@ -2,8 +2,7 @@ use crate::{Channel, ChannelBuilder, FoxgloveError, PartialMetadata, Schema};
 use bytes::BufMut;
 use schemars::{gen::SchemaSettings, JsonSchema};
 use serde::Serialize;
-use std::borrow::Cow;
-use std::sync::Arc;
+use std::{borrow::Cow, sync::Arc};
 
 const STACK_BUFFER_SIZE: usize = 128 * 1024;
 

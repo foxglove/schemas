@@ -3,9 +3,15 @@ import logging
 import time
 import mcap
 
-from typing import Any, Optional
+from typing import Optional
 
-from foxglove import start_server, Channel, SchemaDefinition, Capability
+from foxglove import (
+    start_server,
+    Channel,
+    SchemaDefinition,
+    Capability,
+    WebSocketServer,
+)
 import mcap.reader
 import mcap.records
 
@@ -24,22 +30,19 @@ def main():
     server = start_server(
         name=file_name, port=args.port, host=args.host, capabilities=[Capability.Time]
     )
-    done = False
 
     try:
-        while not done:
-            stream_until_done(file_name, server, done=done)
+        while True:
+            stream_until_done(file_name, server)
 
             logging.info("Looping")
             server.clear_session()
 
     except KeyboardInterrupt:
-        done = True
-    finally:
         server.stop()
 
 
-def stream_until_done(file_name: str, server: Any, *, done: bool):
+def stream_until_done(file_name: str, server: WebSocketServer):
     tracker: Optional[TimeTracker] = None
     with open(file_name, "rb") as f:
         reader = mcap.reader.make_reader(f)
@@ -48,9 +51,6 @@ def stream_until_done(file_name: str, server: Any, *, done: bool):
                 tracker = new_time_tracker(mcap_msg)
 
             tracker.sleep_until(mcap_msg.log_time)
-
-            if done:
-                break
 
             notify_time = tracker.notify()
             if notify_time is not None:

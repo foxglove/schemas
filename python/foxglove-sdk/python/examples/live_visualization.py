@@ -7,7 +7,7 @@ import time
 
 from examples.geometry import euler_to_quaternion
 
-from foxglove import SchemaDefinition
+from foxglove import Capability, SchemaDefinition
 from foxglove.channels import (
     FrameTransformsChannel,
     PointCloudChannel,
@@ -44,10 +44,24 @@ plot_schema = {
 }
 
 
+class ExampleListener(foxglove.ServerListener):
+    def on_message_data(
+        self,
+        client: foxglove.Client,
+        channel: foxglove.ClientChannelView,
+        data: bytes,
+    ):
+        print(f"Message from client {client.id} on channel {channel.topic}")
+        print(f"Data: {data!r}")
+
+
 def main() -> None:
     foxglove.verbose_on()
 
-    server = foxglove.start_server()
+    server = foxglove.start_server(
+        server_listener=ExampleListener(),
+        capabilities=[Capability.ClientPublish],
+    )
 
     # Log messages having well-known Foxglove schemas using the appropriate channel type.
     box_chan = SceneUpdateChannel("/boxes")
@@ -101,8 +115,6 @@ def main() -> None:
                     ]
                 )
             )
-
-            sin_chan.log(json_msg)
 
             box_chan.log(
                 SceneUpdate(

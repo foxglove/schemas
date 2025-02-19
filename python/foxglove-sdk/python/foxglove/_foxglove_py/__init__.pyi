@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Optional, Tuple
+from typing import Any, List, Optional, Protocol, Tuple
 
 class MCAPWriter:
     """
@@ -79,12 +79,29 @@ class Capability(Enum):
     """
 
     Time = ...
+    ClientPublish = ...
+
+class Client:
+    """
+    A client that is connected to a running websocket server.
+    """
+
+    id = ...
+
+class ClientChannelView:
+    """
+    Information about a client channel.
+    """
+
+    id = ...
+    topic = ...
 
 def start_server(
     name: Optional[str] = None,
     host: Optional[str] = "127.0.0.1",
     port: Optional[int] = 8765,
     capabilities: Optional[List[Capability]] = None,
+    server_listener: Any = None,
 ) -> WebSocketServer:
     """
     Start a websocket server for live visualization.

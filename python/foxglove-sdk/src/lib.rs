@@ -9,13 +9,15 @@ use std::collections::BTreeMap;
 use std::fs::File;
 use std::io::BufWriter;
 use std::sync::Arc;
-use websocket_server::{start_server, Capability, PyWebSocketServer};
+use websocket_server::{
+    start_server, PyCapability, PyClient, PyClientChannelView, PyServerListener, PyWebSocketServer,
+};
 
 mod errors;
 mod generated;
 mod websocket_server;
 
-#[pyclass]
+#[pyclass(module = "foxglove")]
 struct BaseChannel(Arc<Channel>);
 
 ///  A writer for logging messages to an MCAP file.
@@ -26,7 +28,7 @@ struct BaseChannel(Arc<Channel>);
 /// If you're using :py:func:`record_file`, you must maintain a reference to the returned writer
 /// until you are done logging. The writer will be closed automatically when it is garbage
 /// collected, but you may also :py:func:`MCAPWriter.close` it explicitly.
-#[pyclass(name = "MCAPWriter")]
+#[pyclass(name = "MCAPWriter", module = "foxglove")]
 struct PyMcapWriter(Option<McapWriterHandle<BufWriter<File>>>);
 
 impl Drop for PyMcapWriter {
@@ -119,7 +121,7 @@ impl BaseChannel {
     }
 }
 
-#[pyclass]
+#[pyclass(module = "foxglove")]
 #[derive(Clone, Default)]
 struct PartialMetadata(foxglove::PartialMetadata);
 
@@ -201,10 +203,15 @@ fn _foxglove_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(start_server, m)?)?;
     m.add_function(wrap_pyfunction!(get_channel_for_topic, m)?)?;
     m.add_class::<BaseChannel>()?;
-    m.add_class::<PyWebSocketServer>()?;
-    m.add_class::<Capability>()?;
     m.add_class::<PyMcapWriter>()?;
     m.add_class::<PartialMetadata>()?;
+
+    // Websocket server classes
+    m.add_class::<PyWebSocketServer>()?;
+    m.add_class::<PyServerListener>()?;
+    m.add_class::<PyCapability>()?;
+    m.add_class::<PyClient>()?;
+    m.add_class::<PyClientChannelView>()?;
 
     // Register the schema & channel modules
     // A declarative submodule is created in generated/schemas_module.rs, but this is currently

@@ -7,17 +7,20 @@ schemas.
 
 import atexit
 from contextlib import contextmanager
-from typing import Iterator, Union
+from typing import Iterator, List, Optional, Protocol, Union
 from ._foxglove_py import (
+    ClientChannelView,
+    Client,
     MCAPWriter,
     WebSocketServer,
     record_file,
     enable_logging,
     disable_logging,
-    start_server,
     shutdown,
     Capability,
 )
+
+from ._foxglove_py import start_server as _start_server
 
 
 from .channel import Channel, log, SchemaDefinition
@@ -29,6 +32,36 @@ logging.basicConfig(
 )
 
 atexit.register(shutdown)
+
+
+class ServerListener(Protocol):
+    """
+    A mechanism to register callbacks for handling client message events.
+    """
+
+    def on_message_data(
+        self, client: Client, channel: ClientChannelView, data: bytes
+    ) -> None:
+        pass
+
+
+def start_server(
+    name: Optional[str] = None,
+    host: Optional[str] = "127.0.0.1",
+    port: Optional[int] = 8765,
+    capabilities: Optional[List[Capability]] = None,
+    server_listener: Optional[ServerListener] = None,
+) -> WebSocketServer:
+    """
+    Start a websocket server for live visualization.
+    """
+    return _start_server(
+        name=name,
+        host=host,
+        port=port,
+        capabilities=capabilities,
+        server_listener=server_listener,
+    )
 
 
 def _log_level_from_int(level: int) -> str:
@@ -83,6 +116,7 @@ __all__ = [
     "Channel",
     "MCAPWriter",
     "SchemaDefinition",
+    "ServerListener",
     "WebSocketServer",
     "log",
     "new_mcap_file",

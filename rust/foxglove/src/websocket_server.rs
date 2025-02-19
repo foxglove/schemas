@@ -4,9 +4,7 @@ use std::fmt::Debug;
 use std::sync::Arc;
 
 use crate::websocket::service::{Service, ServiceId};
-#[cfg(feature = "unstable")]
-use crate::websocket::Parameter;
-use crate::websocket::{create_server, Capability, Server, ServerOptions, Status};
+use crate::websocket::{create_server, Capability, Parameter, Server, ServerOptions, Status};
 use crate::{get_runtime_handle, FoxgloveError, LogContext, LogSink};
 use tokio::runtime::Handle;
 use tracing::warn;
@@ -66,8 +64,6 @@ impl WebSocketServer {
     }
 
     /// Configure an event listener to receive client message events.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
     pub fn listener(mut self, listener: Arc<dyn crate::websocket::ServerListener>) -> Self {
         self.options.listener = Some(listener);
         self
@@ -213,12 +209,8 @@ impl WebSocketServerHandle {
     }
 
     /// Publishes parameter values to all clients.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
-    pub async fn publish_parameter_values(&self, parameters: impl IntoIterator<Item = Parameter>) {
-        self.0
-            .publish_parameter_values(parameters.into_iter().collect(), None)
-            .await;
+    pub fn publish_parameter_values(&self, parameters: Vec<Parameter>) {
+        self.0.publish_parameter_values(parameters);
     }
 
     /// Publishes a status message to all clients.
@@ -286,12 +278,8 @@ impl WebSocketServerBlockingHandle {
     }
 
     /// Publishes parameter values to all clients.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
-    pub fn publish_parameter_values(&self, parameters: impl IntoIterator<Item = Parameter>) {
-        self.0
-            .runtime()
-            .block_on(self.0.publish_parameter_values(parameters))
+    pub fn publish_parameter_values(&self, parameters: Vec<Parameter>) {
+        self.0.publish_parameter_values(parameters)
     }
 
     /// Publishes a status message to all clients.

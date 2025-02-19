@@ -232,9 +232,4 @@ pub enum FoxgloveError {
     /// An error related to MCAP encoding.
     #[error("MCAP error: {0}")]
     McapError(#[from] mcap::McapError),
-    /// An error related to JSON encoding.
-    #[doc(hidden)]
-    #[cfg(feature = "unstable")]
-    #[error(transparent)]
-    JsonError(#[from] serde_json::Error),
 }

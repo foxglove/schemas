@@ -1,8 +1,8 @@
 use crate::{Channel, ChannelBuilder, FoxgloveError, PartialMetadata, Schema};
 use bytes::BufMut;
-use schemars::JsonSchema;
+use schemars::{gen::SchemaSettings, JsonSchema};
 use serde::Serialize;
-use std::sync::Arc;
+use std::{borrow::Cow, sync::Arc};
 
 const STACK_BUFFER_SIZE: usize = 128 * 1024;
 
@@ -36,13 +36,26 @@ pub trait Encode {
     }
 }
 
-/// Automatically implements [`Encode`] for any type that implements [`Serialize`] and [`JsonSchema`](https://docs.rs/schemars/latest/schemars/trait.JsonSchema.html).
-/// See the JsonSchema Trait and schema_for! macro from the [schemars crate](https://docs.rs/schemars/latest/schemars/) for more information.
+/// Automatically implements [`Encode`] for any type that implements [`Serialize`] and
+/// [`JsonSchema`](https://docs.rs/schemars/latest/schemars/trait.JsonSchema.html). See the
+/// JsonSchema Trait and SchemaGenerator from the [schemars
+/// crate](https://docs.rs/schemars/latest/schemars/) for more information.
+/// Definitions are inlined since Foxglove does not support external references.
 impl<T: Serialize + JsonSchema> Encode for T {
     type Error = serde_json::Error;
 
     fn get_schema() -> Option<Schema> {
-        Some(Schema::json_schema::<T>())
+        let settings = SchemaSettings::draft07().with(|option| {
+            option.inline_subschemas = true;
+        });
+        let generator = settings.into_generator();
+        let json_schema = generator.into_root_schema_for::<T>();
+
+        Some(Schema::new(
+            std::any::type_name::<T>().to_string(),
+            "jsonschema".to_string(),
+            Cow::Owned(serde_json::to_vec(&json_schema).expect("Failed to serialize schema")),
+        ))
     }
 
     fn get_message_encoding() -> String {
@@ -164,6 +177,7 @@ mod test {
     use crate::Schema;
     use prost::bytes::BufMut;
     use serde::Serialize;
+    use serde_json::{json, Value};
     use tracing_test::traced_test;
 
     #[derive(Debug, Serialize)]
@@ -213,5 +227,28 @@ mod test {
 
         channel.log(&message);
         assert!(!logs_contain("error logging message"));
+    }
+
+    #[test]
+    fn test_derived_schema_inlines_enums() {
+        #[derive(Serialize, JsonSchema)]
+        #[allow(dead_code)]
+        enum Foo {
+            A,
+        }
+
+        #[derive(Serialize, JsonSchema)]
+        struct Bar {
+            foo: Foo,
+        }
+
+        let schema = Bar::get_schema();
+        assert!(schema.is_some());
+
+        let schema = schema.unwrap();
+        assert_eq!(schema.encoding, "jsonschema");
+
+        let json: Value = serde_json::from_slice(&schema.data).expect("failed to parse schema");
+        assert_eq!(json["properties"]["foo"]["enum"], json!(["A"]));
     }
 }

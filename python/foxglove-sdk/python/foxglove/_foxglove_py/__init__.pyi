@@ -74,7 +74,7 @@ class PartialMetadata:
 def start_server(
     name: Optional[str] = None,
     host: Optional[str] = "127.0.0.1",
-    port: Optional[int] = 0,
+    port: Optional[int] = 8765,
 ) -> WebSocketServer:
     """
     Start a websocket server for live visualization.

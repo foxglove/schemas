@@ -23,7 +23,7 @@ jobs:
           git config user.name "Foxglove"
           git config user.email "support@foxglove.dev"
           git checkout -b main --track origin/main
-          git merge --no-ff "${{ env.SDK_TAG }}"
+          git merge "${{ env.SDK_TAG }}"
           git push origin main
 
       - name: Delete old release branch

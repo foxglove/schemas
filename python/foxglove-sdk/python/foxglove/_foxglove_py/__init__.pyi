@@ -83,7 +83,7 @@ class Capability(Enum):
 def start_server(
     name: Optional[str] = None,
     host: Optional[str] = "127.0.0.1",
-    port: Optional[int] = 0,
+    port: Optional[int] = 8765,
     capabilities: Optional[List[Capability]] = None,
 ) -> WebSocketServer:
     """

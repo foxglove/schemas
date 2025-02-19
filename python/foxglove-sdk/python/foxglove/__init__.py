@@ -1,7 +1,16 @@
+"""
+This module provides interfaces for logging messages to Foxglove.
+
+See :py:mod:`foxglove.schemas` and :py:mod:`foxglove.channels` for working with well-known Foxglove
+schemas.
+"""
+
 import atexit
 from contextlib import contextmanager
 from typing import Iterator, Union
 from ._foxglove_py import (
+    MCAPWriter,
+    WebSocketServer,
     record_file,
     enable_logging,
     disable_logging,
@@ -59,7 +68,8 @@ def verbose_off() -> None:
 def new_mcap_file(fname: str) -> Iterator[None]:
     """
     Create an MCAP file at the given path for recording.
-    This is the context-managed equivalent of `record_file`.
+
+    This is the context-managed equivalent of :py:func:`record_file`.
     """
     writer = record_file(fname)
     try:
@@ -71,10 +81,13 @@ def new_mcap_file(fname: str) -> Iterator[None]:
 __all__ = [
     "Capability",
     "Channel",
-    "start_server",
-    "record_file",
-    "verbose_on",
-    "verbose_off",
-    "log",
+    "MCAPWriter",
     "SchemaDefinition",
+    "WebSocketServer",
+    "log",
+    "new_mcap_file",
+    "record_file",
+    "start_server",
+    "verbose_off",
+    "verbose_on",
 ]

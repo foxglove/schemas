@@ -32,6 +32,34 @@ describe("generatePyclass", () => {
   it("generates a struct from a message", () => {
     expect(generatePyclass(exampleMessage)).toMatchInlineSnapshot(`
         "/// An example type
+        ///
+        /// :param field_duration: duration field
+        /// :param field_time: time field
+        /// :param field_boolean: boolean field
+        /// :param field_bytes: bytes field
+        /// :param field_float64: float64 field
+        /// :param field_uint32: uint32 field
+        /// :param field_string: string field
+        /// :param field_duration_array: duration array field
+        /// :param field_time_array: time array field
+        /// :param field_boolean_array: boolean array field
+        /// :param field_bytes_array: bytes array field
+        /// :param field_float64_array: float64 array field
+        /// :param field_uint32_array: uint32 array field
+        /// :param field_string_array: string array field
+        /// :param field_duration_fixed_array: duration fixed-length array field
+        /// :param field_time_fixed_array: time fixed-length array field
+        /// :param field_boolean_fixed_array: boolean fixed-length array field
+        /// :param field_bytes_fixed_array: bytes fixed-length array field
+        /// :param field_float64_fixed_array: float64 fixed-length array field
+        /// :param field_uint32_fixed_array: uint32 fixed-length array field
+        /// :param field_string_fixed_array: string fixed-length array field
+        /// :param field_enum: An enum field
+        /// :param field_enum_array: An enum array field
+        /// :param field_nested: A nested field
+        /// :param field_nested_array: A nested array field
+        ///
+        /// See https://docs.foxglove.dev/docs/visualization/message-schemas/example-message
         #[pyclass(module = "foxglove.schemas")]
         #[derive(Clone)]
         pub(crate) struct ExampleMessage(pub(crate) foxglove::schemas::ExampleMessage);

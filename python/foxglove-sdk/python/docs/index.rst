@@ -42,4 +42,7 @@ You can also log messages with arbitrary schemas and provide your own encoding, 
 
 
 .. toctree::
+   :maxdepth: 3
+
    examples
+   api/index

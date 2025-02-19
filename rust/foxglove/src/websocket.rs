@@ -586,7 +586,7 @@ impl ConnectedClient {
             }
             updated_parameters
         } else {
-            // This differs from the Python reference implementation in that here we notify
+            // This differs from the Python legacy ws-protocol implementation in that here we notify
             // subscribers about the parameters even if there's no ServerListener configured.
             // This seems to be a more sensible default.
             parameters
@@ -644,9 +644,11 @@ impl ConnectedClient {
             }
         }
 
-        // Track the client's own subscriptions
-        let mut client_subscriptions = self.parameter_subscriptions.lock();
-        client_subscriptions.extend(param_names);
+        {
+            // Track the client's own subscriptions
+            let mut client_subscriptions = self.parameter_subscriptions.lock();
+            client_subscriptions.extend(param_names);
+        }
 
         if new_param_subscriptions.is_empty() {
             return;

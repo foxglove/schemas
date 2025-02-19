@@ -68,8 +68,9 @@ impl Drop for PyMcapWriter {
 impl PyMcapWriter {
     /// Close the MCAP writer.
     ///
-    /// You must call this when you are done logging, unless you are using the context-managed
-    /// :py:func:`new_mcap_file`, which handles closing the writer for you.
+    /// You may call this to explicitly close the writer. Note that the writer will be automatically
+    /// closed for you when it is garbage collected, or when using the context-managed
+    /// :py:func:`new_mcap_file`.
     fn close(&mut self) -> PyResult<()> {
         if let Some(writer) = self.0.take() {
             writer.close().map_err(PyFoxgloveError::from)?;

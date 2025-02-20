@@ -11,12 +11,6 @@ use std::sync::Arc;
 use std::time;
 
 /// A mechanism to register callbacks for handling client message events.
-/// The wrapped Python object must have (optionally) defined methods like:
-///   on_message_data(self, client_id: int, topic: str, payload: bytes)
-///   on_subscribe(self, client_id: int, topic: str)
-///   on_unsubscribe(self, client_id: int, topic: str)
-///   on_client_advertise(self, client_id: int, topic: str)
-///   on_client_unadvertise(self, client_id: int, topic: str)
 #[pyclass(name = "ServerListener", module = "foxglove")]
 pub struct PyServerListener {
     listener: Py<PyAny>,
@@ -46,7 +40,15 @@ pub struct PyClientChannelView {
     topic: String,
 }
 
-// Implement the ServerListener trait for PyServerListener, bridging callback calls to Python.
+/// Implementations of ServerListener which call the python methods. foxglove/__init__.py defines
+/// the `ServerListener` protocol for callers, since a `pyclass` cannot extend Python classes:
+/// https://github.com/PyO3/pyo3/issues/991
+///
+/// The ServerListener protocol implements all methods as no-ops by default; users extend this with
+/// desired functionality.
+///
+/// Methods on the listener interface do not return Results; any errors are logged, assuming the
+/// user has enabled logging.
 impl ServerListener for PyServerListener {
     fn on_message_data(&self, client: Client, channel: ClientChannelView, payload: &[u8]) {
         let client_info = PyClient {
@@ -59,7 +61,6 @@ impl ServerListener for PyServerListener {
         };
 
         let result: PyResult<()> = Python::with_gil(|py| {
-            // foxglove/__init__.py defines the `ServerListener` protocol
             let kwargs = PyDict::new(py);
             kwargs.set_item("client", client_info)?;
             kwargs.set_item("channel", channel_view)?;

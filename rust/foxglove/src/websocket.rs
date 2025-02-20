@@ -45,6 +45,12 @@ use service::{CallId, Service, ServiceId};
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub struct ClientId(u32);
 
+impl From<ClientId> for u32 {
+    fn from(client: ClientId) -> Self {
+        client.0
+    }
+}
+
 /// A connected client session with the websocket server.
 #[derive(Debug)]
 pub struct Client<'a>(&'a ConnectedClient);
